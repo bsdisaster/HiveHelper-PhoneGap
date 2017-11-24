@@ -1,0 +1,154 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>My Booking - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script src="scripts/phonegap.facebook.inappbrowser.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="dashboard.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" class="header-logo" target="_self"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="decoration decoration-margins"></div>
+                <div class="content">
+
+                    <div>
+                        <h1>Upcoming Jobs</h1>
+                    </div>
+                    <div>
+                        <label id="lblUpcomingListError" class="bold color-red-dark"></label>
+                    </div>
+                    <div id="divUpComming" class="page-userlist content-scroll-helper-booking">
+                    </div>
+                    <div class="decoration decoration-margins"></div>
+                    <div>
+                        <h1>Previous Jobs</h1>
+                    </div>
+                    <div>
+                        <label id="lblPreviousListError" class="bold color-red-dark"></label>
+                    </div>
+                    <div id="divPreviousComming" class="page-userlist content-scroll-helper-booking">
+
+                    </div>
+                    <div class="decoration decoration-margins"></div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                }).on('deviceready', function () {
+                    document.addEventListener("deviceready", getAllServices, false);
+
+                });
+
+                function getAllServices() {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    var helperId = localStorage.getItem("userId");
+
+                    $.ajax({
+                        url: api_baseUrl + 'helper/helperBooking/' + helperId,
+                        type: "get",
+                        dataType: "json",
+                        success: function (response) {
+                            // Inserting html into the result div on success
+                            window.plugins.spinnerDialog.hide();
+                            if (response !== null && response.status === 1) {
+
+                                var upcomingJobs = response.data.upcomingJobs;
+                                var previousJobs = response.data.previousJobs;
+
+                                // upcoming jobs list
+                                if (upcomingJobs.length > 0) {
+                                    var html = '';
+                                    for (var i = 0; i < upcomingJobs.length; i++) {
+                                        var serviceName = '<b>Service:</b> ' + upcomingJobs[i].Service + ' </br>';
+                                        var date = '<b>Date:</b> ' + upcomingJobs[i].Date + '  </br>';
+                                        var clientName = '<b>Client:</b> ' + upcomingJobs[i].Client + '  </br>';
+
+                                        html = html + '<div class="user-list-3 user-list-1-change">';
+                                        html = html + '<div class="col-sm-9">';
+
+                                        html = html + '	<em>' + serviceName + date + clientName + '  </em>';
+                                        html = html + '</div>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="clear"></div></div>';
+                                    }
+                                    $('#divUpComming').append(html);
+                                }
+                                else {
+                                    $("#lblUpcomingListError").text("No Upcoming jobs found.!");
+                                }
+
+                                // previous jobs list
+                                if (previousJobs.length > 0) {
+                                    var html = '';
+                                    for (var i = 0; i < previousJobs.length; i++) {
+                                        var serviceName = '<b>Service:</b> ' + previousJobs[i].Service + ' </br>';
+                                        var date = '<b>Date:</b> ' + previousJobs[i].Date + '  </br>';
+                                        var clientName = '<b>Provider:</b> ' + previousJobs[i].Client + '  </br>';
+
+                                        html = html + '<div class="user-list-3 user-list-1-change">';
+                                        html = html + '<div class="col-sm-8">';
+
+                                        html = html + '	<em>' + serviceName + date + clientName + '  </em>';
+                                        html = html + '</div>';
+                                        html = html + '</div><div class="clear"></div>';
+                                    }
+                                    $('#divPreviousComming').append(html);
+                                }
+                                else {
+                                    $("#lblPreviousListError").text("No Previous jobs found.!");
+                                }
+                            }
+                            else {
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                window.location = "dashboard.html";
+                            }
+                        },
+                        error: function (jqXHR, text, error) {
+                            // Displaying if there are any errors
+                            window.plugins.spinnerDialog.hide();
+
+                            if (error == null || error == "") {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                            } else {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            }
+                        }
+                    });
+                }
+
+            </script>
+        </div>
+    </div>
+</body>
+</html>

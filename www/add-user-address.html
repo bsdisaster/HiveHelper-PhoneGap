@@ -1,0 +1,320 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Add new address - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQUPe-GBmzqn0f8sb_8xZNcseul1N0yU&libraries=places&callback=initAutocomplete" defer></script>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+    
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="bookhelper-address-list.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip">
+                    <h3 class="center-text color-black">Add/Edit User Address</h3>
+                </div>
+                <div class="page-login content">
+
+                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
+                        <input id="user-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';geolocate()" onblur="if (this.value=='') this.value = 'Address'">
+                    </div>
+
+                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300 select-profile">
+
+                        <div class="col-sm-12 ">
+                            <div class="col-sm-6 ">
+                                <input id="user-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'">
+                            </div>
+                            <div class="col-sm-6 ">
+                                <div class="select-box-small">
+                                    <div class="select-box-light profile">
+                                        <select id="ddlState"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-400">
+                        <input id="user-zipcode" type="text" value="Zip Code" onfocus="if (this.value=='Zip Code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip Code'">
+
+                    </div>
+                    <button id="btnAddEdit" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
+                </div>
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        addAddress();
+
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", deviceReadySuccess, false);
+
+                        $(document).on({
+                            'DOMNodeInserted': function () {
+                                $('.pac-item, .pac-item span', this).addClass('needsclick');
+                            }
+                        }, '.pac-container');
+
+                    });
+
+                    function deviceReadySuccess() {
+                        fillState();
+                        getUserAddressData();
+                    }
+
+                    function getUserAddressData() {
+
+                        var userAddressId = getParameterByName("id");
+                        if (userAddressId) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                            $.ajax({
+                                url: api_baseUrl + 'Useraddress/getUserAddress/' + userAddressId,
+                                type: "GET",
+                                dataType: "json",
+                                success: function (response) {
+                                    // Inserting html into the result div on success
+                                    window.plugins.spinnerDialog.hide();
+                                    if (response !== null && response.status === 1) {
+                                        $("#user-address").val(response.data["address"]);
+                                        $("#user-city").val(response.data["city"]);
+                                        $("#ddlState").val(response.data["state"]);
+                                        $("#user-zipcode").val(response.data["zipcode"]);
+                                    }
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
+                                    window.plugins.spinnerDialog.hide();
+                                    if (error == null || error == "") {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                    } else {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                    var placeSearch, autocomplete, latitude, longitude;
+                    function initAutocomplete() {
+                        // Create the autocomplete object, restricting the search to geographical
+
+                        autocomplete = new google.maps.places.Autocomplete(
+                        (document.getElementById('user-address')),
+                        { types: ['geocode'] });
+                        autocomplete.addListener('place_changed', fillInAddress);
+
+                        if ($("#user-address").val() != '') {
+                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('user-address')), { types: ['geocode'] });
+                        }
+                        else {
+                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('user-address')), { types: ['geocode'] });
+                        }
+                        // When the user selects an address from the dropdown, populate the address
+                        // fields in the form.
+                        autocomplete.addListener('place_changed', fillInAddress);
+                    }
+
+                    function fillInAddress() {
+                        // Get the place details from the autocomplete object.
+                        var place = autocomplete.getPlace();
+
+                        for (var i = 0; i < place.address_components.length; i++) {
+                            if (place.address_components[i].types[0] == "locality")
+                            { $("#user-city").val(place.address_components[i].long_name) }
+                            else if (place.address_components[i].types[0] == "administrative_area_level_1")
+                            { $('#ddlState option:contains("' + place.address_components[i].long_name + '")').prop('selected', true); }
+                            else if (place.address_components[i].types[0] == "postal_code") {
+                                $("#user-zipcode").val(place.address_components[i].short_name)
+                            }
+                        }
+                    }
+
+                    function geolocate() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.watchPosition(onSuccess, onError, { enableHighAccuracy: true });
+                        }
+                    }
+
+                    var onSuccess = function (position) {
+
+                        pos = new google.maps.LatLng(position.coords.latitude,
+                                                     position.coords.longitude);
+                        latitude = position.coords.latitude;
+                        longitude = position.coords.longitude;
+                    }
+                    function onError(error) {
+                        navigator.notification.alert(error.message, null, 'Error', 'Close');
+                    }
+
+                    function IsValidateProfile() {
+                        var isResult = true;
+                        var countError = 0;
+                        var msg = "Please enter following fields:\n";
+
+                        var addressValue = $("#user-address").val();
+                        var cityValue = $("#user-city").val();
+                        var stateValue = $("#ddlState").val();
+                        var zipcodeValue = $("#user-zipcode").val();
+
+                        if (addressValue === '' || addressValue === null || addressValue === 'Address') {
+                            countError = countError + 1;
+                            msg += "Address!\n";
+                        }
+                        if (cityValue === '' || cityValue === null || cityValue === 'City') {
+                            countError = countError + 1;
+                            msg += "City!\n";
+                        }
+                        if (stateValue === "0") {
+                            countError = countError + 1;
+                            msg += "State!\n";
+                        }
+                        if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zip Code') {
+                            countError = countError + 1;
+                            msg += "Zip Code!\n";
+                        }
+
+                        if (countError > 0) {
+                            navigator.notification.alert(msg, null, 'Warning', 'Close');
+                            isResult = false;
+                        }
+                        return isResult;
+                    }
+
+                    function getParameterByName(name, url) {
+                        if (!url) url = window.location.href;
+                        name = name.replace(/[\[\]]/g, "\\$&");
+                        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                            results = regex.exec(url);
+                        if (!results) return null;
+                        if (!results[2]) return '';
+                        return decodeURIComponent(results[2].replace(/\+/g, " "));
+                    }
+
+                    function addAddress() {
+                        $('#btnAddEdit').on('click', function (event) {
+
+                            if (IsValidateProfile()) {
+                                if (latitude == null && longitude == null) {
+                                    navigator.notification.alert("You must turn location service ON to save data!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    var parameter = {
+                                        "userAddressId": getParameterByName("id"),
+                                        "userId": localStorage.getItem("userId"),
+                                        "address": $("#user-address").val(),
+                                        "city": $("#user-city").val(),
+                                        "state": $("#ddlState").val(),
+                                        "zipcode": $("#user-zipcode").val(),
+                                        "latitude": latitude,
+                                        "longitude": longitude
+                                    };
+
+                                    $.ajax({
+                                        url: api_baseUrl + 'useraddress/addedit/',
+                                        type: "POST",
+                                        data: JSON.stringify(parameter),
+                                        dataType: "JSON",
+                                        success: function (response) {
+                                            // Inserting html into the result div on success
+                                            window.plugins.spinnerDialog.hide();
+                                            if (response !== null && response.status === 1) {
+                                                navigator.notification.alert('Data saved successfully!', null, 'Success', 'Close');
+                                                window.location = "bookhelper-address-list.html";
+                                            }
+                                            else {
+                                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                            }
+                                        },
+                                        error: function (jqXHR, text, error) {
+                                            // Displaying if there are any errors
+                                            window.plugins.spinnerDialog.hide();
+                                            if (error == null || error == "") {
+                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                            } else {
+                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+
+                    function fillState() {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        $.ajax({
+                            url: api_baseUrl + 'state',
+                            type: "GET",
+                            dataType: "json",
+                            success: function (response) {
+                                // Inserting html into the result div on success
+                                window.plugins.spinnerDialog.hide();
+                                if (response !== null && response.status === 1) {
+                                    var stateData = response.data;
+                                    var defaultV = new Option("Select State", 0, true);
+
+                                    $('#ddlState').append(defaultV);
+                                    for (var i = 0; i < stateData.length; i++) {
+                                        var opt = new Option(stateData[i].stateName, stateData[i].stateId);
+                                        $('#ddlState').append(opt);
+                                    }
+                                    $('select option:first-child').attr('id', 'first');
+                                }
+                                else {
+                                    navigator.notification.alert(response.message, null, 'Error', 'Close');
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                window.plugins.spinnerDialog.hide();
+
+                                if (error == null || error == "") {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                } else {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                }
+                            }
+                        });
+                    }
+                </script>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

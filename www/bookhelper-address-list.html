@@ -1,0 +1,170 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Book helper address - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="dashboard.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip">
+                    <h3 class="center-text color-black">Tell us where to send our Helpers</h3>
+                </div>
+                <div align="right" class="right-padding">
+                    <h5><a href="add-user-address.html" target="_self">Add address</a></h5>
+                </div>
+                <div class="decoration decoration-margins"></div>
+
+                <div class="content">
+                    <div class="last-column">
+                        <div class="extra-margin">
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="decoration decoration-margins"></div>
+            </div>
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                }).on('deviceready', function () {
+                    document.addEventListener("deviceready", getAllAddress, false);
+                });
+
+                function getAllAddress() {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    var userId = localStorage.getItem("userId");
+
+                    $.ajax({
+                        url: api_baseUrl + 'useraddress/' + userId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (response) {
+                            // Inserting html into the result div on success
+                            window.plugins.spinnerDialog.hide();
+                            if (response !== null && response.status === 1) {
+
+                                var addressData = response.data;
+
+                                if (addressData.length > 0) {
+                                    for (var i = 0; i < addressData.length; i++) {
+                                        var fullAddress = '';
+                                        fullAddress = addressData[i].address + ', ' + addressData[i].city + ', ' + addressData[i].stateName + ', ' + addressData[i].zipcode + '.';
+                                        var html = '<div class="fac fac-radio fac-default col-sm-12"><span></span>';
+
+                                        html = html + '<div class="col-sm-10">';
+                                        html = html + '<a onclick="gotoServiceTypePage(' + addressData[i].userAddressId + ')"  target="_blank" class="color-black">';
+                                        html = html + '<input id="box' + (i + 1) + '-fac-radio" type="radio" name="rad" value="1">';
+                                        html = html + '<label for="box' + (i + 1) + '-fac-radio">' + fullAddress + '</label>';
+                                        html = html + '</a>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="col-sm-1">';
+                                        html = html + '<a onclick="editUserAddress(' + addressData[i].userAddressId + ')" target="_blank"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="col-sm-1">';
+                                        if (addressData[i].primaryAddress != "1") {
+
+                                            html = html + '<a target="_blank" onclick="removeUserAddress(this,' + addressData[i].userAddressId + ')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
+                                        }
+
+                                        html = html + '</div>';
+                                        html = html + '</div>';
+                                        $('.extra-margin').append(html);
+                                    }
+                                }
+                            }
+                            else {
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                            }
+                        },
+                        error: function (jqXHR, text, error) {
+                            // Displaying if there are any errors
+                            window.plugins.spinnerDialog.hide();
+
+                            if (error == null || error == "") {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                            } else {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            }
+                        }
+                    });
+                }
+
+                function removeUserAddress(object, userAddressId) {
+                    navigator.notification.confirm("Are you sure you want to delete ?", function (button) {
+                        if (button === 1) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                            $.ajax({
+                                url: api_baseUrl + 'useraddress/removeUserAddress/' + userAddressId,
+                                type: "GET",
+                                dataType: "json",
+                                success: function (response) {
+                                    // Inserting html into the result div on success
+                                    window.plugins.spinnerDialog.hide();
+                                    if (response !== null && response.status === 1) {
+                                        $(object).parent().parent().remove();
+                                        navigator.notification.alert('Address removed successfully!', null, 'Success', 'Close');
+                                    }
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
+                                    window.plugins.spinnerDialog.hide();
+
+                                    if (error == null || error == "") {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                    } else {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    }
+                                }
+                            });
+                        }
+                    }, "Delete", "Ok,Cancel");
+                }
+
+                function gotoServiceTypePage(userAddressId) {
+                    localStorage.setItem("userAddressId", userAddressId);
+                    window.location.href = "bookhelper-service-type-list.html";
+                }
+                function editUserAddress(userAddressId) {
+                    window.location = "add-user-address.html?id=" + userAddressId;
+                }
+            </script>
+        </div>
+    </div>
+
+</body>
+</html>

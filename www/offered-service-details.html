@@ -1,0 +1,74 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>services offered in your location - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <a href="service-we-offer.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip" style="color:black !important;">
+                    <h3 class="color-black center-text">service details</h3>
+                </div>
+                <div class="decoration decoration-margins"></div>
+
+                <div class="content">
+                    <div class="page-userlist">
+                        <div>
+                            <img id="serviceImage" src="" class="wrapper-image" />
+                        </div>
+                        <div id="serviceDescription"></div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+
+                    $(document).ready(function () {
+                        
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", getServiceDetails, false);
+                    });
+
+                    function getServiceDetails() {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                        $("#serviceDescription").append(JSON.parse(localStorage.getItem("serviceDescription")));
+                        $("#serviceImage").attr("src", localStorage.getItem("serviceImage"));
+
+                        window.plugins.spinnerDialog.hide();
+                    }
+
+                </script>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

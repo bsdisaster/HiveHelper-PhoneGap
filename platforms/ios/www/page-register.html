@@ -1,0 +1,330 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>register - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQUPe-GBmzqn0f8sb_8xZNcseul1N0yU&libraries=places&callback=initAutocomplete" defer></script>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="index.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="index.html" class="header-logo"></a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <div class="page-fullscreen">
+                    <div class="page-fullscreen-content">
+                        <div class="pageapp-login register">
+                            <div class="page-login-input animate-fade">
+                                <i class="login-icon ion-person"></i>
+                                <input id="register-firstname" type="text" value="First name" onfocus="if (this.value=='First name') this.value = ''" onblur="if (this.value=='') this.value = 'First name'">
+                            </div>
+                            <div class="page-login-input animate-fade animate-delay-100">
+                                <i class="login-icon ion-person"></i>
+                                <input id="register-lastname" type="text" value="Last name" onfocus="if (this.value=='Last name') this.value = ''" onblur="if (this.value=='') this.value = 'Last name'">
+                            </div>
+                            <div class="page-login-input animate-fade animate-delay-200">
+                                <i class="login-icon ion-android-mail"></i>
+                                <input id="register-email" type="text" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
+                            </div>
+                            <div class="page-login-input full-bottom animate-fade animate-delay-300">
+                                <i class="login-icon ion-asterisk"></i>
+                                <input id="register-password" type="password" value="Password" onfocus="if (this.value=='Password') this.value = ''" onblur="if (this.value=='') this.value = 'Password'">
+                            </div>
+                            <div class="page-login-input full-bottom animate-fade animate-delay-300">
+                                <i class="login-icon ion-at"></i>
+                                <input id="register-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; addMask(this); }">
+                            </div>
+
+                            <div class="page-login-input animate-fade animate-delay-400">
+                                <i class="login-icon ion-at"></i>
+                                <input id="register-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';geolocate()" onblur="if (this.value == '') this.value = 'Address'">
+                            </div>
+                            <div class="page-login-input animate-fade animate-delay-600">
+                                <i class="login-icon ion-at"></i>
+                                <div class="select-box-light">
+                                    <select id="ddlState"></select>
+                                </div>
+                            </div>
+                            <div class="page-login-input animate-fade animate-delay-500">
+                                <i class="login-icon ion-at"></i>
+                                <input id="register-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'">
+                            </div>
+                            
+                            <div class="page-login-input animate-fade animate-delay-700">
+                                <i class="login-icon ion-at"></i>
+                                <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'">
+                            </div>
+
+                            <button id="btnCreateAccount" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-800"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            register();
+
+        }).on('deviceready', function () {
+            document.addEventListener("deviceready", fillState, false);
+            $(document).on({
+                'DOMNodeInserted': function () {
+                    $('.pac-item, .pac-item span', this).addClass('needsclick');
+                }
+            }, '.pac-container');
+        });
+
+        var placeSearch, autocomplete, latitude, longitude;
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+
+            autocomplete = new google.maps.places.Autocomplete(
+            (document.getElementById('register-address')),
+            { types: ['geocode'] });
+            autocomplete.addListener('place_changed', fillInAddress);
+
+            if ($("#register-address").val() != '') {
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address')), { types: ['geocode'] });
+            }
+            else {
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address')), { types: ['geocode'] });
+            }
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function addMask(inputEle) {
+            $(inputEle).mask('(999) 999-9999');
+        }
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+
+            for (var i = 0; i < place.address_components.length; i++) {
+                if (place.address_components[i].types[0] == "locality")
+                { $("#register-city").val(place.address_components[i].long_name) }
+                else if (place.address_components[i].types[0] == "administrative_area_level_1")
+                { $('#ddlState option:contains("' + place.address_components[i].long_name + '")').prop('selected', true); }
+                else if (place.address_components[i].types[0] == "postal_code") {
+                    $("#register-zipcode").val(place.address_components[i].short_name)
+                }
+            }
+        }
+
+        function geolocate() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(onSuccess, onError, { enableHighAccuracy: true });
+            }
+        }
+
+        var onSuccess = function (position) {
+
+            pos = new google.maps.LatLng(position.coords.latitude,
+                                         position.coords.longitude);
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+        }
+        function onError(error) {
+            navigator.notification.alert(error.message, null, 'Error', 'Close');
+        }
+
+        function fillState() {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            $.ajax({
+                url: api_baseUrl + 'state',
+                type: "get",
+                dataType: "json",
+                success: function (response) {
+                    // Inserting html into the result div on success
+                    window.plugins.spinnerDialog.hide();
+                    if (response !== null && response.status === 1) {
+                        var stateData = response.data;
+
+                        var defaultV = new Option("Select State", 0, true);
+                        $('#ddlState').append(defaultV);
+                        for (var i = 0; i < stateData.length; i++) {
+                            var opt = new Option(stateData[i].stateName, stateData[i].stateId);
+                            $('#ddlState').append(opt);
+                        }
+                    }
+                    else {
+                        navigator.notification.alert(response.message, null, 'Error', 'Close');
+                    }
+                },
+                error: function (jqXHR, text, error) {
+                    // Displaying if there are any errors
+                    window.plugins.spinnerDialog.hide();
+
+                    if (error == null || error == "") {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                    } else {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+                    }
+                }
+            });
+        }
+        function isValidateregister() {
+            var isResult = true;
+            var countError = 0;
+            var msg = "Please enter following fields:\n";
+
+            var firstnameValue = $("#register-firstname").val();
+            var lastnameValue = $("#register-lastname").val();
+            var passwordValue = $("#register-password").val();
+            var phoneValue = $("#register-phone").val();
+            var addressValue = $("#register-address").val();
+            var emailValue = $("#register-email").val();
+            var cityValue = $("#register-city").val();
+            var stateValue = $("#ddlState").val();
+            var zipcodeValue = $("#register-zipcode").val();
+            if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
+                countError = countError + 1;
+                msg += "First name!\n";
+            }
+            if (lastnameValue === '' || lastnameValue === null || lastnameValue === 'Last name') {
+                countError = countError + 1;
+                msg += "Last name!\n";
+            }
+            if (emailValue === '' || emailValue === null || emailValue === 'Email address') {
+                countError = countError + 1;
+                msg += "Email address!\n";
+            }
+            if (passwordValue === '' || passwordValue === null || passwordValue === 'Password') {
+                countError = countError + 1;
+                msg += "Password!\n";
+            }
+            if (phoneValue === '(___) ___-____' || phoneValue === null || phoneValue === 'Phone') {
+                countError = countError + 1;
+                msg += "Phone!\n";
+            }
+            if (addressValue === '' || addressValue === null || addressValue === 'Address') {
+                countError = countError + 1;
+                msg += "Address!\n";
+            }
+            if (stateValue === '0') {
+                countError = countError + 1;
+                msg += "State!\n";
+            }
+            if (cityValue === '' || cityValue === null || cityValue === 'City') {
+                countError = countError + 1;
+                msg += "City!\n";
+            }
+            if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zipcode') {
+                countError = countError + 1;
+                msg += "Zipcode!\n";
+            }
+            if (emailValue !== null && emailValue !== '' && emailValue != 'Email address') {
+                var x = emailValue;
+                var atpos = x.indexOf("@");
+                var dotpos = x.lastIndexOf(".");
+                if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                    countError = countError + 1;
+                    msg += "Valid email address!\n";
+                }
+            }
+
+            if (countError > 0) {
+                navigator.notification.alert(msg, null, 'Warning', 'Close');
+                isResult = false;
+            }
+
+            return isResult;
+        }
+
+        function register() {
+
+            $('#btnCreateAccount').on('click', function (event) {
+
+                if (isValidateregister()) {
+                    if (latitude == null && longitude == null) {
+                        navigator.notification.alert("You must turn location service ON to save data!", null, 'Error', 'Close');
+                    }
+                    else {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                        var deviceToken = device.uuid;
+                        if (deviceToken == null) {
+                            deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
+                        }
+                        var parameter = {
+                            "firstName": $("#register-firstname").val(),
+                            "lastName": $("#register-lastname").val(),
+                            "email": $("#register-email").val(),
+                            "password": $("#register-password").val(),
+                            "phone": $("#register-phone").val(),
+                            "address": $("#register-address").val(),
+                            "city": $("#register-city").val(),
+                            "state": $("#ddlState").val(),
+                            "zipcode": $("#register-zipcode").val(),
+                            "latitude": latitude,
+                            "longitude": longitude,
+                            "deviceType": device.platform,
+                            "deviceToken": deviceToken,
+                            "userRole": 4
+                        }
+
+                        $.ajax({
+                            url: api_baseUrl + 'register',
+                            type: "POST",
+                            data: JSON.stringify(parameter),
+                            dataType: "JSON",
+                            success: function (response) {
+                                // Inserting html into the result div on success
+                                window.plugins.spinnerDialog.hide();
+                                if (response !== null && response.status === 1) {
+                                    window.location = "index.html";
+                                }
+                                else {
+                                    navigator.notification.alert(response.message, null, 'Error', 'Close');
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                window.plugins.spinnerDialog.hide();
+
+                                if (error == null || error == "") {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                } else {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

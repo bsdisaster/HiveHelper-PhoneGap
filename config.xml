@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="hive.helper.app.html" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Hive Helper</name>
+    <description>
+    Phonegap app
+  </description>
+    <author email="support@phonegap.com" href="http://phonegap.com">
+    PhoneGap Team
+  </author>
+    <content src="index.html" />
+    <preference name="android-versionCode" value="1.0" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#ee6e73" />
+    <preference name="StatusBarStyle" value="blacktranslucent" />
+    <preference name="android-build-tool" value="ant|gradle" />
+    <preference name="android-minSdkVersion" value="16" />
+    <preference name="android-targetSdkVersion" value="26" />
+    <preference name="android-installLocation" value="auto" />
+    <preference name="android-windowSoftInputMode" value="stateHidden|adjustPan" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="target-device" value="universal" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="true" />
+    <preference name="deployment-target" value="7.0" />
+    <icon src="icon.png" />
+    <splash src="splash.png" />
+    <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />
+    <icon height="60" platform="ios" src="res/icon/ios/icon-60.png" width="60" />
+    <icon height="120" platform="ios" src="res/icon/ios/icon-60@2x.png" width="120" />
+    <icon height="76" platform="ios" src="res/icon/ios/icon-76.png" width="76" />
+    <icon height="152" platform="ios" src="res/icon/ios/icon-76@2x.png" width="152" />
+    <icon height="167" platform="ios" src="res/icon/ios/icon-83.5@2x.png" width="167" />
+    <icon height="29" platform="ios" src="res/icon/ios/icon-small.png" width="29" />
+    <icon height="58" platform="ios" src="res/icon/ios/icon-small@2x.png" width="58" />
+    <icon height="87" platform="ios" src="res/icon/ios/icon-small@3x.png" width="87" />
+    <icon height="40" platform="ios" src="res/icon/ios/icon-40.png" width="40" />
+    <icon height="80" platform="ios" src="res/icon/ios/icon-40@2x.png" width="80" />
+    <icon height="120" platform="ios" src="res/icon/ios/icon-40@3x.png" width="120" />
+    <icon height="57" platform="ios" src="res/icon/ios/icon.png" width="57" />
+    <icon height="114" platform="ios" src="res/icon/ios/icon@2x.png" width="114" />
+    <icon height="72" platform="ios" src="res/icon/ios/icon-72.png" width="72" />
+    <icon height="144" platform="ios" src="res/icon/ios/icon-72@2x.png" width="144" />
+    <icon height="58" platform="ios" src="res/icon/ios/icon-small@2x.png" width="58" />
+    <icon height="50" platform="ios" src="res/icon/ios/icon-50.png" width="50" />
+    <icon height="100" platform="ios" src="res/icon/ios/icon-50@2x.png" width="100" />
+    <splash height="1136" platform="ios" src="res/screen/ios/Default-568h@2x~iphone.png" width="640" />
+    <splash height="1334" platform="ios" src="res/screen/ios/Default-667h.png" width="750" />
+    <splash height="2208" platform="ios" src="res/screen/ios/Default-736h.png" width="1242" />
+    <splash height="1242" platform="ios" src="res/screen/ios/Default-Landscape-736h.png" width="2208" />
+    <splash height="1024" platform="ios" src="res/screen/ios/Default-Portrait~ipad.png" width="768" />
+    <splash height="768" platform="ios" src="res/screen/ios/Default-Landscape~ipad.png" width="1024" />
+    <splash height="2048" platform="ios" src="res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" />
+    <splash height="1536" platform="ios" src="res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" />
+    <platform name="android">
+        <resource-file src="platforms/android/google-services.json" target="platforms/android/google-services.json" />
+        <preference name="orientation" value="landscape" />
+        <preference name="orientation" value="portrait" />
+        <preference name="android-targetSdkVersion" value="20" />
+        <splash density="land-hdpi" src="res/screen/android/splash-land-hdpi.png" />
+        <splash density="land-ldpi" src="res/screen/android/splash-land-ldpi.png" />
+        <splash density="land-mdpi" src="res/screen/android/splash-land-mdpi.png" />
+        <splash density="land-xhdpi" src="res/screen/android/splash-land-xhdpi.png" />
+        <splash density="land-xxhdpi" src="res/screen/android/splash-land-xxhdpi.png" />
+        <splash density="land-xxxhdpi" src="res/screen/android/splash-land-xxxhdpi.png" />
+        <splash density="port-hdpi" src="res/screen/android/splash-port-hdpi.png" />
+        <splash density="port-ldpi" src="res/screen/android/splash-port-ldpi.png" />
+        <splash density="port-mdpi" src="res/screen/android/splash-port-mdpi.png" />
+        <splash density="port-xhdpi" src="res/screen/android/splash-port-xhdpi.png" />
+        <splash density="port-xxhdpi" src="res/screen/android/splash-port-xxhdpi.png" />
+        <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png" />
+    </platform>
+    <platform name="ios">
+        <preference name="orientation" value="landscape" />
+        <preference name="orientation" value="portrait" />
+        <preference name="DisallowOverscroll" value="true" />
+        <resource-file src="platforms/ios/Hive Helper.xcodeproj/GoogleService-Info.plist" target="platforms/ios/Hive Helper.xcodeproj/GoogleService-Info.plist" />
+    </platform>
+    <access origin="*" />
+    <engine name="android" spec="^6.3.0" />
+    <engine name="browser" spec="^5.0.0" />
+    <plugin name="cordova-plugin-device" spec="~1.1.6" />
+    <plugin name="cordova-plugin-dialogs" spec="~1.3.3" />
+    <plugin name="cordova-plugin-spinnerdialog" spec="~1.3.2" />
+    <plugin name="cordova-plugin-splashscreen" spec="~4.0.3" />
+    <plugin name="cordova-plugin-whitelist" spec="~1.3.2" />
+    <plugin name="cordova-plugin-x-toast" spec="~2.6.0" />
+    <plugin name="cordova-plugin-stripe" spec="^1.5.3" />
+    <plugin name="cordova-plugin-geolocation" spec="^2.4.3">
+        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value=" " />
+    </plugin>
+    <plugin name="cordova-plugin-inappbrowser" spec="^1.7.1" />
+    <plugin name="phonegap-plugin-push" spec="^1.8.4">
+        <variable name="SENDER_ID" value="762294569460" />
+    </plugin>
+</widget>

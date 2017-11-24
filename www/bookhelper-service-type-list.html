@@ -1,0 +1,119 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Book helper service type - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <a href="bookhelper-address-list.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip">
+                    <h3 class="center-text color-black">Select a Service Type</h3>
+                </div>
+                <div class="decoration decoration-margins"></div>
+
+                <div class="content">
+                    <div class="page-userlist">
+
+                    </div>
+                </div>
+                <script type="text/javascript">
+
+                    var userAddressId = null;
+                    var franchiseId = null;
+
+                    $(document).ready(function () {
+                        userAddressId = localStorage.getItem("userAddressId");
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", getAllServices, false);
+                    });
+
+                    function getAllServices() {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        $.ajax({
+                            url: api_baseUrl + 'service/' + userAddressId,
+                            type: "get",
+                            dataType: "json",
+                            success: function (response) {
+                                // Inserting html into the result div on success
+                                window.plugins.spinnerDialog.hide();
+                                if (response !== null && response.status === 1) {
+
+                                    var serviceTypeData = response.data;
+                                    franchiseId = serviceTypeData.franchiseId;
+                                    localStorage.setItem("franchiseName", serviceTypeData.franchiseName);
+                                    if (serviceTypeData.service.length > 0) {
+                                        for (var i = 0; i < serviceTypeData.service.length; i++) {
+
+                                            var html = '<a onclick="GotoSelectCleaningServicePage(' + serviceTypeData.service[i].serviceId + ')" class="user-list-3">';
+                                            html = html + '		<strong class="user-list-3-strong">' + serviceTypeData.service[i].serviceName + '</strong>';
+                                            html = html + '			<i class="ion-ios-arrow-forward"></i>';
+                                            html = html + '		</a>';
+                                            $('.page-userlist').append(html);
+                                        }
+                                    }
+                                    else {
+                                        navigator.notification.alert("no service available for this address", null, 'Warning', 'Close');
+                                        window.location.href = "bookhelper-address-list.html";
+                                    }
+                                }
+                                else {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                    window.location.href = "bookhelper-address-list.html";
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                window.plugins.spinnerDialog.hide();
+
+                                if (error == null || error == "") {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                } else {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+
+                                }
+                            }
+                        });
+                    }
+
+                    function GotoSelectCleaningServicePage(serviceId) {
+                        localStorage.setItem("serviceId", serviceId);
+                        localStorage.setItem("franchiseId", franchiseId);
+
+                        window.location.href = "bookhelper-select-cleaning-service-list.html";
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

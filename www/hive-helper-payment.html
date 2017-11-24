@@ -1,0 +1,366 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Helper payment - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="bookhelper-select-cleaning-service-detail-time-wise-detail.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip" style="color:black !important;">
+                    <h3 class="color-black center-text">Payment For</h3>
+                </div>
+                <div class="page-login content">
+                    <div>
+                        <h3>
+                            <label>
+                                <span>Service: </span>
+                                <span id="serviceName"></span>
+                            </label>
+                        </h3>
+                        <h3>
+                            <label>
+                                <span>Provider: </span>
+                                <span id="provideName"></span>
+                            </label>
+                        </h3>
+                        <h3>
+                            <label>
+                                <span>Date: </span>
+                                <span id="dateValue"></span>
+                            </label>
+                        </h3>
+                    </div>
+
+                    <div>
+                        <div>
+
+                            <input type="text" id="emailAddress" class="input-text-box input-green-border" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
+
+                        </div>
+                        <div>
+                            <input type="text" id="cardNumber" class="input-text-box input-green-border" value="Card Number" onfocus="if (this.value == 'Card Number') this.value = ''" onblur="if (this.value == '') this.value = 'Card Number'" maxlength="16">
+                        </div>
+                        <div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <input type="text" id="expiry" class="input-text-box input-green-border" value="MM/YY" onfocus="if (this.value == 'MM/YY') this.value = ''" onblur="if (this.value == '') this.value = 'MM/YY'">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" id="cvc" class="input-text-box input-green-border" value="CVC" onfocus="if (this.value == 'CVC') this.value = ''" onblur="if (this.value == '') this.value = 'CVC'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="btnPayment" class="button button-blue button-full half-top full-bottom"></button>
+                    </div>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#expiry").mask("99/99");
+                    submitPaymentInfo();
+                }).on('deviceready', function () {
+                    document.addEventListener("deviceready", fetchProviderInfo, false);
+                });
+
+                function fetchProviderInfo() {
+                    var service = localStorage.getItem("selectedCleaningTitle");
+                    serviceTitle = service.substr(0, service.lastIndexOf(" "));
+
+                    var paymentValue = service.substr(service.lastIndexOf(" "));
+                    $("#btnPayment").text("Pay " + paymentValue.substring(service + 1));
+                    $("#emailAddress").val(localStorage.getItem("username"));
+                    $("#serviceName").text(serviceTitle);
+                    $("#provideName").text(localStorage.getItem("franchiseName"));
+                    $("#dateValue").text(localStorage.getItem("providerDate"));
+                }
+
+                function isValidatePaymentInfo() {
+                    var isResult = true;
+                    var countError = 0;
+                    var msg = "Please enter following fields:\n";
+
+                    var emailValue = $("#emailAddress").val();
+                    var cardNumberValue = $("#cardNumber").val();
+                    var expiryValue = $("#expiry").val();
+                    var cvcValue = $("#cvc").val();
+
+                    if (emailValue === '' || emailValue === null || emailValue === 'Email address') {
+                        countError = countError + 1;
+                        msg += "Email address!\n";
+                    }
+                    if (cardNumberValue === '' || cardNumberValue === null || cardNumberValue === 'Card Number') {
+                        countError = countError + 1;
+                        msg += "Card Number!\n";
+                    }
+                    if (expiryValue === '' || expiryValue === null || expiryValue === 'MM/YY') {
+                        countError = countError + 1;
+                        msg += "Expiry date!\n";
+                    }
+                    if (cvcValue === '' || cvcValue === null || cvcValue === 'CVC') {
+                        countError = countError + 1;
+                        msg += "CVC!\n";
+                    }
+                    if (emailValue !== null && emailValue !== '' && emailValue !== 'Email address') {
+                        var x = emailValue;
+                        var atpos = x.indexOf("@");
+                        var dotpos = x.lastIndexOf(".");
+                        if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                            countError = countError + 1;
+                            msg += "Valid email address!\n";
+                        }
+                    }
+
+                    if (cardNumberValue !== null && cardNumberValue !== '' && cardNumberValue !== 'Card Number') {
+                        var isValid = validateCardNumber(cardNumberValue);
+
+                        if (!isValid) {
+                            countError = countError + 1;
+                            msg += "Valid card number!\n";
+                        }
+                    }
+                    if (expiryValue !== null && expiryValue !== '' && expiryValue !== 'MM/YY') {
+                        var isValid = validateExpiryDate(expiryValue);
+                        if (!isValid) {
+                            countError = countError + 1;
+                            msg += "Valid date in MM/YY format!\n";
+                        }
+                    }
+                    if (cvcValue !== null && cvcValue !== '' && cvcValue !== 'CVC') {
+                        var isValid = validateCvcNumber(cvcValue);
+                        if (!isValid) {
+                            countError = countError + 1;
+                            msg += "Valid cvc number!\n";
+                        }
+                    }
+
+                    if (countError > 0) {
+                        navigator.notification.alert(msg, null, 'Warning', 'Close');
+                        isResult = false;
+                    }
+                    return isResult;
+                }
+
+                function validateExpiryDate(dValue) {
+                    var result = false;
+                    dValue = dValue.split('/');
+                    var pattern = /^\d{2}$/;
+
+                    if (dValue[0] < 1 || dValue[0] <= 12)
+                        result = true;
+
+                    if (!pattern.test(dValue[0]) || !pattern.test(dValue[1]))
+                        result = true;
+
+                    if (dValue[2])
+                        result = true;
+
+                    if (result)
+                        return true;
+                    else
+                        return false;
+                }
+
+                function validateCvcNumber(number) {
+                    if (!number.match(/^[0-9]{3,4}$/))
+                        return false;
+                    else
+                        return true;
+                }
+
+                function validateCardNumber(number) {
+                    var regex = new RegExp("^[0-9]{16}$");
+                    if (!regex.test(number))
+                        return false;
+                    else
+                        return true;;
+                }
+
+                function stripePayment(emailAddress, cardNumber, expiry, cvc) {
+
+                    cordova.plugins.stripe.setPublishableKey('pk_test_z63RIQFh5e1As9i7kecp5AsS');
+
+                    var card = {
+                        number: cardNumber, // 16-digit credit card number
+                        expMonth: expiry.split("/")[0], // expiry month
+                        expYear: expiry.split("/")[1], // expiry year
+                        cvc: cvc,
+                        name: emailAddress
+                    };
+
+                    function onSuccess(tokenInfo) {
+                        console.log('Got card token!', tokenInfo);
+                        makePayment(tokenInfo);
+                    }
+
+                    function onError(errorMessage) {
+                        navigator.notification.alert(JSON.stringify(errorMessage), null, 'Error', 'Close');
+                        window.plugins.spinnerDialog.hide();
+                    }
+
+                    cordova.plugins.stripe.createCardToken(card, onSuccess, onError);
+
+
+                    function makePayment(tokenInfo) {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'https://api.stripe.com/v1/charges',
+                            headers: {
+                                Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                            },
+                            data: {
+                                amount: $("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0],
+                                source: tokenInfo.id,
+                                description: "Charge",
+                                currency: "USD"
+                            },
+                            success: (response) => {
+                                window.plugins.spinnerDialog.hide();
+                                savePaymentInfo(tokenInfo);
+                            },
+                            error: (response) => {
+                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
+                            }
+                        })
+                    }
+                }
+
+                function submitPaymentInfo() {
+                    $('#btnPayment').on('click', function (event) {
+
+                        if (isValidatePaymentInfo()) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            var emailAddress = $("#emailAddress").val();
+                            var cardNumber = $("#cardNumber").val();
+                            var expiry = $("#expiry").val();
+                            var cvc = $("#cvc").val();
+
+                            var parameter = {
+
+                                emailValue: emailAddress,
+                                cardNumberValue: cardNumber,
+                                expiryValue: expiry,
+                                cvcValue: cvc
+                            };
+
+                            stripePayment(emailAddress, cardNumber, expiry, cvc);
+                        }
+
+                    });
+                }
+
+                function convertTimeformat(format, time) {
+                    var hours = Number(time.match(/^(\d+)/)[1]);
+                    var minutes = Number(time.match(/:(\d+)/)[1]);
+                    var AMPM = time.match(/\s(.*)$/)[1];
+                    if ((AMPM == "pm" || AMPM == "PM") && hours < 12) hours = hours + 12;
+                    if ((AMPM == "am" || AMPM == "AM") && hours == 12) hours = hours - 12;
+                    var sHours = hours.toString();
+                    var sMinutes = minutes.toString();
+                    if (hours < 10) sHours = "0" + sHours;
+                    if (minutes < 10) sMinutes = "0" + sMinutes;
+                    return (sHours + ":" + sMinutes).toString();
+                }
+
+                function savePaymentInfo(tokenInfo) {
+                    var helperSelectedTime = localStorage.getItem("helperSelectedTime");
+
+                    var parameter = {
+                        "serviceId": localStorage.getItem("serviceId"),
+                        "userId": localStorage.getItem("userId"),
+                        "subServiceId": localStorage.getItem("subServiceId"),
+                        "userAddressId": localStorage.getItem("userAddressId"),
+                        "appointmentDate": localStorage.getItem("providerDate"),
+                        "appointmentFrom": convertTimeformat("24",helperSelectedTime.split('-')[0]),
+                        "appointmentTo": convertTimeformat("24",helperSelectedTime.split('-')[1]),
+                        "franchiseId": localStorage.getItem("franchiseId"),
+                        "transactionId": tokenInfo.id,
+                        "transactionObject": tokenInfo.object,
+                        "transactionUserName": tokenInfo.card.name,
+                        "cardUserAddress": tokenInfo.card.address_line1 + "," + tokenInfo.card.address_line2,
+                        "cardUserState": tokenInfo.card.address_state ? tokenInfo.card.address_state : "",
+                        "cardUserCountry": tokenInfo.card.country,
+                        "cardUserZipcode": tokenInfo.card.address_zip ? tokenInfo.card.address_zip : "",
+                        "cardBrand": tokenInfo.card.brand,
+                        "currency": "USD",
+                        "appointmentPrice": $("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0],
+                        "cardTranactionId": tokenInfo.card.id,
+                        "cardLastDigit": tokenInfo.card.last4,
+                        "cardFunding": tokenInfo.card.funding,
+                        "cardExpMonth": tokenInfo.card.exp_month,
+                        "cardExpYear": tokenInfo.card.exp_year,
+                        "paymentIp": tokenInfo.client_ip,
+                        "QuestionAnswer": JSON.parse(localStorage.getItem("paymentTempObject"))
+                    };
+
+                    $.ajax({
+                        url: api_baseUrl + 'appointment/',
+                        type: "POST",
+                        data: JSON.stringify(parameter),
+                        success: function (response) {
+                            // Inserting html into the result div on success
+                            window.plugins.spinnerDialog.hide();
+                            if (response !== null && response.status === 1) {
+                                navigator.notification.alert("Your payment was successful.!", null, 'Success', 'Close');
+                                localStorage.removeItem("paymentTempObject");
+
+                                window.location.href = "dashboard.html";
+                            }
+                            else {
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                            }
+                        },
+                        error: function (jqXHR, text, error) {
+
+                            window.plugins.spinnerDialog.hide();
+
+                            if (error == null || error == "") {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                            } else {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            }
+                        }
+                    });
+                }
+
+            </script>
+            <div class="clear"></div>
+        </div>
+    </div>
+</body>
+</html>

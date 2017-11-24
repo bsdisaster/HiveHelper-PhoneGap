@@ -1,0 +1,118 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Book helper request previous helper - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <a href="bookhelper-select-cleaning-service-detail.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip">
+                    <h3 class="center-text color-black">Choose from Previous Helpers</h3>
+                </div>
+                <div class="decoration decoration-margins"></div>
+
+                <div class="content">
+                    <div class="page-userlist">
+
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        // once come from the request previous helper page that time set false.
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", getAllRequestPreviousHelpers, false);
+                    });
+
+                    function getAllRequestPreviousHelpers() {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                        var parameter = {
+                            "userId": localStorage.getItem('userId'),
+                            "franchiseId": localStorage.getItem("franchiseId")
+                        };
+
+                        $.ajax({
+                            url: api_baseUrl + 'appointment/requestPreviousHelper/',
+                            type: "POST",
+                            data: JSON.stringify(parameter),
+                            dataType: "JSON",
+                            success: function (response) {
+                                // Inserting html into the result div on success
+                                window.plugins.spinnerDialog.hide();
+                                if (response !== null && response.status === 1) {
+
+                                    var requestHelpersData = response.data;
+                                    if (requestHelpersData.helperlist.length > 0) {
+                                        for (var i = 0; i < requestHelpersData.helperlist.length; i++) {
+                                            var fullName = requestHelpersData.helperlist[i].firstName + ' ' + requestHelpersData.helperlist[i].lastName;
+                                            var html = '<a onclick="GotoSelectCleaningServiceDetailPage(\'' + requestHelpersData.helperlist[i].firstName + '\',\'' + requestHelpersData.helperlist[i].lastName + '\',' + requestHelpersData.helperlist[i].helperId + ',' + requestHelpersData.helperlist[i].franchiseId + ')" class="user-list-3">';
+                                            html = html + '' + requestHelpersData.helperlist[i].firstName + ' ' + requestHelpersData.helperlist[i].lastName + '</span>';
+                                            html = html + '<strong>' + fullName + '</strong>';
+                                            html = html + '<i class="ion-ios-arrow-forward"></i>';
+                                            html = html + '</a>';
+                                            $('.page-userlist').append(html);
+                                        }
+                                    }
+                                }
+                                else {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                window.plugins.spinnerDialog.hide();
+
+                                if (error == null || error == "") {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                } else {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+
+                                }
+                            }
+                        });
+                    }
+
+                    function GotoSelectCleaningServiceDetailPage(firstName, lastName, helperId, franchiseId) {
+
+                        localStorage.setItem("helperName", firstName + ' ' + lastName);
+                        localStorage.setItem("helperId", helperId);
+
+                        window.location.href = "bookhelper-select-cleaning-service-detail.html";
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

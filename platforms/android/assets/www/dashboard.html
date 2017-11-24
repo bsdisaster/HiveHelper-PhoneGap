@@ -1,0 +1,251 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Dashboard - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/image-rotation.css" />
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/exif.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <a href="dashboard.html" class="header-logo" target="_self"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip">
+                    <h3 class="center-text color-black">Hive Helper</h3>
+                    <div class="right-text">
+                        <div class="inline-block-bottom-text"><label></label></div>
+                        <div class="inline-block">
+                            <img class="img-border-radius" src="images/blank_profile.png" width="50" height="50" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decoration decoration-margins"></div>
+
+                <div class="content">
+                    <div id="divGeneralUser" class="page-userlist" style="display:none;">
+
+                        <a href="bookhelper-address-list.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/BookAHelper.png" alt="img" class="preload-image">
+                            <strong>Book a Helper</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="my-booking.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/MyBooking.png" alt="img" class="preload-image">
+                            <strong>Appointments/Requests</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="my-profile.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/Profile.png" alt="img" class="preload-image">
+                            <strong>Edit My Profile/Address</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="hive-helper-contact.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/Contact.png" alt="img" class="preload-image">
+                            <strong>Contact Hive Helper</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="#" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/About.png" alt="img" class="preload-image">
+                            <strong>About Hive Helper</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="service-we-offer.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/Service.png" alt="img" class="preload-image">
+                            <strong>Service We Offer</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="#" onclick="Logout()" class="user-list-3 animate-fade">
+                            <img data-original="images/home_account.png" alt="img" class="preload-image">
+                            <strong>Logout</strong>
+                        </a>
+                    </div>
+                    <div id="divHelperUser" class="page-userlist" style="display:none;">
+                        <a href="helper-app-take-jobs.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/TaskJobs.png" alt="img" class="preload-image">
+                            <strong>Take Jobs</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="helper-app-set-schedule.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/SetMyAvailableWorkTime.png" alt="img" class="preload-image">
+                            <strong>Set My Available Work Times</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="my-profile.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/Profile.png" alt="img" class="preload-image">
+                            <strong>Edit My Profile/Address</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="hive-helper-future-unavailable-dates.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/SetSpecificUnavailableDate.png" alt="img" class="preload-image">
+                            <strong>Set Specific Unavailable Dates</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="helper-booking.html" class="user-list-3 animate-fade" target="_self">
+                            <img data-original="images/MyBooking.png" alt="img" class="preload-image">
+                            <strong>Upcoming/Previous Jobs</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="hive-helper-payment-history.html" class="user-list-3 animate-fade" target="_self">
+                            <img data-original="images/PayHourTracking.png" alt="img" class="preload-image">
+                            <strong>Pay/Hour Tracking</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="#" class="user-list-3 animate-fade no-bottom" target="_self">
+                            <img data-original="images/About.png" alt="img" class="preload-image">
+                            <strong>Helper Portal</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="#" onclick="Logout()" class="user-list-3 animate-fade">
+                            <img data-original="images/home_account.png" alt="img" class="preload-image">
+                            <strong>Logout</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="back-to-top-badge"><i class="ion-ios-arrow-up"></i></a>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            showHideMenu();
+            removeBottomMargin();
+
+            document.addEventListener("backbutton", onBackKeyDown, false);
+        }).on('deviceready', function () {
+            document.addEventListener("deviceready", getProfileDetail, false);
+
+        });
+
+        var lastTimeBackPress = 0;
+        var timePeriodToExit = 2000;
+
+        function onBackKeyDown(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+                navigator.app.exitApp();
+            } else {
+                window.plugins.toast.showWithOptions(
+					{
+					    message: "Press again to exit.",
+					    duration: "short", // which is 2000 ms. "long" is 4000. Or specify the nr of ms yourself.
+					    position: "bottom",
+					    addPixelsY: -40  // added a negative value to move it up a bit (default 0)
+					}
+				  );
+
+                lastTimeBackPress = new Date().getTime();
+            }
+        };
+
+        function removeBottomMargin() {
+            $(".right-text").css("margin-bottom", "-50px");
+        }
+
+        function fixExifOrientation($img) {
+
+                EXIF.getData($img[0], function () {
+                    console.log('Exif=', EXIF.getTag($img[0], "Orientation"));
+                    switch (parseInt(EXIF.getTag($img[0], "Orientation"))) {
+                        case 2:
+                            $img.addClass('flip'); break;
+                        case 3:
+                            $img.addClass('rotate-180'); break;
+                        case 4:
+                            $img.addClass('flip-and-rotate-180'); break;
+                        case 5:
+                            $img.addClass('flip-and-rotate-270'); break;
+                        case 6:
+                            $img.addClass('rotate-90'); break;
+                        case 7:
+                            $img.addClass('flip-and-rotate-90'); break;
+                        case 8:
+                            $img.addClass('rotate-270'); break;
+                    }
+            });
+
+        }
+
+        function getProfileDetail() {
+            var userId = localStorage.getItem("userId");
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+            $.ajax({
+                url: api_baseUrl + 'profile/' + userId,
+                type: "get",
+                dataType: "json",
+                success: function (response) {
+                    // Inserting html into the result div on success
+                    window.plugins.spinnerDialog.hide();
+                    if (response !== null && response.status === 1) {
+                        $(".inline-block-bottom-text label").text(response.data[0].firstName);
+                        $(".img-border-radius").attr("src", response.data[0].image);
+
+                        fixExifOrientation($(".img-border-radius"));
+                    }
+                    else {
+                        navigator.notification.alert(response.message, null, 'Error', 'Close');
+                    }
+
+                },
+                error: function (jqXHR, text, error) {
+                    window.plugins.spinnerDialog.hide();
+
+                    if (error == null || error == "") {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                    } else {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+                    }
+                }
+            });
+        }
+
+        function showHideMenu() {
+            var rolesId = localStorage.getItem("roleId");
+
+            if ((rolesId != null && rolesId == 3)) {
+                $("#divGeneralUser").hide();
+                $("#divHelperUser").show();
+            }
+            else {
+                $("#divGeneralUser").show();
+                $("#divHelperUser").hide();
+            }
+        }
+
+        function Logout() {
+            localStorage.clear();
+            window.location = "index.html";
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Login - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script src="cordova.js"></script>
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <a href="index.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="index.html" class="header-logo"></a>
+        </div>
+
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll">
+                <!--Enables this element to be scrolled -->
+                <div class="page-fullscreen">
+                    <div class="page-fullscreen-content">
+                        <div class="pageapp-login">
+                            <div class="page-login-input animate-fade">
+                                <label class="center-text color-black bold">Helper Login</label>
+                            </div>
+                            <div class="page-login-input animate-fade">
+                                <i class="login-icon ion-person"></i>
+                                <input id="username" type="text" value="Username" onfocus="if (this.value=='Username') this.value = ''" onblur="if (this.value=='') this.value = 'Username'">
+                            </div>
+                            <div class="page-login-input animate-fade animate-delay-100">
+                                <i class="login-icon ion-android-lock"></i>
+                                <input id="password" type="password" value="Password" onfocus="if (this.value=='Password') this.value = ''" onblur="if (this.value=='') this.value = 'Password'">
+                            </div>
+                            <div class="pageapp-login-links">
+                                <div class="clear"></div>
+                                <a href="#" onclick="forgotPassword()" class="page-login-create animate-right">Forgot password<i class="ion-android-lock"></i></a>
+                            </div>
+                            <button id="btnSubmit" class="button button-green button-icon button-full half-top full-bottom  animate-zoom"><i class="ion-ios-arrow-thin-right"></i>Login</button>
+                        </div>
+                    </div>
+
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            Login();
+                        })
+
+                        function forgotPassword() {
+                            if ($("#username").val() === '' || $("#username").val() === null || $("#username").val() === 'Username') {
+                                navigator.notification.alert("Please enter username!", null, 'Warning', 'Close');
+                            }
+                            else if ($("#username").val() !== null && $("#username").val() !== '' && $("#username").val() !== 'Username') {
+                                var x = $("#username").val();
+                                var atpos = x.indexOf("@");
+                                var dotpos = x.lastIndexOf(".");
+                                if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                                    navigator.notification.alert("Please enter Valid email address!", null, 'Warning', 'Close');
+                                } else {
+                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                                    var parameter = {
+                                        "username": "" + $("#username").val() + "",
+                                        "userRole": 3
+                                    }
+
+                                    $.ajax({
+                                        url: api_baseUrl + 'login/forgotPassword/',
+                                        type: "POST",
+                                        data: JSON.stringify(parameter),
+                                        dataType: "JSON",
+                                        success: function (response) {
+                                            // Inserting html into the result div on success
+                                            window.plugins.spinnerDialog.hide();
+                                            if (response !== null && response.status === 1) {
+                                                navigator.notification.alert(response.message, null, 'Success', 'Close');
+                                            }
+                                            else {
+                                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                            }
+
+                                        },
+                                        error: function (jqXHR, text, error) {
+                                            // Displaying if there are any errors
+                                            window.plugins.spinnerDialog.hide();
+
+                                            if (error == null || error == "") {
+                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                            } else {
+                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        function IsValidate() {
+                            var isResult = true;
+                            var countError = 0;
+                            var usernameValue = $("#username").val();
+                            var passwordValue = $("#password").val();
+
+                            var msg = "Please enter following fields:\n";
+
+                            if (usernameValue === '' || usernameValue === null || usernameValue === 'Username') {
+                                countError = countError + 1;
+                                msg += "Username!\n";
+
+                            }
+                            if (passwordValue === '' || passwordValue === null || passwordValue === 'Password') {
+                                countError = countError + 1;
+                                msg += "Password!\n";
+
+                            }
+                            if (usernameValue !== null && usernameValue !== '' && usernameValue !== 'Username') {
+                                var x = usernameValue;
+                                var atpos = x.indexOf("@");
+                                var dotpos = x.lastIndexOf(".");
+                                if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                                    countError = countError + 1;
+                                    msg += "Valid email address!\n";
+
+                                }
+                            }
+                            if (countError > 0) {
+                                navigator.notification.alert(msg, null, 'Warning', 'Close');
+                                isResult = false;
+                            }
+
+                            return isResult;
+                        }
+                        // login functionality
+                        function Login() {
+                            $('#btnSubmit').on('click', function (event) {
+                                if (IsValidate()) {
+
+                                    var deviceToken = null;
+
+                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    if (device.platform === 'browser') {
+                                        deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
+                                    } else {
+                                        deviceToken = device.uuid;
+                                    }
+
+                                    var parameter = {
+                                        "username": "" + $("#username").val() + "",
+                                        "password": "" + $("#password").val() + "",
+                                        "userRole": 3,
+                                        "deviceType": device.platform,
+                                        "deviceToken": deviceToken
+                                    }
+
+                                    $.ajax({
+                                        url: api_baseUrl + 'login',
+                                        type: "POST",
+                                        data: JSON.stringify(parameter),
+                                        dataType: "JSON",
+                                        success: function (response) {
+                                            // Inserting html into the result div on success
+                                            window.plugins.spinnerDialog.hide();
+                                            if (response !== null && response.status === 1) {
+                                                localStorage.clear();
+                                                localStorage.setItem("username", response.data.email);
+                                                localStorage.setItem("password", $("#password").val());
+                                                localStorage.setItem("deviceType", device.platform);
+                                                localStorage.setItem("deviceToken", deviceToken);
+                                                localStorage.setItem("userId", response.data.userId);
+                                                localStorage.setItem("roleId", response.data.roleId);
+                                                localStorage.setItem("firstName", response.data.firstName);
+                                                window.location = "dashboard.html";
+                                            }
+                                            else {
+                                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                            }
+
+                                        },
+                                        error: function (jqXHR, text, error) {
+                                            // Displaying if there are any errors
+                                            window.plugins.spinnerDialog.hide();
+
+                                            if (error == null || error == "") {
+                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                            } else {
+                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                            }
+                                        }
+                                    });
+                                }
+
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

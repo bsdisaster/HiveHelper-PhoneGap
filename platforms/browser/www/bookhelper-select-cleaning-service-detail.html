@@ -1,0 +1,358 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Book helper select cleaning service detail - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <a href="bookhelper-select-cleaning-service-list.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip heading-strip-fix-padding">
+                    <h3 class="center-text color-black"><label id="lblSelectedCleaningText"></label></h3>
+                    <!--<p class="center-text color-black">
+                        <div class="col-sm-12">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-2">
+                                <strong>Calender: </strong>
+                            </div>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class="col-sm-7">
+                                <label id="lblCalenderText"> Next Available Helper </label>
+                                <input type="hidden" id="helperId" />
+                            </div>
+
+                        </div>
+                        <div class="clear"></div>
+                    </p>-->
+                    <!--<a href="#" id="btnPreviousHelper" target="_self" class="button button-blue" onclick="requestPreviousHelper()">Request Previous Helper</a>-->
+                    <!--<div class="clear">&nbsp;</div>
+                    <input id="inputAnswer" type="text" class="input-text-box input-green-border" placeholder="Type helper name" >-->
+                </div>
+
+                <div class="content">
+                    <div class="page-login-input light calendar-bgcolor">
+                        <i class="login-icon ion-calendar calendar-line-height"></i>
+
+                        <input id="calDate" type="text">
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                    <div class="future-help-display set-schedule dvSelectTime" style="display:none">
+                        <div class="row">
+
+                            <div class="col-sm-6 padding-left">
+                                From <select id="scheduleFrom">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+
+                            </div>
+                            <div class="col-sm-6">
+
+                                To <select id="scheduleTo">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <textarea id="detail-other-items" style="display:none" class="contactTextarea"></textarea>
+                    </div>
+                    <div>
+                        <button class="button button-blue" onclick="getAllSelectCleaningServices()">Search</button>
+                        <button id="requestAppointment" class="button button-blue" onclick="requestAppointment()" style="display:none">Request Appointment</button>
+                    </div>
+
+                    <div class="clear">&nbsp;</div>
+                    <div class="decoration decoration-margins"></div>
+                    <div class="pageapp-login-input">
+                        <h4>Select From These Available Start Times<h4>
+                    </div>
+                    <div class="page-userlist">
+                    </div>
+                    <div>
+                        <label id="lblErrorMsg" style="display:none" class="bold color-red-dark"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //code for cleaning title.
+            var selectedCleaningTitle = localStorage.getItem("selectedCleaningTitle");
+            if (selectedCleaningTitle != null) {
+                $("#lblSelectedCleaningText").text("");
+                $("#lblSelectedCleaningText").text(selectedCleaningTitle);
+            }
+
+            $('#calDate').datepicker({
+                minDate: 1
+            });
+            $("#calDate").datepicker("setDate", new Date());
+
+        }).on('deviceready', function () {
+            document.addEventListener("deviceready", devicereadySuccess, false);
+        });
+
+        function devicereadySuccess() {
+            //checkPreviousHelperAvailibility();
+            //getAllSelectCleaningServices();
+        }
+
+        function requestPreviousHelper() {
+            window.location.href = "bookhelper-request-previous-helper.html";
+        }
+
+        $("#scheduleFrom").on('change', function () {
+            $('#scheduleTo option').prop("disabled", false);
+
+            var value = $(this).val().split(':')[0];
+            $(this).parent().next('div').find('select').find(":lt(" + parseInt(value - 7) + ")").prop("disabled", true);
+            $(this).parent().next('div').find('select').find(":eq(" + parseInt(value - 7) + ")").prop("disabled", true);
+        })
+
+
+        function checkPreviousHelperAvailibility() {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+            var parameter = {
+                "userId": localStorage.getItem('userId'),
+                "franchiseId": localStorage.getItem("franchiseId")
+            };
+
+            $.ajax({
+                url: api_baseUrl + 'appointment/requestPreviousHelper/',
+                type: "POST",
+                data: JSON.stringify(parameter),
+                dataType: "JSON",
+                success: function (response) {
+                    // Inserting html into the result div on success
+                    window.plugins.spinnerDialog.hide();
+                    if (response.status === 0) {
+                        $("#btnPreviousHelper").hide();
+                    }
+                },
+                error: function (jqXHR, text, error) {
+                    // Displaying if there are any errors
+                    window.plugins.spinnerDialog.hide();
+
+                    if (error == null || error == "") {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                    } else {
+                        $("#btnPreviousHelper").hide();
+                    }
+                }
+            });
+        }
+
+        function getAllSelectCleaningServices() {
+
+            if ($("#calDate").val() != '') {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                var date = new Date($("#calDate").val());
+                var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
+
+                var parameter = {
+                    "date": calDate,
+                    "franchiseId": localStorage.getItem("franchiseId"),
+                    "subServiceId": localStorage.getItem("subServiceId")
+                };
+
+                $.ajax({
+                    url: api_baseUrl + "Helper/helperAvailability/",
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    datatype: "json",
+                    success: function (response) {
+                        // Inserting html into the result div on success
+                        window.plugins.spinnerDialog.hide();
+
+                        if (response.data.length != 0 && response.status == 1) {
+
+                            $('.page-userlist').html('');
+                            var serviceCleaningData = response.data;
+
+                            for (var i = 0; i < serviceCleaningData.length; i++) {
+                                var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(\'' + serviceCleaningData[i].scheduleFrom + '-' + serviceCleaningData[i].scheduleTo + '\')" class="user-list-3">';
+                                html = html + '<strong>' + serviceCleaningData[i].scheduleFrom + '</strong>';
+                                html = html + '<i class="ion-ios-arrow-forward"></i>';
+                                html = html + '</a>';
+                                $('.page-userlist').append(html);
+                                $('#requestAppointment').hide();
+                                $('#lblErrorMsg').hide();
+                                $('.dvSelectTime').hide();
+                                $('.contactTextarea').hide();
+                            }
+                        }
+                        else {
+                            $('#lblErrorMsg').text('Our apologies, there is currently no availability on that day. Please select another day or Select Request and appointment and we will try to accommodate this day for you !');
+                            $('.page-userlist').html('');
+                            $("#requestAppointment").show();
+                            $('#lblErrorMsg').show();
+                            $('.dvSelectTime').show();
+                            $('.contactTextarea').show();
+                        }
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+
+                        window.plugins.spinnerDialog.hide();
+
+                        if (error == null || error == "") {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                        } else {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                            $('.page-userlist').html('');
+                        }
+                    }
+                });
+            }
+            else {
+                navigator.notification.alert("Please enter date!", null, 'Error', 'Close');
+            }
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        function requestAppointment() {
+            if ($('#scheduleFrom').val() == null || $('#scheduleFrom').val() == "Select Time") {
+                navigator.notification.alert("Please select schedule from.!", null, "Warning", "Close");
+            }
+            else if ($('#scheduleTo').val() == null || $('#scheduleTo').val() == "Select Time") {
+                navigator.notification.alert("Please select schedule to.!", null, "Warning", "Close");
+            } else if ($('.contactTextarea').val() == "") {
+                navigator.notification.alert("Please enter description.!", null, "Warning", "Close");
+            }
+            else {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                var date = new Date($("#calDate").val());
+                var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
+
+                var parameter = {
+                    "serviceId": localStorage.getItem("serviceId"),
+                    "userId": localStorage.getItem("userId"),
+                    "subServiceId": localStorage.getItem("subServiceId"),
+                    "userAddressId": localStorage.getItem("userAddressId"),
+                    "appointmentDate": calDate,
+                    "appointmentFrom": $('#scheduleFrom').val(),
+                    "appointmentTo": $('#scheduleTo').val(),
+                    "description": $('.contactTextarea').val(),
+                    "franchiseId": localStorage.getItem("franchiseId")
+                }
+
+                $.ajax({
+                    url: api_baseUrl + 'appointment/appointmentRequest/',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    dataType: "JSON",
+                    success: function (response) {
+                        // Inserting html into the result div on success
+                        window.plugins.spinnerDialog.hide();
+                        if (response !== null && response.status === 1) {
+                            navigator.notification.alert("Your request has been sent.!", null, "Success", "Close");
+                            window.location.href = "dashboard.html";
+                        }
+                        else {
+                            navigator.notification.alert(response.message, null, "Warning", "Close");
+                        }
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        window.plugins.spinnerDialog.hide();
+
+                        if (error == null || error == "") {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                        } else {
+                            navigator.notification.alert(error, null, "Error", "Close");
+                        }
+                    }
+                });
+            }
+        }
+
+        function gotoSelectCleaningServiceDetailPage(helperSelectedTime) {
+
+            var date = new Date($("#calDate").val());
+            var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+            localStorage.setItem("providerDate", calDate);
+            localStorage.setItem("helperSelectedTime", helperSelectedTime);
+
+            if (getParameterByName("editAppointment")) {
+                window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
+            } else {
+                window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html";
+            }
+        }
+
+    </script>
+</body>
+</html>

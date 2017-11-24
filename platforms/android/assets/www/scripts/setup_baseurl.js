@@ -1,0 +1,1 @@
+var api_baseUrl = 'http://hivehelper.project-demo.info/v1/';

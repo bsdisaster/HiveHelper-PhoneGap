@@ -1,0 +1,112 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>services offered in your location - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <a href="dashboard.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip" style="color:black !important;">
+                    <h3 class="color-black center-text bold">Services Offered in Your Area</h3>
+                </div>
+                <div class="decoration decoration-margins"></div>
+
+                <div class="content">
+                    <div class="page-userlist">
+
+                    </div>
+                </div>
+                <script type="text/javascript">
+
+                    var userId = null;
+                    var franchiseId = null;
+
+                    $(document).ready(function () {
+                        userId = localStorage.getItem("userId");
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", getAllServices, false);
+                    });
+
+                    function getAllServices() {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        $.ajax({
+                            url: api_baseUrl + 'service/' + userId,
+                            type: "get",
+                            dataType: "json",
+                            success: function (response) {
+                                // Inserting html into the result div on success
+                                window.plugins.spinnerDialog.hide();
+                                if (response !== null && response.status === 1) {
+                                    
+                                    var serviceTypeData = response.data;
+                                    franchiseId = serviceTypeData.franchiseId;
+                                    if (serviceTypeData.service.length > 0) {
+                                        for (var i = 0; i < serviceTypeData.service.length; i++) {
+
+                                            var html = '<a href="#" class="user-list-3"><div class="col-sm-12"><div class="col-sm-1"><img src="' + serviceTypeData.service[i].image + '" /></div><div class="col-sm-11" onclick="gotoServiceDetailsPage(\'' + serviceTypeData.service[i].description.toString().replace(/(\r\n|\n|\r)/gm, "") + '\',\'' + serviceTypeData.service[i].image + '\')"><strong class="user-list-3-strong">' + serviceTypeData.service[i].serviceName + '</strong></div></div><div class="col-sm-12"></div><i class="ion-ios-arrow-forward"></i></a>';
+
+                                            $('.page-userlist').append(html);
+                                        }
+                                    }
+                                }
+                                else {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                window.plugins.spinnerDialog.hide();
+
+                                if (error == null || error == "") {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                } else {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                }
+                            }
+                        });
+                    }
+
+                    function gotoServiceDetailsPage(serviceDescription,imagePath) {
+                        
+                        localStorage.setItem("serviceDescription", JSON.stringify(serviceDescription));
+                        localStorage.setItem("serviceImage", imagePath);
+
+                        window.location.href = "offered-service-details.html";
+                    }
+                </script>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

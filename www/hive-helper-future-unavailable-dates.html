@@ -1,0 +1,388 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Unavailable Dates - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="dashboard.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="clearfix">&nbsp;</div>
+                <div>
+                    <h4 align="center">Set Future Unavailable Dates</h4>
+                </div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="content future-help">
+                    <div class="future-help-display">
+                        <div class="col-sm-2 padding-0">
+                            <span>Date</span>
+                        </div>
+                        <div class="col-sm-10 padding-0">
+                            <div class="page-login-input light calendar-bgcolor">
+                                <i class="login-icon ion-calendar calendar-line-height"></i>
+                                <input id="calDate" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="future-help-display">
+                        <div class="col-sm-2 padding-0"></div>
+
+                        <div class="col-sm-10 padding-0">
+
+                            <div class="fac fac-checkbox fac-default">
+                                <span></span>
+                                <input id="chkAllDays" type="checkbox"><label for="chkAllDays">All Day</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="future-help-display">
+                        <div class="col-sm-2 padding-0">From</div>
+                        <div class="col-sm-4 padding-0">
+                            <select id="drpFrom" class="drpSelectBox dropdown-menu2">
+                                <option>Select Time</option>
+                                <option value="08:00:00">08:00am</option>
+                                <option value="09:00:00">09:00am</option>
+                                <option value="10:00:00">10:00am</option>
+                                <option value="11:00:00">11:00am</option>
+                                <option value="12:00:00">12:00pm</option>
+                                <option value="13:00:00">1:00pm</option>
+                                <option value="14:00:00">2:00pm</option>
+                                <option value="15:00:00">3:00pm</option>
+                                <option value="16:00:00">4:00pm</option>
+                                <option value="17:00:00">5:00pm</option>
+                                <option value="18:00:00">6:00pm</option>
+                                <option value="19:00:00">7:00pm</option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-sm-2 padding-0 text-center">To</div>
+                        <div class="col-sm-4 padding-0">
+                            <select id="drpTo" class="drpSelectBoxTo dropdown-menu2">
+                                <option>Select Time</option>
+                                <option value="08:00:00">08:00am</option>
+                                <option value="09:00:00">09:00am</option>
+                                <option value="10:00:00">10:00am</option>
+                                <option value="11:00:00">11:00am</option>
+                                <option value="12:00:00">12:00pm</option>
+                                <option value="13:00:00">1:00pm</option>
+                                <option value="14:00:00">2:00pm</option>
+                                <option value="15:00:00">3:00pm</option>
+                                <option value="16:00:00">4:00pm</option>
+                                <option value="17:00:00">5:00pm</option>
+                                <option value="18:00:00">6:00pm</option>
+                                <option value="19:00:00">7:00pm</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="future-help-display">
+                        <div class="col-sm-5 padding-0"></div>
+                        <div class="col-sm-3 padding-0">
+                            <input value="Save" class="future-btn" type="button" />
+                        </div>
+                        <div class="col-sm-2 padding-0"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="heading-strip">
+                <h3 class="center-text color-black">Helper upcoming unavailable dates</h3>
+            </div>
+
+            <div class="content">
+                <div class="page-userlist">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            var date = new Date();
+            selectedWeekDayNumber = date.getUTCDay() + 1;
+
+            $('#calDate').datepicker({
+                minDate: 1
+            }).on("input change", function () {
+                var date = $(this).datepicker('getDate');
+                selectedWeekDayNumber = date.getUTCDay() + 1;
+            });
+
+            $("#calDate").datepicker("setDate", new Date());
+
+            saveTask();
+        }).on('deviceready', function () {
+            document.addEventListener("deviceready", deviceReadySuccess, false);
+        });
+
+        
+
+        function deviceReadySuccess() {
+            var scheduleData = null;
+            var selectedWeekDayNumber = null;
+
+            fetchSchedule();
+            getUpcomingUnavailableRecords();
+        }
+
+        function fetchSchedule() {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+            $.ajax({
+                url: api_baseUrl + 'getSchedule/' + localStorage.getItem("userId"),
+                type: "GET",
+                dataType: "JSON",
+                success: function (response) {
+                    // Inserting html into the result div on success
+                    window.plugins.spinnerDialog.hide();
+                    if (response !== null && response.data.schedule.length > 0 && response.status === 1) {
+                     
+                        scheduleData = response.data.schedule;
+                    }
+                },
+                error: function (jqXHR, text, error) {
+                    // Displaying if there are any errors
+                    window.plugins.spinnerDialog.hide();
+
+                    if (error == null || error == "") {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                    } else {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+                    }
+                }
+            });
+        }
+
+        function checkExistingSchedules() {
+       
+            var matchFound = false;
+            for (var i = 0; i < scheduleData.length; i++) {
+                if ($("#chkAllDays").is(":checked")) {
+                    if (scheduleData[i].weekDayId == selectedWeekDayNumber.toString()) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+                else {
+                    if (scheduleData[i].weekDayId == selectedWeekDayNumber.toString() && $("#drpFrom").val() >= scheduleData[i].scheduleFrom && $("#drpTo").val() <= scheduleData[i].scheduleTo) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+            }
+            return matchFound;
+        }
+
+        function saveTask() {
+
+            $(".future-btn").on("click", function () {
+
+                if ($("#chkAllDays").is(":checked")) {
+                    $("#drpFrom").val("Select Time");
+                    $("#drpTo").val("Select Time");
+                    $('#drpTo option').prop("disabled", false);
+                    saveFutureUnavailableDates();
+                }
+                else if ($("#drpFrom").val() == null || $("#drpFrom").val() == "Select Time" || $("#drpTo").val() == null || $("#drpTo").val() == "Select Time") {
+                    navigator.notification.alert("Please select time.", null, 'Warning', 'Close');
+                }
+                else {
+                    //success
+                    saveFutureUnavailableDates();
+                }
+
+            })
+        }
+
+        function getUpcomingUnavailableRecords() {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            $('.page-userlist').html('');
+            var helperId = localStorage.getItem("userId");
+
+            $.ajax({
+                url: api_baseUrl + 'Helperunavailabledate/savedHelperUnavailable/' + helperId,
+                type: "GET",
+                dataType: "JSON",
+                success: function (response) {
+                    // Inserting html into the result div on success
+                    window.plugins.spinnerDialog.hide();
+                    if (response !== null && response.status === 1) {
+
+                        var serviceData = response.data;
+
+                        if (serviceData.length > 0) {
+                            for (var i = 0; i < serviceData.length; i++) {
+
+                                var html = '<a href="#" class="user-list-3">';
+                                html = html + '		<strong class="user-list-3-strong">' + serviceData[i].slots + '</strong>';
+                                html = html + '			<i class="fa fa-trash-o" onclick="removeUnavailableDate(this,' + serviceData[i].userUnavailableId + ')"></i>';
+                                html = html + '		</a>';
+                                $('.page-userlist').append(html);
+                            }
+                        }
+                        else {
+                            navigator.notification.alert("No upcoming unavailable records found.!", null, 'Warning', 'Close');
+                        }
+                    }
+                    else {
+                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                    }
+                },
+                error: function (jqXHR, text, error) {
+                    // Displaying if there are any errors
+                    window.plugins.spinnerDialog.hide();
+
+                    if (error == null || error == "") {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                    } else {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+
+                    }
+                }
+            });
+        }
+
+        function removeUnavailableDate(divEle, userUnavailableId) {
+
+            navigator.notification.confirm("Are you sure you want to delete ?", function (button) {
+                if (button === 1) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                    var parameter = {
+                        "helperId": localStorage.getItem("userId"),
+                        "userUnavailableId": userUnavailableId
+                    };
+
+                    $.ajax({
+                        url: api_baseUrl + 'Helperunavailabledate/removeunavailableHelperDates/',
+                        type: "POST",
+                        data: JSON.stringify(parameter),
+                        dataType: "json",
+                        success: function (response) {
+                            // Inserting html into the result div on success
+                            window.plugins.spinnerDialog.hide();
+                            if (response !== null && response.status === 1) {
+
+                                navigator.notification.alert('Record successfully removed.!', null, 'Success', 'Close');
+                                $(divEle).parent().remove();
+                            }
+                            else {
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                            }
+                        },
+                        error: function (jqXHR, text, error) {
+                            // Displaying if there are any errors
+                            window.plugins.spinnerDialog.hide();
+
+                            if (error == null || error == "") {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                            } else {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            }
+                        }
+                    });
+                }
+            }, "Delete", "Ok,Cancel");
+        }
+
+        function saveFutureUnavailableDates() {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            if (checkExistingSchedules()) {
+                var date = new Date($("#calDate").val());
+                var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+
+                var parameter = {
+                    "helperId": localStorage.getItem("userId"),
+                    "unavailableDate": calDate,
+                    "unavailableFrom": $("#drpFrom").val(),
+                    "unavailableTo": $("#drpTo").val(),
+                    "unavailableFullDay": $("#chkAllDays").is(":checked") ? 1 : 0
+                };
+
+                $.ajax({
+                    url: api_baseUrl + 'Helperunavailabledate/',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    dataType: "JSON",
+                    success: function (response) {
+                        // Inserting html into the result div on success
+                        window.plugins.spinnerDialog.hide();
+                        if (response !== null && response.status === 1) {
+                            navigator.notification.alert("Your request was successfully submitted.!", null, 'Success', 'Close');
+                            getUpcomingUnavailableRecords();
+                        }
+                        else {
+                            navigator.notification.alert(response.message, null, 'Error', 'Close');
+                        }
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        window.plugins.spinnerDialog.hide();
+                        if (error == null || error == "") {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                        } else {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        }
+                    }
+                });
+            } else {
+                navigator.notification.alert("Sorry,helper not available on this day.!", null, 'Warning', 'Close');
+            }
+        }
+
+        $(".drpSelectBox").on('change', function () {
+            disableDropdown();
+        })
+
+        function disableDropdown() {
+            $('#drpTo option').prop("disabled", false);
+            var value = $("#drpFrom").val().split(':')[0];
+
+            $("#drpTo").find(":lt(" + parseInt(value - 7) + ")").prop("disabled", true);
+            $("#drpTo").find(":eq(" + parseInt(value - 7) + ")").prop("disabled", true);
+        }
+
+    </script>
+</body>
+</html>

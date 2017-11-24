@@ -1,0 +1,142 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Contact Questions - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="hive-helper-contact.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip no-bottom">
+                    <h3 class="color-black center-text">Customer Questions</h3>
+                </div>
+            </div>
+            <div class="page-login content">
+                <div class="page-login-input animate-fade">
+                    <div class="select-box-light">
+                        <select id="customer-reason">
+                            <option value="1">App Support</option>
+                            <option value="2">Booking Questions</option>
+                            <option value="3">Billing Question</option>
+                            <option value="4">Complaint/Feedback</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100">
+                    <textarea id="customer-details" class="contactTextarea" placeholder="Details" col="6" row="10"></textarea>
+                </div>
+                <button id="btnSend" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-200"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            SendData();
+        })
+
+        function SendData() {
+            $('#btnSend').on('click', function (event) {
+                if (IsValidatePage()) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    var parameter = {
+                        "userId": "" + localStorage.getItem("userId") + "",
+                        "contactFor": "Contact - Customer Reason",
+                        "contactReasonId": "" + $("#customer-reason").val() + "",
+                        "details": "" + $("#customer-details").val() + ""
+                    };
+                    $.ajax({
+                        url: api_baseUrl + 'Contact/customerQuestion',
+                        type: "POST",
+                        data: JSON.stringify(parameter),
+                        dataType: "json",
+                        success: function (response) {
+                            window.plugins.spinnerDialog.hide();
+                            // Inserting html into the result div on success
+                            if (response !== null && response.status === 1) {
+                                navigator.notification.alert("Your request sent successfully!", null, 'Success', 'Close');
+                                ClearData();
+                            }
+                            else {
+                                navigator.notification.alert(response.message, null, 'Success', 'Close');
+                            }
+
+                        },
+                        error: function (jqXHR, text, error) {
+                            // Displaying if there are any errors
+                            window.plugins.spinnerDialog.hide();
+
+                            if (error == null || error == "") {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                            } else {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        // validation for pages.
+        function IsValidatePage() {
+            var isResult = true;
+            var countError = 0;
+            var msg = "Please enter following fields:\n";
+
+            var reasonValue = $("#customer-reason").val();
+            var detailsValue = $("#customer-details").val();
+            if (reasonValue === '0' || reasonValue === null) {
+                countError = countError + 1;
+                msg += "Please select customer reason!\n";
+            }
+            if (detailsValue === '' || detailsValue === null) {
+                countError = countError + 1;
+                msg += "Details!\n";
+            }
+
+            if (countError > 0) {
+                navigator.notification.alert(msg, null, 'Warning', 'Close');
+                isResult = false;
+            }
+            return isResult;
+        }
+
+        function ClearData() {
+            $("#customer-reason").val('0').attr('selected', true);
+            $("#customer-details").val('');
+        }
+
+    </script>
+</body>
+</html>

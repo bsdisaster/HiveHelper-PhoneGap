@@ -1,0 +1,642 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Schedule - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="dashboard.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip no-bottom">
+                    <h3 class="center-text color-black">Set Weekly Schedule</h3>
+                </div>
+                <div class="page-login content set-schedule">
+
+                    <div class="future-help-display">
+                        <div class="fac fac-checkbox fac-default">
+                            <span></span>
+                            <input id="chkMondays" type="checkbox"><label for="chkMondays">Available Mondays</label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4">From</div>
+                            <div class="col-sm-8">
+                                <select id="drpMondayFrom" class="drpSelectBox">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-8">
+                                <select id="drpMondayTo" class="drpSelectBoxTo">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="future-help-display">
+
+                        <div class="fac fac-checkbox fac-default">
+                            <span></span>
+                            <input id="chkTuesdays" type="checkbox"><label for="chkTuesdays">Available Tuesdays</label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4">From</div>
+                            <div class="col-sm-8">
+                                <select id="drpTuesdayFrom" class="drpSelectBox">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-8">
+                                <select id="drpTuesdayTo" class="drpSelectBoxTo">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="future-help-display">
+
+                        <div class="fac fac-checkbox fac-default">
+                            <span></span>
+                            <input id="chkWednesdays" type="checkbox"><label for="chkWednesdays">Available Wednesday</label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4">From</div>
+                            <div class="col-sm-8">
+                                <select id="drpWednesdayFrom" class="drpSelectBox">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-8">
+                                <select id="drpWednesdayTo" class="drpSelectBoxTo">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="future-help-display">
+                        <div class="fac fac-checkbox fac-default">
+                            <span></span>
+                            <input id="chkThursedays" type="checkbox"><label for="chkThursedays">Available Thursday</label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4">From</div>
+                            <div class="col-sm-8">
+                                <select id="drpThursedayFrom" class="drpSelectBox">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-8">
+                                <select id="drpThursedayTo" class="drpSelectBoxTo">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="future-help-display">
+                        <div class="fac fac-checkbox fac-default">
+                            <span></span>
+                            <input id="chkFridays" type="checkbox"><label for="chkFridays">Available Friday</label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4">From</div>
+                            <div class="col-sm-8">
+                                <select id="drpFridayFrom" class="drpSelectBox">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-8">
+                                <select id="drpFridayTo" class="drpSelectBoxTo">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="future-help-display">
+                        <div class="fac fac-checkbox fac-default">
+                            <span></span>
+                            <input id="chkSaturdays" type="checkbox"><label for="chkSaturdays">Available Saturday</label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4">From</div>
+                            <div class="col-sm-8">
+                                <select id="drpSaturdayFrom" class="drpSelectBox">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-8">
+                                <select id="drpSaturdayTo" class="drpSelectBoxTo">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="future-help-display">
+
+                        <div class="fac fac-checkbox fac-default">
+                            <span></span>
+                            <input id="chkSundays" type="checkbox"><label for="chkSundays">Available Sunday</label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4">From</div>
+                            <div class="col-sm-8">
+                                <select id="drpSundayFrom" class="drpSelectBox">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-8">
+                                <select id="drpSundayTo" class="drpSelectBoxTo">
+                                    <option>Select Time</option>
+                                    <option value="08:00:00">08:00am</option>
+                                    <option value="09:00:00">09:00am</option>
+                                    <option value="10:00:00">10:00am</option>
+                                    <option value="11:00:00">11:00am</option>
+                                    <option value="12:00:00">12:00pm</option>
+                                    <option value="13:00:00">1:00pm</option>
+                                    <option value="14:00:00">2:00pm</option>
+                                    <option value="15:00:00">3:00pm</option>
+                                    <option value="16:00:00">4:00pm</option>
+                                    <option value="17:00:00">5:00pm</option>
+                                    <option value="18:00:00">6:00pm</option>
+                                    <option value="19:00:00">7:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btnSaveschedule" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
+                </div>
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        saveSchedule();
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", devicereadySuccess, false);
+                    });
+
+                    $(".drpSelectBox").on('change', function () {
+                        disableDropdowns();
+                    })
+                    var count = 0;
+
+                    function validateSelectedTime() {
+                        $('input:checkbox').each(function () {
+                            if ($(this).is(":checked")) {
+                                var selectBoxes = $(this).parent("div").parent("div").find("select");
+                                $(selectBoxes).each(function () {
+                                    if ($(this).val() == null || $(this).val() == "Select Time") {
+                                        count++;
+                                    }
+                                })
+                            }
+                        })
+                    }
+
+                    function devicereadySuccess() {
+                        fetchSchedule();
+                    }
+
+                    function fetchSchedule() {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                        $.ajax({
+                            url: api_baseUrl + 'getSchedule/'+localStorage.getItem("userId"),
+                            type: "GET",
+                            dataType: "JSON",
+                            success: function (response) {
+                                // Inserting html into the result div on success
+                                window.plugins.spinnerDialog.hide();
+                                if (response !== null && response.data.schedule.length > 0 && response.status === 1) {
+                                    for (var i = 0; i < response.data.schedule.length; i++) {
+                                        if (response.data.schedule[i].weekDayId == "1") {
+                                            $("#chkMondays").attr("checked", true);
+                                            $("#drpMondayFrom").val(response.data.schedule[i].scheduleFrom);
+                                            $("#drpMondayTo").val(response.data.schedule[i].scheduleTo);
+                                        }
+                                        if (response.data.schedule[i].weekDayId == "2") {
+                                            $("#chkTuesdays").attr("checked", true);
+                                            $("#drpTuesdayFrom").val(response.data.schedule[i].scheduleFrom);
+                                            $("#drpTuesdayTo").val(response.data.schedule[i].scheduleTo);
+                                        }
+                                        if (response.data.schedule[i].weekDayId == "3") {
+                                            $("#chkWednesdays").attr("checked", true);
+                                            $("#drpWednesdayFrom").val(response.data.schedule[i].scheduleFrom);
+                                            $("#drpWednesdayTo").val(response.data.schedule[i].scheduleTo);
+                                        }
+                                        if (response.data.schedule[i].weekDayId == "4") {
+                                            $("#chkThursedays").attr("checked", true);
+                                            $("#drpThursedayFrom").val(response.data.schedule[i].scheduleFrom);
+                                            $("#drpThursedayTo").val(response.data.schedule[i].scheduleTo);
+                                        }
+                                        if (response.data.schedule[i].weekDayId == "5") {
+                                            $("#chkFridays").attr("checked", true);
+                                            $("#drpFridayFrom").val(response.data.schedule[i].scheduleFrom);
+                                            $("#drpFridayTo").val(response.data.schedule[i].scheduleTo);
+                                        }
+                                        if (response.data.schedule[i].weekDayId == "6") {
+                                            $("#chkSaturdays").attr("checked", true);
+                                            $("#drpSaturdayFrom").val(response.data.schedule[i].scheduleFrom);
+                                            $("#drpSaturdayTo").val(response.data.schedule[i].scheduleTo);
+                                        }
+                                        if (response.data.schedule[i].weekDayId == "7") {
+                                            $("#chkSundays").attr("checked", true);
+                                            $("#drpSundayFrom").val(response.data.schedule[i].scheduleFrom);
+                                            $("#drpSundayTo").val(response.data.schedule[i].scheduleTo);
+                                        }
+                                    }
+                                    disableDropdowns();
+                                }
+                                else {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                }
+
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                window.plugins.spinnerDialog.hide();
+
+                                if (error == null || error == "") {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                } else {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                }
+                            }
+                        });
+                    }
+
+                    function disableDropdowns() {
+                        $('.drpSelectBoxTo option').prop("disabled", false);
+                        $(".drpSelectBox").each(function () {
+                            var value = $(this).val().split(':')[0];
+
+                            $(this).parent().parent().next('div').find('select').find(":lt(" + parseInt(value - 7) + ")").prop("disabled", true);
+                            $(this).parent().parent().next('div').find('select').find(":eq(" + parseInt(value - 7) + ")").prop("disabled", true);
+                        })
+                    }
+
+                    function saveSchedule() {
+                        $("#btnSaveschedule").on("click", function () {
+
+                            validateSelectedTime();
+                            if ($('#chkMondays').is(":not(:checked)") && $('#chkTuesdays').is(":not(:checked)") && $('#chkWednesdays').is(":not(:checked)") && $('#chkThursedays').is(":not(:checked)") && $('#chkFridays').is(":not(:checked)") && $('#chkSaturdays').is(":not(:checked)") && $('#chkSundays').is(":not(:checked)")) {
+                                navigator.notification.alert("Please select at least one shedule.", null, 'Warning', 'Close');
+                            }
+                            else if (count == 0) {
+
+                                var userId = localStorage.getItem("userId");
+
+                                var mainArray = {};
+                                var arrayItem = [];
+
+                                if ($("#chkMondays").is(':checked')) {
+                                    var sheduleFrom = $("#drpMondayFrom").val();
+                                    var sheduleTo = $("#drpMondayTo").val();
+
+                                    var sheduleItem = {};
+                                    sheduleItem.weekDayId = "1";
+                                    sheduleItem.scheduleFrom = sheduleFrom;
+                                    sheduleItem.scheduleTo = sheduleTo;
+
+                                    arrayItem.push(sheduleItem);
+                                }
+                                if ($("#chkTuesdays").is(':checked')) {
+                                    var sheduleFrom = $("#drpTuesdayFrom").val();
+                                    var sheduleTo = $("#drpTuesdayTo").val();
+
+                                    var sheduleItem = {};
+                                    sheduleItem.weekDayId = "2";
+                                    sheduleItem.scheduleFrom = sheduleFrom;
+                                    sheduleItem.scheduleTo = sheduleTo;
+
+                                    arrayItem.push(sheduleItem);
+                                }
+                                if ($("#chkWednesdays").is(':checked')) {
+                                    var sheduleFrom = $("#drpWednesdayFrom").val();
+                                    var sheduleTo = $("#drpWednesdayTo").val();
+
+                                    var sheduleItem = {};
+                                    sheduleItem.weekDayId = "3";
+                                    sheduleItem.scheduleFrom = sheduleFrom;
+                                    sheduleItem.scheduleTo = sheduleTo;
+
+                                    arrayItem.push(sheduleItem);
+                                }
+                                if ($("#chkThursedays").is(':checked')) {
+                                    var sheduleFrom = $("#drpThursedayFrom").val();
+                                    var sheduleTo = $("#drpThursedayTo").val();
+
+                                    var sheduleItem = {};
+                                    sheduleItem.weekDayId = "4";
+                                    sheduleItem.scheduleFrom = sheduleFrom;
+                                    sheduleItem.scheduleTo = sheduleTo;
+
+                                    arrayItem.push(sheduleItem);
+                                }
+                                if ($("#chkFridays").is(':checked')) {
+                                    var sheduleFrom = $("#drpFridayFrom").val();
+                                    var sheduleTo = $("#drpFridayTo").val();
+
+                                    var sheduleItem = {};
+                                    sheduleItem.weekDayId = "5";
+                                    sheduleItem.scheduleFrom = sheduleFrom;
+                                    sheduleItem.scheduleTo = sheduleTo;
+
+                                    arrayItem.push(sheduleItem);
+                                }
+                                if ($("#chkSaturdays").is(':checked')) {
+                                    var sheduleFrom = $("#drpSaturdayFrom").val();
+                                    var sheduleTo = $("#drpSaturdayTo").val();
+
+                                    var sheduleItem = {};
+                                    sheduleItem.weekDayId = "6";
+                                    sheduleItem.scheduleFrom = sheduleFrom;
+                                    sheduleItem.scheduleTo = sheduleTo;
+
+                                    arrayItem.push(sheduleItem);
+                                }
+                                if ($("#chkSundays").is(':checked')) {
+                                    var sheduleFrom = $("#drpSundayFrom").val();
+                                    var sheduleTo = $("#drpSundayTo").val();
+
+                                    var sheduleItem = {};
+                                    sheduleItem.weekDayId = "7";
+                                    sheduleItem.scheduleFrom = sheduleFrom;
+                                    sheduleItem.scheduleTo = sheduleTo;
+
+                                    arrayItem.push(sheduleItem);
+
+                                }
+
+                                mainArray.helperId = userId;
+                                mainArray.schedule = arrayItem;
+
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                                $.ajax({
+                                    url: api_baseUrl + 'helperworktime',
+                                    type: "POST",
+                                    data: JSON.stringify(mainArray),
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        // Inserting html into the result div on success
+                                        window.plugins.spinnerDialog.hide();
+                                        if (response !== null && response.status === 1) {
+                                            navigator.notification.alert("Schedule set successfully.", null, "Success", "Close");
+                                        }
+                                        else {
+                                            navigator.notification.alert(response.message, null, "Warning", "Close");
+                                        }
+                                    },
+                                    error: function (jqXHR, text, error) {
+                                        // Displaying if there are any errors
+                                        window.plugins.spinnerDialog.hide();
+
+                                        if (error == null || error == "") {
+                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                        } else {
+                                            navigator.notification.alert(error, null, "Error", "Close");
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+                                count = 0;
+                                navigator.notification.alert("Please select time.", null, "Warning", "Close");
+                            }
+                        })
+                    }
+
+                </script>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
