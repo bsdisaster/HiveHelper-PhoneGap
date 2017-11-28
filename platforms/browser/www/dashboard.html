@@ -13,12 +13,10 @@
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/image-rotation.css" />
 
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    <script type="text/javascript" src="scripts/exif.js"></script>
     <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
 </head>
@@ -70,7 +68,7 @@
                             <strong>Contact Hive Helper</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
-                        <a href="#" target="_self" class="user-list-3 animate-fade">
+                        <a href="about-hive-helper.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/About.png" alt="img" class="preload-image">
                             <strong>About Hive Helper</strong>
                             <i class="ion-ios-arrow-forward"></i>
@@ -171,26 +169,12 @@
 
         function fixExifOrientation($img) {
 
-                EXIF.getData($img[0], function () {
-                    console.log('Exif=', EXIF.getTag($img[0], "Orientation"));
-                    switch (parseInt(EXIF.getTag($img[0], "Orientation"))) {
-                        case 2:
-                            $img.addClass('flip'); break;
-                        case 3:
-                            $img.addClass('rotate-180'); break;
-                        case 4:
-                            $img.addClass('flip-and-rotate-180'); break;
-                        case 5:
-                            $img.addClass('flip-and-rotate-270'); break;
-                        case 6:
-                            $img.addClass('rotate-90'); break;
-                        case 7:
-                            $img.addClass('flip-and-rotate-90'); break;
-                        case 8:
-                            $img.addClass('rotate-270'); break;
-                    }
-            });
+            $img.onload = function () {
 
+                if ($img.naturalWidth > $img.naturalHeight) {
+                    $(".img-border-radius").addClass('rotate-90');
+                }
+            }
         }
 
         function getProfileDetail() {
@@ -199,18 +183,27 @@
 
             $.ajax({
                 url: api_baseUrl + 'profile/' + userId,
-                type: "get",
-                dataType: "json",
+                type: "GET",
+                dataType: "JSON",
                 success: function (response) {
                     // Inserting html into the result div on success
-                    window.plugins.spinnerDialog.hide();
+
                     if (response !== null && response.status === 1) {
                         $(".inline-block-bottom-text label").text(response.data[0].firstName);
-                        $(".img-border-radius").attr("src", response.data[0].image);
 
-                        fixExifOrientation($(".img-border-radius"));
+                        if (response.data[0].image!= "") {
+                            $(".img-border-radius").attr("src", response.data[0].image);
+
+                            var tmpImg = new Image();
+                            tmpImg.src = response.data[0].image;
+
+                            fixExifOrientation(tmpImg);
+                        }
+                        
+                        window.plugins.spinnerDialog.hide();
                     }
                     else {
+                        window.plugins.spinnerDialog.hide();
                         navigator.notification.alert(response.message, null, 'Error', 'Close');
                     }
 

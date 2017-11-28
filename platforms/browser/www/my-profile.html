@@ -13,12 +13,10 @@
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/image-rotation.css" />
 
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    <script type="text/javascript" src="scripts/exif.js"></script>
     <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
     <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
@@ -48,7 +46,7 @@
                     <div class="right-text">
                         <div class="inline-block-bottom-text" onclick="clickImage()"><label>Change</label></div>
                         <div class="inline-block">
-                            <input class="img-border-radius" type="image" src="images/blank_profile.png" width="50" height="50" />
+                            <img class="img-border-radius" src="images/blank_profile.png" width="50" height="50" />
                             <input type="file" id="my_file" accept="image/*" style="display: none;" />
                         </div>
                     </div>
@@ -57,15 +55,15 @@
                 <div class="page-login content">
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade">
-                        <input id="profile-firstname" type="text" value="First name" onfocus="if (this.value=='First Name') this.value = ''" onblur="if (this.value=='') this.value = 'First Name'">
+                        <input id="profile-firstname" type="text" value="First name" onfocus="if (this.value=='First name') this.value = ''" onblur="if (this.value=='') this.value = 'First name'">
 
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100">
-                        <input id="profile-lastname" type="text" value="Last name" onfocus="if (this.value=='Last Name') this.value = ''" onblur="if (this.value=='') this.value = 'Last Name'">
+                        <input id="profile-lastname" type="text" value="Last name" onfocus="if (this.value=='Last name') this.value = ''" onblur="if (this.value=='') this.value = 'Last name'">
 
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300">
-                        <input id="profile-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; addMask(this); }">
+                        <input id="profile-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; }; addMask(this);">
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
 
@@ -92,12 +90,12 @@
                         </div>
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-400">
-                        <input id="profile-zipcode" type="text" value="Zip Code" onfocus="if (this.value=='Zip Code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip Code'">
+                        <input id="profile-zipcode" type="text" value="Zip code" onfocus="if (this.value=='Zip code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip code'">
 
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-500">
 
-                        <input id="profile-email" type="text" value="Email address" onfocus="if (this.value=='Email') this.value = ''" onblur="if (this.value=='') this.value = 'Email'">
+                        <input id="profile-email" type="text" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
 
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding full-bottom animate-fadeanimate-delay-600">
@@ -125,43 +123,31 @@
                         }, '.pac-container');
                     });
 
-                    var imageBase64 = '';
-
-                    function getBase64(file) {
-                        var reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onload = function () {
-                            imageBase64 = reader.result;
-                        };
-                        reader.onerror = function (error) {
-                            navigator.notification.alert(error, null, 'Error', 'Close');
-                        };
-                    }
+                    var base64String = '';
 
                     function clickImage() {
                         $("#my_file").click();
                     }
 
                     function pickImage() {
+
                         $('#my_file').on("change", function (event) {
+                            var img = new Image;
                             var selectedFile = event.target.files[0];
-                            var tmppath = URL.createObjectURL(selectedFile);
+                            var tmppath = img.src = URL.createObjectURL(selectedFile);
                             var fileExtension = ['jpeg', 'jpg', 'png'];
-                            var fileSize = selectedFile.size / 1024 / 1024;
 
                             if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
                                 navigator.notification.alert("Only formats are allowed : " + fileExtension.join(', '), null, "Warning", "Close");
                                 return false;
                             }
-                            if (fileSize > 2) {
-                                navigator.notification.alert("File exceeds size limit.!", null, "Warning", "Close");
-                                return false;
-                            }
-
                             $(".img-border-radius").attr("src", tmppath);
-                            
-                            var file = document.querySelector('#my_file').files[0];
-                            getBase64(file);
+
+                            img.onload = function () {
+
+                                fixExifOrientation(img);
+                                base64String = resizeImg(img, 100, 100, 0); //HERE IS WHERE THE FUNCTION RESIZE IS CALLED!!!!
+                            }
                         });
                     }
 
@@ -169,28 +155,84 @@
                         $(inputEle).mask('(999) 999-9999');
                     }
 
+                    function resizeImg(img, maxWidth, maxHeight, degrees) {
+                        var imgWidth = img.width,
+                          imgHeight = img.height;
+
+                        var ratio = 1,
+                          ratio1 = 1,
+                          ratio2 = 1;
+                        ratio1 = maxWidth / imgWidth;
+                        ratio2 = maxHeight / imgHeight;
+
+                        // Use the smallest ratio that the image best fit into the maxWidth x maxHeight box.
+                        if (ratio1 < ratio2) {
+                            ratio = ratio1;
+                        } else {
+                            ratio = ratio2;
+                        }
+                        var canvas = document.createElement("canvas");
+                        var canvasContext = canvas.getContext("2d");
+                        var canvasCopy = document.createElement("canvas");
+                        var copyContext = canvasCopy.getContext("2d");
+                        var canvasCopy2 = document.createElement("canvas");
+                        var copyContext2 = canvasCopy2.getContext("2d");
+                        canvasCopy.width = imgWidth;
+                        canvasCopy.height = imgHeight;
+                        copyContext.drawImage(img, 0, 0);
+
+                        // init
+                        canvasCopy2.width = imgWidth;
+                        canvasCopy2.height = imgHeight;
+                        copyContext2.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvasCopy2.width, canvasCopy2.height);
+
+                        var rounds = 1;
+                        var roundRatio = ratio * rounds;
+                        for (var i = 1; i <= rounds; i++) {
+
+                            // tmp
+                            canvasCopy.width = imgWidth * roundRatio / i;
+                            canvasCopy.height = imgHeight * roundRatio / i;
+
+                            copyContext.drawImage(canvasCopy2, 0, 0, canvasCopy2.width, canvasCopy2.height, 0, 0, canvasCopy.width, canvasCopy.height);
+
+                            // copy back
+                            canvasCopy2.width = imgWidth * roundRatio / i;
+                            canvasCopy2.height = imgHeight * roundRatio / i;
+                            copyContext2.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvasCopy2.width, canvasCopy2.height);
+
+                        } // end for
+
+                        canvas.width = imgWidth * roundRatio / rounds;
+                        canvas.height = imgHeight * roundRatio / rounds;
+                        canvasContext.drawImage(canvasCopy2, 0, 0, canvasCopy2.width, canvasCopy2.height, 0, 0, canvas.width, canvas.height);
+
+                        if (degrees == 90 || degrees == 270) {
+                            canvas.width = canvasCopy2.height;
+                            canvas.height = canvasCopy2.width;
+                        } else {
+                            canvas.width = canvasCopy2.width;
+                            canvas.height = canvasCopy2.height;
+                        }
+
+                        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+                        if (degrees == 90 || degrees == 270) {
+                            canvasContext.translate(canvasCopy2.height / 2, canvasCopy2.width / 2);
+                        } else {
+                            canvasContext.translate(canvasCopy2.width / 2, canvasCopy2.height / 2);
+                        }
+                        canvasContext.rotate(degrees * Math.PI / 180);
+                        canvasContext.drawImage(canvasCopy2, -canvasCopy2.width / 2, -canvasCopy2.height / 2);
+
+                        var dataURL = canvas.toDataURL();
+                        return dataURL;
+                    }
+
                     function fixExifOrientation($img) {
 
-                        EXIF.getData($img[0], function () {
-                            console.log('Exif=', EXIF.getTag($img[0], "Orientation"));
-                            switch (parseInt(EXIF.getTag($img[0], "Orientation"))) {
-                                case 2:
-                                    $img.addClass('flip'); break;
-                                case 3:
-                                    $img.addClass('rotate-180'); break;
-                                case 4:
-                                    $img.addClass('flip-and-rotate-180'); break;
-                                case 5:
-                                    $img.addClass('flip-and-rotate-270'); break;
-                                case 6:
-                                    $img.addClass('rotate-90'); break;
-                                case 7:
-                                    $img.addClass('flip-and-rotate-90'); break;
-                                case 8:
-                                    $img.addClass('rotate-270'); break;
-                            }
-                        });
-
+                        if ($img.naturalWidth > $img.naturalHeight) {
+                            $(".img-border-radius").addClass('rotate-90');
+                        }
                     }
 
                     function imageUrltoBase64(url, callback) {
@@ -307,7 +349,7 @@
                         navigator.notification.alert(error.message, null, 'Error', 'Close');
                     }
 
-                    function IsValidateProfile() {
+                    function isValidateProfile() {
                         var isResult = true;
                         var countError = 0;
                         var msg = "Please enter following fields:\n";
@@ -322,11 +364,11 @@
                         var stateValue = $("#ddlState").val();
                         var zipcodeValue = $("#profile-zipcode").val();
 
-                        if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First Name') {
+                        if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
                             countError = countError + 1;
                             msg += "First Name!\n";
                         }
-                        if (lastnameValue === '' || lastnameValue === null || lastnameValue === 'Last Name') {
+                        if (lastnameValue === '' || lastnameValue === null || lastnameValue === 'Last name') {
                             countError = countError + 1;
                             msg += "Last Name!\n";
                         }
@@ -346,11 +388,15 @@
                             countError = countError + 1;
                             msg += "State!\n";
                         }
-                        if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zip Code') {
+                        if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zip code') {
                             countError = countError + 1;
                             msg += "Zip Code!\n";
                         }
-                        if (emailValue !== null && emailValue !== '' && emailValue !== 'Email') {
+                        if (emailValue === '' || emailValue === null || emailValue === 'Email address') {
+                            countError = countError + 1;
+                            msg += "Email address!\n";
+                        }
+                        if (emailValue !== null && emailValue !== '' && emailValue !== 'Email address') {
                             var x = emailValue;
                             var atpos = x.indexOf("@");
                             var dotpos = x.lastIndexOf(".");
@@ -370,7 +416,7 @@
                     function updateProfile() {
                         $('#btnupdateProfile').on('click', function (event) {
 
-                            if (IsValidateProfile()) {
+                            if (isValidateProfile()) {
 
                                 if (latitude == null && longitude == null) {
                                     navigator.notification.alert("You must turn location service ON to save data!", null, 'Error', 'Close');
@@ -382,7 +428,7 @@
                                         "firstName": $("#profile-firstname").val(),
                                         "lastName": $("#profile-lastname").val(),
                                         "email": $("#profile-email").val(),
-                                        "phone" : $("#profile-phone").val(),
+                                        "phone": $("#profile-phone").val(),
                                         "password": $("#profile-password").val(),
                                         "address": $("#profile-address").val(),
                                         "city": $("#profile-city").val(),
@@ -390,12 +436,12 @@
                                         "zipcode": $("#profile-zipcode").val(),
                                         "latitude": latitude,
                                         "longitude": longitude,
-                                        "image": imageBase64
+                                        "image": base64String
                                     };
 
                                     $.ajax({
                                         url: api_baseUrl + 'profile/edit',
-                                        type: "post",
+                                        type: "POST",
                                         data: JSON.stringify(parameter),
                                         dataType: "json",
                                         success: function (response) {
@@ -433,28 +479,40 @@
 
                         $.ajax({
                             url: api_baseUrl + 'profile/' + userId,
-                            type: "get",
-                            dataType: "json",
+                            type: "GET",
+                            dataType: "JSON",
                             success: function (response) {
                                 // Inserting html into the result div on success
-                                window.plugins.spinnerDialog.hide();
+
                                 if (response !== null && response.status === 1) {
                                     $("#profile-firstname").val(response.data[0].firstName);
                                     $("#profile-lastname").val(response.data[0].lastName);
                                     $("#profile-email").val(response.data[0].email);
+                                    $("#profile-phone").val(response.data[0].phone);
                                     $("#profile-address").val(response.data[0].address);
                                     $("#profile-city").val(response.data[0].city);
                                     $("#ddlState").val(response.data[0].state);
                                     $("#profile-zipcode").val(response.data[0].zipcode);
-                                    $(".img-border-radius").attr("src", response.data[0].image);
 
-                                    fixExifOrientation($(".img-border-radius"));
+                                    if (response.data[0].image != "") {
+                                        $(".img-border-radius").attr("src", response.data[0].image);
+
+                                        var tmpImg = new Image();
+                                        tmpImg.src = response.data[0].image;
+
+                                        tmpImg.onload = function () {
+                                            fixExifOrientation(tmpImg);
+                                        }
+                                    }
+
+                                    window.plugins.spinnerDialog.hide();
                                     //get image base64 string
                                     imageUrltoBase64(response.data[0].image, function (dataUrl) {
-                                        imageBase64 = dataUrl;
+                                        base64String = dataUrl;
                                     })
                                 }
                                 else {
+                                    window.plugins.spinnerDialog.hide();
                                     navigator.notification.alert(response.message, null, 'Error', 'Close');
                                 }
 

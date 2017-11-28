@@ -98,8 +98,10 @@
 
                                         html = html + '	<em>' + serviceName + date + clientName + '  </em>';
                                         html = html + '</div>';
+                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
+                                        html = html + '<a href="#" class="button-blue button-view" target="_self" onclick="viewAppointmentDetails(' + upcomingJobs[i].appointmentId + ')">View</a>';
                                         html = html + '</div>';
-                                        html = html + '<div class="clear"></div></div>';
+                                        html = html + '</div><div class="clear"></div>';
                                     }
                                     $('#divUpComming').append(html);
                                 }
@@ -116,9 +118,12 @@
                                         var clientName = '<b>Provider:</b> ' + previousJobs[i].Client + '  </br>';
 
                                         html = html + '<div class="user-list-3 user-list-1-change">';
-                                        html = html + '<div class="col-sm-8">';
+                                        html = html + '<div class="col-sm-9">';
 
                                         html = html + '	<em>' + serviceName + date + clientName + '  </em>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
+                                        html = html + '<a href="#" class="button-blue button-view" target="_self"onclick="viewAppointmentDetails(' + previousJobs[i].appointmentId + ')">View</a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
                                     }
@@ -147,6 +152,10 @@
                     });
                 }
 
+                function viewAppointmentDetails(appointmentId) {
+                    localStorage.setItem("appointmentId", appointmentId);
+                    window.location = "appointment-details.html";
+                }
             </script>
         </div>
     </div>

@@ -120,7 +120,7 @@
                                     var html = '';
                                     for (var i = 0; i < upcomingBooking.length; i++) {
                                         var serviceName = '<b>Service:</b> ' + upcomingBooking[i].serviceName + ' </br>';
-                                        var appointmentDateTime = '<b>Date:</b> ' + upcomingBooking[i].appointmentDate + ' @ ' + upcomingBooking[i].appointmentFrom + ' - ' + upcomingBooking[i].appointmentTo + '  </br>';
+                                        var appointmentDateTime = '<b>Date:</b> ' + upcomingBooking[i].displaydate + '  </br>';
                                         var providerName = '<b>Provider:</b> ' + upcomingBooking[i].franchiseName + '  </br>';
 
                                         html = html + '<div class="user-list-3 user-list-1-change">';
@@ -144,7 +144,7 @@
                                     var html = '';
                                     for (var i = 0; i < previousBooking.length; i++) {
                                         var serviceName = '<b>Service:</b> ' + previousBooking[i].serviceName + ' </br>';
-                                        var appointmentDateTime = '<b>Date:</b> ' + previousBooking[i].appointmentDate + ' @ ' + previousBooking[i].appointmentFrom + ' - ' + previousBooking[i].appointmentTo + '  </br>';
+                                        var appointmentDateTime = '<b>Date:</b> ' + previousBooking[i].displaydate + '  </br>';
                                         var providerName = '<b>Provider:</b> ' + previousBooking[i].franchiseName + '  </br>';
 
                                         html = html + '<div class="user-list-3 user-list-1-change">';
