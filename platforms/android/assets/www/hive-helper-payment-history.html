@@ -1,104 +1,145 @@
 ﻿<!DOCTYPE HTML>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-<title>Payment - Hive Helper 1.0</title>
-    
-<link rel="stylesheet" type="text/css" href="styles/style.css">
-<link rel="stylesheet" type="text/css" href="styles/skin.css">
-<link rel="stylesheet" type="text/css" href="styles/framework.css">
-<link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
-    
-<script type="text/javascript" src="scripts/jquery.js"></script>
-<script type="text/javascript" src="scripts/plugins.js"></script>
-<script type="text/javascript" src="scripts/custom.js"></script>
-<script type="text/javascript" src="scripts/setup_baseurl.js"></script>
-<script type="text/javascript" src="cordova.js"></script>
+    <title>Payment tracking - Hive Helper 1.0</title>
 
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+            .switch input {
+                display: none;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+    </style>
 </head>
 
 <body>
-<div id="page-transitions">
-	
-	<div class="header header-logo-center header-light">
-        <a href="dashboard.html" class="header-icon header-icon-5" target="_self">
-            <img src="images/back_arrow.png" height="20" />
-        </a>
-		<a href="dashboard.html" target="_self" class="header-logo"></a>
-        <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
-            <img src="images/home-icon.png" height="20" />
-        </a>   
-	</div>
-	
-	<div id="page-content" class="page-content">	
-		<div id="page-content-scroll" class="header-clear"><!--Enables this element to be scrolled --> 
-            <div>
-				<h3 class="center-text">Hours/Pay</h3>
-			</div>
-			<div class="clearfix">&nbsp;</div>
-			<div class="content">
-				<div>
-					<h4 class="color-black center-text">Current</h4>
-				</div>
-			</div>
-			<div class="content center-text">
-				<div>
-					<div>
-						<span class="bold">Rate of Pay: </span><span>$12.00</span>
-					</div>
-					<div>
-						<span class="bold">Weekly Hours: </span><span>10</span>
-					</div>
-					<div>
-						<span class="bold">Pay Amount: </span><span>$120.00</span>
-					</div>
-				</div>
-			</div>
-			<div class="clearfix">&nbsp;</div>
-			<div class="content">
-				<div>
-					<h4 class="color-black center-text">Year To Date</h4>
-				</div>
-			</div>
-			<div class="content center-text">
-				<div>
-					<div>
-						<span class="bold">Total Helper Hours: </span><span>200</span>
-					</div>
-					<div>
-						<span class="bold">Total Pay Amount: </span><span>$2400.00</span>
-					</div>
-					<div>
-						<span class="bold">Pay Amount: </span><span>$120.00</span>
-					</div>
-				</div>
-			</div>
-			<div class="clearfix">&nbsp;</div>
-			<div class="content">
-				<div>
-					<h4 class="center-text">Unpaid Jobs</h4>
-				</div>
-			</div>
-			<div class="content center-text">
-			<div>
-				<div>
-						<span>12/07/2016-Jed Smith-6 Hour Service</span>
-				</div>
-				<div>
-						<span>12/08/2016-Red Fox-6 Hour Service</span>
-				</div>
-				<div>
-						<span>12/08/2016-Red Fox-6 Hour Service</span>
-				</div>
-			</div>
-				
-			</div>
-	</div>
-</div>
-</div>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <a href="dashboard.html" class="header-icon header-icon-5" target="_self">
+                <img src="images/back_arrow.png" height="20" />
+            </a>
+            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
+                <img src="images/home-icon.png" height="20" />
+            </a>
+        </div>
+
+        <div id="page-content" class="page-content">
+            <div id="page-content-scroll" class="header-clear">
+                <div class="clear">&nbsp;</div>
+
+                <h3 class="center-text">Hours/Pay</h3>
+                <div class="pageapp-login">
+                    <div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <div class="slider round"></div>
+                        </label>
+                        <label style="display:inline-block;width: max-content;">Paid Jobs</label>
+                    </div>
+                    <div class="page-login-input light calendar-bgcolor" style="width:fit-content">
+                        <i class="login-icon ion-calendar calendar-line-height"></i>
+                        <input id="calDate1" type="text">
+                    </div>
+                    <div class="page-login-input light calendar-bgcolor" style="width:fit-content">
+                        <i class="login-icon ion-calendar calendar-line-height"></i>
+                        <input id="calDate2" type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+
+<script>
+    $(document).ready(function () {
+
+        var date = new Date();
+        selectedWeekDayNumber = date.getUTCDay() + 1;
+
+        $('#calDate1,#calDate2').datepicker({
+            minDate: 1
+        }).on("input change", function () {
+            var date = $(this).datepicker('getDate');
+            selectedWeekDayNumber = date.getUTCDay() + 1;
+        });
+
+        $("#calDate1").datepicker("setDate", new Date());
+        $("#calDate2").datepicker("setDate", new Date());
+
+    }).on('deviceready', function () {
+
+    });
+</script>

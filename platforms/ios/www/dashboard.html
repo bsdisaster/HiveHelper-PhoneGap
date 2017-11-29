@@ -38,7 +38,7 @@
                     <div class="right-text">
                         <div class="inline-block-bottom-text"><label></label></div>
                         <div class="inline-block">
-                            <img class="img-border-radius" src="images/blank_profile.png" width="50" height="50" />
+                            <img class="img-border-radius" width="50" height="50" />
                         </div>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                             <strong>Pay/Hour Tracking</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
-                        <a href="#" class="user-list-3 animate-fade no-bottom" target="_self">
+                        <a href="#" id="helperPortal" class="user-list-3" target="_blank" style="display:none">
                             <img data-original="images/About.png" alt="img" class="preload-image">
                             <strong>Helper Portal</strong>
                             <i class="ion-ios-arrow-forward"></i>
@@ -137,7 +137,7 @@
 
             document.addEventListener("backbutton", onBackKeyDown, false);
         }).on('deviceready', function () {
-            document.addEventListener("deviceready", getProfileDetail, false);
+            document.addEventListener("deviceready", deviceReadySuccess, false);
 
         });
 
@@ -177,6 +177,47 @@
             }
         }
 
+        function deviceReadySuccess() {
+            getProfileDetail();
+            getHelperPortalDetails();
+        }
+
+        function getHelperPortalDetails() {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+            $.ajax({
+                url: api_baseUrl + 'helperportal/',
+                type: "GET",
+                dataType: "JSON",
+                success: function (response) {
+                    // Inserting html into the result div on success
+                    window.plugins.spinnerDialog.hide();
+                    
+                    if (response !== null && response.status === 1) {
+                        if (response.data.status == "1") {
+                            
+                            $("#helperPortal").show();
+                            $("#helperPortal").attr("href", response.data.portalLink);
+                        }
+                    }
+                    else {
+                        navigator.notification.alert(response.message, null, 'Error', 'Close');
+                    }
+
+                },
+                error: function (jqXHR, text, error) {
+                    window.plugins.spinnerDialog.hide();
+
+                    if (error == null || error == "") {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                    } else {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+                    }
+                }
+            });
+        }
+
         function getProfileDetail() {
             var userId = localStorage.getItem("userId");
             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
@@ -191,15 +232,13 @@
                     if (response !== null && response.status === 1) {
                         $(".inline-block-bottom-text label").text(response.data[0].firstName);
 
-                        if (response.data[0].image!= "") {
-                            $(".img-border-radius").attr("src", response.data[0].image);
+                        $(".img-border-radius").attr("src", response.data[0].image);
 
-                            var tmpImg = new Image();
-                            tmpImg.src = response.data[0].image;
+                        var tmpImg = new Image();
+                        tmpImg.src = response.data[0].image;
 
-                            fixExifOrientation(tmpImg);
-                        }
-                        
+                        fixExifOrientation(tmpImg);
+
                         window.plugins.spinnerDialog.hide();
                     }
                     else {

@@ -46,7 +46,7 @@
                     <div class="right-text">
                         <div class="inline-block-bottom-text" onclick="clickImage()"><label>Change</label></div>
                         <div class="inline-block">
-                            <img class="img-border-radius" src="images/blank_profile.png" width="50" height="50" />
+                            <img class="img-border-radius" width="50" height="50" />
                             <input type="file" id="my_file" accept="image/*" style="display: none;" />
                         </div>
                     </div>
@@ -454,7 +454,6 @@
                                             else {
                                                 navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                             }
-
                                         },
                                         error: function (jqXHR, text, error) {
                                             // Displaying if there are any errors
@@ -494,15 +493,13 @@
                                     $("#ddlState").val(response.data[0].state);
                                     $("#profile-zipcode").val(response.data[0].zipcode);
 
-                                    if (response.data[0].image != "") {
-                                        $(".img-border-radius").attr("src", response.data[0].image);
+                                    $(".img-border-radius").attr("src", response.data[0].image);
 
-                                        var tmpImg = new Image();
-                                        tmpImg.src = response.data[0].image;
+                                    var tmpImg = new Image();
+                                    tmpImg.src = response.data[0].image;
 
-                                        tmpImg.onload = function () {
-                                            fixExifOrientation(tmpImg);
-                                        }
+                                    tmpImg.onload = function () {
+                                        fixExifOrientation(tmpImg);
                                     }
 
                                     window.plugins.spinnerDialog.hide();
