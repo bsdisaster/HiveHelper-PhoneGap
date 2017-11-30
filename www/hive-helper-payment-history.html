@@ -21,65 +21,6 @@
     <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
 
-    <style>
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-            .switch input {
-                display: none;
-            }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 26px;
-                width: 26px;
-                left: 4px;
-                bottom: 4px;
-                background-color: white;
-                -webkit-transition: .4s;
-                transition: .4s;
-            }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
-            border-radius: 34px;
-        }
-
-            .slider.round:before {
-                border-radius: 50%;
-            }
-    </style>
 </head>
 
 <body>
@@ -106,16 +47,71 @@
                             <input type="checkbox">
                             <div class="slider round"></div>
                         </label>
-                        <label style="display:inline-block;width: max-content;">Paid Jobs</label>
+                        <label class="paid-job-label">Paid Jobs</label>
                     </div>
-                    <div class="page-login-input light calendar-bgcolor" style="width:fit-content">
+                    <div class="page-login-input light calendar-bgcolor calender-pay-h">
                         <i class="login-icon ion-calendar calendar-line-height"></i>
-                        <input id="calDate1" type="text">
+                        <input id="calDate1" type="text" value="From Date">
                     </div>
-                    <div class="page-login-input light calendar-bgcolor" style="width:fit-content">
+                    <div class="page-login-input light calendar-bgcolor calender-pay-h">
                         <i class="login-icon ion-calendar calendar-line-height"></i>
-                        <input id="calDate2" type="text">
+                        <input id="calDate2" type="text" value="To Date">
                     </div>
+                    <div class="clear">&nbsp;</div>
+
+                </div>
+                <div class="payment-total">
+                    <div class="page-login-input animate-fade">
+                        <h3>
+                            <label class="bold inline-block">Total : </label>
+                            <pre class="inline-block">$190.00</pre>
+                        </h3>
+                    </div>
+                </div>
+                <div class="clear">&nbsp;</div>
+                <div>
+                    <table id="tblPayment">
+                        <tr class="bold">
+                            <td>Date</td>
+                            <td>Service</td>
+                            <td>Customer</td>
+                            <td>Hours</td>
+                            <td>Rate</td>
+                            <td>Total</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>12/1/2017</td>
+                            <td>Cleaning</td>
+                            <td>Joe smith</td>
+                            <td>6</td>
+                            <td>$15</td>
+                            <td>$90</td>
+                        </tr>
+                        <tr>
+                            <td>12/1/2017</td>
+                            <td>Cleaning</td>
+                            <td>Joe smith</td>
+                            <td>6</td>
+                            <td>$15</td>
+                            <td>$90</td>
+                        </tr>
+                        <tr>
+                            <td>12/1/2017</td>
+                            <td>Cleaning</td>
+                            <td>Joe smith</td>
+                            <td>6</td>
+                            <td>$15</td>
+                            <td>$90</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -135,10 +131,6 @@
             var date = $(this).datepicker('getDate');
             selectedWeekDayNumber = date.getUTCDay() + 1;
         });
-
-        $("#calDate1").datepicker("setDate", new Date());
-        $("#calDate2").datepicker("setDate", new Date());
-
     }).on('deviceready', function () {
 
     });

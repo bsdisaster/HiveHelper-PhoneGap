@@ -102,7 +102,7 @@
 
                     <div class="page-login-input animate-fade">
                         <label class="bold inline-block" id="lblAddress">Address: </label>
-                        <label class="inline-block"></label>
+                        <label class="inline-block blueColor" onclick="storeMapAddress(this)"></label>
                     </div>
                     <div class="bottom-line"></div>
 
@@ -155,6 +155,12 @@
             getAppointmentDetails();
         }
 
+        function storeMapAddress(ele) {
+           
+            localStorage.setItem("mapAddress", ele.innerText);
+            window.location = "hive-helper-show-maps.html";
+        }
+
         function getAppointmentDetails() {
             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
 
@@ -193,7 +199,6 @@
                         $("#lblHelper").next().html(helperNames);
 
                         // get question/answers
-
                         var html = '';
                         for (var i = 0; i < appointmentDetails[0].QuestionAnswer.length; i++) {
                             if (appointmentDetails[0].QuestionAnswer[i].fieldTypeId == "1" || appointmentDetails[0].QuestionAnswer[i].fieldTypeId == "2") {
