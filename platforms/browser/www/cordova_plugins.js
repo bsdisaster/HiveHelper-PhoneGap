@@ -31,21 +31,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
-        "id": "cordova-plugin-inappbrowser.inappbrowser",
-        "pluginId": "cordova-plugin-inappbrowser",
-        "clobbers": [
-            "cordova.InAppBrowser.open",
-            "window.open"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-inappbrowser/src/browser/InAppBrowserProxy.js",
-        "id": "cordova-plugin-inappbrowser.InAppBrowserProxy",
-        "pluginId": "cordova-plugin-inappbrowser",
-        "runs": true
-    },
-    {
         "file": "plugins/cordova-plugin-spinnerdialog/www/spinner.js",
         "id": "cordova-plugin-spinnerdialog.SpinnerDialog",
         "pluginId": "cordova-plugin-spinnerdialog",
@@ -109,6 +94,22 @@ module.exports = [
         "clobbers": [
             "PushNotification"
         ]
+    },
+    {
+        "file": "plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/www/common.js",
+        "id": "uk.co.workingedge.phonegap.plugin.launchnavigator.Common",
+        "pluginId": "uk.co.workingedge.phonegap.plugin.launchnavigator",
+        "clobbers": [
+            "launchnavigator"
+        ]
+    },
+    {
+        "file": "plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/www/localforage.v1.5.0.min.js",
+        "id": "uk.co.workingedge.phonegap.plugin.launchnavigator.LocalForage",
+        "pluginId": "uk.co.workingedge.phonegap.plugin.launchnavigator",
+        "clobbers": [
+            "localforage"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -118,14 +119,14 @@ module.exports.metadata =
     "cordova-plugin-device": "1.1.6",
     "cordova-plugin-dialogs": "1.3.3",
     "cordova-plugin-geolocation": "2.4.3",
-    "cordova-plugin-inappbrowser": "1.7.1",
     "cordova-plugin-spinnerdialog": "1.3.2",
     "cordova-plugin-splashscreen": "4.0.3",
     "cordova-plugin-stripe": "1.5.3",
     "cordova-plugin-webserver": "1.0.3",
     "cordova-plugin-whitelist": "1.3.2",
     "cordova-plugin-x-toast": "2.6.0",
-    "phonegap-plugin-push": "1.8.4"
+    "phonegap-plugin-push": "1.8.4",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0"
 }
 // BOTTOM OF METADATA
 });

@@ -18,21 +18,23 @@
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": " "
       },
-      "cordova-plugin-inappbrowser": {},
       "phonegap-plugin-push": {
         "SENDER_ID": "762294569460"
+      },
+      "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+        "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes"
       }
     }
   },
   "dependencies": {
     "cordova-android": "^6.3.0",
     "cordova-browser": "^5.0.0",
-    "cordova-ios": "^4.5.2",
+    "cordova-ios": "^4.5.4",
+    "cordova-plugin-actionsheet": "^2.3.3",
     "cordova-plugin-compat": "^1.0.0",
     "cordova-plugin-device": "~1.1.6",
     "cordova-plugin-dialogs": "~1.3.3",
     "cordova-plugin-geolocation": "^2.4.3",
-    "cordova-plugin-inappbrowser": "^1.7.1",
     "cordova-plugin-spinnerdialog": "~1.3.2",
     "cordova-plugin-splashscreen": "~4.0.3",
     "cordova-plugin-stripe": "^1.5.3",
@@ -42,6 +44,7 @@
     "cordova-plugin-write-log": "0.0.5",
     "cordova-plugin-x-toast": "~2.6.0",
     "es6-promise-plugin": "^4.1.0",
-    "phonegap-plugin-push": "^1.8.4"
+    "phonegap-plugin-push": "^1.8.4",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.1.0"
   }
 }

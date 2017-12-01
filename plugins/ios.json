@@ -6,6 +6,18 @@
   "config_munge": {
     "files": {}
   },
-  "installed_plugins": {},
-  "dependent_plugins": {}
+  "installed_plugins": {
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+      "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes",
+      "PACKAGE_NAME": "hive.helper.app.html"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    }
+  }
 }

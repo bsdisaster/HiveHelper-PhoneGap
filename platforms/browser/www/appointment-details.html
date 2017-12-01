@@ -156,9 +156,18 @@
         }
 
         function storeMapAddress(ele) {
-           
-            localStorage.setItem("mapAddress", ele.innerText);
-            window.location = "hive-helper-show-maps.html";
+          
+            launchnavigator.isAppAvailable(launchnavigator.APP.GOOGLE_MAPS, function (isAvailable) {
+                var app;
+                if (isAvailable) {
+                    app = launchnavigator.APP.GOOGLE_MAPS;
+                } else {
+                    app = launchnavigator.APP.USER_SELECT;
+                }
+                launchnavigator.navigate(ele.innerText, {
+                    app: app
+                });
+            });
         }
 
         function getAppointmentDetails() {

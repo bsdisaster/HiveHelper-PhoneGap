@@ -39,15 +39,6 @@ module.exports = [
     "runs": true
   },
   {
-    "id": "cordova-plugin-inappbrowser.inappbrowser",
-    "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
-    "pluginId": "cordova-plugin-inappbrowser",
-    "clobbers": [
-      "cordova.InAppBrowser.open",
-      "window.open"
-    ]
-  },
-  {
     "id": "cordova-plugin-spinnerdialog.SpinnerDialog",
     "file": "plugins/cordova-plugin-spinnerdialog/www/spinner.js",
     "pluginId": "cordova-plugin-spinnerdialog",
@@ -91,6 +82,38 @@ module.exports = [
     "clobbers": [
       "PushNotification"
     ]
+  },
+  {
+    "id": "cordova-plugin-actionsheet.ActionSheet",
+    "file": "plugins/cordova-plugin-actionsheet/www/ActionSheet.js",
+    "pluginId": "cordova-plugin-actionsheet",
+    "clobbers": [
+      "window.plugins.actionsheet"
+    ]
+  },
+  {
+    "id": "uk.co.workingedge.phonegap.plugin.launchnavigator.Common",
+    "file": "plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/www/common.js",
+    "pluginId": "uk.co.workingedge.phonegap.plugin.launchnavigator",
+    "clobbers": [
+      "launchnavigator"
+    ]
+  },
+  {
+    "id": "uk.co.workingedge.phonegap.plugin.launchnavigator.LocalForage",
+    "file": "plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/www/localforage.v1.5.0.min.js",
+    "pluginId": "uk.co.workingedge.phonegap.plugin.launchnavigator",
+    "clobbers": [
+      "localforage"
+    ]
+  },
+  {
+    "id": "uk.co.workingedge.phonegap.plugin.launchnavigator.LaunchNavigator",
+    "file": "plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/www/android/launchnavigator.js",
+    "pluginId": "uk.co.workingedge.phonegap.plugin.launchnavigator",
+    "merges": [
+      "launchnavigator"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -100,14 +123,15 @@ module.exports.metadata =
   "cordova-plugin-device": "1.1.6",
   "cordova-plugin-dialogs": "1.3.3",
   "cordova-plugin-geolocation": "2.4.3",
-  "cordova-plugin-inappbrowser": "1.7.1",
   "cordova-plugin-spinnerdialog": "1.3.2",
   "cordova-plugin-splashscreen": "4.0.3",
   "cordova-plugin-stripe": "1.5.3",
   "cordova-plugin-webserver": "1.0.3",
   "cordova-plugin-whitelist": "1.3.2",
   "cordova-plugin-x-toast": "2.6.0",
-  "phonegap-plugin-push": "1.8.4"
+  "phonegap-plugin-push": "1.8.4",
+  "cordova-plugin-actionsheet": "2.3.3",
+  "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0"
 };
 // BOTTOM OF METADATA
 });
