@@ -114,7 +114,7 @@
                                         else if (serviceQuestionsData[i].fieldTypeId == "3") {
                                             html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
 
-                                            html = html + '<div class="one-half last-column"><div class="extra-margin" id="checkbox' + counter + '">';
+                                            html = html + '<div class="one-half last-column" style="padding-left: inherit"><div class="extra-margin" id="checkbox' + counter + '">';
                                             for (var j = 0; j < serviceQuestionsData[i].options.length; j++) {
                                                 html = html + '<div class="fac fac-checkbox fac-default"><span></span><input id="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" type="checkbox" value="' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" data-checked ="' + serviceQuestionsData[i].options[j].isanswer + '"><label for="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '">' + serviceQuestionsData[i].options[j].optionTitle + '</label></div>';
                                             }
@@ -190,17 +190,17 @@
                                         if (serviceQuestionsData[i].fieldTypeId == "1") {
                                             html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
 
-                                            html = html + '<div class="input-icon"><input id="inputAnswer' + counter + '" type="text" class="input-text-box input-green-border" placeholder="Answer"></div>';
+                                            html = html + '<div class="input-icon" style="padding-left: inherit"><input id="inputAnswer' + counter + '" type="text" class="input-text-box input-green-border" placeholder="Answer"></div>';
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "2") {
                                             html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
 
-                                            html = html + '<div class="input-icon"><textarea id="inputDescription' + counter + '" class="contactTextarea" style="background:lightgray; width:100%; min-height: 120px; height:auto;"></textarea></div>';
+                                            html = html + '<div class="input-icon" style="padding-left: inherit"><textarea id="inputDescription' + counter + '" class="contactTextarea" style="background:lightgray; width:100%; min-height: 120px; height:auto;"></textarea></div>';
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "3") {
                                             html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
 
-                                            html = html + '<div class="one-half last-column"><div class="extra-margin" id="checkbox' + counter + '">';
+                                            html = html + '<div class="one-half last-column" style="padding-left: inherit"><div class="extra-margin" id="checkbox' + counter + '">';
                                             for (var j = 0; j < serviceQuestionsData[i].options.length; j++) {
                                                 html = html + '<div class="fac fac-checkbox fac-default"><span></span><input id="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" type="checkbox" value="' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '"><label for="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '">' + serviceQuestionsData[i].options[j].optionTitle + '</label></div>';
                                             }

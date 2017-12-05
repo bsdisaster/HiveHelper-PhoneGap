@@ -125,11 +125,20 @@
 
         $('#calDate1,#calDate2').datepicker({
             minDate: 1
-        }).on("input change", function () {
+        }).on("change", function () {
             var date = $(this).datepicker('getDate');
             selectedWeekDayNumber = date.getUTCDay() + 1;
         });
+        removeFocus('#calDate');
+        removeFocus('#calDate2');
+
     }).on('deviceready', function () {
 
     });
+
+    function removeFocus(inputEle) {
+        $(inputEle).on('focus', function () {
+            $(inputEle).blur();
+        })
+    }
 </script>

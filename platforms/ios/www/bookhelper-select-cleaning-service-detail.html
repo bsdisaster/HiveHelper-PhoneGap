@@ -145,10 +145,17 @@
                 minDate: 1
             });
             $("#calDate").datepicker("setDate", new Date());
+            removeFocus('#calDate');
 
         }).on('deviceready', function () {
             document.addEventListener("deviceready", devicereadySuccess, false);
         });
+
+        function removeFocus(inputEle) {
+            $(inputEle).on('focus', function () {
+                $(inputEle).blur();
+            })
+        }
 
         function devicereadySuccess() {
             //checkPreviousHelperAvailibility();

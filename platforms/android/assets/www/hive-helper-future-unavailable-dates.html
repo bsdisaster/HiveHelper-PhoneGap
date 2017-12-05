@@ -140,19 +140,25 @@
 
             $('#calDate').datepicker({
                 minDate: 1
-            }).on("input change", function () {
+            }).on("change", function () {
                 var date = $(this).datepicker('getDate');
                 selectedWeekDayNumber = date.getUTCDay() + 1;
             });
 
             $("#calDate").datepicker("setDate", new Date());
+            removeFocus('#calDate');
 
             saveTask();
         }).on('deviceready', function () {
             document.addEventListener("deviceready", deviceReadySuccess, false);
         });
 
-        
+
+        function removeFocus(inputEle) {
+            $(inputEle).on('focus', function () {
+                $(inputEle).blur();
+            })
+        }
 
         function deviceReadySuccess() {
             var scheduleData = null;
