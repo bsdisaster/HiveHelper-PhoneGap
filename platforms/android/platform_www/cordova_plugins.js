@@ -25,20 +25,6 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-geolocation.geolocation",
-    "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
-    "pluginId": "cordova-plugin-geolocation",
-    "clobbers": [
-      "navigator.geolocation"
-    ]
-  },
-  {
-    "id": "cordova-plugin-geolocation.PositionError",
-    "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
-    "pluginId": "cordova-plugin-geolocation",
-    "runs": true
-  },
-  {
     "id": "cordova-plugin-spinnerdialog.SpinnerDialog",
     "file": "plugins/cordova-plugin-spinnerdialog/www/spinner.js",
     "pluginId": "cordova-plugin-spinnerdialog",
@@ -119,10 +105,8 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-  "cordova-plugin-compat": "1.0.0",
   "cordova-plugin-device": "1.1.6",
   "cordova-plugin-dialogs": "1.3.3",
-  "cordova-plugin-geolocation": "2.4.3",
   "cordova-plugin-spinnerdialog": "1.3.2",
   "cordova-plugin-splashscreen": "4.0.3",
   "cordova-plugin-stripe": "1.5.3",

@@ -13,9 +13,6 @@
     "cordova-plugin-dialogs": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
-    "cordova-plugin-geolocation": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
     "cordova-plugin-spinnerdialog": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
@@ -40,9 +37,6 @@
     }
   },
   "dependent_plugins": {
-    "cordova-plugin-compat": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
     "cordova-plugin-webserver": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },

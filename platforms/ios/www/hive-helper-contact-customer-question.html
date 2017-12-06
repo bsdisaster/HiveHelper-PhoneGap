@@ -65,10 +65,14 @@
             SendData();
         })
 
+        var isMobileDevice = isMobile();
+
         function SendData() {
             $('#btnSend').on('click', function (event) {
                 if (IsValidatePage()) {
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
                     var parameter = {
                         "userId": "" + localStorage.getItem("userId") + "",
                         "contactFor": "Contact - Customer Reason",
@@ -81,26 +85,45 @@
                         data: JSON.stringify(parameter),
                         dataType: "json",
                         success: function (response) {
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             // Inserting html into the result div on success
                             if (response !== null && response.status === 1) {
-                                navigator.notification.alert("Your request sent successfully!", null, 'Success', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Your request sent successfully!", null, 'Success', 'Close');
+                                } else {
+                                    alert("Your request sent successfully!");
+                                }
                                 ClearData();
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Success', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Success', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                             }
 
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
-
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                } else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });
@@ -126,14 +149,17 @@
             }
 
             if (countError > 0) {
-                navigator.notification.alert(msg, null, 'Warning', 'Close');
+                if (isMobileDevice) {
+                    navigator.notification.alert(msg, null, 'Warning', 'Close');
+                } else {
+                    alert(msg);
+                }
                 isResult = false;
             }
             return isResult;
         }
 
         function ClearData() {
-            $("#customer-reason").val('0').attr('selected', true);
             $("#customer-details").val('');
         }
 

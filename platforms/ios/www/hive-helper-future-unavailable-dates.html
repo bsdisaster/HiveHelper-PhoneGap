@@ -149,10 +149,17 @@
             removeFocus('#calDate');
 
             saveTask();
+
+            if (!isMobileDevice) {
+                fetchSchedule();
+                getUpcomingUnavailableRecords();
+            }
+
         }).on('deviceready', function () {
             document.addEventListener("deviceready", deviceReadySuccess, false);
         });
 
+        var isMobileDevice = isMobile();
 
         function removeFocus(inputEle) {
             $(inputEle).on('focus', function () {
@@ -169,36 +176,49 @@
         }
 
         function fetchSchedule() {
-            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            }
             $.ajax({
                 url: api_baseUrl + 'getSchedule/' + localStorage.getItem("userId"),
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
                     // Inserting html into the result div on success
-                    window.plugins.spinnerDialog.hide();
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
+
                     if (response !== null && response.data.schedule.length > 0 && response.status === 1) {
-                     
+
                         scheduleData = response.data.schedule;
                     }
                 },
                 error: function (jqXHR, text, error) {
                     // Displaying if there are any errors
-                    window.plugins.spinnerDialog.hide();
-
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
                     if (error == null || error == "") {
-                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        } else {
+                            alert("It looks like you're offline.!");
+                        }
 
                     } else {
-                        navigator.notification.alert(error, null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        } else {
+                            alert(error);
+                        }
                     }
                 }
             });
         }
 
         function checkExistingSchedules() {
-       
+
             var matchFound = false;
             for (var i = 0; i < scheduleData.length; i++) {
                 if ($("#chkAllDays").is(":checked")) {
@@ -228,7 +248,11 @@
                     saveFutureUnavailableDates();
                 }
                 else if ($("#drpFrom").val() == null || $("#drpFrom").val() == "Select Time" || $("#drpTo").val() == null || $("#drpTo").val() == "Select Time") {
-                    navigator.notification.alert("Please select time.", null, 'Warning', 'Close');
+                    if (isMobileDevice) {
+                        navigator.notification.alert("Please select time.", null, 'Warning', 'Close');
+                    } else {
+                        alert("Please select time.");
+                    }
                 }
                 else {
                     //success
@@ -239,7 +263,9 @@
         }
 
         function getUpcomingUnavailableRecords() {
-            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            }
             $('.page-userlist').html('');
             var helperId = localStorage.getItem("userId");
 
@@ -249,7 +275,10 @@
                 dataType: "JSON",
                 success: function (response) {
                     // Inserting html into the result div on success
-                    window.plugins.spinnerDialog.hide();
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
+
                     if (response !== null && response.status === 1) {
 
                         var serviceData = response.data;
@@ -265,23 +294,39 @@
                             }
                         }
                         else {
-                            navigator.notification.alert("No upcoming unavailable records found.!", null, 'Warning', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert("No upcoming unavailable records found.!", null, 'Warning', 'Close');
+                            } else {
+                                alert("No upcoming unavailable records found.!");
+                            }
                         }
                     }
                     else {
-                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                        } else {
+                            alert(response.message);
+                        }
                     }
                 },
                 error: function (jqXHR, text, error) {
                     // Displaying if there are any errors
-                    window.plugins.spinnerDialog.hide();
-
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
                     if (error == null || error == "") {
-                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        } else {
+                            alert("It looks like you're offline.!");
+                        }
 
                     } else {
-                        navigator.notification.alert(error, null, 'Error', 'Close');
-
+                        if (isMobileDevice) {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        } else {
+                            alert(error);
+                        }
                     }
                 }
             });
@@ -289,10 +334,52 @@
 
         function removeUnavailableDate(divEle, userUnavailableId) {
 
-            navigator.notification.confirm("Are you sure you want to delete ?", function (button) {
-                if (button === 1) {
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            if (isMobileDevice) {
+                navigator.notification.confirm("Are you sure you want to delete ?", function (button) {
+                    if (button === 1) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
 
+                        var parameter = {
+                            "helperId": localStorage.getItem("userId"),
+                            "userUnavailableId": userUnavailableId
+                        };
+
+                        $.ajax({
+                            url: api_baseUrl + 'Helperunavailabledate/removeunavailableHelperDates/',
+                            type: "POST",
+                            data: JSON.stringify(parameter),
+                            dataType: "json",
+                            success: function (response) {
+                                // Inserting html into the result div on success
+                                window.plugins.spinnerDialog.hide();
+                                if (response !== null && response.status === 1) {
+
+                                    navigator.notification.alert('Record successfully removed.!', null, 'Success', 'Close');
+                                    $(divEle).parent().remove();
+                                }
+                                else {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                window.plugins.spinnerDialog.hide();
+
+                                if (error == null || error == "") {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                } else {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                }
+                            }
+                        });
+                    }
+                }, "Delete", "Ok,Cancel");
+            } else {
+
+                var res = confirm("Are you sure you want to delete ?");
+
+                if (res == true) {
                     var parameter = {
                         "helperId": localStorage.getItem("userId"),
                         "userUnavailableId": userUnavailableId
@@ -305,34 +392,35 @@
                         dataType: "json",
                         success: function (response) {
                             // Inserting html into the result div on success
-                            window.plugins.spinnerDialog.hide();
                             if (response !== null && response.status === 1) {
 
-                                navigator.notification.alert('Record successfully removed.!', null, 'Success', 'Close');
+                                alert('Record successfully removed.!');
                                 $(divEle).parent().remove();
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                alert(response.message);
                             }
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
-
+                            
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                alert("It looks like you're offline.!");
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                alert(error);
                             }
                         }
                     });
                 }
-            }, "Delete", "Ok,Cancel");
+            }
+
         }
 
         function saveFutureUnavailableDates() {
-            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            }
             if (checkExistingSchedules()) {
                 var date = new Date($("#calDate").val());
                 var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
@@ -352,28 +440,52 @@
                     dataType: "JSON",
                     success: function (response) {
                         // Inserting html into the result div on success
-                        window.plugins.spinnerDialog.hide();
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                         if (response !== null && response.status === 1) {
-                            navigator.notification.alert("Your request was successfully submitted.!", null, 'Success', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert("Your request was successfully submitted.!", null, 'Success', 'Close');
+                            } else {
+                                alert("Your request was successfully submitted.!");
+                            }
                             getUpcomingUnavailableRecords();
                         }
                         else {
-                            navigator.notification.alert(response.message, null, 'Error', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert(response.message, null, 'Error', 'Close');
+                            } else {
+                                alert(response.message);
+                            }
                         }
                     },
                     error: function (jqXHR, text, error) {
                         // Displaying if there are any errors
-                        window.plugins.spinnerDialog.hide();
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                         if (error == null || error == "") {
-                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            } else {
+                                alert("It looks like you're offline.!");
+                            }
 
                         } else {
-                            navigator.notification.alert(error, null, 'Error', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                alert(error);
+                            }
                         }
                     }
                 });
             } else {
-                navigator.notification.alert("Sorry,helper not available on this day.!", null, 'Warning', 'Close');
+                if (isMobileDevice) {
+                    navigator.notification.alert("Sorry,helper not available on this day.!", null, 'Warning', 'Close');
+                } else {
+                    alert("Sorry,helper not available on this day.!");
+                }
             }
         }
 

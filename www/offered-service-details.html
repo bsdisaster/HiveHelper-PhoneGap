@@ -51,18 +51,26 @@
                 <script type="text/javascript">
 
                     $(document).ready(function () {
-                        
+                        if (!isMobileDevice) {
+                            getServiceDetails();
+                        }
+
                     }).on('deviceready', function () {
                         document.addEventListener("deviceready", getServiceDetails, false);
                     });
 
+                    var isMobileDevice = isMobile();
                     function getServiceDetails() {
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        }
 
                         $("#serviceDescription").append(JSON.parse(localStorage.getItem("serviceDescription")));
                         $("#serviceImage").attr("src", localStorage.getItem("serviceImage"));
 
-                        window.plugins.spinnerDialog.hide();
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                     }
 
                 </script>

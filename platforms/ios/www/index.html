@@ -55,9 +55,16 @@
                     <script type="text/javascript">
                         $(document).ready(function () {
                             Login();
+
+                            if (!isMobileDevice) {
+                                checkExistingSession();
+                            }
+                            
                         }).on('deviceready', function () {
                             document.addEventListener("deviceready", checkExistingSession, false);
                         });
+
+                        var isMobileDevice = isMobile();
 
                         function checkExistingSession() {
 
@@ -97,17 +104,26 @@
 
                         function forgotPassword() {
                             if ($("#username").val() === '' || $("#username").val() === null || $("#username").val() === 'Username') {
-                                navigator.notification.alert("Please enter username!", null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Please enter username!", null, 'Warning', 'Close');
+                                } else {
+                                    alert("Please enter username!");
+                                }
                             }
                             else if ($("#username").val() !== null && $("#username").val() !== '' && $("#username").val() !== 'Username') {
                                 var x = $("#username").val();
                                 var atpos = x.indexOf("@");
                                 var dotpos = x.lastIndexOf(".");
                                 if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
-                                    navigator.notification.alert("Please enter Valid email address!", null, 'Warning', 'Close');
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("Please enter valid email address!", null, 'Warning', 'Close');
+                                    } else {
+                                        alert("Please enter valid email address!");
+                                    }
                                 } else {
-                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    }
                                     var parameter = {
                                         "username": "" + $("#username").val() + "",
                                         "userRole": 4
@@ -120,23 +136,45 @@
                                         dataType: "JSON",
                                         success: function (response) {
                                             // Inserting html into the result div on success
-                                            window.plugins.spinnerDialog.hide();
+                                            if (isMobileDevice) {
+                                                window.plugins.spinnerDialog.hide();
+                                            }
                                             if (response !== null && response.status === 1) {
-                                                navigator.notification.alert(response.message, null, 'Success', 'Close');
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert(response.message, null, 'Success', 'Close');
+                                                }
+                                                else {
+                                                    alert(response.message);
+                                                }
                                             }
                                             else {
-                                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                                } else {
+                                                    alert(response.message);
+                                                }
                                             }
 
                                         },
                                         error: function (jqXHR, text, error) {
                                             // Displaying if there are any errors
-                                            window.plugins.spinnerDialog.hide();
+                                            if (isMobileDevice) {
+                                                window.plugins.spinnerDialog.hide();
+                                            }
                                             if (error == null || error == "") {
-                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                                }
+                                                else {
+                                                    alert("It looks like you're offline.!");
+                                                }
 
                                             } else {
-                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                                } else {
+                                                    alert(error);
+                                                }
                                             }
                                         }
                                     });
@@ -173,7 +211,11 @@
                                 }
                             }
                             if (countError > 0) {
-                                navigator.notification.alert(msg, null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(msg, null, 'Warning', 'Close');
+                                } else {
+                                    alert(msg);
+                                }
                                 isResult = false;
                             }
 
@@ -184,59 +226,79 @@
                             $('#btnSubmit').on('click', function (event) {
                                 if (isValidate()) {
 
-                                    var deviceToken = null;
+                                    var deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
+                                    var platform = 'browser';
 
-                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                    if (device.platform === 'browser') {
-                                        deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
-                                    } else {
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    }
+                                    if (isMobileDevice) {
                                         deviceToken = device.uuid;
+                                    }
+
+                                    if (isMobileDevice) {
+                                        platform = device.platform;
                                     }
 
                                     var parameter = {
                                         "username": "" + $("#username").val() + "",
                                         "password": "" + $("#password").val() + "",
                                         "userRole": 4,
-                                        "deviceType": device.platform,
+                                        "deviceType": platform,
                                         "deviceToken": deviceToken
                                     }
 
                                     $.ajax({
                                         url: api_baseUrl + 'login',
+                                        crossDomain: true,
                                         type: "POST",
                                         data: JSON.stringify(parameter),
                                         dataType: "JSON",
                                         success: function (response) {
                                             // Inserting html into the result div on success
-                                            window.plugins.spinnerDialog.hide();
+                                            if (isMobileDevice) {
+                                                window.plugins.spinnerDialog.hide();
+                                            }
                                             if (response !== null && response.status === 1) {
                                                 localStorage.clear();
                                                 localStorage.setItem("username", response.data.email);
                                                 localStorage.setItem("password", $("#password").val());
-                                                localStorage.setItem("deviceType", device.platform);
+                                                localStorage.setItem("deviceType", platform);
                                                 localStorage.setItem("deviceToken", deviceToken);
                                                 localStorage.setItem("userId", response.data.userId);
                                                 localStorage.setItem("roleId", response.data.roleId);
                                                 window.location = "dashboard.html";
                                             }
                                             else {
-                                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                                } else {
+                                                    alert(response.message);
+                                                }
                                             }
-
                                         },
                                         error: function (jqXHR, text, error) {
                                             // Displaying if there are any errors
-                                            window.plugins.spinnerDialog.hide();
+                                            if (isMobileDevice) {
+                                                window.plugins.spinnerDialog.hide();
+                                            }
                                             if (error == null || error == "") {
-                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                                } else {
+                                                    alert("It looks like you're offline.!");
+                                                }
 
                                             } else {
-                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                                } else {
+                                                    alert(error);
+                                                }
                                             }
                                         }
                                     });
                                 }
-
                             });
                         }
                     </script>

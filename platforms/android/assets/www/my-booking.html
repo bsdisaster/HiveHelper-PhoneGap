@@ -71,13 +71,19 @@
             </div>
             <script type="text/javascript">
                 $(document).ready(function () {
-
+                    if (!isMobileDevice) {
+                        getAllServices();
+                    }
                 }).on('deviceready', function () {
                     document.addEventListener("deviceready", getAllServices, false);
                 });
 
+                var isMobileDevice = isMobile();
+
                 function getAllServices() {
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
                     var userId = localStorage.getItem("userId");
 
                     $.ajax({
@@ -86,7 +92,9 @@
                         dataType: "JSON",
                         success: function (response) {
                             // Inserting html into the result div on success
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (response !== null && response.status === 1) {
 
                                 var pendingBooking = response.data.pendingBooking;
@@ -163,18 +171,33 @@
                                 }
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                             }
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
 
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                } else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
+
                             }
                         }
                     });

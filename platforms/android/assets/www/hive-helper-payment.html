@@ -92,9 +92,12 @@
                 $(document).ready(function () {
                     $("#expiry").mask("99/99");
                     submitPaymentInfo();
+                    fetchProviderInfo();
                 }).on('deviceready', function () {
-                    document.addEventListener("deviceready", fetchProviderInfo, false);
+                    
                 });
+
+                var isMobileDevice = isMobile();
 
                 function fetchProviderInfo() {
                     var service = localStorage.getItem("selectedCleaningTitle");
@@ -168,7 +171,11 @@
                     }
 
                     if (countError > 0) {
-                        navigator.notification.alert(msg, null, 'Warning', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert(msg, null, 'Warning', 'Close');
+                        } else {
+                            navigator.notification.alert(msg);
+                        }
                         isResult = false;
                     }
                     return isResult;
@@ -227,8 +234,12 @@
                     }
 
                     function onError(errorMessage) {
-                        navigator.notification.alert(JSON.stringify(errorMessage), null, 'Error', 'Close');
-                        window.plugins.spinnerDialog.hide();
+                        if (isMobileDevice) {
+                            navigator.notification.alert(JSON.stringify(errorMessage), null, 'Error', 'Close');
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            alert(JSON.stringify(errorMessage));
+                        }
                     }
 
                     cordova.plugins.stripe.createCardToken(card, onSuccess, onError);

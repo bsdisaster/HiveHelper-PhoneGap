@@ -135,14 +135,19 @@
             showHideMenu();
             removeBottomMargin();
 
+            if (!isMobileDevice) {
+                getProfileDetail();
+                getHelperPortalDetails();
+            }
+
             document.addEventListener("backbutton", onBackKeyDown, false);
         }).on('deviceready', function () {
             document.addEventListener("deviceready", deviceReadySuccess, false);
-
         });
 
         var lastTimeBackPress = 0;
         var timePeriodToExit = 2000;
+        var isMobileDevice = isMobile();
 
         function onBackKeyDown(e) {
             e.preventDefault();
@@ -183,15 +188,18 @@
         }
 
         function getHelperPortalDetails() {
-            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            }
             $.ajax({
                 url: api_baseUrl + 'helperportal/',
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
                     // Inserting html into the result div on success
-                    window.plugins.spinnerDialog.hide();
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
                     
                     if (response !== null && response.status === 1) {
                         if (response.data.status == "1") {
@@ -201,18 +209,31 @@
                         }
                     }
                     else {
-                        navigator.notification.alert(response.message, null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert(response.message, null, 'Error', 'Close');
+                        } else {
+                            alert(response.message);
+                        }
                     }
-
                 },
                 error: function (jqXHR, text, error) {
-                    window.plugins.spinnerDialog.hide();
-
+                    // Displaying if there are any errors
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
                     if (error == null || error == "") {
-                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        } else {
+                            alert("It looks like you're offline.!");
+                        }
 
                     } else {
-                        navigator.notification.alert(error, null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        } else {
+                            alert(error);
+                        }
                     }
                 }
             });
@@ -220,7 +241,9 @@
 
         function getProfileDetail() {
             var userId = localStorage.getItem("userId");
-            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            }
 
             $.ajax({
                 url: api_baseUrl + 'profile/' + userId,
@@ -239,22 +262,39 @@
 
                         fixExifOrientation(tmpImg);
 
-                        window.plugins.spinnerDialog.hide();
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                     }
                     else {
-                        window.plugins.spinnerDialog.hide();
-                        navigator.notification.alert(response.message, null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                            navigator.notification.alert(response.message, null, 'Error', 'Close');
+                        } else {
+                            alert(response.message);
+                        }
                     }
 
                 },
                 error: function (jqXHR, text, error) {
-                    window.plugins.spinnerDialog.hide();
+                    // Displaying if there are any errors
 
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
                     if (error == null || error == "") {
-                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        } else {
+                            alert("It looks like you're offline.!");
+                        }
 
                     } else {
-                        navigator.notification.alert(error, null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        } else {
+                            alert(error);
+                        }
                     }
                 }
             });

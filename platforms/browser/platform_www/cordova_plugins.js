@@ -115,10 +115,8 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "cordova-plugin-compat": "1.0.0",
     "cordova-plugin-device": "1.1.6",
     "cordova-plugin-dialogs": "1.3.3",
-    "cordova-plugin-geolocation": "2.4.3",
     "cordova-plugin-spinnerdialog": "1.3.2",
     "cordova-plugin-splashscreen": "4.0.3",
     "cordova-plugin-stripe": "1.5.3",

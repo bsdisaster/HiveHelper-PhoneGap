@@ -760,7 +760,6 @@ $(document).ready(function () {
                 320: { slidesPerView: 2, spaceBetween: 5 }
             }
         });
-
         //Aligning Elements & Resize Handlers//
 
         function center_content() {
@@ -1024,5 +1023,14 @@ $(document).ready(function () {
         };
         var smoothState = $('#page-transitions').smoothState(options).data('smoothState');
     });
-
 })
+
+// detect mobile devices
+function isMobile() {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

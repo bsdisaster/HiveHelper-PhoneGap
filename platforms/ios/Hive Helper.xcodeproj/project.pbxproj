@@ -23,7 +23,6 @@
 		38D8C7B6D1AD4BB0B55A74FA /* LaunchNavigator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC64C0FB32D4DEC918F0C46 /* LaunchNavigator.m */; };
 		94B9F7E3811C497A9D3D80B5 /* LN_Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B62F1D36FE4DAFB0FFB454 /* LN_Reachability.m */; };
 		E101348ADB024287B5BC9F21 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 825F90914EED47F29FE219E6 /* MapKit.framework */; };
-		A5EE633126204A4697F10659 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51AD52716769451DB3100DC0 /* CoreLocation.framework */; };
 		0187E092101A43E3BB6F67C9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C732C981AEC54F76AF000701 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,7 +75,6 @@
 		8638AE3D8DA04603817FE2B8 /* LaunchNavigator.h */ = {isa = PBXFileReference; name = "LaunchNavigator.h"; path = "uk.co.workingedge.phonegap.plugin.launchnavigator/LaunchNavigator.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		2185D70DB5FC4DC985589C95 /* LN_Reachability.h */ = {isa = PBXFileReference; name = "LN_Reachability.h"; path = "uk.co.workingedge.phonegap.plugin.launchnavigator/LN_Reachability.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		825F90914EED47F29FE219E6 /* MapKit.framework */ = {isa = PBXFileReference; name = "MapKit.framework"; path = "System/Library/Frameworks/MapKit.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
-		51AD52716769451DB3100DC0 /* CoreLocation.framework */ = {isa = PBXFileReference; name = "CoreLocation.framework"; path = "System/Library/Frameworks/CoreLocation.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		C732C981AEC54F76AF000701 /* SystemConfiguration.framework */ = {isa = PBXFileReference; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
@@ -88,7 +86,6 @@
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				6DEC5CE28598486796E4F22E /* AudioToolbox.framework in Frameworks */,
 				E101348ADB024287B5BC9F21 /* MapKit.framework in Frameworks */,
-				A5EE633126204A4697F10659 /* CoreLocation.framework in Frameworks */,
 				0187E092101A43E3BB6F67C9 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,7 +160,6 @@
 			children = (
 				8356B8D78DC048C5AAE3DA99 /* AudioToolbox.framework */,
 				825F90914EED47F29FE219E6 /* MapKit.framework */,
-				51AD52716769451DB3100DC0 /* CoreLocation.framework */,
 				C732C981AEC54F76AF000701 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;

@@ -57,12 +57,12 @@
                             </div>
                             <div class="page-login-input full-bottom animate-fade animate-delay-300">
                                 <i class="login-icon ion-at"></i>
-                                <input id="register-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; addMask(this); }">
+                                <input id="register-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = '' }; addMask(this);">
                             </div>
 
                             <div class="page-login-input animate-fade animate-delay-400">
                                 <i class="login-icon ion-at"></i>
-                                <input id="register-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';geolocate()" onblur="if (this.value == '') this.value = 'Address'">
+                                <input id="register-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value == '') this.value = 'Address'">
                             </div>
                             <div class="page-login-input animate-fade animate-delay-600">
                                 <i class="login-icon ion-at"></i>
@@ -74,7 +74,7 @@
                                 <i class="login-icon ion-at"></i>
                                 <input id="register-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'">
                             </div>
-                            
+
                             <div class="page-login-input animate-fade animate-delay-700">
                                 <i class="login-icon ion-at"></i>
                                 <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'">
@@ -93,6 +93,9 @@
         $(document).ready(function () {
             register();
 
+            if (!isMobileDevice) {
+                fillState();
+            }
         }).on('deviceready', function () {
             document.addEventListener("deviceready", fillState, false);
             $(document).on({
@@ -102,6 +105,7 @@
             }, '.pac-container');
         });
 
+        var isMobileDevice = isMobile();
         var placeSearch, autocomplete, latitude, longitude;
         function initAutocomplete() {
             // Create the autocomplete object, restricting the search to geographical
@@ -129,6 +133,8 @@
         function fillInAddress() {
             // Get the place details from the autocomplete object.
             var place = autocomplete.getPlace();
+            latitude = place.geometry.location.lat();
+            longitude = place.geometry.location.lng();
 
             for (var i = 0; i < place.address_components.length; i++) {
                 if (place.address_components[i].types[0] == "locality")
@@ -141,32 +147,19 @@
             }
         }
 
-        function geolocate() {
-            if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(onSuccess, onError, { enableHighAccuracy: true });
-            }
-        }
-
-        var onSuccess = function (position) {
-
-            pos = new google.maps.LatLng(position.coords.latitude,
-                                         position.coords.longitude);
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-        }
-        function onError(error) {
-            navigator.notification.alert(error.message, null, 'Error', 'Close');
-        }
-
         function fillState() {
-            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            }
             $.ajax({
                 url: api_baseUrl + 'state',
                 type: "get",
                 dataType: "json",
                 success: function (response) {
                     // Inserting html into the result div on success
-                    window.plugins.spinnerDialog.hide();
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
                     if (response !== null && response.status === 1) {
                         var stateData = response.data;
 
@@ -178,18 +171,33 @@
                         }
                     }
                     else {
-                        navigator.notification.alert(response.message, null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert(response.message, null, 'Error', 'Close');
+                        }
+                        else {
+                            alert(response.message);
+                        }
                     }
                 },
                 error: function (jqXHR, text, error) {
                     // Displaying if there are any errors
-                    window.plugins.spinnerDialog.hide();
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
 
                     if (error == null || error == "") {
-                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        } else {
+                            alert("It looks like you're offline.!");
+                        }
 
                     } else {
-                        navigator.notification.alert(error, null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        } else {
+                            alert(error);
+                        }
                     }
                 }
             });
@@ -255,7 +263,12 @@
             }
 
             if (countError > 0) {
-                navigator.notification.alert(msg, null, 'Warning', 'Close');
+                if (isMobileDevice) {
+                    navigator.notification.alert(msg, null, 'Warning', 'Close');
+                }
+                else {
+                    alert(msg);
+                }
                 isResult = false;
             }
 
@@ -267,61 +280,83 @@
             $('#btnCreateAccount').on('click', function (event) {
 
                 if (isValidateregister()) {
-                    if (latitude == null && longitude == null) {
-                        navigator.notification.alert("You must turn location service ON to save data!", null, 'Error', 'Close');
-                    }
-                    else {
+
+                    var deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
+                    var platform = 'browser';
+
+                    if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
+                    if (isMobileDevice) {
+                        deviceToken = device.uuid;
+                    }
 
-                        var deviceToken = device.uuid;
-                        if (deviceToken == null) {
-                            deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
-                        }
-                        var parameter = {
-                            "firstName": $("#register-firstname").val(),
-                            "lastName": $("#register-lastname").val(),
-                            "email": $("#register-email").val(),
-                            "password": $("#register-password").val(),
-                            "phone": $("#register-phone").val(),
-                            "address": $("#register-address").val(),
-                            "city": $("#register-city").val(),
-                            "state": $("#ddlState").val(),
-                            "zipcode": $("#register-zipcode").val(),
-                            "latitude": latitude,
-                            "longitude": longitude,
-                            "deviceType": device.platform,
-                            "deviceToken": deviceToken,
-                            "userRole": 4
-                        }
+                    if (isMobileDevice) {
+                        platform = device.platform;
+                    }
 
-                        $.ajax({
-                            url: api_baseUrl + 'register',
-                            type: "POST",
-                            data: JSON.stringify(parameter),
-                            dataType: "JSON",
-                            success: function (response) {
-                                // Inserting html into the result div on success
+                    var parameter = {
+                        "firstName": $("#register-firstname").val(),
+                        "lastName": $("#register-lastname").val(),
+                        "email": $("#register-email").val(),
+                        "password": $("#register-password").val(),
+                        "phone": $("#register-phone").val(),
+                        "address": $("#register-address").val(),
+                        "city": $("#register-city").val(),
+                        "state": $("#ddlState").val(),
+                        "zipcode": $("#register-zipcode").val(),
+                        "latitude": latitude,
+                        "longitude": longitude,
+                        "deviceType": platform,
+                        "deviceToken": deviceToken,
+                        "userRole": 4
+                    }
+
+                    $.ajax({
+                        url: api_baseUrl + 'register',
+                        type: "POST",
+                        data: JSON.stringify(parameter),
+                        dataType: "JSON",
+                        success: function (response) {
+                            // Inserting html into the result div on success
+                            if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
-                                if (response !== null && response.status === 1) {
-                                    window.location = "index.html";
-                                }
-                                else {
+                            }
+                            if (response !== null && response.status === 1) {
+                                window.location = "index.html";
+                            }
+                            else {
+                                if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Error', 'Close');
                                 }
-                            },
-                            error: function (jqXHR, text, error) {
-                                // Displaying if there are any errors
-                                window.plugins.spinnerDialog.hide();
-
-                                if (error == null || error == "") {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-
-                                } else {
-                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                else {
+                                    alert(response.message);
                                 }
                             }
-                        });
-                    }
+                        },
+                        error: function (jqXHR, text, error) {
+                            // Displaying if there are any errors
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
+
+                            if (error == null || error == "") {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
+
+                            } else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
+                            }
+                        }
+                    });
                 }
             });
         }
