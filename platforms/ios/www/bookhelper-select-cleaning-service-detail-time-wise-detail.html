@@ -52,10 +52,14 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
-
+                if (!isMobileDevice) {
+                    getServiceQuestions();
+                }
             }).on('deviceready', function () {
                 document.addEventListener("deviceready", getServiceQuestions, false);
             });
+
+            var isMobileDevice = isMobile();
 
             function getParameterByName(name, url) {
                 if (!url) url = window.location.href;
@@ -70,7 +74,9 @@
             function getServiceQuestions() {
 
                 if (getParameterByName("editAppointment")) {
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
 
                     $(".header-icon-5").attr("href", "my-booking.html");
 
@@ -80,7 +86,9 @@
                         dataType: "JSON",
                         success: function (response) {
                             // Inserting html into the result div on success
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (response !== null && response.status === 1) {
                                 $("#dvChangeDateTime").show();
 
@@ -142,30 +150,51 @@
                                     localStorage.setItem("editAppointmentArray", JSON.stringify(serviceQuestionsData));
                                     getSelectedAnswers();
                                 } else {
-                                    navigator.notification.alert('No records found!', null, 'Warning', 'Close');
+
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert('No records found!', null, 'Warning', 'Close');
+                                    } else {
+                                        alert('No records found!');
+                                    }
                                     window.location.href = "my-booking.html";
                                 }
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                             }
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
-
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });
                 }
                 else {
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
 
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                     $(".header-icon-5").attr("href", "bookhelper-select-cleaning-service-detail.html");
                     var parameter = { "serviceId": localStorage.getItem("serviceId"), "franchiseId": localStorage.getItem("franchiseId") };
 
@@ -176,7 +205,9 @@
                         dataType: "JSON",
                         success: function (response) {
                             // Inserting html into the result div on success
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (response !== null && response.status === 1) {
 
                                 var serviceQuestionsData = response.data;
@@ -227,18 +258,32 @@
                                 }
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                             }
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
-
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });
@@ -328,12 +373,14 @@
                     "appointmentid": localStorage.getItem("appointmentId"),
                     "helperId": localStorage.getItem("helperId"),
                     "appointmentdate": localStorage.getItem("providerDate"),
-                    "appointmentFrom": convertTimeformat("24", helperSelectedTime.split('-')[0]),
-                    "appointmentTo": convertTimeformat("24", helperSelectedTime.split('-')[1]),
+                    "appointmentFrom": convertTimeformat("24", helperSelectedTime.split('-')[0].trim()),
+                    "appointmentTo": convertTimeformat("24", helperSelectedTime.split('-')[1].trim()),
                     "QuestionAnswer": arrayObject
                 };
 
-                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                }
 
                 $.ajax({
                     url: api_baseUrl + 'Appointment/editAppointment/',
@@ -341,24 +388,45 @@
                     data: JSON.stringify(parameter),
                     success: function (response) {
                         // Inserting html into the result div on success
-                        window.plugins.spinnerDialog.hide();
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                         if (response !== null && response.status === 1) {
-                            navigator.notification.alert("Your data successfully updated.!", null, 'Success', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert("Your data successfully updated.!", null, 'Success', 'Close');
+                            } else {
+                                alert("Your data successfully updated.!");
+                            }
                             window.location.href = "my-booking.html";
                         }
                         else {
-                            navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                            } else {
+                                alert(response.message);
+                            }
                         }
                     },
                     error: function (jqXHR, text, error) {
 
-                        window.plugins.spinnerDialog.hide();
-
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                         if (error == null || error == "") {
-                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+                            else {
+                                alert("It looks like you're offline.!");
+                            }
 
                         } else {
-                            navigator.notification.alert(error, null, 'Error', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                alert(error);
+                            }
                         }
                     }
                 });

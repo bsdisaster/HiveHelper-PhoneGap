@@ -17,6 +17,7 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/stripe.js"></script>
     <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
     <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
@@ -94,7 +95,7 @@
                     submitPaymentInfo();
                     fetchProviderInfo();
                 }).on('deviceready', function () {
-                    
+
                 });
 
                 var isMobileDevice = isMobile();
@@ -174,7 +175,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(msg, null, 'Warning', 'Close');
                         } else {
-                            navigator.notification.alert(msg);
+                            alert(msg);
                         }
                         isResult = false;
                     }
@@ -216,65 +217,13 @@
                         return true;;
                 }
 
-                function stripePayment(emailAddress, cardNumber, expiry, cvc) {
-
-                    cordova.plugins.stripe.setPublishableKey('pk_test_z63RIQFh5e1As9i7kecp5AsS');
-
-                    var card = {
-                        number: cardNumber, // 16-digit credit card number
-                        expMonth: expiry.split("/")[0], // expiry month
-                        expYear: expiry.split("/")[1], // expiry year
-                        cvc: cvc,
-                        name: emailAddress
-                    };
-
-                    function onSuccess(tokenInfo) {
-                        console.log('Got card token!', tokenInfo);
-                        makePayment(tokenInfo);
-                    }
-
-                    function onError(errorMessage) {
-                        if (isMobileDevice) {
-                            navigator.notification.alert(JSON.stringify(errorMessage), null, 'Error', 'Close');
-                            window.plugins.spinnerDialog.hide();
-                        } else {
-                            alert(JSON.stringify(errorMessage));
-                        }
-                    }
-
-                    cordova.plugins.stripe.createCardToken(card, onSuccess, onError);
-
-
-                    function makePayment(tokenInfo) {
-                        $.ajax({
-                            type: 'POST',
-                            url: 'https://api.stripe.com/v1/charges',
-                            headers: {
-                                Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
-                            },
-                            data: {
-                                amount: $("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0],
-                                source: tokenInfo.id,
-                                description: "Charge",
-                                currency: "USD"
-                            },
-                            success: (response) => {
-                                window.plugins.spinnerDialog.hide();
-                                savePaymentInfo(tokenInfo);
-                            },
-                            error: (response) => {
-                                window.plugins.spinnerDialog.hide();
-                                navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
-                            }
-                        })
-                    }
-                }
-
                 function submitPaymentInfo() {
                     $('#btnPayment').on('click', function (event) {
 
                         if (isValidatePaymentInfo()) {
-                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            }
                             var emailAddress = $("#emailAddress").val();
                             var cardNumber = $("#cardNumber").val();
                             var expiry = $("#expiry").val();
@@ -294,6 +243,67 @@
                     });
                 }
 
+                function stripePayment(emailAddress, cardNumber, expiry, cvc) {
+                    Stripe.setPublishableKey('pk_test_z63RIQFh5e1As9i7kecp5AsS');
+
+                    Stripe.card.createToken({
+                        number: cardNumber,
+                        cvc: cvc,
+                        exp_month: expiry.split("/")[0],
+                        exp_year: expiry.split("/")[1]
+                    }, stripeResponseHandler);
+                };
+
+
+                var stripeResponseHandler = function (status, response) {
+                    if (response.error) {
+                        console.log(response);
+
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                            navigator.notification.alert(response.error.message, null, 'Error', 'Close');
+                        } else {
+                            alert(response.error.message);
+                        }
+                    } else {
+                        // Get the token ID:
+                        var tokenInfo = response;
+                        console.log(tokenInfo);
+
+                        // Save token mapping it to customer for all future payment activities
+                        makePayment(tokenInfo);
+                    }
+                }
+
+                function makePayment(tokenInfo) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://api.stripe.com/v1/charges',
+                        headers: {
+                            Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                        },
+                        data: {
+                            amount: $("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0],
+                            source: tokenInfo.id,
+                            description: "Charge",
+                            currency: "USD"
+                        },
+                        success: (response) => {
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
+                            savePaymentInfo(tokenInfo);
+                        },
+                        error: (response) => {
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
+                            } else {
+                                alert(response.responseJSON.error.message);
+                            }
+                        }
+                    })
+                }
                 function convertTimeformat(format, time) {
                     var hours = Number(time.match(/^(\d+)/)[1]);
                     var minutes = Number(time.match(/:(\d+)/)[1]);
@@ -316,8 +326,8 @@
                         "subServiceId": localStorage.getItem("subServiceId"),
                         "userAddressId": localStorage.getItem("userAddressId"),
                         "appointmentDate": localStorage.getItem("providerDate"),
-                        "appointmentFrom": convertTimeformat("24",helperSelectedTime.split('-')[0]),
-                        "appointmentTo": convertTimeformat("24",helperSelectedTime.split('-')[1]),
+                        "appointmentFrom": convertTimeformat("24", helperSelectedTime.split('-')[0]),
+                        "appointmentTo": convertTimeformat("24", helperSelectedTime.split('-')[1]),
                         "franchiseId": localStorage.getItem("franchiseId"),
                         "transactionId": tokenInfo.id,
                         "transactionObject": tokenInfo.object,
@@ -344,26 +354,48 @@
                         data: JSON.stringify(parameter),
                         success: function (response) {
                             // Inserting html into the result div on success
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (response !== null && response.status === 1) {
-                                navigator.notification.alert("Your payment was successful.!", null, 'Success', 'Close');
-                                localStorage.removeItem("paymentTempObject");
 
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Your payment was successful.!", null, 'Success', 'Close');
+                                } else {
+                                    alert("Your payment was successful.!");
+                                }
+
+                                localStorage.removeItem("paymentTempObject");
                                 window.location.href = "dashboard.html";
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                             }
                         },
                         error: function (jqXHR, text, error) {
 
-                            window.plugins.spinnerDialog.hide();
-
+                            // Displaying if there are any errors
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });

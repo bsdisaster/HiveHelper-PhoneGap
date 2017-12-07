@@ -65,13 +65,13 @@
                     </div>
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-                        
+
                         <input id="franchising-opportunities-phone" type="tel" class="changepassword-text input" maxlength="10">
                         <label>Phone*</label>
                     </div>
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-                        
+
                         <textarea id="franchising-opportunities-about-you" class="contactTextarea" col="6" row="10"></textarea>
                         <label>Tell us about you*</label>
                     </div>
@@ -90,6 +90,7 @@
             $("#franchising-opportunities-phone").mask("(999) 999-9999");
         });
 
+        var isMobileDevice = isMobile();
         // validation for pages.
         function isValidatePage() {
             var isResult = true;
@@ -138,7 +139,11 @@
             }
 
             if (countError > 0) {
-                navigator.notification.alert(msg, null, 'Warning', 'Close');
+                if (isMobileDevice) {
+                    navigator.notification.alert(msg, null, 'Warning', 'Close');
+                } else {
+                    alert(msg);
+                }
                 isResult = false;
             }
             return isResult;
@@ -147,7 +152,9 @@
         function SendData() {
             $('#btnSend').on('click', function (event) {
                 if (isValidatePage()) {
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
                     var phoneValue = $("#franchising-opportunities-phone").val().replace(/\D/g, "");
 
                     var parameter = {
@@ -167,31 +174,50 @@
                         data: JSON.stringify(parameter),
                         dataType: "json",
                         success: function (response) {
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             // Inserting html into the result div on success
                             if (response !== null && response.status === 1) {
-                                navigator.notification.alert("Your request send successfully!", null, 'Success', 'Close');
+
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Your request send successfully!", null, 'Success', 'Close');
+                                } else {
+                                    alert("Your request send successfully!");
+                                }
                                 ClearData();
                             }
                             else {
-                                navigator.notification.alert(response.message, null, "Warning", "Close");
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, "Warning", "Close");
+                                } else {
+                                    alert(response.message);
+                                }
                             }
 
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
-                                
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });
-
-
                 }
             });
         }

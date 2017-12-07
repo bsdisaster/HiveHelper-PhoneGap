@@ -49,12 +49,20 @@
                     var serviceId = null;
                     $(document).ready(function () {
                         serviceId = localStorage.getItem("serviceId");
+
+                        if (!isMobileDevice) {
+                            getAllServices();
+                        }
                     }).on('deviceready', function () {
                         document.addEventListener("deviceready", getAllServices, false);
                     });
 
+                    var isMobileDevice = isMobile();
+
                     function getAllServices() {
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        }
                         var parameter = { "serviceId": serviceId, "franchiseId": localStorage.getItem("franchiseId") };
 
                         $.ajax({
@@ -65,14 +73,16 @@
                             success: function (response) {
                                 // Inserting html into the result div on success
 
-                                window.plugins.spinnerDialog.hide();
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                }
                                 if (response !== null && response.status === 1) {
 
                                     var serviceCleaningData = response.data;
 
                                     if (serviceCleaningData.length > 0) {
                                         for (var i = 0; i < serviceCleaningData.length; i++) {
-                                            
+
                                             var html = '<a onclick="gotoSelectCleaningServiceDetailPage(' + serviceCleaningData[i].subServiceId + ',' + serviceCleaningData[i].franchiseId + ',\'' + serviceCleaningData[i].displaytitle + '\')" class="user-list-3">';
                                             html = html + '<strong>' + serviceCleaningData[i].displaytitle + '</strong>';
                                             html = html + '<i class="ion-ios-arrow-forward"></i>';
@@ -81,25 +91,42 @@
                                         }
                                     }
                                     else {
-                                        navigator.notification.alert("no subservice found", null, 'Warning', 'Close');
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert("no subservice found", null, 'Warning', 'Close');
+                                        } else {
+                                            alert("no subservice found");
+                                        }
                                         window.location.href = "bookhelper-service-type-list.html";
                                     }
                                 }
                                 else {
-                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                    } else {
+                                        alert(response.message);
+                                    }
                                     window.location.href = "bookhelper-service-type-list.html";
                                 }
                             },
                             error: function (jqXHR, text, error) {
                                 // Displaying if there are any errors
-                                window.plugins.spinnerDialog.hide();
-
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                }
                                 if (error == null || error == "") {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    }
+                                    else {
+                                        alert("It looks like you're offline.!");
+                                    }
 
                                 } else {
-                                    navigator.notification.alert(error, null, 'Error', 'Close');
-
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    } else {
+                                        alert(error);
+                                    }
                                 }
                             }
                         });

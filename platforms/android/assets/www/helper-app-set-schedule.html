@@ -394,13 +394,20 @@
                 <script type="text/javascript">
                     $(document).ready(function () {
                         saveSchedule();
+
+                        if (!isMobileDevice) {
+                            fetchSchedule();
+                        }
                     }).on('deviceready', function () {
                         document.addEventListener("deviceready", devicereadySuccess, false);
                     });
 
+
                     $(".drpSelectBox").on('change', function () {
                         disableDropdowns();
                     })
+
+                    var isMobileDevice = isMobile();
                     var count = 0;
 
                     function validateSelectedTime() {
@@ -421,15 +428,19 @@
                     }
 
                     function fetchSchedule() {
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        }
 
                         $.ajax({
-                            url: api_baseUrl + 'getSchedule/'+localStorage.getItem("userId"),
+                            url: api_baseUrl + 'getSchedule/' + localStorage.getItem("userId"),
                             type: "GET",
                             dataType: "JSON",
                             success: function (response) {
                                 // Inserting html into the result div on success
-                                window.plugins.spinnerDialog.hide();
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                }
                                 if (response !== null && response.data.schedule.length > 0 && response.status === 1) {
                                     for (var i = 0; i < response.data.schedule.length; i++) {
                                         if (response.data.schedule[i].weekDayId == "1") {
@@ -471,19 +482,34 @@
                                     disableDropdowns();
                                 }
                                 else {
-                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                    } else {
+                                        alert(response.message);
+                                    }
                                 }
 
                             },
                             error: function (jqXHR, text, error) {
                                 // Displaying if there are any errors
-                                window.plugins.spinnerDialog.hide();
-
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                }
                                 if (error == null || error == "") {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    }
+                                    else {
+                                        alert("It looks like you're offline.!");
+                                    }
 
                                 } else {
-                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    } else {
+                                        alert(error);
+                                    }
                                 }
                             }
                         });
@@ -504,7 +530,11 @@
 
                             validateSelectedTime();
                             if ($('#chkMondays').is(":not(:checked)") && $('#chkTuesdays').is(":not(:checked)") && $('#chkWednesdays').is(":not(:checked)") && $('#chkThursedays').is(":not(:checked)") && $('#chkFridays').is(":not(:checked)") && $('#chkSaturdays').is(":not(:checked)") && $('#chkSundays').is(":not(:checked)")) {
-                                navigator.notification.alert("Please select at least one shedule.", null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Please select at least one shedule.", null, 'Warning', 'Close');
+                                } else {
+                                    alert("Please select at least one shedule.");
+                                }
                             }
                             else if (count == 0) {
 
@@ -594,9 +624,9 @@
 
                                 mainArray.helperId = userId;
                                 mainArray.schedule = arrayItem;
-
-                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                }
                                 $.ajax({
                                     url: api_baseUrl + 'helperworktime',
                                     type: "POST",
@@ -604,30 +634,54 @@
                                     dataType: "JSON",
                                     success: function (response) {
                                         // Inserting html into the result div on success
-                                        window.plugins.spinnerDialog.hide();
+                                        if (isMobileDevice) {
+                                            window.plugins.spinnerDialog.hide();
+                                        }
                                         if (response !== null && response.status === 1) {
-                                            navigator.notification.alert("Schedule set successfully.", null, "Success", "Close");
+                                            if (isMobileDevice) {
+                                                navigator.notification.alert("Schedule set successfully.", null, "Success", "Close");
+                                            } else {
+                                                alert("Schedule set successfully.");
+                                            }
                                         }
                                         else {
-                                            navigator.notification.alert(response.message, null, "Warning", "Close");
+                                            if (isMobileDevice) {
+                                                navigator.notification.alert(response.message, null, "Warning", "Close");
+                                            } else {
+                                                alert(response.message);
+                                            }
                                         }
                                     },
                                     error: function (jqXHR, text, error) {
                                         // Displaying if there are any errors
-                                        window.plugins.spinnerDialog.hide();
-
+                                        if (isMobileDevice) {
+                                            window.plugins.spinnerDialog.hide();
+                                        }
                                         if (error == null || error == "") {
-                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                            if (isMobileDevice) {
+                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                            }
+                                            else {
+                                                alert("It looks like you're offline.!");
+                                            }
 
                                         } else {
-                                            navigator.notification.alert(error, null, "Error", "Close");
+                                            if (isMobileDevice) {
+                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                            } else {
+                                                alert(error);
+                                            }
                                         }
                                     }
                                 });
                             }
                             else {
                                 count = 0;
-                                navigator.notification.alert("Please select time.", null, "Warning", "Close");
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Please select time.", null, "Warning", "Close");
+                                } else {
+                                    alert("Please select time.");
+                                }
                             }
                         })
                     }

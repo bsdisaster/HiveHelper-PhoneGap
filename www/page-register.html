@@ -323,6 +323,12 @@
                                 window.plugins.spinnerDialog.hide();
                             }
                             if (response !== null && response.status === 1) {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert('Your registration was successful.!', null, 'Success', 'Close');
+                                }
+                                else {
+                                    alert("Your registration was successful.!");
+                                }
                                 window.location = "index.html";
                             }
                             else {
@@ -339,7 +345,6 @@
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             }
-
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

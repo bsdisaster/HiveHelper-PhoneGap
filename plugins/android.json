@@ -19,9 +19,6 @@
     "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
-    "cordova-plugin-stripe": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },

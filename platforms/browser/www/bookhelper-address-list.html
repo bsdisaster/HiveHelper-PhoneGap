@@ -57,13 +57,19 @@
 
             <script type="text/javascript">
                 $(document).ready(function () {
-
+                    if (!isMobileDevice) {
+                        getAllAddress();
+                    }
                 }).on('deviceready', function () {
                     document.addEventListener("deviceready", getAllAddress, false);
                 });
 
+                var isMobileDevice = isMobile();
+
                 function getAllAddress() {
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
                     var userId = localStorage.getItem("userId");
 
                     $.ajax({
@@ -72,7 +78,9 @@
                         dataType: "json",
                         success: function (response) {
                             // Inserting html into the result div on success
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (response !== null && response.status === 1) {
 
                                 var addressData = response.data;
@@ -105,54 +113,99 @@
                                 }
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                             }
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
-
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });
                 }
 
                 function removeUserAddress(object, userAddressId) {
-                    navigator.notification.confirm("Are you sure you want to delete ?", function (button) {
-                        if (button === 1) {
-                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        navigator.notification.confirm("Are you sure you want to delete ?", function (button) {
+                            if (button === 1) {
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
 
+                                $.ajax({
+                                    url: api_baseUrl + 'useraddress/removeUserAddress/' + userAddressId,
+                                    type: "GET",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        // Inserting html into the result div on success
+                                        window.plugins.spinnerDialog.hide();
+                                        if (response !== null && response.status === 1) {
+                                            $(object).parent().parent().remove();
+                                            navigator.notification.alert('Address removed successfully!', null, 'Success', 'Close');
+                                        }
+                                    },
+                                    error: function (jqXHR, text, error) {
+                                        // Displaying if there are any errors
+                                        window.plugins.spinnerDialog.hide();
+
+                                        if (error == null || error == "") {
+                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                        } else {
+                                            navigator.notification.alert(error, null, 'Error', 'Close');
+                                        }
+                                    }
+                                });
+                            }
+                        }, "Delete", "Ok,Cancel");
+                    } else {
+
+                        var res = confirm("Are you sure you want to delete ?");
+                        if (res == true) {
+                            
                             $.ajax({
                                 url: api_baseUrl + 'useraddress/removeUserAddress/' + userAddressId,
                                 type: "GET",
                                 dataType: "json",
                                 success: function (response) {
                                     // Inserting html into the result div on success
-                                    window.plugins.spinnerDialog.hide();
                                     if (response !== null && response.status === 1) {
                                         $(object).parent().parent().remove();
-                                        navigator.notification.alert('Address removed successfully!', null, 'Success', 'Close');
+                                        alert('Address removed successfully!');
                                     }
                                 },
                                 error: function (jqXHR, text, error) {
                                     // Displaying if there are any errors
-                                    window.plugins.spinnerDialog.hide();
-
                                     if (error == null || error == "") {
-                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                        alert("It looks like you're offline.!");
 
                                     } else {
-                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                        alert(error);
                                     }
                                 }
                             });
                         }
-                    }, "Delete", "Ok,Cancel");
+
+                    }
+
                 }
 
                 function gotoServiceTypePage(userAddressId) {

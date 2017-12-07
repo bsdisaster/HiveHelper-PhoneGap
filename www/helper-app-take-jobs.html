@@ -48,13 +48,19 @@
             </div>
             <script type="text/javascript">
                 $(document).ready(function () {
-
+                    if (!isMobileDevice) {
+                        getHelperUnfilledJobs();
+                    }
                 }).on('deviceready', function () {
                     document.addEventListener("deviceready", getHelperUnfilledJobs, false);
                 });
 
+                var isMobileDevice = isMobile();
+
                 function getHelperUnfilledJobs() {
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
                     var userId = localStorage.getItem("userId");
 
                     $.ajax({
@@ -63,7 +69,9 @@
                         dataType: "json",
                         success: function (response) {
                             // Inserting html into the result div on success
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (response !== null && response.status === 1) {
                                 var responseData = response.data;
                                 if (responseData != null && responseData.length > 0) {
@@ -95,27 +103,42 @@
                                 }
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
 
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                             }
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
-
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
-
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });
                 }
 
                 function takeJob(object) {
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
                     var helperId = $(object).attr("data-helper-id");
                     var appointmentId = $(object).attr("data-appointmentId-id");
 
@@ -128,28 +151,47 @@
                         dataType: "json",
                         success: function (response) {
                             // Inserting html into the result div on success
-                            window.plugins.spinnerDialog.hide();
-                            if (response !== null && response.status === 1) {
-                                navigator.notification.alert(response.message, null, 'Success', 'Close');
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
 
+                            if (response !== null && response.status === 1) {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Success', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                                 $(object).parent("div").parent("div").next("div").remove();
                                 $(object).parent("div").parent("div").remove();
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
 
                             }
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
-
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
-
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });

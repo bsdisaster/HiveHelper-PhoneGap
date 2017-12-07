@@ -151,6 +151,8 @@
             document.addEventListener("deviceready", devicereadySuccess, false);
         });
 
+        var isMobileDevice = isMobile();
+
         function removeFocus(inputEle) {
             $(inputEle).on('focus', function () {
                 $(inputEle).blur();
@@ -176,7 +178,9 @@
 
 
         function checkPreviousHelperAvailibility() {
-            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            }
 
             var parameter = {
                 "userId": localStorage.getItem('userId'),
@@ -190,20 +194,32 @@
                 dataType: "JSON",
                 success: function (response) {
                     // Inserting html into the result div on success
-                    window.plugins.spinnerDialog.hide();
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
                     if (response.status === 0) {
                         $("#btnPreviousHelper").hide();
                     }
                 },
                 error: function (jqXHR, text, error) {
                     // Displaying if there are any errors
-                    window.plugins.spinnerDialog.hide();
-
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    }
                     if (error == null || error == "") {
-                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        if (isMobileDevice) {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        }
+                        else {
+                            alert("It looks like you're offline.!");
+                        }
 
                     } else {
-                        $("#btnPreviousHelper").hide();
+                        if (isMobileDevice) {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        } else {
+                            alert(error);
+                        }
                     }
                 }
             });
@@ -212,7 +228,9 @@
         function getAllSelectCleaningServices() {
 
             if ($("#calDate").val() != '') {
-                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                }
 
                 var date = new Date($("#calDate").val());
                 var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
@@ -230,7 +248,9 @@
                     datatype: "json",
                     success: function (response) {
                         // Inserting html into the result div on success
-                        window.plugins.spinnerDialog.hide();
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
 
                         if (response.data.length != 0 && response.status == 1) {
 
@@ -260,21 +280,33 @@
                     },
                     error: function (jqXHR, text, error) {
                         // Displaying if there are any errors
-
-                        window.plugins.spinnerDialog.hide();
-
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                         if (error == null || error == "") {
-                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+                            else {
+                                alert("It looks like you're offline.!");
+                            }
 
                         } else {
-                            navigator.notification.alert(error, null, 'Error', 'Close');
-                            $('.page-userlist').html('');
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                alert(error);
+                            }
                         }
                     }
                 });
             }
             else {
-                navigator.notification.alert("Please enter date!", null, 'Error', 'Close');
+                if (isMobileDevice) {
+                    navigator.notification.alert("Please enter date!", null, 'Error', 'Close');
+                } else {
+                    alert("Please enter date!");
+                }
             }
         }
 
@@ -290,15 +322,30 @@
 
         function requestAppointment() {
             if ($('#scheduleFrom').val() == null || $('#scheduleFrom').val() == "Select Time") {
-                navigator.notification.alert("Please select schedule from.!", null, "Warning", "Close");
+                if (isMobileDevice) {
+                    navigator.notification.alert("Please select schedule from.!", null, "Warning", "Close");
+                } else {
+                    alert("Please select schedule from.!");
+                }
             }
             else if ($('#scheduleTo').val() == null || $('#scheduleTo').val() == "Select Time") {
-                navigator.notification.alert("Please select schedule to.!", null, "Warning", "Close");
+                
+                if (isMobileDevice) {
+                    navigator.notification.alert("Please select schedule to.!", null, "Warning", "Close");
+                } else {
+                    alert("Please select schedule to.!");
+                }
             } else if ($('.contactTextarea').val() == "") {
-                navigator.notification.alert("Please enter description.!", null, "Warning", "Close");
+                if (isMobileDevice) {
+                    navigator.notification.alert("Please enter description.!", null, "Warning", "Close");
+                } else {
+                    alert("Please enter description.!");
+                }
             }
             else {
-                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                }
 
                 var date = new Date($("#calDate").val());
                 var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
@@ -322,24 +369,44 @@
                     dataType: "JSON",
                     success: function (response) {
                         // Inserting html into the result div on success
-                        window.plugins.spinnerDialog.hide();
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                         if (response !== null && response.status === 1) {
-                            navigator.notification.alert("Your request has been sent.!", null, "Success", "Close");
+                            if (isMobileDevice) {
+                                navigator.notification.alert("Your request has been sent.!", null, "Success", "Close");
+                            } else {
+                                alert("Your request has been sent.!");
+                            }
                             window.location.href = "dashboard.html";
                         }
                         else {
-                            navigator.notification.alert(response.message, null, "Warning", "Close");
+                            if (isMobileDevice) {
+                                navigator.notification.alert(response.message, null, "Warning", "Close");
+                            } else {
+                                alert(response.message);
+                            }
                         }
                     },
                     error: function (jqXHR, text, error) {
                         // Displaying if there are any errors
-                        window.plugins.spinnerDialog.hide();
-
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        }
                         if (error == null || error == "") {
-                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+                            else {
+                                alert("It looks like you're offline.!");
+                            }
 
                         } else {
-                            navigator.notification.alert(error, null, "Error", "Close");
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                alert(error);
+                            }
                         }
                     }
                 });

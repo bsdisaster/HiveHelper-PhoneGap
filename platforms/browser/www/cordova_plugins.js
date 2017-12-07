@@ -53,20 +53,6 @@ module.exports = [
         "runs": true
     },
     {
-        "file": "plugins/cordova-plugin-stripe/www/CordovaStripe.js",
-        "id": "cordova-plugin-stripe.stripe",
-        "pluginId": "cordova-plugin-stripe",
-        "clobbers": [
-            "cordova.plugins.stripe"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-stripe/src/browser/CordovaStripe.js",
-        "id": "cordova-plugin-stripe.CordovaStripe",
-        "pluginId": "cordova-plugin-stripe",
-        "runs": true
-    },
-    {
         "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
         "id": "cordova-plugin-x-toast.Toast",
         "pluginId": "cordova-plugin-x-toast",
@@ -119,7 +105,6 @@ module.exports.metadata =
     "cordova-plugin-dialogs": "1.3.3",
     "cordova-plugin-spinnerdialog": "1.3.2",
     "cordova-plugin-splashscreen": "4.0.3",
-    "cordova-plugin-stripe": "1.5.3",
     "cordova-plugin-webserver": "1.0.3",
     "cordova-plugin-whitelist": "1.3.2",
     "cordova-plugin-x-toast": "2.6.0",

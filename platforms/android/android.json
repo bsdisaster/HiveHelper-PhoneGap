@@ -25,10 +25,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"CordovaStripe\"><param name=\"android-package\" value=\"com.zyramedia.cordova.stripe.CordovaStripe\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         },
@@ -142,9 +138,6 @@
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "hive.helper.app.html"
         },
-        "cordova-plugin-stripe": {
-            "PACKAGE_NAME": "hive.helper.app.html"
-        },
         "cordova-plugin-webserver": {
             "PACKAGE_NAME": "hive.helper.app.html"
         },
@@ -208,14 +201,6 @@
             ]
         },
         {
-            "id": "cordova-plugin-stripe.stripe",
-            "file": "plugins/cordova-plugin-stripe/www/CordovaStripe.js",
-            "pluginId": "cordova-plugin-stripe",
-            "clobbers": [
-                "cordova.plugins.stripe"
-            ]
-        },
-        {
             "id": "cordova-plugin-x-toast.Toast",
             "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
             "pluginId": "cordova-plugin-x-toast",
@@ -274,7 +259,6 @@
         "cordova-plugin-dialogs": "1.3.3",
         "cordova-plugin-spinnerdialog": "1.3.2",
         "cordova-plugin-splashscreen": "4.0.3",
-        "cordova-plugin-stripe": "1.5.3",
         "cordova-plugin-webserver": "1.0.3",
         "cordova-plugin-whitelist": "1.3.2",
         "cordova-plugin-x-toast": "2.6.0",

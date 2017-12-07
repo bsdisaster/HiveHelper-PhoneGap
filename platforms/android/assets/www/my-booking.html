@@ -24,7 +24,7 @@
 
 <body>
     <div id="page-transitions">
-         
+
         <div class="header header-logo-center header-light">
             <a href="dashboard.html" class="header-icon header-icon-5" target="_self">
                 <img src="images/back_arrow.png" height="20" />
@@ -39,6 +39,15 @@
                 <!--Enables this element to be scrolled -->
                 <div class="decoration decoration-margins"></div>
                 <div class="content">
+                    <div>
+                        <h1>Due Services</h1>
+                    </div>
+                    <div>
+                        <label id="lblDueListError" class="bold color-red-dark"></label>
+                    </div>
+                    <div id="divDue" class="page-userlist content-scroll">
+                    </div>
+                    <div class="decoration decoration-margins"></div>
                     <div>
                         <h1>Pending Services</h1>
                     </div>
@@ -97,9 +106,32 @@
                             }
                             if (response !== null && response.status === 1) {
 
+                                var dueBooking = response.data.duedateBooking;
                                 var pendingBooking = response.data.pendingBooking;
                                 var upcomingBooking = response.data.upcomingBooking;
                                 var previousBooking = response.data.previousBooking;
+
+                                // due booking list
+                                if (dueBooking.length > 0) {
+                                    var html = '';
+                                    for (var i = 0; i < dueBooking.length; i++) {
+                                        var serviceName = '<b>Service:</b> ' + dueBooking[i].serviceName + ' </br>';
+                                        var appointmentDateTime = '<b>Date:</b> ' + dueBooking[i].appointmentDate + '  </br>';
+                                        var providerName = '<b>Provider:</b> ' + dueBooking[i].franchiseName + ' </br>';
+
+                                        html = html + '<div class="user-list-3 user-list-1-change">';
+                                        html = html + '<div class="col-sm-9">';
+
+                                        html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                        html = html + '</div>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="clear"></div></div>';
+                                    }
+                                    $('#divDue').append(html);
+                                }
+                                else {
+                                    $('#lblDueListError').text('No due booking records found.!');
+                                }
 
                                 // pending booking list
                                 if (pendingBooking.length > 0) {
@@ -107,7 +139,7 @@
                                     for (var i = 0; i < pendingBooking.length; i++) {
                                         var serviceName = '<b>Service:</b> ' + pendingBooking[i].serviceName + ' </br>';
                                         var appointmentDateTime = '<b>Date:</b> ' + pendingBooking[i].appointmentDate + '  </br>';
-                                        var providerName = '<b>Provider:</b> ' + pendingBooking[i].franchiseName +' </br>';
+                                        var providerName = '<b>Provider:</b> ' + pendingBooking[i].franchiseName + ' </br>';
 
                                         html = html + '<div class="user-list-3 user-list-1-change">';
                                         html = html + '<div class="col-sm-9">';
@@ -137,7 +169,7 @@
                                         html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ')" target="_self"><img src="images/Edit.png" alt="Edit" class="preload-image bg-blue edit-img" /></a>';
+                                        html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ',\'' + upcomingBooking[i].displaydate + '\')" target="_self"><img src="images/Edit.png" alt="Edit" class="preload-image bg-blue edit-img" /></a>';
                                         html = html + '</div>';
                                         html = html + '</div>';
                                         html = html + '<div class="clear"></div></div>';
@@ -219,15 +251,17 @@
                     })
                 }
 
-                function editAppointment(helperId, appointmentId, franchiseId, subServiceId) {
+                function editAppointment(helperId, appointmentId, franchiseId, subServiceId, appointmentSelectedTime) {
+                   
                     localStorage.setItem("appointmentId", appointmentId);
                     localStorage.setItem("helperId", helperId);
-					localStorage.setItem("franchiseId", franchiseId);
-					localStorage.setItem("subServiceId", subServiceId);
-					
+                    localStorage.setItem("franchiseId", franchiseId);
+                    localStorage.setItem("subServiceId", subServiceId);
+                    localStorage.setItem("helperSelectedTime", appointmentSelectedTime.substring(appointmentSelectedTime.indexOf("@") + 1).trim());
+
                     window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
                 }
-				
+
             </script>
         </div>
     </div>

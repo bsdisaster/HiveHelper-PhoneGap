@@ -96,6 +96,9 @@
             $("#become-a-helper-firstname").focus();
             $("#become-a-helper-phone").mask("(999) 999-9999");
         });
+
+        var isMobileDevice = isMobile();
+
         // validation for pages.
         function IsValidatePage() {
             var isResult = true;
@@ -155,7 +158,11 @@
             }
 
             if (countError > 0) {
-                navigator.notification.alert(msg, null, 'Warning', 'Close');
+                if (isMobileDevice) {
+                    navigator.notification.alert(msg, null, 'Warning', 'Close');
+                } else {
+                    alert(msg);
+                }
                 isResult = false;
             }
             return isResult;
@@ -165,8 +172,9 @@
             $('#btnSend').on('click', function (event) {
 
                 if (IsValidatePage()) {
-
-                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    }
                     var phoneValue = $("#become-a-helper-phone").val().replace(/\D/g, "");
 
                     var parameter = {
@@ -187,28 +195,45 @@
                         data: JSON.stringify(parameter),
                         dataType: "json",
                         success: function (response) {
-                            window.plugins.spinnerDialog.hide();
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             // Inserting html into the result div on success
                             if (response !== null && response.status === 1) {
-
-                                navigator.notification.alert("your request have been received!", null, 'Success', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("your request have been received!", null, 'Success', 'Close');
+                                } else {
+                                    alert("your request have been received!");
+                                }
                                 ClearData();
                             }
                             else {
-                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
-
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    alert(response.message);
+                                }
                             }
-
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            window.plugins.spinnerDialog.hide();
-
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
                             if (error == null || error == "") {
-                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+                                else {
+                                    alert("It looks like you're offline.!");
+                                }
 
                             } else {
-                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    alert(error);
+                                }
                             }
                         }
                     });
