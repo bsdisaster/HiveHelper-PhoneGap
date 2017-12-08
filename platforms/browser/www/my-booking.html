@@ -39,55 +39,76 @@
                 <!--Enables this element to be scrolled -->
                 <div class="decoration decoration-margins"></div>
                 <div class="content">
-                    <div>
-                        <h1>Due Services</h1>
-                    </div>
-                    <div>
-                        <label id="lblDueListError" class="bold color-red-dark"></label>
-                    </div>
-                    <div id="divDue" class="page-userlist content-scroll">
-                    </div>
-                    <div class="decoration decoration-margins"></div>
-                    <div>
-                        <h1>Pending Services</h1>
-                    </div>
-                    <div>
-                        <label id="lblPendingListError" class="bold color-red-dark"></label>
-                    </div>
-                    <div id="divPending" class="page-userlist content-scroll">
-                    </div>
-                    <div class="decoration decoration-margins"></div>
-                    <div>
-                        <h1>Upcoming Services</h1>
-                    </div>
-                    <div>
-                        <label id="lblUpcomingListError" class="bold color-red-dark"></label>
-                    </div>
-                    <div id="divUpComming" class="page-userlist content-scroll">
-                    </div>
-                    <div class="decoration decoration-margins"></div>
-                    <div>
-                        <h1>Previous Services</h1>
-                    </div>
-                    <div>
-                        <label id="lblPreviousListError" class="bold color-red-dark"></label>
-                    </div>
-                    <div id="divPreviousComming" class="page-userlist content-scroll">
 
+                    <div class="accordion-container">
+                        <a href="#" class="accordion-toggle">Due Services</a>
+                        <div class="accordion-content">
+                            <div>
+                                <label id="lblDueListError" class="bold color-red-dark"></label>
+                            </div>
+                            <div id="divDue" class="page-userlist content-scroll">
+                            </div>
+                        </div>
                     </div>
-                    <div class="decoration decoration-margins"></div>
+                    <div class="accordion-container">
+                        <a href="#" class="accordion-toggle">Pending Services</a>
+                        <div class="accordion-content">
+                            <div>
+                                <label id="lblPendingListError" class="bold color-red-dark"></label>
+                            </div>
+                            <div id="divPending" class="page-userlist content-scroll">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-container">
+                        <a href="#" class="accordion-toggle">Upcoming Services</a>
+                        <div class="accordion-content">
+                            <div>
+                                <label id="lblUpcomingListError" class="bold color-red-dark"></label>
+                            </div>
+                            <div id="divUpComming" class="page-userlist content-scroll">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-container">
+                        <a href="#" class="accordion-toggle">Previous Services</a>
+                        <div class="accordion-content">
+                            <div>
+                                <label id="lblPreviousListError" class="bold color-red-dark"></label>
+                            </div>
+                            <div id="divPreviousComming" class="page-userlist content-scroll">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <script type="text/javascript">
                 $(document).ready(function () {
+
                     if (!isMobileDevice) {
                         getAllServices();
                     }
+                    accordionMenu();
                 }).on('deviceready', function () {
                     document.addEventListener("deviceready", getAllServices, false);
                 });
 
                 var isMobileDevice = isMobile();
+
+                function accordionMenu() {
+                    $('.accordion-toggle').on('click', function (event) {
+                        event.preventDefault();
+                        // create accordion variables
+                        var accordion = $(this);
+                        var accordionContent = accordion.next('.accordion-content');
+
+                        // toggle accordion link open class
+                        accordion.toggleClass("open");
+                        // toggle accordion content
+                        accordionContent.slideToggle(250);
+
+                    });
+                }
 
                 function getAllServices() {
                     if (isMobileDevice) {
@@ -169,7 +190,7 @@
                                         html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ',\'' + upcomingBooking[i].displaydate + '\')" target="_self"><img src="images/Edit.png" alt="Edit" class="preload-image bg-blue edit-img" /></a>';
+                                        html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ',\'' + upcomingBooking[i].displaydate + '\',\'' + upcomingBooking[i].appointmentDate + '\')" target="_self"><img src="images/Edit.png" alt="Edit" class="preload-image bg-blue edit-img" /></a>';
                                         html = html + '</div>';
                                         html = html + '</div>';
                                         html = html + '<div class="clear"></div></div>';
@@ -251,13 +272,14 @@
                     })
                 }
 
-                function editAppointment(helperId, appointmentId, franchiseId, subServiceId, appointmentSelectedTime) {
-                   
+                function editAppointment(helperId, appointmentId, franchiseId, subServiceId, appointmentSelectedTime, appointmentDate) {
+
                     localStorage.setItem("appointmentId", appointmentId);
                     localStorage.setItem("helperId", helperId);
                     localStorage.setItem("franchiseId", franchiseId);
                     localStorage.setItem("subServiceId", subServiceId);
                     localStorage.setItem("helperSelectedTime", appointmentSelectedTime.substring(appointmentSelectedTime.indexOf("@") + 1).trim());
+                    localStorage.setItem("providerDate", appointmentDate);
 
                     window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
                 }

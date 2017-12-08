@@ -36,54 +36,50 @@
         </div>
         <div id="page-content" class="page-content">
             <div id="page-content-scroll" class="header-clear">
-                <div class="page-fullscreen">
-                    <div class="page-fullscreen-content">
-                        <div class="pageapp-login register">
-                            <div class="page-login-input animate-fade">
-                                <i class="login-icon ion-person"></i>
-                                <input id="register-firstname" type="text" value="First name" onfocus="if (this.value=='First name') this.value = ''" onblur="if (this.value=='') this.value = 'First name'">
-                            </div>
-                            <div class="page-login-input animate-fade animate-delay-100">
-                                <i class="login-icon ion-person"></i>
-                                <input id="register-lastname" type="text" value="Last name" onfocus="if (this.value=='Last name') this.value = ''" onblur="if (this.value=='') this.value = 'Last name'">
-                            </div>
-                            <div class="page-login-input animate-fade animate-delay-200">
-                                <i class="login-icon ion-android-mail"></i>
-                                <input id="register-email" type="text" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
-                            </div>
-                            <div class="page-login-input full-bottom animate-fade animate-delay-300">
-                                <i class="login-icon ion-asterisk"></i>
-                                <input id="register-password" type="password" value="Password" onfocus="if (this.value=='Password') this.value = ''" onblur="if (this.value=='') this.value = 'Password'">
-                            </div>
-                            <div class="page-login-input full-bottom animate-fade animate-delay-300">
-                                <i class="login-icon ion-at"></i>
-                                <input id="register-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = '' }; addMask(this);">
-                            </div>
+                <div class="pageapp-login content">
+                    <div class="page-login-input animate-fade">
+                        <i class="login-icon ion-person"></i>
+                        <input id="register-firstname" type="text" value="First name" onfocus="if (this.value=='First name') this.value = ''" onblur="if (this.value=='') this.value = 'First name'">
+                    </div>
+                    <div class="page-login-input animate-fade animate-delay-100">
+                        <i class="login-icon ion-person"></i>
+                        <input id="register-lastname" type="text" value="Last name" onfocus="if (this.value=='Last name') this.value = ''" onblur="if (this.value=='') this.value = 'Last name'">
+                    </div>
+                    <div class="page-login-input animate-fade animate-delay-200">
+                        <i class="login-icon ion-android-mail"></i>
+                        <input id="register-email" type="text" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
+                    </div>
+                    <div class="page-login-input full-bottom animate-fade animate-delay-300">
+                        <i class="login-icon ion-asterisk"></i>
+                        <input id="register-password" type="password" value="Password" onfocus="if (this.value=='Password') this.value = ''" onblur="if (this.value=='') this.value = 'Password'">
+                    </div>
+                    <div class="page-login-input full-bottom animate-fade animate-delay-300">
+                        <i class="login-icon ion-at"></i>
+                        <input id="register-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = '' }; addMask(this);">
+                    </div>
 
-                            <div class="page-login-input animate-fade animate-delay-400">
-                                <i class="login-icon ion-at"></i>
-                                <input id="register-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value == '') this.value = 'Address'">
-                            </div>
-                            <div class="page-login-input animate-fade animate-delay-600">
-                                <i class="login-icon ion-at"></i>
-                                <div class="select-box-light">
-                                    <select id="ddlState"></select>
-                                </div>
-                            </div>
-                            <div class="page-login-input animate-fade animate-delay-500">
-                                <i class="login-icon ion-at"></i>
-                                <input id="register-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'">
-                            </div>
-
-                            <div class="page-login-input animate-fade animate-delay-700">
-                                <i class="login-icon ion-at"></i>
-                                <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'">
-                            </div>
-
-                            <button id="btnCreateAccount" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-800"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
-                            <div class="clear"></div>
+                    <div class="page-login-input animate-fade animate-delay-400">
+                        <i class="login-icon ion-at"></i>
+                        <input id="register-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value == '') this.value = 'Address'">
+                    </div>
+                    <div class="page-login-input animate-fade animate-delay-600">
+                        <i class="login-icon ion-at"></i>
+                        <div class="select-box-light">
+                            <select id="ddlState" disabled></select>
                         </div>
                     </div>
+                    <div class="page-login-input animate-fade animate-delay-500">
+                        <i class="login-icon ion-at"></i>
+                        <input id="register-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'" onclick="showAlert('city')" readonly>
+                    </div>
+
+                    <div class="page-login-input animate-fade animate-delay-700">
+                        <i class="login-icon ion-at"></i>
+                        <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'" onclick="showAlert('zipcode')" readonly>
+                    </div>
+
+                    <button id="btnCreateAccount" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-800"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
+                    <div class="clear"></div>
                 </div>
             </div>
         </div>
@@ -128,6 +124,15 @@
 
         function addMask(inputEle) {
             $(inputEle).mask('(999) 999-9999');
+        }
+
+        function showAlert(ele) {
+            if (isMobileDevice) {
+                navigator.notification.alert("Please update your address to change " + ele + ".!", null, "Warning", "Close");
+            }
+            else {
+                alert("Please update your address to change " + ele + ".!");
+            }
         }
 
         function fillInAddress() {
