@@ -92,11 +92,12 @@
 
                                 var upcomingJobs = response.data.upcomingJobs;
                                 var previousJobs = response.data.previousJobs;
-
+                               
                                 // upcoming jobs list
                                 if (upcomingJobs.length > 0) {
-                                    var html = '';
+                                    
                                     for (var i = 0; i < upcomingJobs.length; i++) {
+                                        var html = '';
                                         var serviceName = '<b>Service:</b> ' + upcomingJobs[i].Service + ' </br>';
                                         var date = '<b>Date:</b> ' + upcomingJobs[i].Date + '  </br>';
                                         var clientName = '<b>Client:</b> ' + upcomingJobs[i].Client + '  </br>';
@@ -110,8 +111,8 @@
                                         html = html + '<a href="#" class="button-blue button-view" target="_self" onclick="viewAppointmentDetails(' + upcomingJobs[i].appointmentId + ')">View</a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
+                                        $('#divUpComming').append(html);
                                     }
-                                    $('#divUpComming').append(html);
                                 }
                                 else {
                                     $("#lblUpcomingListError").text("No Upcoming jobs found.!");
@@ -119,8 +120,9 @@
 
                                 // previous jobs list
                                 if (previousJobs.length > 0) {
-                                    var html = '';
+                                    
                                     for (var i = 0; i < previousJobs.length; i++) {
+                                        var html = '';
                                         var serviceName = '<b>Service:</b> ' + previousJobs[i].Service + ' </br>';
                                         var date = '<b>Date:</b> ' + previousJobs[i].Date + '  </br>';
                                         var clientName = '<b>Provider:</b> ' + previousJobs[i].Client + '  </br>';
@@ -134,8 +136,9 @@
                                         html = html + '<a href="#" class="button-blue button-view" target="_self"onclick="viewAppointmentDetails(' + previousJobs[i].appointmentId + ')">View</a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
+                                        $('#divPreviousComming').append(html);
                                     }
-                                    $('#divPreviousComming').append(html);
+                                    
                                 }
                                 else {
                                     $("#lblPreviousListError").text("No Previous jobs found.!");
@@ -147,7 +150,7 @@
                                 } else {
                                     alert(response.message);
                                 }
-                                window.location = "dashboard.html";
+                                window.location = "hive-helper-my-schedule.html";
                             }
                         },
                         error: function (jqXHR, text, error) {

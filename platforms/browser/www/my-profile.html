@@ -46,7 +46,7 @@
                     <div class="right-text">
                         <div class="inline-block-bottom-text" onclick="clickImage()"><label>Change</label></div>
                         <div class="inline-block">
-                            <img class="img-border-radius" width="50" height="50" />
+                            <img class="img-border-radius" width="100" height="100" />
                             <input type="file" id="my_file" accept="image/*" style="display: none;" />
                         </div>
                     </div>
@@ -261,10 +261,16 @@
                             var reader = new FileReader();
                             reader.onloadend = function () {
                                 callback(reader.result);
-                            }
+                            };
                             reader.readAsDataURL(xhr.response);
                         };
-                        xhr.open('GET', url);
+                        if (isMobileDevice) {
+                            xhr.open('GET', url);
+                        } else {
+                            var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                            xhr.open('GET', proxyUrl + url);
+                        }
+                        
                         xhr.responseType = 'blob';
                         xhr.send();
                     }

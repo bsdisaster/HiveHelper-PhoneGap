@@ -43,26 +43,27 @@
                 <h3 class="center-text">Hours/Pay</h3>
                 <div class="pageapp-login">
                     <div>
-                        <input type="checkbox" id="chkPaidJobs">
-                        <label for="chkPaidJobs" id="lblPaidJobs">Paid Jobs</label>
+                        <input type="checkbox" id="chkPaidJobs" onchange="toggleButtonChangeText(this)">
+                        <label for="chkPaidJobs" id="lblPaidJobs">Unpaid jobs</label>
                     </div>
                     <div class="clear">&nbsp;</div>
-                    <div class="page-login-input light calendar-bgcolor calender-pay-h">
-                        <i class="login-icon ion-calendar calendar-line-height"></i>
-                        <input id="calDate1" type="text" value="From Date">
+                    <div id="rangeBox" style="display:none">
+                        <div class="page-login-input light calendar-bgcolor calender-pay-h">
+                            <i class="login-icon ion-calendar calendar-line-height"></i>
+                            <input id="calDate1" type="text" value="From Date" onchange="getPaymentHistory()">
+                        </div>
+                        <div class="page-login-input light calendar-bgcolor calender-pay-h">
+                            <i class="login-icon ion-calendar calendar-line-height"></i>
+                            <input id="calDate2" type="text" value="To Date" onchange="getPaymentHistory()">
+                        </div>
+                        <div class="clear">&nbsp;</div>
                     </div>
-                    <div class="page-login-input light calendar-bgcolor calender-pay-h">
-                        <i class="login-icon ion-calendar calendar-line-height"></i>
-                        <input id="calDate2" type="text" value="To Date">
-                    </div>
-                    <div class="clear">&nbsp;</div>
-
                 </div>
                 <div class="payment-total">
                     <div class="page-login-input animate-fade">
                         <h3>
                             <label class="bold inline-block">Total : </label>
-                            <pre class="inline-block">$190.00</pre>
+                            <pre class="inline-block" id="lblGrandTotal"></pre>
                         </h3>
                     </div>
                 </div>
@@ -76,38 +77,6 @@
                             <td>Hours</td>
                             <td>Rate</td>
                             <td>Total</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>12/1/2017</td>
-                            <td>Cleaning</td>
-                            <td>Joe smith</td>
-                            <td>6</td>
-                            <td>$15</td>
-                            <td>$90</td>
-                        </tr>
-                        <tr>
-                            <td>12/1/2017</td>
-                            <td>Cleaning</td>
-                            <td>Joe smith</td>
-                            <td>6</td>
-                            <td>$15</td>
-                            <td>$90</td>
-                        </tr>
-                        <tr>
-                            <td>12/1/2017</td>
-                            <td>Cleaning</td>
-                            <td>Joe smith</td>
-                            <td>6</td>
-                            <td>$15</td>
-                            <td>$90</td>
                         </tr>
                     </table>
                 </div>
@@ -123,22 +92,131 @@
         var date = new Date();
         selectedWeekDayNumber = date.getUTCDay() + 1;
 
-        $('#calDate1,#calDate2').datepicker({
-            minDate: 1
-        }).on("change", function () {
-            var date = $(this).datepicker('getDate');
-            selectedWeekDayNumber = date.getUTCDay() + 1;
-        });
+        rangeBoxes();
         removeFocus('#calDate1');
         removeFocus('#calDate2');
+        getPaymentHistory();
 
     }).on('deviceready', function () {
 
     });
 
+    var isMobileDevice = isMobile();
+
+    function getClickedRow() {
+        $('#tblPayment tr').on('click', function () {
+            $(this).find('td').each(function () {
+                console.log($(this));
+            });
+        })
+    }
+
+    var jobType = 'unpaid';
+
+    function toggleButtonChangeText(ele) {
+        if ($(ele).is(":checked")) {
+            $('#lblPaidJobs').text('Paid jobs');
+            $('#rangeBox').show();
+            jobType = 'paid';
+        } else {
+            $('#lblPaidJobs').text('Unpaid jobs');
+            $('#rangeBox').hide();
+            jobType = 'unpaid';
+        }
+    }
+
+    function rangeBoxes() {
+        $('#calDate1,#calDate2').datepicker({
+            dateFormat: 'dd-mm-yy'
+        }).on("change", function () {
+            var date = $(this).datepicker('getDate');
+            selectedWeekDayNumber = date.getUTCDay() + 1;
+        });
+    }
     function removeFocus(inputEle) {
         $(inputEle).on('focus', function () {
             $(inputEle).blur();
         })
+    }
+
+    function getPaymentHistory() {
+        if (isMobileDevice) {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+        }
+        var fromDate = "";
+        var toDate = "";
+
+        if ($("#calDate1").val() !== "From Date") {
+            fromDate = $("#calDate1").val();
+        }
+        if ($("#calDate2").val() !== "To Date") {
+            toDate = $("#calDate2").val();
+        }
+
+        var parameter = {
+            "helperid": "218",
+            "From": fromDate,
+            "To": toDate,
+            "type": jobType
+        }
+
+        $.ajax({
+            url: api_baseUrl + 'Helper/helperPay/',
+            data: JSON.stringify(parameter),
+            type: "POST",
+            dataType: "JSON",
+            success: function (response) {
+                // Inserting html into the result div on success
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.hide();
+                }
+                $('#tblPayment').find("tr:gt(0)").remove();
+                $('#lblGrandTotal').text("$0.0");
+                if (response !== null && response.status === 1) {
+
+                    var paymentData = response.data.helperappointment;
+                    
+                    if (paymentData.length > 0) {
+                        for (var i = 0; i < paymentData.length; i++) {
+                            var row = '<tr><td>' + paymentData[i].appointmentDate + '</td><td>' + paymentData[i].serviceName + '</td><td>' + paymentData[i].clientName + '</td><td>' + paymentData[i].appointmentHours + '</td><td>' + paymentData[i].perHourAmount + '</td><td>' + paymentData[i].totalAmount + '</td></tr>';
+                            $('#tblPayment').append(row);
+                        }
+                    }
+                    $('#lblGrandTotal').text(response.data.grandTotal);
+                }
+                else {
+                    if (isMobileDevice) {
+                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                }
+            },
+            error: function (jqXHR, text, error) {
+                // Displaying if there are any errors
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.hide();
+                }
+
+                if (error == null || error == "") {
+                    if (isMobileDevice) {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                    }
+                    else {
+                        alert("It looks like you're offline.!");
+                    }
+
+                } else {
+                    if (isMobileDevice) {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+                    }
+                    else {
+                        alert(error);
+                    }
+                }
+            }
+        });
+
     }
 </script>
