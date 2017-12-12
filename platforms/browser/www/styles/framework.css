@@ -1578,11 +1578,6 @@ ol {
     display: block;
 }
 
-.right-text {
-    text-align: right;
-    display: block;
-}
-
 .center-text-mobile {
     text-align: center;
     display: block;
@@ -11866,3 +11861,10 @@ button.swiper-pagination-bullet {
             padding: 20px;
             overflow: scroll;
         }
+.smaller-font{
+    font-size: smaller;
+}
+.right-text {
+    text-align: right;
+    display: block;
+}

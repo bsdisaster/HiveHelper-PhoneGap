@@ -40,25 +40,38 @@
                 <div class="decoration decoration-margins"></div>
                 <div class="content">
 
-                    <div>
-                        <h1>Upcoming Jobs</h1>
+                    <div class="accordion-container">
+                        <a href="#" class="accordion-toggle">Upcoming Jobs</a>
+                        <div class="accordion-content">
+                            <div>
+                                <label id="lblUpcomingListError" class="bold color-red-dark"></label>
+                            </div>
+                            <div id="divUpComming" class="page-userlist content-scroll">
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label id="lblUpcomingListError" class="bold color-red-dark"></label>
-                    </div>
-                    <div id="divUpComming" class="page-userlist content-scroll-helper-booking">
-                    </div>
-                    <div class="decoration decoration-margins"></div>
-                    <div>
-                        <h1>Previous Jobs</h1>
-                    </div>
-                    <div>
-                        <label id="lblPreviousListError" class="bold color-red-dark"></label>
-                    </div>
-                    <div id="divPreviousComming" class="page-userlist content-scroll-helper-booking">
 
+                    <div class="accordion-container">
+                        <a href="#" class="accordion-toggle">Due Jobs</a>
+                        <div class="accordion-content">
+                            <div>
+                                <label id="lblDueListError" class="bold color-red-dark"></label>
+                            </div>
+                            <div id="divDue" class="page-userlist content-scroll">
+                            </div>
+                        </div>
                     </div>
-                    <div class="decoration decoration-margins"></div>
+
+                    <div class="accordion-container">
+                        <a href="#" class="accordion-toggle">Previous Jobs</a>
+                        <div class="accordion-content">
+                            <div>
+                                <label id="lblPreviousListError" class="bold color-red-dark"></label>
+                            </div>
+                            <div id="divPreviousComming" class="page-userlist content-scroll">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <script type="text/javascript">
@@ -66,12 +79,34 @@
                     if (!isMobileDevice) {
                         getAllServices();
                     }
+                    accordionMenu();
                 }).on('deviceready', function () {
                     document.addEventListener("deviceready", getAllServices, false);
 
                 });
 
                 var isMobileDevice = isMobile();
+
+                function accordionMenu() {
+                    $('.accordion-toggle').on('click', function (event) {
+                        event.preventDefault();
+                        // create accordion variables
+                        var accordion = $(this);
+                        var accordionContent = accordion.next('.accordion-content');
+
+                        // toggle accordion link open class
+                        accordion.toggleClass("open");
+                        // toggle accordion content
+                        accordionContent.slideToggle(250);
+
+                        if ($('.accordion-toggle').hasClass("open")) {
+                            $('.accordion-toggle').hide();
+                            $(this).show();
+                        } else {
+                            $('.accordion-toggle').show();
+                        }
+                    });
+                }
 
                 function getAllServices() {
                     if (isMobileDevice) {
@@ -91,11 +126,12 @@
                             if (response !== null && response.status === 1) {
 
                                 var upcomingJobs = response.data.upcomingJobs;
+                                var dueJobs = response.data.dueDateJobs;
                                 var previousJobs = response.data.previousJobs;
-                                
+
                                 // upcoming jobs list
                                 if (upcomingJobs.length > 0) {
-                                    
+
                                     for (var i = 0; i < upcomingJobs.length; i++) {
                                         var html = '';
                                         var serviceName = '<b>Service:</b> ' + upcomingJobs[i].Service + ' </br>';
@@ -118,9 +154,34 @@
                                     $("#lblUpcomingListError").text("No Upcoming jobs found.!");
                                 }
 
+                                // due jobs list
+                                if (dueJobs.length > 0) {
+
+                                    for (var i = 0; i < dueJobs.length; i++) {
+                                        var html = '';
+                                        var serviceName = '<b>Service:</b> ' + dueJobs[i].Service + ' </br>';
+                                        var date = '<b>Date:</b> ' + dueJobs[i].Date + '  </br>';
+                                        var clientName = '<b>Client:</b> ' + dueJobs[i].Client + '  </br>';
+
+                                        html = html + '<div class="user-list-3 user-list-1-change">';
+                                        html = html + '<div class="col-sm-9">';
+
+                                        html = html + '	<em>' + serviceName + date + clientName + '  </em>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
+                                        html = html + '<a href="#" class="button-blue button-view" target="_self" onclick="viewAppointmentDetails(' + dueJobs[i].appointmentId + ')">View</a>';
+                                        html = html + '</div>';
+                                        html = html + '</div><div class="clear"></div>';
+                                        $('#divDue').append(html);
+                                    }
+                                }
+                                else {
+                                    $("#lblDueListError").text("No Upcoming jobs found.!");
+                                }
+
                                 // previous jobs list
                                 if (previousJobs.length > 0) {
-                                    
+
                                     for (var i = 0; i < previousJobs.length; i++) {
                                         var html = '';
                                         var serviceName = '<b>Service:</b> ' + previousJobs[i].Service + ' </br>';
@@ -133,12 +194,12 @@
                                         html = html + '	<em>' + serviceName + date + clientName + '  </em>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" class="button-blue button-view" target="_self"onclick="viewAppointmentDetails(' + previousJobs[i].appointmentId + ')">View</a>';
+                                        html = html + '<a href="#" class="button-blue button-view" target="_self" onclick="viewAppointmentDetails(' + previousJobs[i].appointmentId + ')">View</a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
                                         $('#divPreviousComming').append(html);
                                     }
-                                    
+
                                 }
                                 else {
                                     $("#lblPreviousListError").text("No Previous jobs found.!");
@@ -179,7 +240,7 @@
 
                 function viewAppointmentDetails(appointmentId) {
                     localStorage.setItem("appointmentId", appointmentId);
-                    window.location = "appointment-details.html";
+                    window.location = "appointment-details.html?helperbooking=true";
                 }
             </script>
         </div>

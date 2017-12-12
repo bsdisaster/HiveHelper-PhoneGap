@@ -150,6 +150,7 @@
                 getAppointmentDetails();
             }
 
+            setBackUrl();
         }).on('deviceready', function () {
             document.addEventListener("deviceready", deviceReadySuccess, false);
 
@@ -159,6 +160,28 @@
 
         function deviceReadySuccess() {
             getAppointmentDetails();
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        function setBackUrl() {
+            if (getParameterByName("mybooking")) {
+                $(".header-icon-5").attr("href", "my-booking.html");
+            }
+            if (getParameterByName("helperbooking")) {
+                $(".header-icon-5").attr("href", "helper-booking.html");
+            }
+            if (getParameterByName("paymenthistory")) {
+                $(".header-icon-5").attr("href", "hive-helper-payment-history.html");
+            }
         }
 
         function storeMapAddress(ele) {

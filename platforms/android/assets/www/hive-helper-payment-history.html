@@ -69,7 +69,7 @@
                 </div>
                 <div class="clear">&nbsp;</div>
                 <div>
-                    <table id="tblPayment">
+                    <table id="tblPayment" class="smaller-font">
                         <tr class="bold">
                             <td>Date</td>
                             <td>Service</td>
@@ -95,10 +95,13 @@
         rangeBoxes();
         removeFocus('#calDate1');
         removeFocus('#calDate2');
-        getPaymentHistory();
+
+        if (!isMobileDevice) {
+            getPaymentHistory();
+        }
 
     }).on('deviceready', function () {
-
+        document.addEventListener("deviceready", getPaymentHistory, false);
     });
 
     var isMobileDevice = isMobile();
@@ -154,7 +157,7 @@
         }
 
         var parameter = {
-            "helperid": "218",
+            "helperid": localStorage.getItem("userId"),
             "From": fromDate,
             "To": toDate,
             "type": jobType
@@ -170,15 +173,16 @@
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.hide();
                 }
+
                 $('#tblPayment').find("tr:gt(0)").remove();
                 $('#lblGrandTotal').text("$0.0");
                 if (response !== null && response.status === 1) {
 
                     var paymentData = response.data.helperappointment;
-                    
+
                     if (paymentData.length > 0) {
                         for (var i = 0; i < paymentData.length; i++) {
-                            var row = '<tr><td>' + paymentData[i].appointmentDate + '</td><td>' + paymentData[i].serviceName + '</td><td>' + paymentData[i].clientName + '</td><td>' + paymentData[i].appointmentHours + '</td><td>' + paymentData[i].perHourAmount + '</td><td>' + paymentData[i].totalAmount + '</td></tr>';
+                            var row = '<tr onclick="viewAppointmentDetails(' + paymentData[i].appointmentId + ')"><td>' + paymentData[i].appointmentDate + '</td><td>' + paymentData[i].serviceName + '</td><td>' + paymentData[i].clientName + '</td><td>' + paymentData[i].appointmentHours + '</td><td>' + paymentData[i].perHourAmount + '</td><td>' + paymentData[i].totalAmount + '</td></tr>';
                             $('#tblPayment').append(row);
                         }
                     }
@@ -218,5 +222,10 @@
             }
         });
 
+    }
+
+    function viewAppointmentDetails(appointmentId) {
+        localStorage.setItem("appointmentId", appointmentId);
+        window.location = "appointment-details.html?paymenthistory=true";
     }
 </script>
