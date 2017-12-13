@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
     <script type="text/javascript" src="scripts/jquery.js"></script>
@@ -139,12 +140,15 @@
                                         var clientName = '<b>Client:</b> ' + upcomingJobs[i].Client + '  </br>';
 
                                         html = html + '<div class="user-list-3 user-list-1-change">';
-                                        html = html + '<div class="col-sm-9">';
+                                        html = html + '<div class="col-sm-10">';
 
                                         html = html + '	<em>' + serviceName + date + clientName + '  </em>';
                                         html = html + '</div>';
-                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" class="button-blue button-view" target="_self" onclick="viewAppointmentDetails(' + upcomingJobs[i].appointmentId + ')">View</a>';
+                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                        html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + upcomingJobs[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                        html = html + '<a href="#" target="_self" onclick="completeAppointment(' + upcomingJobs[i].appointmentId + ')"><i class="fa fa-check-circle" style="font-size:large" aria-hidden="true"></i></a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
                                         $('#divUpComming').append(html);
@@ -169,7 +173,7 @@
                                         html = html + '	<em>' + serviceName + date + clientName + '  </em>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" class="button-blue button-view" target="_self" onclick="viewAppointmentDetails(' + dueJobs[i].appointmentId + ')">View</a>';
+                                        html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + dueJobs[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
                                         $('#divDue').append(html);
@@ -194,7 +198,7 @@
                                         html = html + '	<em>' + serviceName + date + clientName + '  </em>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" class="button-blue button-view" target="_self" onclick="viewAppointmentDetails(' + previousJobs[i].appointmentId + ')">View</a>';
+                                        html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + previousJobs[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
                                         $('#divPreviousComming').append(html);
@@ -238,6 +242,69 @@
                     });
                 }
 
+                function completeAppointment(appointmentId) {
+                    if (isMobileDevice) {
+                        navigator.notification.confirm("Are you sure you want to complete this appointment ?", function (button) {
+                            if (button === 1) {
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                                $.ajax({
+                                    url: api_baseUrl + 'Appointment/confirmedAppointment/' + appointmentId,
+                                    type: "GET",
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        window.plugins.spinnerDialog.hide();
+                                        if (response !== null && response.status === 1) {
+                                            navigator.notification.alert('Appointment has been completed.!', null, 'Success', 'Close');
+                                        } else {
+                                            navigator.notification.alert('Appointment has already been completed.!', null, 'Warning', 'Close');
+                                        }
+                                    },
+                                    error: function (jqXHR, text, error) {
+                                        // Displaying if there are any errors
+                                        window.plugins.spinnerDialog.hide();
+
+                                        if (error == null || error == "") {
+                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                        } else {
+                                            navigator.notification.alert(error, null, 'Error', 'Close');
+                                        }
+                                    }
+                                });
+                            }
+                        }, "Complete", "Ok,Cancel");
+                    } else {
+
+                        var res = confirm("Are you sure you want to complete this appointment ?");
+                        if (res == true) {
+
+                            $.ajax({
+                                url: api_baseUrl + 'Appointment/confirmedAppointment/' + appointmentId,
+                                type: "GET",
+                                dataType: "JSON",
+                                success: function (response) {
+                                    window.plugins.spinnerDialog.hide();
+                                    if (response !== null && response.status === 1) {
+                                        navigator.notification.alert('Appointment has been completed.!', null, 'Success', 'Close');
+                                    } else {
+                                        navigator.notification.alert('Appointment has already been completed.!', null, 'Warning', 'Close');
+                                    }
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
+                                    if (error == null || error == "") {
+                                        alert("It looks like you're offline.!");
+
+                                    } else {
+                                        alert(error);
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                }
                 function viewAppointmentDetails(appointmentId) {
                     localStorage.setItem("appointmentId", appointmentId);
                     window.location = "appointment-details.html?helperbooking=true";

@@ -186,7 +186,6 @@
                                 type: "GET",
                                 dataType: "json",
                                 success: function (response) {
-                                    // Inserting html into the result div on success
                                     if (response !== null && response.status === 1) {
                                         $(object).parent().parent().remove();
                                         alert('Address removed successfully!');
