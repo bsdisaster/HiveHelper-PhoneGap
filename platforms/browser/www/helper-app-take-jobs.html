@@ -37,11 +37,11 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip no-bottom">
-                    <h3 class="center-text color-black">Unfilled Jobs</h3>
+                    <h3 class="center-text color-black futura-medium">Unfilled Jobs</h3>
                 </div>
                 <div class="decoration decoration-margins"></div>
                 <div class="content">
-                    <div class="page-userlist">
+                    <div class="page-userlist futura-pt-book">
 
                     </div>
                 </div>
@@ -76,8 +76,8 @@
                                 var responseData = response.data;
                                 if (responseData != null && responseData.length > 0) {
 
-                                    var html = '';
                                     for (var i = 0; i < responseData.length; i++) {
+                                        var html = '';
                                         var serviceName = '<b>Service:</b> ' + responseData[i].Service + ' <br />';
                                         var date = '<b>Date:</b> ' + responseData[i].Date + ' <br />';
                                         var clientName = '<b>Client:</b> ' + responseData[i].Client + '  <br />';
@@ -97,9 +97,8 @@
 
                                         html = html + '</div>';
                                         html = html + '<div class="decoration decoration-margins"></div>';
+                                        $('.page-userlist').append(html);
                                     }
-
-                                    $('.page-userlist').append(html);
                                 }
                             }
                             else {
@@ -109,6 +108,7 @@
                                 } else {
                                     alert(response.message);
                                 }
+                                window.location.href = "dashboard.html";
                             }
                         },
                         error: function (jqXHR, text, error) {

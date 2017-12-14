@@ -39,11 +39,11 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="decoration decoration-margins"></div>
-                <div class="content">
+                <div class="content Orpheus-pro">
 
                     <div class="accordion-container">
                         <a href="#" class="accordion-toggle">Upcoming Jobs</a>
-                        <div class="accordion-content">
+                        <div class="accordion-content futura-pt-book">
                             <div>
                                 <label id="lblUpcomingListError" class="bold color-red-dark"></label>
                             </div>
@@ -53,8 +53,8 @@
                     </div>
 
                     <div class="accordion-container">
-                        <a href="#" class="accordion-toggle">Due Jobs</a>
-                        <div class="accordion-content">
+                        <a href="#" class="accordion-toggle">Overdue Jobs</a>
+                        <div class="accordion-content futura-pt-book">
                             <div>
                                 <label id="lblDueListError" class="bold color-red-dark"></label>
                             </div>
@@ -65,7 +65,7 @@
 
                     <div class="accordion-container">
                         <a href="#" class="accordion-toggle">Previous Jobs</a>
-                        <div class="accordion-content">
+                        <div class="accordion-content futura-pt-book">
                             <div>
                                 <label id="lblPreviousListError" class="bold color-red-dark"></label>
                             </div>
@@ -168,12 +168,15 @@
                                         var clientName = '<b>Client:</b> ' + dueJobs[i].Client + '  </br>';
 
                                         html = html + '<div class="user-list-3 user-list-1-change">';
-                                        html = html + '<div class="col-sm-9">';
+                                        html = html + '<div class="col-sm-10">';
 
                                         html = html + '	<em>' + serviceName + date + clientName + '  </em>';
                                         html = html + '</div>';
-                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
+                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
                                         html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + dueJobs[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                        html = html + '<a href="#" target="_self" onclick="completeAppointment(' + dueJobs[i].appointmentId + ')"><i class="fa fa-check-circle" style="font-size:large" aria-hidden="true"></i></a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
                                         $('#divDue').append(html);

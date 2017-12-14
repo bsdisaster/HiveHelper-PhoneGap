@@ -36,11 +36,11 @@
             </a>
         </div>
 
-        <div id="page-content" class="page-content">
+        <div id="page-content" class="page-content futura-pt-book">
             <div id="page-content-scroll" class="header-clear">
                 <div class="clear">&nbsp;</div>
 
-                <h3 class="center-text">Hours/Pay</h3>
+                <h3 class="center-text futura-medium">Hours/Pay</h3>
                 <div class="pageapp-login">
                     <div>
                         <input type="checkbox" id="chkPaidJobs" onchange="toggleButtonChangeText(this)">
@@ -126,6 +126,8 @@
             $('#rangeBox').hide();
             jobType = 'unpaid';
         }
+
+        getPaymentHistory();
     }
 
     function rangeBoxes() {

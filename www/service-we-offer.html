@@ -35,8 +35,8 @@
         <div id="page-content" class="page-content">
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
-                <div class="heading-strip" style="color:black !important;">
-                    <h3 class="color-black center-text bold">Services Offered in Your Area</h3>
+                <div class="heading-strip">
+                    <h3 class="color-black center-text bold futura-medium">Services Offered in Your Area</h3>
                 </div>
                 <div class="decoration decoration-margins"></div>
 
@@ -83,7 +83,7 @@
                                     if (serviceTypeData.service.length > 0) {
                                         for (var i = 0; i < serviceTypeData.service.length; i++) {
 
-                                            var html = '<a href="#" class="user-list-3"><div class="col-sm-12"><div class="col-sm-1"><img src="' + serviceTypeData.service[i].image + '" /></div><div class="col-sm-11" onclick="gotoServiceDetailsPage(\'' + serviceTypeData.service[i].description.toString().replace(/(\r\n|\n|\r)/gm, "") + '\',\'' + serviceTypeData.service[i].image + '\')"><strong class="user-list-3-strong">' + serviceTypeData.service[i].serviceName + '</strong></div></div><div class="col-sm-12"></div><i class="ion-ios-arrow-forward"></i></a>';
+                                            var html = '<a href="#" class="user-list-3"><div class="col-sm-12"><div class="col-sm-1"><img src="' + serviceTypeData.service[i].image + '" /></div><div class="col-sm-11" onclick="gotoServiceDetailsPage(\'' + serviceTypeData.service[i].description.toString().replace(/(\r\n|\n|\r)/gm, "") + '\',\'' + serviceTypeData.service[i].image + '\')"><strong class="user-list-3-strong Orpheus-pro">' + serviceTypeData.service[i].serviceName + '</strong></div></div><div class="col-sm-12"></div><i class="ion-ios-arrow-forward"></i></a>';
 
                                             $('.page-userlist').append(html);
                                         }

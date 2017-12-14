@@ -99,6 +99,39 @@
 /*----CSS Mobile Page Reset----*/
 /*-----------------------------*/
 
+/*@font-face {
+font-family: "futuraMedium";
+src: url("../fonts/futura-medium/") format("opentype");   
+    
+}*/
+
+@font-face {
+  font-family: 'futuraMedium';
+  src: url('../fonts/futura-medium/Futura Medium.otf') format('opentype')
+}
+
+@font-face {
+  font-family: 'OrpheusPro';
+  src: url('../fonts/Orpheus Pro/orpheus_pro_medium.otf') format('opentype')
+}
+
+@font-face {
+  font-family: 'futura-pt-book';
+  src: url('../fonts/Pt-Book/VBOOKMN.TTF') format('opentype')
+}
+
+.futura-medium{
+    font-family: 'futuraMedium';
+}
+
+.Orpheus-pro{
+    font-family: 'OrpheusPro';
+}
+
+.futura-pt-book{
+    font-family:'Pt-Book'
+}
+
 ::-webkit-scrollbar {
     display: none;
 }
@@ -6996,7 +7029,12 @@ ul.tabs {
     z-index: 99;
     overflow: hidden;
 }
-
+.page-fullscreen-content input{
+    font-family:futura-pt-book;
+}
+.page-fullscreen-content input[type=password]{
+    font-family:initial;
+}
 /*-------------------*/
 /*---PageApp Login---*/
 /*-------------------*/
@@ -7006,6 +7044,14 @@ ul.tabs {
     width: 300px;
     margin: 0px auto;
     padding-top: 60px;
+}
+
+.pageapp-login input,select{
+    font-family:futura-pt-book;
+}
+
+.pageapp-login input[type=password]{
+    font-family:initial;
 }
 
 @media(max-width:360px) {
@@ -11613,6 +11659,13 @@ button.swiper-pagination-bullet {
     margin-right: 5px;
 }
 
+.page-login input,select,textarea,button{
+    font-family:futura-pt-book;
+}
+
+.page-login input[type=password]{
+    font-family:initial;
+}
 .text-center {
     text-align: center;
 }
