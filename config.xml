@@ -75,7 +75,6 @@
         <preference name="orientation" value="landscape" />
         <preference name="orientation" value="portrait" />
         <preference name="DisallowOverscroll" value="true" />
-        <resource-file src="platforms/ios/Hive Helper.xcodeproj/GoogleService-Info.plist" target="platforms/ios/Hive Helper.xcodeproj/GoogleService-Info.plist" />
     </platform>
     <access origin="*" />
     <engine name="android" spec="^6.3.0" />

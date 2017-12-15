@@ -1027,10 +1027,10 @@ $(document).ready(function () {
 
 // detect mobile devices
 function isMobile() {
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    var app = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
+    if (app) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }

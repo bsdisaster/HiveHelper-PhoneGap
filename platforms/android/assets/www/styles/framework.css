@@ -106,30 +106,30 @@ src: url("../fonts/futura-medium/") format("opentype");
 }*/
 
 @font-face {
-  font-family: 'futuraMedium';
-  src: url('../fonts/futura-medium/Futura Medium.otf') format('opentype')
+    font-family: 'futuraMedium';
+    src: url('../fonts/futura-medium/Futura Medium.otf') format('opentype');
 }
 
 @font-face {
-  font-family: 'OrpheusPro';
-  src: url('../fonts/Orpheus Pro/orpheus_pro_medium.otf') format('opentype')
+    font-family: 'OrpheusPro';
+    src: url('../fonts/Orpheus Pro/orpheus_pro_medium.otf') format('opentype');
 }
 
 @font-face {
-  font-family: 'futura-pt-book';
-  src: url('../fonts/Pt-Book/VBOOKMN.TTF') format('opentype')
+    font-family: 'futura-pt-book';
+    src: url('../fonts/Pt-Book/VBOOKMN.TTF') format('opentype');
 }
 
-.futura-medium{
+.futura-medium {
     font-family: 'futuraMedium';
 }
 
-.Orpheus-pro{
+.Orpheus-pro {
     font-family: 'OrpheusPro';
 }
 
-.futura-pt-book{
-    font-family:'Pt-Book'
+.futura-pt-book {
+    font-family: 'Pt-Book';
 }
 
 ::-webkit-scrollbar {
@@ -138,6 +138,7 @@ src: url("../fonts/futura-medium/") format("opentype");
 
 html, body {
     overflow-x: hidden;
+    color: #004c97;
 }
 
 * {
@@ -181,6 +182,7 @@ body {
     line-height: 30px;
     font-weight: 400;
     margin-top: 25px;
+    color: #004c97;
 }
 
 a {
@@ -342,6 +344,7 @@ table {
     width: 100%;
     clear: both;
     margin-bottom: 27px;
+    color:#004c97;
 }
 
 th {
@@ -351,6 +354,7 @@ th {
 
 tr {
     line-height: 18px;
+    color:#004c97;
 }
 
 td {
@@ -359,6 +363,7 @@ td {
     padding-bottom: 9px;
     line-height: 18px;
     vertical-align: middle;
+    color:#004c97;
 }
 
 ul {
@@ -1604,6 +1609,7 @@ ol {
 .center-text {
     text-align: center;
     display: block;
+    color: #004c97;
 }
 
 .left-text {
@@ -2026,6 +2032,7 @@ ol {
         padding-left: 1.5em;
         cursor: pointer;
         font-weight: inherit;
+        color: #004c97;
     }
 
     .fac > input + label:before,
@@ -2548,6 +2555,7 @@ ol {
     margin-bottom: 15px;
     font-weight: 500;
     font-family: 'Roboto', sans-serif;
+    color: #004c97;
 }
 
 .input-round {
@@ -2786,13 +2794,12 @@ ol {
     }
 
     .heading-strip h3, .heading-strip h4, .heading-strip h2, .heading-strip h1 {
-        color: #FFFFFF;
         z-index: 99;
         position: relative;
     }
 
     .heading-strip p {
-        color: #FFFFFF;
+        color: #004c97;
         z-index: 99;
         position: relative;
         margin-bottom: 0px;
@@ -6712,6 +6719,7 @@ ul.tabs {
     font-weight: 400;
     padding-left: 45px;
     margin-top: 20px;
+    color: #004c97;
     vertical-align: bottom;
     -webkit-transition: all 250ms ease;
     -moz-transition: all 250ms ease;
@@ -6735,6 +6743,7 @@ ul.tabs {
     line-height: 50px;
     width: 40px;
     text-align: center;
+    color: #004c97;
 }
 
 .login-icon {
@@ -6748,6 +6757,7 @@ ul.tabs {
     position: absolute;
     top: 0px;
     right: 0px;
+    color: #004c97;
 }
 
 .page-login .button {
@@ -6776,6 +6786,7 @@ ul.tabs {
     margin-top: 12px;
     padding-right: 15px;
     padding-bottom: 10px;
+    color: #004c97;
 }
 
     .page-login-create i {
@@ -6787,7 +6798,7 @@ ul.tabs {
     font-size: 12px;
     padding-right: 15px;
     padding-bottom: 10px;
-    color: #969696;
+    color: #004c97;
 }
 
     .page-login-dual-links i {
@@ -7029,12 +7040,14 @@ ul.tabs {
     z-index: 99;
     overflow: hidden;
 }
-.page-fullscreen-content input{
-    font-family:futura-pt-book;
-}
-.page-fullscreen-content input[type=password]{
-    font-family:initial;
-}
+
+    .page-fullscreen-content input {
+        font-family: futura-pt-book;
+    }
+
+        .page-fullscreen-content input[type=password] {
+            font-family: initial;
+        }
 /*-------------------*/
 /*---PageApp Login---*/
 /*-------------------*/
@@ -7046,13 +7059,13 @@ ul.tabs {
     padding-top: 60px;
 }
 
-.pageapp-login input,select{
-    font-family:futura-pt-book;
-}
+    .pageapp-login input, select {
+        font-family: futura-pt-book;
+    }
 
-.pageapp-login input[type=password]{
-    font-family:initial;
-}
+        .pageapp-login input[type=password] {
+            font-family: initial;
+        }
 
 @media(max-width:360px) {
     .pageapp-login-logo {
@@ -7632,6 +7645,7 @@ ul.tabs {
         position: absolute;
         /*updated*/
         margin-right: 15px !important;
+        color: #004c97;
     }
 
     .user-list-3 i {
@@ -11600,6 +11614,7 @@ button.swiper-pagination-bullet {
         background-image: none;
         /*-webkit-appearance: none;*/
         box-sizing: border-box;
+        color: #004c97;
         border-bottom: solid 2px rgba(0,0,0,0.1);
     }
 
@@ -11659,13 +11674,14 @@ button.swiper-pagination-bullet {
     margin-right: 5px;
 }
 
-.page-login input,select,textarea,button{
-    font-family:futura-pt-book;
+.page-login input, select, textarea, button {
+    font-family: futura-pt-book;
 }
 
-.page-login input[type=password]{
-    font-family:initial;
-}
+    .page-login input[type=password] {
+        font-family: initial;
+    }
+
 .text-center {
     text-align: center;
 }
@@ -11883,40 +11899,42 @@ button.swiper-pagination-bullet {
 
 /*booking accordion menu*/
 .accordion-container {
-            margin: 0 0 10px;
-        }
+    margin: 0 0 10px;
+}
 
-        .accordion-toggle {
-            position: relative;
-            display: block;
-            padding: 10px;
-            font-size: 1.5em;
-            font-weight: 300;
-            background: #999;
-            color: #fff;
-            text-decoration: none;
-            line-height: inherit;
-        }
+.accordion-toggle {
+    position: relative;
+    display: block;
+    padding: 10px;
+    font-size: 1.5em;
+    font-weight: 300;
+    background: #999;
+    color: #fff;
+    text-decoration: none;
+    line-height: inherit;
+}
 
-            .accordion-toggle.open, .accordion-toggle:hover {
-                background: #333;
-            }
+    .accordion-toggle.open, .accordion-toggle:hover {
+        background: #333;
+    }
 
-            .accordion-toggle span.toggle-icon {
-                position: absolute;
-                top: 9px;
-                right: 20px;
-                font-size: 1.5em;
-            }
+    .accordion-toggle span.toggle-icon {
+        position: absolute;
+        top: 9px;
+        right: 20px;
+        font-size: 1.5em;
+    }
 
-        .accordion-content {
-            display: none;
-            padding: 20px;
-            overflow: scroll;
-        }
-.smaller-font{
+.accordion-content {
+    display: none;
+    padding: 20px;
+    overflow: scroll;
+}
+
+.smaller-font {
     font-size: smaller;
 }
+
 .right-text {
     text-align: right;
     display: block;

@@ -113,8 +113,14 @@
     line-height:55px;
     transition:all 500ms ease!important;
     margin-top:30px;
+    text-align: -webkit-center;
+    display: flex;
 }
 
+.back-button-padding{
+    padding-top: 10px;
+    padding-left: 15px;
+}
 
 .header i{
 	font-size:16px;
@@ -156,7 +162,7 @@
 /*Header Logo*/
 
 .header-dark .header-logo{background-image:url(../images/hivelogo.png);}
-.header-light .header-logo{background-image:url(../images/hivelogo.png);}
+.header-light .header-logo{background-image:url(../images/hivelogo.png); width:80%}
 
 .header-logo{
 	background-repeat: no-repeat;

@@ -34,15 +34,12 @@
                 <img src="images/back_arrow.png" height="20" />
             </a>
             <a href="dashboard.html" target="_self" class="header-logo"></a>
-            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
-                <img src="images/home-icon.png" height="20" />
-            </a>
         </div>
         <div id="page-content" class="page-content">
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
-                <div class="heading-strip color-black">
-                    <h3 class="color-black center-text futura-medium">My Profile</h3>
+                <div class="heading-strip">
+                    <h3 class="center-text futura-medium">My Profile</h3>
                     <div class="right-text">
                         <div class="inline-block-bottom-text futura-medium" onclick="clickImage()"><label>Change</label></div>
                         <div class="inline-block">
@@ -100,10 +97,12 @@
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding full-bottom animate-fadeanimate-delay-600">
                         <input id="profile-password" type="password" class="changepassword-text" placeholder="Password" disabled="disabled">
-                        <a href="#" onclick="enablePassword(true)" style="color:#1f1f1f !important; padding-top:10px;">CHANGE</a>
+                        <a href="#" onclick="enablePassword(true)" style="padding-top:10px;">CHANGE</a>
                     </div>
 
                     <button id="btnupdateProfile" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
+                    <button class="button button-red button-icon button-full half-top full-bottom animate-fade animate-delay-600" onclick="Logout()"><i class="ion-ios-arrow-thin-right"></i>LOGOUT</button>
+
                 </div>
 
                 <script type="text/javascript">
@@ -648,6 +647,10 @@
                         }
                     }
 
+                    function Logout() {
+                        localStorage.clear();
+                        window.location = "index.html";
+                    }
                 </script>
 
                 <div class="clear"></div>

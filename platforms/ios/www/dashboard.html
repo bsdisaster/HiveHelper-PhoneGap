@@ -24,17 +24,14 @@
 <body>
     <div id="page-transitions">
         <div class="header header-logo-center header-light">
-            <a href="dashboard.html" class="header-logo" target="_self"></a>
-            <a href="dashboard.html" class="header-icon header-icon-4" target="_self">
-                <img src="images/home-icon.png" height="20" />
-            </a>
+            <a href="#" class="header-logo" target="_self"></a>
         </div>
 
         <div id="page-content" class="page-content">
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
-                    <h3 class="center-text color-black futura-medium">Hive Helper</h3>
+                    <h3 class="center-text futura-medium">Hive Helper</h3>
                     <div class="left-logo">
                         <div class="inline-block">
                             <img class="img-border-radius" width="100" height="100" />
@@ -50,58 +47,50 @@
 
                         <a href="bookhelper-address-list.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/BookAHelper.png" alt="img" class="preload-image">
-                            <strong>Book a Helper</strong>
+                            <strong>SCHEDULE A HELPER</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="my-booking.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/MyBooking.png" alt="img" class="preload-image">
-                            <strong>Appointments/Requests</strong>
+                            <strong>APPOINTMENTS</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="my-profile.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/Profile.png" alt="img" class="preload-image">
-                            <strong>Edit My Profile/Address</strong>
+                            <strong>MY PROFILE</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="about-us.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/Contact.png" alt="img" class="preload-image">
-                            <strong>About Us</strong>
+                            <strong>ABOUT US</strong>
                             <i class="ion-ios-arrow-forward"></i>
-                        </a>
-                        <a href="#" onclick="Logout()" class="user-list-3 animate-fade">
-                            <img data-original="images/home_account.png" alt="img" class="preload-image">
-                            <strong>Logout</strong>
                         </a>
                     </div>
                     <div id="divHelperUser" class="page-userlist futura-medium" style="display:none;">
                         <a href="hive-helper-my-schedule.html" class="user-list-3 animate-fade" target="_self">
                             <img data-original="images/MyBooking.png" alt="img" class="preload-image">
-                            <strong>My Schedule</strong>
+                            <strong>MY SCHEDULE</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="helper-app-take-jobs.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/TaskJobs.png" alt="img" class="preload-image">
-                            <strong>Take Jobs</strong>
+                            <strong>TAKE JOBS</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="my-profile.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/Profile.png" alt="img" class="preload-image">
-                            <strong>Edit My Profile/Address</strong>
+                            <strong>MY PROFILE</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="hive-helper-payment-history.html" class="user-list-3 animate-fade" target="_self">
                             <img data-original="images/PayHourTracking.png" alt="img" class="preload-image">
-                            <strong>Pay/Hour Tracking</strong>
+                            <strong>PAY/HOUR TRACKING</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="#" id="helperPortal" class="user-list-3" target="_blank" style="display:none">
                             <img data-original="images/About.png" alt="img" class="preload-image">
-                            <strong>Helper Portal</strong>
+                            <strong>HELPER PORTAL</strong>
                             <i class="ion-ios-arrow-forward"></i>
-                        </a>
-                        <a href="#" onclick="Logout()" class="user-list-3 animate-fade">
-                            <img data-original="images/home_account.png" alt="img" class="preload-image">
-                            <strong>Logout</strong>
                         </a>
                     </div>
                 </div>
@@ -233,7 +222,7 @@
                     // Inserting html into the result div on success
 
                     if (response !== null && response.status === 1) {
-                        $(".inline-block-bottom-text label").text(response.data[0].firstName);
+                        $(".inline-block-bottom-text label").text("Hello "+response.data[0].firstName+"!");
 
                         $(".img-border-radius").attr("src", response.data[0].image);
 
@@ -292,12 +281,6 @@
                 $("#divHelperUser").hide();
             }
         }
-
-        function Logout() {
-            localStorage.clear();
-            window.location = "index.html";
-        }
-
     </script>
 </body>
 </html>
