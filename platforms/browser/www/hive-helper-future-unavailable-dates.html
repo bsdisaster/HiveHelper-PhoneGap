@@ -199,8 +199,6 @@
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                        } else {
-                            alert("It looks like you're offline.!");
                         }
 
                     } else {
@@ -314,8 +312,6 @@
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                        } else {
-                            alert("It looks like you're offline.!");
                         }
 
                     } else {
@@ -400,13 +396,7 @@
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            
-                            if (error == null || error == "") {
-                                alert("It looks like you're offline.!");
-
-                            } else {
-                                alert(error);
-                            }
+                            alert(error);
                         }
                     });
                 }
@@ -464,8 +454,6 @@
                         if (error == null || error == "") {
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                            } else {
-                                alert("It looks like you're offline.!");
                             }
 
                         } else {

@@ -48,6 +48,7 @@
                     var franchiseId = null;
 
                     $(document).ready(function () {
+
                         userId = localStorage.getItem("userId");
 
                         if (!isMobileDevice) {
@@ -74,7 +75,7 @@
                                     window.plugins.spinnerDialog.hide();
                                 }
                                 if (response !== null && response.status === 1) {
-                                    
+
                                     var serviceTypeData = response.data;
                                     franchiseId = serviceTypeData.franchiseId;
                                     if (serviceTypeData.service.length > 0) {
@@ -105,10 +106,6 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
                                     }
-                                    else {
-                                        alert("It looks like you're offline.!");
-                                    }
-
                                 } else {
                                     if (isMobileDevice) {
                                         navigator.notification.alert(error, null, 'Error', 'Close');
@@ -121,13 +118,13 @@
                         });
                     }
 
-                    function gotoServiceDetailsPage(serviceDescription,imagePath) {
-                        
+                    function gotoServiceDetailsPage(serviceDescription, imagePath) {
                         localStorage.setItem("serviceDescription", JSON.stringify(serviceDescription));
                         localStorage.setItem("serviceImage", imagePath);
 
                         window.location.href = "offered-service-details.html";
                     }
+
                 </script>
             </div>
         </div>

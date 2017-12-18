@@ -78,7 +78,7 @@
                         <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'" onclick="showAlert('zipcode')" readonly>
                     </div>
 
-                    <button id="btnCreateAccount" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-800"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
+                    <button id="btnCreateAccount" class="button button-green button-icon-full button-full half-top full-bottom animate-fade animate-delay-800"><i>Create Account</i></button>
                     <div class="clear"></div>
                 </div>
             </div>
@@ -193,8 +193,6 @@
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                        } else {
-                            alert("It looks like you're offline.!");
                         }
 
                     } else {
@@ -353,9 +351,6 @@
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-                                else {
-                                    alert("It looks like you're offline.!");
                                 }
 
                             } else {

@@ -207,9 +207,6 @@
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
                         }
-                        else {
-                            alert("It looks like you're offline.!");
-                        }
 
                     } else {
                         if (isMobileDevice) {
@@ -284,9 +281,6 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
                             }
-                            else {
-                                alert("It looks like you're offline.!");
-                            }
 
                         } else {
                             if (isMobileDevice) {
@@ -326,7 +320,7 @@
                 }
             }
             else if ($('#scheduleTo').val() == null || $('#scheduleTo').val() == "Select Time") {
-                
+
                 if (isMobileDevice) {
                     navigator.notification.alert("Please select schedule to.!", null, "Warning", "Close");
                 } else {
@@ -348,15 +342,15 @@
                 var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
 
                 var parameter = {
-                    "serviceId": localStorage.getItem("serviceId"),
-                    "userId": localStorage.getItem("userId"),
-                    "subServiceId": localStorage.getItem("subServiceId"),
-                    "userAddressId": localStorage.getItem("userAddressId"),
+                    "serviceId": localStorage.setItem("serviceId"),
+                    "userId": localStorage.setItem("userId"),
+                    "subServiceId": localStorage.setItem("subServiceId"),
+                    "userAddressId": localStorage.setItem("userAddressId"),
                     "appointmentDate": calDate,
                     "appointmentFrom": $('#scheduleFrom').val(),
                     "appointmentTo": $('#scheduleTo').val(),
                     "description": $('.contactTextarea').val(),
-                    "franchiseId": localStorage.getItem("franchiseId")
+                    "franchiseId": localStorage.setItem("franchiseId")
                 }
 
                 $.ajax({
@@ -393,9 +387,6 @@
                         if (error == null || error == "") {
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                            }
-                            else {
-                                alert("It looks like you're offline.!");
                             }
 
                         } else {

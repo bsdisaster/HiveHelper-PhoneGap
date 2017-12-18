@@ -80,7 +80,7 @@
                                     if (requestHelpersData.helperlist.length > 0) {
                                         for (var i = 0; i < requestHelpersData.helperlist.length; i++) {
                                             var fullName = requestHelpersData.helperlist[i].firstName + ' ' + requestHelpersData.helperlist[i].lastName;
-                                            var html = '<a onclick="GotoSelectCleaningServiceDetailPage(\'' + requestHelpersData.helperlist[i].firstName + '\',\'' + requestHelpersData.helperlist[i].lastName + '\',' + requestHelpersData.helperlist[i].helperId + ',' + requestHelpersData.helperlist[i].franchiseId + ')" class="user-list-3">';
+                                            var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(\'' + requestHelpersData.helperlist[i].firstName + '\',\'' + requestHelpersData.helperlist[i].lastName + '\',' + requestHelpersData.helperlist[i].helperId + ',' + requestHelpersData.helperlist[i].franchiseId + ')" class="user-list-3">';
                                             html = html + '' + requestHelpersData.helperlist[i].firstName + ' ' + requestHelpersData.helperlist[i].lastName + '</span>';
                                             html = html + '<strong>' + fullName + '</strong>';
                                             html = html + '<i class="ion-ios-arrow-forward"></i>';
@@ -106,9 +106,6 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
                                     }
-                                    else {
-                                        alert("It looks like you're offline.!");
-                                    }
 
                                 } else {
                                     if (isMobileDevice) {
@@ -121,7 +118,7 @@
                         });
                     }
 
-                    function GotoSelectCleaningServiceDetailPage(firstName, lastName, helperId, franchiseId) {
+                    function gotoSelectCleaningServiceDetailPage(firstName, lastName, helperId, franchiseId) {
 
                         localStorage.setItem("helperName", firstName + ' ' + lastName);
                         localStorage.setItem("helperId", helperId);

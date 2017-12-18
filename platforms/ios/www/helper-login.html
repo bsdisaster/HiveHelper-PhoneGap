@@ -50,7 +50,7 @@
                                 <div class="clear"></div>
                                 <a href="#" onclick="forgotPassword()" class="page-login-create animate-right futura-medium">Forgot password<i class="ion-android-lock"></i></a>
                             </div>
-                            <button id="btnSubmit" class="button button-green button-icon button-full half-top full-bottom  animate-zoom"><i class="ion-ios-arrow-thin-right"></i>Login</button>
+                            <button id="btnSubmit" class="button button-green button-icon-full button-full half-top full-bottom animate-zoom"><i>Login</i></button>
                         </div>
                     </div>
 
@@ -121,8 +121,6 @@
                                             if (error == null || error == "") {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                                } else {
-                                                    alert("It looks like you're offline.!");
                                                 }
 
                                             } else {
@@ -215,7 +213,6 @@
                                                 window.plugins.spinnerDialog.hide();
                                             }
                                             if (response !== null && response.status === 1) {
-                                                localStorage.clear();
                                                 localStorage.setItem("username", response.data.email);
                                                 localStorage.setItem("password", $("#password").val());
                                                 localStorage.setItem("deviceType", platform);
@@ -242,8 +239,6 @@
                                             if (error == null || error == "") {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                                } else {
-                                                    alert("It looks like you're offline.!");
                                                 }
 
                                             } else {

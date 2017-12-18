@@ -173,9 +173,6 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
                                 }
-                                else {
-                                    alert("It looks like you're offline.!");
-                                }
 
                             } else {
                                 if (isMobileDevice) {
@@ -270,9 +267,6 @@
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-                                else {
-                                    alert("It looks like you're offline.!");
                                 }
 
                             } else {
@@ -414,9 +408,6 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
                             }
-                            else {
-                                alert("It looks like you're offline.!");
-                            }
 
                         } else {
                             if (isMobileDevice) {
@@ -485,6 +476,7 @@
                 }
 
                 localStorage.setItem("paymentTempObject", JSON.stringify(arrayObject));
+
                 window.location.href = "hive-helper-payment.html";
             }
 

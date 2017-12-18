@@ -80,7 +80,7 @@
                                     if (serviceCleaningData.length > 0) {
                                         for (var i = 0; i < serviceCleaningData.length; i++) {
 
-                                            var html = '<a onclick="gotoSelectCleaningServiceDetailPage(' + serviceCleaningData[i].subServiceId + ',' + serviceCleaningData[i].franchiseId + ',\'' + serviceCleaningData[i].displaytitle + '\')" class="user-list-3">';
+                                            var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(' + serviceCleaningData[i].subServiceId + ',' + serviceCleaningData[i].franchiseId + ',\'' + serviceCleaningData[i].displaytitle + '\')" class="user-list-3">';
                                             html = html + '<strong>' + serviceCleaningData[i].displaytitle + '</strong>';
                                             html = html + '<i class="ion-ios-arrow-forward"></i>';
                                             html = html + '</a>';
@@ -113,9 +113,6 @@
                                 if (error == null || error == "") {
                                     if (isMobileDevice) {
                                         navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                    }
-                                    else {
-                                        alert("It looks like you're offline.!");
                                     }
 
                                 } else {

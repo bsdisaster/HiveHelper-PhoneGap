@@ -227,9 +227,6 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
                                 }
-                                else {
-                                    alert("It looks like you're offline.!");
-                                }
 
                             } else {
                                 if (isMobileDevice) {
@@ -293,12 +290,7 @@
                                 },
                                 error: function (jqXHR, text, error) {
                                     // Displaying if there are any errors
-                                    if (error == null || error == "") {
-                                        alert("It looks like you're offline.!");
-
-                                    } else {
-                                        alert(error);
-                                    }
+                                    alert(error);
                                 }
                             });
                         }

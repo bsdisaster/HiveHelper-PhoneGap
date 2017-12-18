@@ -100,7 +100,7 @@
                         <a href="#" onclick="enablePassword(true)" style="padding-top:10px;">CHANGE</a>
                     </div>
 
-                    <button id="btnupdateProfile" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
+                    <button id="btnupdateProfile" class="button button-green button-icon-full button-full half-top full-bottom animate-fade animate-delay-600"><i>Save</i></button>
                     <button class="button button-red button-icon button-full half-top full-bottom animate-fade animate-delay-600" onclick="Logout()"><i class="ion-ios-arrow-thin-right"></i>LOGOUT</button>
 
                 </div>
@@ -269,7 +269,7 @@
                             var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
                             xhr.open('GET', proxyUrl + url);
                         }
-                        
+
                         xhr.responseType = 'blob';
                         xhr.send();
                     }
@@ -299,7 +299,7 @@
                             var oldRegId = localStorage.getItem('registrationId');
                             if (oldRegId !== data.registrationId) {
                                 // Save new registration ID
-                                localStorage.setItem('registrationId', data.registrationId);
+                                localStorage.setItem("registrationId", data.registrationId);
                             }
 
                         });
@@ -486,8 +486,6 @@
                                         if (error == null || error == "") {
                                             if (isMobileDevice) {
                                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                            } else {
-                                                alert("It looks like you're offline.!");
                                             }
                                         } else {
                                             if (isMobileDevice) {
@@ -562,8 +560,6 @@
                                 if (error == null || error == "") {
                                     if (isMobileDevice) {
                                         navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                    } else {
-                                        alert("It looks like you're offline.!");
                                     }
 
                                 } else {
@@ -623,9 +619,6 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
                                     }
-                                    else {
-                                        alert("It looks like you're offline.!");
-                                    }
 
                                 } else {
                                     if (isMobileDevice) {
@@ -647,8 +640,19 @@
                         }
                     }
 
+                    function deleteAllCookies() {
+                        var cookies = document.cookie.split(";");
+
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = cookies[i];
+                            var eqPos = cookie.indexOf("=");
+                            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                        }
+                    }
+
                     function Logout() {
-                        localStorage.clear();
+                        deleteAllCookies();
                         window.location = "index.html";
                     }
                 </script>

@@ -73,7 +73,7 @@
                         <label>Tell us about you*</label>
                     </div>
 
-                    <button id="btnSend" class="button button-green button-icon button-full half-top full-bottom animate-fade animate-delay-700"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
+                    <button id="btnSend" class="button button-green button-icon-full button-full half-top full-bottom animate-fade animate-delay-700"><i>SEND</i></button>
                 </div>
             </div>
         </div>
@@ -201,9 +201,6 @@
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-                                else {
-                                    alert("It looks like you're offline.!");
                                 }
 
                             } else {

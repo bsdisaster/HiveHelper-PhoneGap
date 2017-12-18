@@ -91,7 +91,7 @@
                                         html = html + '<div class="col-sm-10">';
                                         html = html + '<a onclick="gotoServiceTypePage(' + addressData[i].userAddressId + ')"  target="_blank" class="color-black">';
                                         html = html + '<input id="box' + (i + 1) + '-fac-radio" type="radio" name="rad" value="1">';
-                                        html = html + '<label class="Orpheus-pro" for="box' + (i + 1) + '-fac-radio">' + fullAddress + '</label>';
+                                        html = html + '<label class="futura-pt-book" for="box' + (i + 1) + '-fac-radio">' + fullAddress + '</label>';
                                         html = html + '</a>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-1">';
@@ -125,9 +125,6 @@
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-                                else {
-                                    alert("It looks like you're offline.!");
                                 }
 
                             } else {
@@ -177,7 +174,7 @@
 
                         var res = confirm("Are you sure you want to delete ?");
                         if (res == true) {
-                            
+
                             $.ajax({
                                 url: api_baseUrl + 'useraddress/removeUserAddress/' + userAddressId,
                                 type: "GET",
@@ -190,12 +187,7 @@
                                 },
                                 error: function (jqXHR, text, error) {
                                     // Displaying if there are any errors
-                                    if (error == null || error == "") {
-                                        alert("It looks like you're offline.!");
-
-                                    } else {
-                                        alert(error);
-                                    }
+                                    alert(error);
                                 }
                             });
                         }
