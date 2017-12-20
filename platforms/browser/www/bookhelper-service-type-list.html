@@ -76,7 +76,7 @@
 
                                     var serviceTypeData = response.data;
                                     franchiseId = serviceTypeData.franchiseId;
-                                    localStorage.getItem("franchiseName", serviceTypeData.franchiseName);
+                                    localStorage.setItem("franchiseName", serviceTypeData.franchiseName);
                                     if (serviceTypeData.service.length > 0) {
                                         for (var i = 0; i < serviceTypeData.service.length; i++) {
 

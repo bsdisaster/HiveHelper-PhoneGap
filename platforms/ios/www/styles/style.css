@@ -132,7 +132,6 @@
     margin-top: 15px;
     text-align: -webkit-center;
     display: flex;
-    background-color: lightblue;
 }
 
 .back-button-padding {
@@ -250,7 +249,8 @@
 
 .header-light .header-logo {
     background-image: url(../images/hivelogo.png);
-    max-width: -webkit-fill-available;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     filter: none;
     -webkit-filter: blur(0px);
     -moz-filter: blur(0px);
@@ -260,8 +260,9 @@
 
 .header-logo {
     background-repeat: no-repeat;
+    max-width:80%;
     background-position: center center;
-    background-size: 125x 75px;
+    background-size: 100% 100%;
     width: 300px;
     height: 54px;
     z-index: 999;

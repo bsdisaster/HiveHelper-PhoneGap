@@ -2785,7 +2785,6 @@ ol {
 
 .heading-strip {
     padding: 25px;
-    margin-bottom: 30px;
     background-size: cover;
 }
 
@@ -3743,13 +3742,11 @@ ol {
 }
 
 .button-green {
-    /*background-color: #27ae60;*/
-    /*border: solid 2px #27ae60;*/
-    background-image: url('../images/honeycomb.png');
-    background-repeat: round;
+    background-color: #27ae60;
+    border: solid 2px #27ae60;
 }
 
-/*.button-green-3d {
+.button-green-3d {
     border: none !important;
     border-bottom: solid 5px #1e7b45 !important;
     padding: 0px 22px;
@@ -3763,7 +3760,7 @@ ol {
 .button-green:active {
     background-color: #27ae60;
     border: solid 2px #27ae60;
-}*/
+}
 
 .button-blue {
     background-color: #2980b9;
@@ -3985,16 +3982,6 @@ ol {
     background-color: rgba(0,0,0,0.1);
 }
 
-.button-icon-full i {
-    width: inherit;
-    line-height: 50px !important;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    position: absolute;
-    font-size: 16px;
-    background-color: rgba(0,0,0,0.4);
-}
 /*--------------------*/
 /*---Device Buttons---*/
 /*--------------------*/
@@ -11958,7 +11945,7 @@ button.swiper-pagination-bullet {
 }
 
 .set-background-splash {
-    background-image: url('../images/honeylemonssplash.jpg');
+    background-image: url('../images/honeylemonssplash_blurry.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }

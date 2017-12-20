@@ -252,9 +252,9 @@
                                     success: function (response) {
                                         window.plugins.spinnerDialog.hide();
                                         if (response !== null && response.status === 1) {
-                                            navigator.notification.alert('Appointment has been completed.!', null, 'Success', 'Close');
+                                            navigator.notification.alert(response.message, null, 'Success', 'Close');
                                         } else {
-                                            navigator.notification.alert('Appointment has already been completed.!', null, 'Warning', 'Close');
+                                            navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                         }
                                     },
                                     error: function (jqXHR, text, error) {
@@ -281,11 +281,10 @@
                                 type: "GET",
                                 dataType: "JSON",
                                 success: function (response) {
-                                    window.plugins.spinnerDialog.hide();
                                     if (response !== null && response.status === 1) {
-                                        navigator.notification.alert('Appointment has been completed.!', null, 'Success', 'Close');
+                                        navigator.notification.alert(response.message, null, 'Success', 'Close');
                                     } else {
-                                        navigator.notification.alert('Appointment has already been completed.!', null, 'Warning', 'Close');
+                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                     }
                                 },
                                 error: function (jqXHR, text, error) {
