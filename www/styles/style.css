@@ -250,7 +250,7 @@
 .header-light .header-logo {
     background-image: url(../images/hivelogo.png);
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: cover;
     filter: none;
     -webkit-filter: blur(0px);
     -moz-filter: blur(0px);

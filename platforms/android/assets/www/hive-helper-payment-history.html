@@ -17,7 +17,7 @@
     <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    
     <script type="text/javascript" src="cordova.js"></script>
 
 </head>
@@ -43,7 +43,7 @@
                         <label for="chkPaidJobs" id="lblPaidJobs">Unpaid jobs</label>
                     </div>
                     <div class="clear">&nbsp;</div>
-                    <div id="rangeBox" style="display:none">
+                    <div id="rangeBox" class="disabled">
                         <div class="page-login-input light calendar-bgcolor calender-pay-h">
                             <i class="login-icon ion-calendar calendar-line-height"></i>
                             <input id="calDate1" type="text" value="From Date" onchange="getPaymentHistory()">
@@ -115,11 +115,11 @@
     function toggleButtonChangeText(ele) {
         if ($(ele).is(":checked")) {
             $('#lblPaidJobs').text('Paid jobs');
-            $('#rangeBox').show();
+            $('#rangeBox').removeClass('disabled');
             jobType = 'paid';
         } else {
             $('#lblPaidJobs').text('Unpaid jobs');
-            $('#rangeBox').hide();
+            $('#rangeBox').addClass('disabled');
             jobType = 'unpaid';
         }
 

@@ -18,7 +18,7 @@
     <script src="scripts/phonegap.facebook.inappbrowser.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    
     <script type="text/javascript" src="cordova.js"></script>
 
 </head>
@@ -98,10 +98,10 @@
                         accordionContent.slideToggle(250);
 
                         if ($('.accordion-toggle').hasClass("open")) {
-                            $('.accordion-toggle').hide();
-                            $(this).show();
+                            $('.accordion-toggle').addClass('disabled');
+                            $(this).removeClass('disabled');
                         } else {
-                            $('.accordion-toggle').show();
+                            $('.accordion-toggle').removeClass('disabled');
                         }
                     });
                 }

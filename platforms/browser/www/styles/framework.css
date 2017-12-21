@@ -11944,8 +11944,33 @@ button.swiper-pagination-bullet {
     background-color: lightblue;
 }
 
-.set-background-splash {
+/* .set-background-splash {
     background-image: url('../images/honeylemonssplash_blurry.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
-}
+} */
+
+.set-background-splash {
+			position:relative;
+			overflow:hidden;
+		}
+		
+		.set-background-splash:before {
+			content: ' ';
+			display: block;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			opacity: 0.5; 
+			background-image: url('../images/honeylemonssplash_blurry.png');
+			background-repeat: no-repeat;
+			background-position: 50% 0;
+			-ms-background-size: cover;
+			-o-background-size: cover;
+			-moz-background-size: cover;
+			-webkit-background-size: cover;
+			background-size: cover;
+		}

@@ -16,7 +16,7 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    
     <script type="text/javascript" src="cordova.js"></script>
 
 </head>
@@ -39,7 +39,7 @@
                 <div class="decoration decoration-margins"></div>
 
                 <div class="content futura-pt-book" id="DivQuestionsAnswer">
-                    <div id="dvChangeDateTime" align="center" style="display:none">
+                    <div id="dvChangeDateTime" class="disabled" align="center">
                         <a href="bookhelper-select-cleaning-service-detail.html?editAppointment=true" target="_self">Change Date Time</a>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                                 window.plugins.spinnerDialog.hide();
                             }
                             if (response !== null && response.status === 1) {
-                                $("#dvChangeDateTime").show();
+                                $("#dvChangeDateTime").removeClass('disabled');
 
                                 var serviceQuestionsData = response.data.serviceQuestions;
                                 if (serviceQuestionsData != null && serviceQuestionsData.length > 0) {

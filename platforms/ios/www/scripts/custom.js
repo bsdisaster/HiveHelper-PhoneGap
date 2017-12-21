@@ -1025,6 +1025,7 @@ $(document).ready(function () {
     });
 })
 
+var api_baseUrl = 'http://hivehelper.project-demo.info/v1/';
 // detect mobile devices
 function isMobile() {
     var app = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;

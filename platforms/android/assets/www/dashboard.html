@@ -17,7 +17,7 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    <script type="text/javascript" src="scripts/setup_baseurl.js"></script>
+    
     <script type="text/javascript" src="cordova.js"></script>
 </head>
 
@@ -42,7 +42,7 @@
                 <div class="decoration decoration-margins"></div>
 
                 <div class="content">
-                    <div id="divGeneralUser" class="page-userlist futura-medium" style="display:none;">
+                    <div id="divGeneralUser" class="page-userlist futura-medium disabled">
 
                         <a href="bookhelper-address-list.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/BookAHelper.png" alt="img" class="preload-image">
@@ -65,14 +65,14 @@
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                     </div>
-                    <div id="divHelperUser" class="page-userlist futura-medium" style="display:none;">
+                    <div id="divHelperUser" class="page-userlist futura-medium disabled">
                         <a href="hive-helper-my-schedule.html" class="user-list-3 animate-fade" target="_self">
                             <img data-original="images/MyBooking.png" alt="img" class="preload-image">
                             <strong>MY SCHEDULE</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="helper-app-take-jobs.html" target="_self" class="user-list-3 animate-fade">
-                            <img data-original="images/TaskJobs.png" alt="img" class="preload-image">
+                            <img data-original="images/Deal.png" alt="img" class="preload-image">
                             <strong>TAKE JOBS</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
@@ -86,7 +86,7 @@
                             <strong>PAY/HOUR TRACKING</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
-                        <a href="#" id="helperPortal" class="user-list-3" target="_blank" style="display:none">
+                        <a href="#" id="helperPortal" class="user-list-3 disabled" target="_blank">
                             <img data-original="images/About.png" alt="img" class="preload-image">
                             <strong>HELPER PORTAL</strong>
                             <i class="ion-ios-arrow-forward"></i>
@@ -167,7 +167,7 @@
                     if (response !== null && response.status === 1) {
                         if (response.data.status == "1") {
                             
-                            $("#helperPortal").show();
+                            $("#helperPortal").removeClass('disabled');
                             $("#helperPortal").attr("href", response.data.portalLink);
                         }
                     }
@@ -263,12 +263,12 @@
             var rolesId = localStorage.getItem("roleId");
 
             if ((rolesId != null && rolesId == 3)) {
-                $("#divGeneralUser").hide();
-                $("#divHelperUser").show();
+                $("#divGeneralUser").addClass('disabled');
+                $("#divHelperUser").removeClass('disabled');
             }
             else {
-                $("#divGeneralUser").show();
-                $("#divHelperUser").hide();
+                $("#divGeneralUser").removeClass('disabled');
+                $("#divHelperUser").addClass('disabled');
             }
         }
     </script>
