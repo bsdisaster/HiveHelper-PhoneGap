@@ -17,7 +17,7 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    
+
     <script type="text/javascript" src="cordova.js"></script>
 
 </head>
@@ -26,10 +26,11 @@
     <div id="page-transitions">
 
         <div class="header header-logo-center header-light">
-            <a href="hive-helper-my-schedule.html" class="header-icon header-icon-5" target="_self">
-                <img src="images/back_arrow.png" height="20" />
-            </a>
-            <a href="dashboard.html" target="_self" class="header-logo"></a>
+            <h2>hive helper</h2>
+            <div class="slogan">
+                <img src="images/hive_icon.png" height="50" width="50" />
+                <h3>we arrive. you thrive</h3>
+            </div>
         </div>
         <div id="page-content" class="page-content futura-pt-book">
             <div id="page-content-scroll" class="header-clear">
@@ -37,7 +38,7 @@
                 <div class="heading-strip no-bottom">
                     <h3 class="center-text futura-medium">Set Weekly Schedule</h3>
                 </div>
-                <div class="page-login content set-schedule">
+                <div class="page-login content set-schedule week-schedule">
 
                     <div class="future-help-display">
                         <div class="fac fac-checkbox fac-default">
@@ -67,7 +68,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;&nbsp;</div>
                             <div class="col-sm-8">
                                 <select id="drpMondayTo" class="drpSelectBoxTo">
                                     <option>Select Time</option>
@@ -117,7 +118,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;&nbsp;</div>
                             <div class="col-sm-8">
                                 <select id="drpTuesdayTo" class="drpSelectBoxTo">
                                     <option>Select Time</option>
@@ -167,7 +168,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;&nbsp;</div>
                             <div class="col-sm-8">
                                 <select id="drpWednesdayTo" class="drpSelectBoxTo">
                                     <option>Select Time</option>
@@ -216,7 +217,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;&nbsp;</div>
                             <div class="col-sm-8">
                                 <select id="drpThursedayTo" class="drpSelectBoxTo">
                                     <option>Select Time</option>
@@ -265,7 +266,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;&nbsp;</div>
                             <div class="col-sm-8">
                                 <select id="drpFridayTo" class="drpSelectBoxTo">
                                     <option>Select Time</option>
@@ -315,7 +316,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;&nbsp;</div>
                             <div class="col-sm-8">
                                 <select id="drpSaturdayTo" class="drpSelectBoxTo">
                                     <option>Select Time</option>
@@ -364,7 +365,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <div class="col-sm-4 text-right padding-0">To &nbsp;</div>
+                            <div class="col-sm-4 text-right padding-0">To &nbsp;&nbsp;</div>
                             <div class="col-sm-8">
                                 <select id="drpSundayTo" class="drpSelectBoxTo">
                                     <option>Select Time</option>
@@ -681,7 +682,21 @@
                 <div class="clear"></div>
             </div>
         </div>
-
+        <footer class="sticky-footer">
+            <div class="n_footer-links">
+                <div class="footer-link-r">
+                    <a href="hive-helper-my-schedule.html" target="_self">
+                        <img src="images/back_arrow.png" />
+                    </a>
+                </div>
+                <div class="footer-link-l">
+                    <a href="dashboard.html" target="_self">
+                        <img src="images/Home.png" />
+                    </a>
+                </div>
+            </div>
+            <a href="#" class="back-to-top-badge"><i class="ion-ios-arrow-up"></i></a>
+        </footer>
     </div>
 </body>
 </html>

@@ -17,15 +17,19 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    
+
     <script type="text/javascript" src="cordova.js"></script>
 </head>
 
 <body>
-    
+
     <div id="page-transitions">
         <div class="header header-logo-center header-light">
-            <a href="#" class="header-logo" target="_self"></a>
+            <h2>hive helper</h2>
+            <div class="slogan">
+                <img src="images/hive_icon.png" height="50" width="50" />
+                <h3>we arrive. you thrive</h3>
+            </div>
         </div>
         <div id="page-content" class="page-content">
             <div id="page-content-scroll" class="header-clear">
@@ -60,7 +64,7 @@
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="about-us.html" target="_self" class="user-list-3 animate-fade">
-                            <img data-original="images/Contact.png" alt="img" class="preload-image">
+                            <img data-original="images/about.png" alt="img" class="preload-image">
                             <strong>ABOUT US</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
@@ -87,7 +91,7 @@
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="#" id="helperPortal" class="user-list-3 disabled" target="_blank">
-                            <img data-original="images/About.png" alt="img" class="preload-image">
+                            <img data-original="images/pointer.png" alt="img" class="preload-image">
                             <strong>HELPER PORTAL</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
@@ -96,6 +100,14 @@
             </div>
         </div>
         <a href="#" class="back-to-top-badge"><i class="ion-ios-arrow-up"></i></a>
+
+        <footer class="sticky-footer">
+            <div class="slogan">
+                <center>
+                    <h2>Hive Helper 2017</h2>
+                </center>
+            </div>
+        </footer>
     </div>
 
     <script type="text/javascript">
@@ -163,10 +175,10 @@
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
                     }
-                    
+
                     if (response !== null && response.status === 1) {
                         if (response.data.status == "1") {
-                            
+
                             $("#helperPortal").removeClass('disabled');
                             $("#helperPortal").attr("href", response.data.portalLink);
                         }
@@ -214,7 +226,7 @@
                     // Inserting html into the result div on success
 
                     if (response !== null && response.status === 1) {
-                        $(".inline-block-bottom-text label").text("Hello "+response.data[0].firstName+"!");
+                        $(".inline-block-bottom-text label").text("Hello " + response.data[0].firstName + "!");
 
                         $(".img-border-radius").attr("src", response.data[0].image);
 
