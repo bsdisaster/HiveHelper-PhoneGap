@@ -35,7 +35,7 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
-                    <div class="left-logo">
+                    <div class="left-logo" onclick="redirectToMyProfile()">
                         <div class="inline-block">
                             <img class="img-border-radius" width="100" height="100" />
                         </div>
@@ -122,6 +122,10 @@
 
         function addWidth() {
             $("center").css("width", "100%");
+        }
+
+        function redirectToMyProfile(){
+            window.location.href = "my-profile.html";
         }
 
         function onBackKeyDown(e) {

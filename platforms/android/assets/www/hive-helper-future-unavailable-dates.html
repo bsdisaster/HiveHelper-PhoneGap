@@ -485,6 +485,7 @@
             } else {
                 if (isMobileDevice) {
                     navigator.notification.alert("Sorry,helper not available on this day.!", null, 'Warning', 'Close');
+                    window.plugins.spinnerDialog.hide();
                 } else {
                     alert("Sorry,helper not available on this day.!");
                 }

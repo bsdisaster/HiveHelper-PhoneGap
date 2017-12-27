@@ -3901,27 +3901,6 @@ ol {
     border: solid 2px #d35400;
 }
 
-.button-red {
-    background-color: #c0392b;
-    border: solid 2px #c0392b;
-}
-
-.button-red-3d {
-    border: none !important;
-    border-bottom: solid 5px #772016 !important;
-    padding: 0px 22px;
-}
-
-.button-red:hover {
-    background-color: #e74c3c;
-    border: solid 2px #e74c3c;
-}
-
-.button-red:active {
-    background-color: #c0392b;
-    border: solid 2px #c0392b;
-}
-
 .button-pink {
     background-color: #FB3365;
     border: solid 2px #FB3365;
