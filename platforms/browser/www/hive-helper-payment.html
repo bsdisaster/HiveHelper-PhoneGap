@@ -19,7 +19,7 @@
     <script type="text/javascript" src="scripts/custom.js"></script>
     <script type="text/javascript" src="scripts/stripe.js"></script>
     <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
-    
+
     <script type="text/javascript" src="cordova.js"></script>
 
 </head>
@@ -81,7 +81,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="clear">&nbsp;</div>
+                        <div class="col-sm-12">
+                            <a href="#" onclick="applyPromocode()">Have a promocode ?</a>
+                            <div id="dvPromocode" style="display:none">
+                                <div class="col-sm-10">
+                                    <input type="text" id="promoCode" class="input-text-box input-green-border" value="Promo Code" onfocus="if (this.value == 'Promo Code') this.value = ''" onblur="if (this.value == '') this.value = 'Promo Code'">
 
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="#" id="lnkPromoCode" onclick="checkPromocode()"><img src="images/RightSign.png" alt="Edit" class="preload-image edit-img" /></a>
+                                </div>
+                                <h6><label class="color-green-dark"></label></h6>
+                            </div>
+                        </div>
                         <button id="btnPayment" class="button button-blue button-full half-top full-bottom"></button>
                     </div>
                 </div>
@@ -108,6 +121,88 @@
                     $("#serviceName").text(serviceTitle);
                     $("#provideName").text(localStorage.getItem("franchiseName"));
                     $("#dateValue").text(localStorage.getItem("providerDate"));
+                }
+
+                function applyPromocode() {
+                    $("#dvPromocode").show();
+                    $("#promoCode").focus();
+                }
+
+                function checkPromocode() {
+
+                    if ($("#promoCode").val() == "" || $("#promoCode").val() == "Promo Code") {
+                        if (isMobileDevice) {
+                            navigator.notification.alert("Please enter promo code.!", null, 'Warning', 'Close');
+
+                        } else {
+                            alert("Please enter promo code.!");
+                        }
+                        $("#promoCode").focus();
+                    }
+                    else {
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Validating code...", true);
+                        }
+
+                        var parameter = {
+                            "franchiseId": localStorage.getItem("franchiseId"),
+                            "serviceId": localStorage.getItem("serviceId"),
+                            "subserviceId": localStorage.getItem("subServiceId"),
+                            "promocode": $("#promoCode").val()
+                        }
+
+                        $.ajax({
+                            url: api_baseUrl + 'Promocode',
+                            crossDomain: true,
+                            type: "POST",
+                            data: JSON.stringify(parameter),
+                            dataType: "JSON",
+                            success: function (response) {
+                                // Inserting html into the result div on success
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                }
+                                if (response !== null && response.status === 1) {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("Promocode applied.!", null, 'Success', 'Close');
+
+                                    } else {
+                                        alert("Promocode applied.!");
+                                    }
+
+                                    $(".color-green-dark").text("Discount amount: " + response.data[0].price);
+                                    $("#promoCode").attr("disabled", "disabled").css("border-color", "green");
+                                    $("#lnkPromoCode").removeAttr("onclick");
+                                }
+                                else {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                    $("#promoCode").css("border-color", "red");
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                }
+                                if (error == null || error == "") {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    }
+
+                                } else {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    } else {
+                                        alert(error);
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
 
                 function isValidatePaymentInfo() {
@@ -287,7 +382,7 @@
                             currency: "USD"
                         },
                         success: (data) => {
-                            
+
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             }
