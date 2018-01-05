@@ -92,7 +92,10 @@
                                 <div class="col-sm-2">
                                     <a href="#" id="lnkPromoCode" onclick="checkPromocode()"><img src="images/RightSign.png" alt="Edit" class="preload-image edit-img" /></a>
                                 </div>
-                                <h6><label class="color-green-dark"></label></h6>
+                                <div class="col-sm-12">
+                                    <div><h6><label class="color-green-dark"></label></h6></div>
+                                    <div><h6><label class="color-green-dark"></label></h6></div>
+                                </div>
                             </div>
                         </div>
                         <button id="btnPayment" class="button button-blue button-full half-top full-bottom"></button>
@@ -110,10 +113,12 @@
                 });
 
                 var isMobileDevice = isMobile();
+                var serviceHours = '';
 
                 function fetchProviderInfo() {
                     var service = localStorage.getItem("selectedCleaningTitle");
                     serviceTitle = service.substr(0, service.lastIndexOf(" "));
+                    serviceHours = serviceTitle.slice(0, 1);
 
                     var paymentValue = service.substr(service.lastIndexOf(" "));
                     $("#btnPayment").text("Pay " + paymentValue.substring(service + 1));
@@ -170,7 +175,11 @@
                                         alert("Promocode applied.!");
                                     }
 
-                                    $(".color-green-dark").text("Discount amount: " + response.data[0].price);
+                                    var regularPrice = parseFloat(localStorage.getItem("regularPrice") * serviceHours);
+                                    $($(".color-green-dark")[0]).text("Regular amount: " + "$" + regularPrice);
+                                    $($(".color-green-dark")[1]).text("Discount amount: " + "$" + response.data[0].price);
+                                    
+                                    $("#btnPayment").text("Pay $" + parseFloat(regularPrice - response.data[0].price));
                                     $("#promoCode").attr("disabled", "disabled").css("border-color", "green");
                                     $("#lnkPromoCode").removeAttr("onclick");
                                 }

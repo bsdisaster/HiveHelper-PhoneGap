@@ -81,7 +81,7 @@
                                     if (serviceCleaningData.length > 0) {
                                         for (var i = 0; i < serviceCleaningData.length; i++) {
 
-                                            var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(' + serviceCleaningData[i].subServiceId + ',' + serviceCleaningData[i].franchiseId + ',\'' + serviceCleaningData[i].displaytitle + '\')" class="user-list-3">';
+                                            var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(' + serviceCleaningData[i].subServiceId + ',' + serviceCleaningData[i].franchiseId + ',\'' + serviceCleaningData[i].displaytitle + '\',\'' + serviceCleaningData[i].regularPrice + '\')" class="user-list-3">';
                                             html = html + '<strong>' + serviceCleaningData[i].displaytitle + '</strong>';
                                             html = html + '<i class="ion-ios-arrow-forward"></i>';
                                             html = html + '</a>';
@@ -127,10 +127,11 @@
                         });
                     }
 
-                    function gotoSelectCleaningServiceDetailPage(subServiceId, franchiseId, displaytitle) {
+                    function gotoSelectCleaningServiceDetailPage(subServiceId, franchiseId, displaytitle, regularPrice) {
                         localStorage.setItem('helperName', '');
                         localStorage.setItem('subServiceId', subServiceId);
                         localStorage.setItem("selectedCleaningTitle", displaytitle);
+                        localStorage.setItem("regularPrice", regularPrice);
 
                         window.location.href = "bookhelper-select-cleaning-service-detail.html";
                     }
