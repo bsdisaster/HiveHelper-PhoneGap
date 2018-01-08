@@ -225,8 +225,6 @@ textarea {
 
 
 #page-content {
-    margin-bottom: 0px;
-    padding-top: 50px;
     padding-bottom: 50px;
 }
 
@@ -11930,19 +11928,18 @@ button.swiper-pagination-bullet {
     }
 
 .header h2 {
-	display: inline-block;
+    display: inline-block;
     width: 100%;
     text-transform: uppercase;
-    background-color: #004c97;
+    background-color: lightblue;
     color: #fff;
     font-size: 32px;
     padding: 15px 0;
-    margin-bottom: 10px;
-}	
+}
 
 
-.sticky-footer{
-	background-color: #004c97;
+.sticky-footer {
+    background-color: lightblue;
     display: inline-block;
     height: 63px;
     z-index: 9;
@@ -11952,66 +11949,49 @@ button.swiper-pagination-bullet {
 }
 
 .n_footer-links {
-	width:100%;
-	display:inline-block;
+    width: 100%;
+    display: inline-block;
 }
 
-.footer-link-r, 
+.footer-link-r,
 .footer-link-l {
-	width:10%;
-	display:block;
-	float:left;
+    width: 10%;
+    display: block;
+    float: left;
 }
 
-.footer-link-l a {
-	float: right;
-}
+    .footer-link-l a {
+        float: right;
+    }
 
-.footer-link-l img {
-	width: 100%;
-    float: right;
-	margin-right:30px;
-	margin-top:15px;
-}
+    .footer-link-l img {
+        width: 100%;
+        float: right;
+        margin-right: 30px;
+        margin-top: 15px;
+    }
 
-.footer-link-r a {
-	float:left;
-}
+    .footer-link-r a {
+        float: left;
+    }
 
-.footer-link-r img {
-	width: 100%;
-    margin-left: 30px;
-    margin-top: 15px;
-}
+    .footer-link-r img {
+        width: 100%;
+        margin-left: 30px;
+        margin-top: 15px;
+    }
 
 .sticky-footer center {
-	width: 80%;
+    width: 80%;
     display: block;
     float: left;
     margin-top: 20px;
 }
 
-.sticky-footer center h2 {
-	color:#fff;
-}
+    .sticky-footer center h2 {
+        color: #fff;
+    }
 
-.slogan {
-	width:100%;
-	display:inline-block;
-}
-
-.slogan img {
-	float:left;
-}
-
-.slogan h3 {
-    color: #004c97;
-    font-size: 30px;
-    font-weight: 200;
-    margin-top: 6px;
-}
-.slogan center h2{
-    padding-top: 15px;
-    color: white;
-    font-size:medium;
+.header-logo-center img {
+    width: 70%;
 }
