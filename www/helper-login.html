@@ -15,7 +15,7 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    
+
     <script src="cordova.js"></script>
 </head>
 
@@ -25,7 +25,7 @@
         <div class="header header-logo-center header-light">
             <img src="images/HIVE-Logo.jpg" />
         </div>
-        <div id="page-content" class="page-content">
+        <div id="page-content" class="page-content set-background-splash2">
             <div id="page-content-scroll">
                 <!--Enables this element to be scrolled -->
                 <div class="page-fullscreen">
@@ -51,209 +51,210 @@
                     </div>
 
                     <script type="text/javascript">
-                        $(document).ready(function () {
-                            Login();
-                        })
+                            $(document).ready(function () {
+                                Login();
+                            })
 
-                        var isMobileDevice = isMobile();
+                            var isMobileDevice = isMobile();
 
-                        function forgotPassword() {
-                            if ($("#username").val() === '' || $("#username").val() === null || $("#username").val() === 'Username') {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("Please enter username!", null, 'Warning', 'Close');
-                                } else {
-                                    alert("Please enter username!");
-                                }
-                            }
-                            else if ($("#username").val() !== null && $("#username").val() !== '' && $("#username").val() !== 'Username') {
-                                var x = $("#username").val();
-                                var atpos = x.indexOf("@");
-                                var dotpos = x.lastIndexOf(".");
-                                if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                            function forgotPassword() {
+                                if ($("#username").val() === '' || $("#username").val() === null || $("#username").val() === 'Username') {
                                     if (isMobileDevice) {
-                                        navigator.notification.alert("Please enter Valid email address!", null, 'Warning', 'Close');
+                                        navigator.notification.alert("Please enter username!", null, 'Warning', 'Close');
                                     } else {
-                                        alert("Please enter Valid email address!");
+                                        alert("Please enter username!");
                                     }
-                                } else {
-                                    if (isMobileDevice) {
-                                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                    }
-                                    var parameter = {
-                                        "username": "" + $("#username").val() + "",
-                                        "userRole": 3
-                                    }
-
-                                    $.ajax({
-                                        url: api_baseUrl + 'login/forgotPassword/',
-                                        type: "POST",
-                                        data: JSON.stringify(parameter),
-                                        dataType: "JSON",
-                                        success: function (response) {
-                                            // Inserting html into the result div on success
-                                            if (isMobileDevice) {
-                                                window.plugins.spinnerDialog.hide();
-                                            }
-                                            if (response !== null && response.status === 1) {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert(response.message, null, 'Success', 'Close');
-                                                } else {
-                                                    alert(response.message);
-                                                }
-                                            }
-                                            else {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
-                                                } else {
-                                                    alert(response.message);
-                                                }
-                                            }
-                                        },
-                                        error: function (jqXHR, text, error) {
-                                            // Displaying if there are any errors
-                                            if (isMobileDevice) {
-                                                window.plugins.spinnerDialog.hide();
-                                            }
-                                            if (error == null || error == "") {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                                }
-
-                                            } else {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert(error, null, 'Error', 'Close');
-                                                } else {
-                                                    alert(error);
-                                                }
-                                            }
+                                }
+                                else if ($("#username").val() !== null && $("#username").val() !== '' && $("#username").val() !== 'Username') {
+                                    var x = $("#username").val();
+                                    var atpos = x.indexOf("@");
+                                    var dotpos = x.lastIndexOf(".");
+                                    if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert("Please enter Valid email address!", null, 'Warning', 'Close');
+                                        } else {
+                                            alert("Please enter Valid email address!");
                                         }
-                                    });
+                                    } else {
+                                        if (isMobileDevice) {
+                                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                        }
+                                        var parameter = {
+                                            "username": "" + $("#username").val() + "",
+                                            "userRole": 3
+                                        }
+
+                                        $.ajax({
+                                            url: api_baseUrl + 'login/forgotPassword/',
+                                            type: "POST",
+                                            data: JSON.stringify(parameter),
+                                            dataType: "JSON",
+                                            success: function (response) {
+                                                // Inserting html into the result div on success
+                                                if (isMobileDevice) {
+                                                    window.plugins.spinnerDialog.hide();
+                                                }
+                                                if (response !== null && response.status === 1) {
+                                                    if (isMobileDevice) {
+                                                        navigator.notification.alert(response.message, null, 'Success', 'Close');
+                                                    } else {
+                                                        alert(response.message);
+                                                    }
+                                                }
+                                                else {
+                                                    if (isMobileDevice) {
+                                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                                    } else {
+                                                        alert(response.message);
+                                                    }
+                                                }
+                                            },
+                                            error: function (jqXHR, text, error) {
+                                                // Displaying if there are any errors
+                                                if (isMobileDevice) {
+                                                    window.plugins.spinnerDialog.hide();
+                                                }
+                                                if (error == null || error == "") {
+                                                    if (isMobileDevice) {
+                                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                                    }
+
+                                                } else {
+                                                    if (isMobileDevice) {
+                                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                                    } else {
+                                                        alert(error);
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
                                 }
                             }
-                        }
 
-                        function IsValidate() {
-                            var isResult = true;
-                            var countError = 0;
-                            var usernameValue = $("#username").val();
-                            var passwordValue = $("#password").val();
+                            function IsValidate() {
+                                var isResult = true;
+                                var countError = 0;
+                                var usernameValue = $("#username").val();
+                                var passwordValue = $("#password").val();
 
-                            var msg = "Please enter following fields:\n";
+                                var msg = "Please enter following fields:\n";
 
-                            if (usernameValue === '' || usernameValue === null || usernameValue === 'Username') {
-                                countError = countError + 1;
-                                msg += "Username!\n";
-
-                            }
-                            if (passwordValue === '' || passwordValue === null || passwordValue === 'Password') {
-                                countError = countError + 1;
-                                msg += "Password!\n";
-
-                            }
-                            if (usernameValue !== null && usernameValue !== '' && usernameValue !== 'Username') {
-                                var x = usernameValue;
-                                var atpos = x.indexOf("@");
-                                var dotpos = x.lastIndexOf(".");
-                                if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                                if (usernameValue === '' || usernameValue === null || usernameValue === 'Username') {
                                     countError = countError + 1;
-                                    msg += "Valid email address!\n";
+                                    msg += "Username!\n";
 
                                 }
-                            }
-                            if (countError > 0) {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(msg, null, 'Warning', 'Close');
-                                } else {
-                                    alert(msg);
+                                if (passwordValue === '' || passwordValue === null || passwordValue === 'Password') {
+                                    countError = countError + 1;
+                                    msg += "Password!\n";
+
                                 }
-                                isResult = false;
+                                if (usernameValue !== null && usernameValue !== '' && usernameValue !== 'Username') {
+                                    var x = usernameValue;
+                                    var atpos = x.indexOf("@");
+                                    var dotpos = x.lastIndexOf(".");
+                                    if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                                        countError = countError + 1;
+                                        msg += "Valid email address!\n";
+
+                                    }
+                                }
+                                if (countError > 0) {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(msg, null, 'Warning', 'Close');
+                                    } else {
+                                        alert(msg);
+                                    }
+                                    isResult = false;
+                                }
+
+                                return isResult;
                             }
+                            // login functionality
+                            function Login() {
+                                $('#btnSubmit').on('click', function (event) {
+                                    if (IsValidate()) {
 
-                            return isResult;
-                        }
-                        // login functionality
-                        function Login() {
-                            $('#btnSubmit').on('click', function (event) {
-                                if (IsValidate()) {
+                                        var deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
+                                        var platform = 'browser';
 
-                                    var deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
-                                    var platform = 'browser';
-
-                                    if (isMobileDevice) {
-                                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                    }
-                                    if (isMobileDevice) {
-                                        deviceToken = device.uuid;
-                                    }
-
-                                    if (isMobileDevice) {
-                                        platform = device.platform;
-                                    }
-
-                                    var parameter = {
-                                        "username": "" + $("#username").val() + "",
-                                        "password": "" + $("#password").val() + "",
-                                        "userRole": 3,
-                                        "deviceType": platform,
-                                        "deviceToken": deviceToken
-                                    }
-
-                                    $.ajax({
-                                        url: api_baseUrl + 'login',
-                                        type: "POST",
-                                        data: JSON.stringify(parameter),
-                                        dataType: "JSON",
-                                        success: function (response) {
-                                            // Inserting html into the result div on success
-                                            if (isMobileDevice) {
-                                                window.plugins.spinnerDialog.hide();
-                                            }
-                                            if (response !== null && response.status === 1) {
-                                                localStorage.setItem("username", response.data.email);
-                                                localStorage.setItem("password", $("#password").val());
-                                                localStorage.setItem("deviceType", platform);
-                                                localStorage.setItem("deviceToken", deviceToken);
-                                                localStorage.setItem("userId", response.data.userId);
-                                                localStorage.setItem("roleId", response.data.roleId);
-                                                localStorage.setItem("firstName", response.data.firstName);
-                                                window.location = "dashboard.html";
-                                            }
-                                            else {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
-                                                } else {
-                                                    alert(response.message);
-                                                }
-                                            }
-
-                                        },
-                                        error: function (jqXHR, text, error) {
-                                            // Displaying if there are any errors
-                                            if (isMobileDevice) {
-                                                window.plugins.spinnerDialog.hide();
-                                            }
-                                            if (error == null || error == "") {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                                }
-
-                                            } else {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert(error, null, 'Error', 'Close');
-                                                } else {
-                                                    alert(error);
-                                                }
-                                            }
+                                        if (isMobileDevice) {
+                                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                                         }
-                                    });
-                                }
+                                        if (isMobileDevice) {
+                                            deviceToken = device.uuid;
+                                        }
 
-                            });
-                        }
+                                        if (isMobileDevice) {
+                                            platform = device.platform;
+                                        }
+
+                                        var parameter = {
+                                            "username": "" + $("#username").val() + "",
+                                            "password": "" + $("#password").val() + "",
+                                            "userRole": 3,
+                                            "deviceType": platform,
+                                            "deviceToken": deviceToken
+                                        }
+
+                                        $.ajax({
+                                            url: api_baseUrl + 'login',
+                                            type: "POST",
+                                            data: JSON.stringify(parameter),
+                                            dataType: "JSON",
+                                            success: function (response) {
+                                                // Inserting html into the result div on success
+                                                if (isMobileDevice) {
+                                                    window.plugins.spinnerDialog.hide();
+                                                }
+                                                if (response !== null && response.status === 1) {
+                                                    localStorage.setItem("username", response.data.email);
+                                                    localStorage.setItem("password", $("#password").val());
+                                                    localStorage.setItem("deviceType", platform);
+                                                    localStorage.setItem("deviceToken", deviceToken);
+                                                    localStorage.setItem("userId", response.data.userId);
+                                                    localStorage.setItem("roleId", response.data.roleId);
+                                                    localStorage.setItem("firstName", response.data.firstName);
+                                                    window.location = "dashboard.html";
+                                                }
+                                                else {
+                                                    if (isMobileDevice) {
+                                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                                    } else {
+                                                        alert(response.message);
+                                                    }
+                                                }
+
+                                            },
+                                            error: function (jqXHR, text, error) {
+                                                // Displaying if there are any errors
+                                                if (isMobileDevice) {
+                                                    window.plugins.spinnerDialog.hide();
+                                                }
+                                                if (error == null || error == "") {
+                                                    if (isMobileDevice) {
+                                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                                    }
+
+                                                } else {
+                                                    if (isMobileDevice) {
+                                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                                    } else {
+                                                        alert(error);
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                });
+                            }
                     </script>
                 </div>
             </div>
         </div>
+
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">

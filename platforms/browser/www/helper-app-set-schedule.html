@@ -28,7 +28,7 @@
         <div class="header header-logo-center header-light">
             <img src="images/HIVE-Logo.jpg" />
         </div>
-        <div id="page-content" class="page-content futura-pt-book">
+        <div id="page-content" class="page-content futura-pt-book set-background-splash2">
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip no-bottom">
@@ -386,293 +386,293 @@
                 </div>
 
                 <script type="text/javascript">
-                    $(document).ready(function () {
-                        saveSchedule();
+                        $(document).ready(function () {
+                            saveSchedule();
 
-                        if (!isMobileDevice) {
+                            if (!isMobileDevice) {
+                                fetchSchedule();
+                            }
+                        }).on('deviceready', function () {
+                            document.addEventListener("deviceready", devicereadySuccess, false);
+                        });
+
+
+                        $(".drpSelectBox").on('change', function () {
+                            disableDropdowns();
+                        })
+
+                        var isMobileDevice = isMobile();
+                        var count = 0;
+
+                        function validateSelectedTime() {
+                            $('input:checkbox').each(function () {
+                                if ($(this).is(":checked")) {
+                                    var selectBoxes = $(this).parent("div").parent("div").find("select");
+                                    $(selectBoxes).each(function () {
+                                        if ($(this).val() == null || $(this).val() == "Select Time") {
+                                            count++;
+                                        }
+                                    })
+                                }
+                            })
+                        }
+
+                        function devicereadySuccess() {
                             fetchSchedule();
                         }
-                    }).on('deviceready', function () {
-                        document.addEventListener("deviceready", devicereadySuccess, false);
-                    });
 
-
-                    $(".drpSelectBox").on('change', function () {
-                        disableDropdowns();
-                    })
-
-                    var isMobileDevice = isMobile();
-                    var count = 0;
-
-                    function validateSelectedTime() {
-                        $('input:checkbox').each(function () {
-                            if ($(this).is(":checked")) {
-                                var selectBoxes = $(this).parent("div").parent("div").find("select");
-                                $(selectBoxes).each(function () {
-                                    if ($(this).val() == null || $(this).val() == "Select Time") {
-                                        count++;
-                                    }
-                                })
+                        function fetchSchedule() {
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                             }
-                        })
-                    }
 
-                    function devicereadySuccess() {
-                        fetchSchedule();
-                    }
+                            $.ajax({
+                                url: api_baseUrl + 'getSchedule/' + localStorage.getItem("userId"),
+                                type: "GET",
+                                dataType: "JSON",
+                                success: function (response) {
+                                    // Inserting html into the result div on success
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    }
+                                    if (response !== null && response.data.schedule.length > 0 && response.status === 1) {
+                                        for (var i = 0; i < response.data.schedule.length; i++) {
+                                            if (response.data.schedule[i].weekDayId == "1") {
+                                                $("#chkMondays").attr("checked", true);
+                                                $("#drpMondayFrom").val(response.data.schedule[i].scheduleFrom);
+                                                $("#drpMondayTo").val(response.data.schedule[i].scheduleTo);
+                                            }
+                                            if (response.data.schedule[i].weekDayId == "2") {
+                                                $("#chkTuesdays").attr("checked", true);
+                                                $("#drpTuesdayFrom").val(response.data.schedule[i].scheduleFrom);
+                                                $("#drpTuesdayTo").val(response.data.schedule[i].scheduleTo);
+                                            }
+                                            if (response.data.schedule[i].weekDayId == "3") {
+                                                $("#chkWednesdays").attr("checked", true);
+                                                $("#drpWednesdayFrom").val(response.data.schedule[i].scheduleFrom);
+                                                $("#drpWednesdayTo").val(response.data.schedule[i].scheduleTo);
+                                            }
+                                            if (response.data.schedule[i].weekDayId == "4") {
+                                                $("#chkThursedays").attr("checked", true);
+                                                $("#drpThursedayFrom").val(response.data.schedule[i].scheduleFrom);
+                                                $("#drpThursedayTo").val(response.data.schedule[i].scheduleTo);
+                                            }
+                                            if (response.data.schedule[i].weekDayId == "5") {
+                                                $("#chkFridays").attr("checked", true);
+                                                $("#drpFridayFrom").val(response.data.schedule[i].scheduleFrom);
+                                                $("#drpFridayTo").val(response.data.schedule[i].scheduleTo);
+                                            }
+                                            if (response.data.schedule[i].weekDayId == "6") {
+                                                $("#chkSaturdays").attr("checked", true);
+                                                $("#drpSaturdayFrom").val(response.data.schedule[i].scheduleFrom);
+                                                $("#drpSaturdayTo").val(response.data.schedule[i].scheduleTo);
+                                            }
+                                            if (response.data.schedule[i].weekDayId == "7") {
+                                                $("#chkSundays").attr("checked", true);
+                                                $("#drpSundayFrom").val(response.data.schedule[i].scheduleFrom);
+                                                $("#drpSundayTo").val(response.data.schedule[i].scheduleTo);
+                                            }
+                                        }
+                                        disableDropdowns();
+                                    }
+                                    else {
 
-                    function fetchSchedule() {
-                        if (isMobileDevice) {
-                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                        } else {
+                                            alert(response.message);
+                                        }
+                                    }
+
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    }
+                                    if (error == null || error == "") {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                        }
+
+                                    } else {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert(error, null, 'Error', 'Close');
+                                        } else {
+                                            alert(error);
+                                        }
+                                    }
+                                }
+                            });
                         }
 
-                        $.ajax({
-                            url: api_baseUrl + 'getSchedule/' + localStorage.getItem("userId"),
-                            type: "GET",
-                            dataType: "JSON",
-                            success: function (response) {
-                                // Inserting html into the result div on success
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.hide();
-                                }
-                                if (response !== null && response.data.schedule.length > 0 && response.status === 1) {
-                                    for (var i = 0; i < response.data.schedule.length; i++) {
-                                        if (response.data.schedule[i].weekDayId == "1") {
-                                            $("#chkMondays").attr("checked", true);
-                                            $("#drpMondayFrom").val(response.data.schedule[i].scheduleFrom);
-                                            $("#drpMondayTo").val(response.data.schedule[i].scheduleTo);
-                                        }
-                                        if (response.data.schedule[i].weekDayId == "2") {
-                                            $("#chkTuesdays").attr("checked", true);
-                                            $("#drpTuesdayFrom").val(response.data.schedule[i].scheduleFrom);
-                                            $("#drpTuesdayTo").val(response.data.schedule[i].scheduleTo);
-                                        }
-                                        if (response.data.schedule[i].weekDayId == "3") {
-                                            $("#chkWednesdays").attr("checked", true);
-                                            $("#drpWednesdayFrom").val(response.data.schedule[i].scheduleFrom);
-                                            $("#drpWednesdayTo").val(response.data.schedule[i].scheduleTo);
-                                        }
-                                        if (response.data.schedule[i].weekDayId == "4") {
-                                            $("#chkThursedays").attr("checked", true);
-                                            $("#drpThursedayFrom").val(response.data.schedule[i].scheduleFrom);
-                                            $("#drpThursedayTo").val(response.data.schedule[i].scheduleTo);
-                                        }
-                                        if (response.data.schedule[i].weekDayId == "5") {
-                                            $("#chkFridays").attr("checked", true);
-                                            $("#drpFridayFrom").val(response.data.schedule[i].scheduleFrom);
-                                            $("#drpFridayTo").val(response.data.schedule[i].scheduleTo);
-                                        }
-                                        if (response.data.schedule[i].weekDayId == "6") {
-                                            $("#chkSaturdays").attr("checked", true);
-                                            $("#drpSaturdayFrom").val(response.data.schedule[i].scheduleFrom);
-                                            $("#drpSaturdayTo").val(response.data.schedule[i].scheduleTo);
-                                        }
-                                        if (response.data.schedule[i].weekDayId == "7") {
-                                            $("#chkSundays").attr("checked", true);
-                                            $("#drpSundayFrom").val(response.data.schedule[i].scheduleFrom);
-                                            $("#drpSundayTo").val(response.data.schedule[i].scheduleTo);
-                                        }
+                        function disableDropdowns() {
+                            $('.drpSelectBoxTo option').prop("disabled", false);
+                            $(".drpSelectBox").each(function () {
+                                var value = $(this).val().split(':')[0];
+
+                                $(this).parent().parent().next('div').find('select').find(":lt(" + parseInt(value - 7) + ")").prop("disabled", true);
+                                $(this).parent().parent().next('div').find('select').find(":eq(" + parseInt(value - 7) + ")").prop("disabled", true);
+                            })
+                        }
+
+                        function saveSchedule() {
+                            $("#btnSaveschedule").on("click", function () {
+
+                                validateSelectedTime();
+                                if ($('#chkMondays').is(":not(:checked)") && $('#chkTuesdays').is(":not(:checked)") && $('#chkWednesdays').is(":not(:checked)") && $('#chkThursedays').is(":not(:checked)") && $('#chkFridays').is(":not(:checked)") && $('#chkSaturdays').is(":not(:checked)") && $('#chkSundays').is(":not(:checked)")) {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("Please select at least one shedule.", null, 'Warning', 'Close');
+                                    } else {
+                                        alert("Please select at least one shedule.");
                                     }
-                                    disableDropdowns();
+                                }
+                                else if (count == 0) {
+
+                                    var userId = localStorage.getItem("userId");
+
+                                    var mainArray = {};
+                                    var arrayItem = [];
+
+                                    if ($("#chkMondays").is(':checked')) {
+                                        var sheduleFrom = $("#drpMondayFrom").val();
+                                        var sheduleTo = $("#drpMondayTo").val();
+
+                                        var sheduleItem = {};
+                                        sheduleItem.weekDayId = "1";
+                                        sheduleItem.scheduleFrom = sheduleFrom;
+                                        sheduleItem.scheduleTo = sheduleTo;
+
+                                        arrayItem.push(sheduleItem);
+                                    }
+                                    if ($("#chkTuesdays").is(':checked')) {
+                                        var sheduleFrom = $("#drpTuesdayFrom").val();
+                                        var sheduleTo = $("#drpTuesdayTo").val();
+
+                                        var sheduleItem = {};
+                                        sheduleItem.weekDayId = "2";
+                                        sheduleItem.scheduleFrom = sheduleFrom;
+                                        sheduleItem.scheduleTo = sheduleTo;
+
+                                        arrayItem.push(sheduleItem);
+                                    }
+                                    if ($("#chkWednesdays").is(':checked')) {
+                                        var sheduleFrom = $("#drpWednesdayFrom").val();
+                                        var sheduleTo = $("#drpWednesdayTo").val();
+
+                                        var sheduleItem = {};
+                                        sheduleItem.weekDayId = "3";
+                                        sheduleItem.scheduleFrom = sheduleFrom;
+                                        sheduleItem.scheduleTo = sheduleTo;
+
+                                        arrayItem.push(sheduleItem);
+                                    }
+                                    if ($("#chkThursedays").is(':checked')) {
+                                        var sheduleFrom = $("#drpThursedayFrom").val();
+                                        var sheduleTo = $("#drpThursedayTo").val();
+
+                                        var sheduleItem = {};
+                                        sheduleItem.weekDayId = "4";
+                                        sheduleItem.scheduleFrom = sheduleFrom;
+                                        sheduleItem.scheduleTo = sheduleTo;
+
+                                        arrayItem.push(sheduleItem);
+                                    }
+                                    if ($("#chkFridays").is(':checked')) {
+                                        var sheduleFrom = $("#drpFridayFrom").val();
+                                        var sheduleTo = $("#drpFridayTo").val();
+
+                                        var sheduleItem = {};
+                                        sheduleItem.weekDayId = "5";
+                                        sheduleItem.scheduleFrom = sheduleFrom;
+                                        sheduleItem.scheduleTo = sheduleTo;
+
+                                        arrayItem.push(sheduleItem);
+                                    }
+                                    if ($("#chkSaturdays").is(':checked')) {
+                                        var sheduleFrom = $("#drpSaturdayFrom").val();
+                                        var sheduleTo = $("#drpSaturdayTo").val();
+
+                                        var sheduleItem = {};
+                                        sheduleItem.weekDayId = "6";
+                                        sheduleItem.scheduleFrom = sheduleFrom;
+                                        sheduleItem.scheduleTo = sheduleTo;
+
+                                        arrayItem.push(sheduleItem);
+                                    }
+                                    if ($("#chkSundays").is(':checked')) {
+                                        var sheduleFrom = $("#drpSundayFrom").val();
+                                        var sheduleTo = $("#drpSundayTo").val();
+
+                                        var sheduleItem = {};
+                                        sheduleItem.weekDayId = "7";
+                                        sheduleItem.scheduleFrom = sheduleFrom;
+                                        sheduleItem.scheduleTo = sheduleTo;
+
+                                        arrayItem.push(sheduleItem);
+
+                                    }
+
+                                    mainArray.helperId = userId;
+                                    mainArray.schedule = arrayItem;
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    }
+                                    $.ajax({
+                                        url: api_baseUrl + 'helperworktime',
+                                        type: "POST",
+                                        data: JSON.stringify(mainArray),
+                                        dataType: "JSON",
+                                        success: function (response) {
+                                            // Inserting html into the result div on success
+                                            if (isMobileDevice) {
+                                                window.plugins.spinnerDialog.hide();
+                                            }
+                                            if (response !== null && response.status === 1) {
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert("Schedule set successfully.", null, "Success", "Close");
+                                                } else {
+                                                    alert("Schedule set successfully.");
+                                                }
+                                            }
+                                            else {
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert(response.message, null, "Warning", "Close");
+                                                } else {
+                                                    alert(response.message);
+                                                }
+                                            }
+                                        },
+                                        error: function (jqXHR, text, error) {
+                                            // Displaying if there are any errors
+                                            if (isMobileDevice) {
+                                                window.plugins.spinnerDialog.hide();
+                                            }
+                                            if (error == null || error == "") {
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                                }
+
+                                            } else {
+                                                if (isMobileDevice) {
+                                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                                } else {
+                                                    alert(error);
+                                                }
+                                            }
+                                        }
+                                    });
                                 }
                                 else {
-
+                                    count = 0;
                                     if (isMobileDevice) {
-                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                        navigator.notification.alert("Please select time.", null, "Warning", "Close");
                                     } else {
-                                        alert(response.message);
+                                        alert("Please select time.");
                                     }
                                 }
-
-                            },
-                            error: function (jqXHR, text, error) {
-                                // Displaying if there are any errors
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.hide();
-                                }
-                                if (error == null || error == "") {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                    }
-
-                                } else {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert(error, null, 'Error', 'Close');
-                                    } else {
-                                        alert(error);
-                                    }
-                                }
-                            }
-                        });
-                    }
-
-                    function disableDropdowns() {
-                        $('.drpSelectBoxTo option').prop("disabled", false);
-                        $(".drpSelectBox").each(function () {
-                            var value = $(this).val().split(':')[0];
-
-                            $(this).parent().parent().next('div').find('select').find(":lt(" + parseInt(value - 7) + ")").prop("disabled", true);
-                            $(this).parent().parent().next('div').find('select').find(":eq(" + parseInt(value - 7) + ")").prop("disabled", true);
-                        })
-                    }
-
-                    function saveSchedule() {
-                        $("#btnSaveschedule").on("click", function () {
-
-                            validateSelectedTime();
-                            if ($('#chkMondays').is(":not(:checked)") && $('#chkTuesdays').is(":not(:checked)") && $('#chkWednesdays').is(":not(:checked)") && $('#chkThursedays').is(":not(:checked)") && $('#chkFridays').is(":not(:checked)") && $('#chkSaturdays').is(":not(:checked)") && $('#chkSundays').is(":not(:checked)")) {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("Please select at least one shedule.", null, 'Warning', 'Close');
-                                } else {
-                                    alert("Please select at least one shedule.");
-                                }
-                            }
-                            else if (count == 0) {
-
-                                var userId = localStorage.getItem("userId");
-
-                                var mainArray = {};
-                                var arrayItem = [];
-
-                                if ($("#chkMondays").is(':checked')) {
-                                    var sheduleFrom = $("#drpMondayFrom").val();
-                                    var sheduleTo = $("#drpMondayTo").val();
-
-                                    var sheduleItem = {};
-                                    sheduleItem.weekDayId = "1";
-                                    sheduleItem.scheduleFrom = sheduleFrom;
-                                    sheduleItem.scheduleTo = sheduleTo;
-
-                                    arrayItem.push(sheduleItem);
-                                }
-                                if ($("#chkTuesdays").is(':checked')) {
-                                    var sheduleFrom = $("#drpTuesdayFrom").val();
-                                    var sheduleTo = $("#drpTuesdayTo").val();
-
-                                    var sheduleItem = {};
-                                    sheduleItem.weekDayId = "2";
-                                    sheduleItem.scheduleFrom = sheduleFrom;
-                                    sheduleItem.scheduleTo = sheduleTo;
-
-                                    arrayItem.push(sheduleItem);
-                                }
-                                if ($("#chkWednesdays").is(':checked')) {
-                                    var sheduleFrom = $("#drpWednesdayFrom").val();
-                                    var sheduleTo = $("#drpWednesdayTo").val();
-
-                                    var sheduleItem = {};
-                                    sheduleItem.weekDayId = "3";
-                                    sheduleItem.scheduleFrom = sheduleFrom;
-                                    sheduleItem.scheduleTo = sheduleTo;
-
-                                    arrayItem.push(sheduleItem);
-                                }
-                                if ($("#chkThursedays").is(':checked')) {
-                                    var sheduleFrom = $("#drpThursedayFrom").val();
-                                    var sheduleTo = $("#drpThursedayTo").val();
-
-                                    var sheduleItem = {};
-                                    sheduleItem.weekDayId = "4";
-                                    sheduleItem.scheduleFrom = sheduleFrom;
-                                    sheduleItem.scheduleTo = sheduleTo;
-
-                                    arrayItem.push(sheduleItem);
-                                }
-                                if ($("#chkFridays").is(':checked')) {
-                                    var sheduleFrom = $("#drpFridayFrom").val();
-                                    var sheduleTo = $("#drpFridayTo").val();
-
-                                    var sheduleItem = {};
-                                    sheduleItem.weekDayId = "5";
-                                    sheduleItem.scheduleFrom = sheduleFrom;
-                                    sheduleItem.scheduleTo = sheduleTo;
-
-                                    arrayItem.push(sheduleItem);
-                                }
-                                if ($("#chkSaturdays").is(':checked')) {
-                                    var sheduleFrom = $("#drpSaturdayFrom").val();
-                                    var sheduleTo = $("#drpSaturdayTo").val();
-
-                                    var sheduleItem = {};
-                                    sheduleItem.weekDayId = "6";
-                                    sheduleItem.scheduleFrom = sheduleFrom;
-                                    sheduleItem.scheduleTo = sheduleTo;
-
-                                    arrayItem.push(sheduleItem);
-                                }
-                                if ($("#chkSundays").is(':checked')) {
-                                    var sheduleFrom = $("#drpSundayFrom").val();
-                                    var sheduleTo = $("#drpSundayTo").val();
-
-                                    var sheduleItem = {};
-                                    sheduleItem.weekDayId = "7";
-                                    sheduleItem.scheduleFrom = sheduleFrom;
-                                    sheduleItem.scheduleTo = sheduleTo;
-
-                                    arrayItem.push(sheduleItem);
-
-                                }
-
-                                mainArray.helperId = userId;
-                                mainArray.schedule = arrayItem;
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                }
-                                $.ajax({
-                                    url: api_baseUrl + 'helperworktime',
-                                    type: "POST",
-                                    data: JSON.stringify(mainArray),
-                                    dataType: "JSON",
-                                    success: function (response) {
-                                        // Inserting html into the result div on success
-                                        if (isMobileDevice) {
-                                            window.plugins.spinnerDialog.hide();
-                                        }
-                                        if (response !== null && response.status === 1) {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert("Schedule set successfully.", null, "Success", "Close");
-                                            } else {
-                                                alert("Schedule set successfully.");
-                                            }
-                                        }
-                                        else {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert(response.message, null, "Warning", "Close");
-                                            } else {
-                                                alert(response.message);
-                                            }
-                                        }
-                                    },
-                                    error: function (jqXHR, text, error) {
-                                        // Displaying if there are any errors
-                                        if (isMobileDevice) {
-                                            window.plugins.spinnerDialog.hide();
-                                        }
-                                        if (error == null || error == "") {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                            }
-
-                                        } else {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert(error, null, 'Error', 'Close');
-                                            } else {
-                                                alert(error);
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                            else {
-                                count = 0;
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("Please select time.", null, "Warning", "Close");
-                                } else {
-                                    alert("Please select time.");
-                                }
-                            }
-                        })
-                    }
+                            })
+                        }
 
                 </script>
                 <div class="clear"></div>

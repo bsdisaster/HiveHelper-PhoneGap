@@ -30,7 +30,7 @@
         <div class="header header-logo-center header-light">
             <img src="images/HIVE-Logo.jpg" />
         </div>
-        <div id="page-content" class="page-content">
+        <div id="page-content" class="page-content set-background-splash2">
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
@@ -109,7 +109,6 @@
                 });
 
                 var isMobileDevice = isMobile();
-                var serviceHours = '';
 
                 function fetchProviderInfo() {
                     var service = localStorage.getItem("selectedCleaningTitle");
@@ -171,10 +170,10 @@
                                         alert("Promocode applied.!");
                                     }
 
-                                    var regularPrice = parseFloat(localStorage.getItem("regularPrice") * serviceHours);
+                                    var regularPrice = parseFloat(localStorage.getItem("regularPrice"));
                                     $($(".color-green-dark")[0]).text("Regular amount: " + "$" + regularPrice);
                                     $($(".color-green-dark")[1]).text("Discount amount: " + "$" + response.data[0].price);
-                                    
+
                                     $("#btnPayment").text("Pay $" + parseFloat(regularPrice - response.data[0].price));
                                     $("#promoCode").attr("disabled", "disabled").css("border-color", "green");
                                     $("#lnkPromoCode").removeAttr("onclick");
@@ -381,13 +380,12 @@
                             Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
                         },
                         data: {
-                            amount: $("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0],
+                            amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),
                             source: tokenInfo.id,
                             description: "Charge",
                             currency: "USD"
                         },
                         success: (data) => {
-
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             }

@@ -18,7 +18,7 @@
     <script src="scripts/phonegap.facebook.inappbrowser.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    
+
     <script type="text/javascript" src="cordova.js"></script>
 
 </head>
@@ -29,7 +29,7 @@
         <div class="header header-logo-center header-light">
             <img src="images/HIVE-Logo.jpg" />
         </div>
-        <div id="page-content" class="page-content">
+        <div id="page-content" class="page-content set-background-splash2">
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="decoration decoration-margins"></div>
@@ -77,247 +77,278 @@
                 </div>
             </div>
             <script type="text/javascript">
-                $(document).ready(function () {
+                    $(document).ready(function () {
 
-                    if (!isMobileDevice) {
-                        getAllServices();
-                    }
-                    accordionMenu();
-                }).on('deviceready', function () {
-
-                    document.addEventListener("deviceready", getAllServices, false);
-                });
-
-                var isMobileDevice = isMobile();
-
-                function accordionMenu() {
-                    $('.accordion-toggle').on('click', function (event) {
-                        event.preventDefault();
-                        // create accordion variables
-                        var accordion = $(this);
-                        var accordionContent = accordion.next('.accordion-content');
-
-                        // toggle accordion link open class
-                        accordion.toggleClass("open");
-                        // toggle accordion content
-                        accordionContent.slideToggle(250);
-
-                        if ($('.accordion-toggle').hasClass("open")) {
-                            $('.accordion-toggle').addClass('disabled');
-                            $(this).removeClass('disabled');
-                        } else {
-                            $('.accordion-toggle').removeClass('disabled');
+                        if (!isMobileDevice) {
+                            getAllServices();
                         }
+                        accordionMenu();
+                    }).on('deviceready', function () {
+
+                        document.addEventListener("deviceready", getAllServices, false);
                     });
-                }
 
-                function getAllServices() {
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                    }
-                    var userId = localStorage.getItem("userId");
+                    var isMobileDevice = isMobile();
 
-                    $.ajax({
-                        url: api_baseUrl + 'appointment/userbookings/' + userId,
-                        type: "GET",
-                        dataType: "JSON",
-                        success: function (response) {
-                            // Inserting html into the result div on success
-                            if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
-                            }
-                            if (response !== null && response.status === 1) {
+                    function accordionMenu() {
+                        $('.accordion-toggle').on('click', function (event) {
+                            event.preventDefault();
+                            // create accordion variables
+                            var accordion = $(this);
+                            var accordionContent = accordion.next('.accordion-content');
 
-                                var dueBooking = response.data.duedateBooking;
-                                var pendingBooking = response.data.pendingBooking;
-                                var upcomingBooking = response.data.upcomingBooking;
-                                var previousBooking = response.data.previousBooking;
+                            // toggle accordion link open class
+                            accordion.toggleClass("open");
+                            // toggle accordion content
+                            accordionContent.slideToggle(250);
 
-                                // due booking list
-                                if (dueBooking.length > 0) {
-
-                                    for (var i = 0; i < dueBooking.length; i++) {
-                                        var html = '';
-                                        var serviceName = '<b>Service:</b> ' + dueBooking[i].serviceName + ' </br>';
-                                        var appointmentDateTime = '<b>Date:</b> ' + dueBooking[i].appointmentDate + '  </br>';
-                                        var providerName = '<b>Provider:</b> ' + dueBooking[i].franchiseName + ' </br>';
-
-                                        html = html + '<div class="user-list-3 user-list-1-change">';
-                                        html = html + '<div class="col-sm-10">';
-
-                                        html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + dueBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + dueBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
-                                        html = html + '</div>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="clear"></div></div>';
-                                        $('#divDue').append(html);
-                                    }
-
-                                }
-                                else {
-                                    $('#lblDueListError').text('No due booking records found.!');
-                                }
-
-                                // pending booking list
-                                if (pendingBooking.length > 0) {
-
-                                    for (var i = 0; i < pendingBooking.length; i++) {
-                                        var html = '';
-                                        var serviceName = '<b>Service:</b> ' + pendingBooking[i].serviceName + ' </br>';
-                                        var appointmentDateTime = '<b>Date:</b> ' + pendingBooking[i].appointmentDate + '  </br>';
-                                        var providerName = '<b>Provider:</b> ' + pendingBooking[i].franchiseName + ' </br>';
-
-                                        html = html + '<div class="user-list-3 user-list-1-change">';
-                                        html = html + '<div class="col-sm-10">';
-
-                                        html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" target="_self" onclick="cancelRequestedAppointment(' + pendingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
-                                        html = html + '</div>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="clear"></div></div>';
-                                        $('#divPending').append(html);
-                                    }
-
-                                }
-                                else {
-                                    $('#lblPendingListError').text('No pending booking records found.!');
-                                }
-
-                                // upcoming booking list
-                                if (upcomingBooking.length > 0) {
-
-                                    for (var i = 0; i < upcomingBooking.length; i++) {
-                                        var html = '';
-                                        var serviceName = '<b>Service:</b> ' + upcomingBooking[i].serviceName + ' </br>';
-                                        var appointmentDateTime = '<b>Date:</b> ' + upcomingBooking[i].displaydate + '  </br>';
-                                        var providerName = '<b>Provider:</b> ' + upcomingBooking[i].franchiseName + '  </br>';
-
-                                        html = html + '<div class="user-list-3 user-list-1-change">';
-                                        html = html + '<div class="col-sm-9">';
-
-                                        html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ',\'' + upcomingBooking[i].displaydate + '\',\'' + upcomingBooking[i].appointmentDate + '\')" target="_self"><i class="fa fa-pencil" style="font-size:large" aria-hidden="true"></i></a>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
-                                        html = html + '</div>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="clear"></div></div>';
-                                        $('#divUpComming').append(html);
-                                    }
-
-                                }
-                                else {
-                                    $('#lblUpcomingListError').text('No upcoming booking records found.!');
-                                }
-                                // previous booking list
-                                if (previousBooking.length > 0) {
-
-                                    for (var i = 0; i < previousBooking.length; i++) {
-                                        var html = '';
-                                        var serviceName = '<b>Service:</b> ' + previousBooking[i].serviceName + ' </br>';
-                                        var appointmentDateTime = '<b>Date:</b> ' + previousBooking[i].displaydate + '  </br>';
-                                        var providerName = '<b>Provider:</b> ' + previousBooking[i].franchiseName + '  </br>';
-
-                                        html = html + '<div class="user-list-3 user-list-1-change">';
-                                        html = html + '<div class="col-sm-8">';
-
-                                        html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
-                                        html = html + '</div>';
-                                        html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
-                                        html = html + '	<img src="images/BackOrForword.png" alt="Facebook" class="preload-image bg-blue-dark edit-img" /><a href="#" onclick="facebookShare(\'' + previousBooking[i].serviceName + '\',\'' + previousBooking[i].franchiseName + '\')" class="color-black" style="padding-left:35px;cursor: pointer">Facebook</a>';
-                                        html = html + '</div></div><div class="clear"></div>';
-                                        $('#divPreviousComming').append(html);
-                                    }
-
-                                }
-                                else {
-                                    $('#lblPreviousListError').text('No previous booking records found.!');
-                                }
-                            }
-                            else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
-                                } else {
-                                    alert(response.message);
-                                }
-                            }
-                        },
-                        error: function (jqXHR, text, error) {
-                            // Displaying if there are any errors
-                            if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
-                            }
-
-                            if (error == null || error == "") {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-
+                            if ($('.accordion-toggle').hasClass("open")) {
+                                $('.accordion-toggle').addClass('disabled');
+                                $(this).removeClass('disabled');
                             } else {
+                                $('.accordion-toggle').removeClass('disabled');
+                            }
+                        });
+                    }
+
+                    function getAllServices() {
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        }
+                        var userId = localStorage.getItem("userId");
+
+                        $.ajax({
+                            url: api_baseUrl + 'appointment/userbookings/' + userId,
+                            type: "GET",
+                            dataType: "JSON",
+                            success: function (response) {
+                                // Inserting html into the result div on success
                                 if (isMobileDevice) {
-                                    navigator.notification.alert(error, null, 'Error', 'Close');
-                                } else {
-                                    alert(error);
+                                    window.plugins.spinnerDialog.hide();
+                                }
+                                if (response !== null && response.status === 1) {
+
+                                    var dueBooking = response.data.duedateBooking;
+                                    var pendingBooking = response.data.pendingBooking;
+                                    var upcomingBooking = response.data.upcomingBooking;
+                                    var previousBooking = response.data.previousBooking;
+
+                                    // due booking list
+                                    if (dueBooking.length > 0) {
+
+                                        for (var i = 0; i < dueBooking.length; i++) {
+                                            var html = '';
+                                            var serviceName = '<b>Service:</b> ' + dueBooking[i].serviceName + ' </br>';
+                                            var appointmentDateTime = '<b>Date:</b> ' + dueBooking[i].appointmentDate + '  </br>';
+                                            var providerName = '<b>Provider:</b> ' + dueBooking[i].franchiseName + ' </br>';
+
+                                            html = html + '<div class="user-list-3 user-list-1-change">';
+                                            html = html + '<div class="col-sm-10">';
+
+                                            html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                            html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + dueBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                            html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + dueBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
+                                            html = html + '</div>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="clear"></div></div>';
+                                            $('#divDue').append(html);
+                                        }
+
+                                    }
+                                    else {
+                                        $('#lblDueListError').text('No due booking records found.!');
+                                    }
+
+                                    // pending booking list
+                                    if (pendingBooking.length > 0) {
+
+                                        for (var i = 0; i < pendingBooking.length; i++) {
+                                            var html = '';
+                                            var serviceName = '<b>Service:</b> ' + pendingBooking[i].serviceName + ' </br>';
+                                            var appointmentDateTime = '<b>Date:</b> ' + pendingBooking[i].appointmentDate + '  </br>';
+                                            var providerName = '<b>Provider:</b> ' + pendingBooking[i].franchiseName + ' </br>';
+
+                                            html = html + '<div class="user-list-3 user-list-1-change">';
+                                            html = html + '<div class="col-sm-10">';
+
+                                            html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
+                                            html = html + '<a href="#" target="_self" onclick="cancelRequestedAppointment(' + pendingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
+                                            html = html + '</div>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="clear"></div></div>';
+                                            $('#divPending').append(html);
+                                        }
+
+                                    }
+                                    else {
+                                        $('#lblPendingListError').text('No pending booking records found.!');
+                                    }
+
+                                    // upcoming booking list
+                                    if (upcomingBooking.length > 0) {
+
+                                        for (var i = 0; i < upcomingBooking.length; i++) {
+                                            var html = '';
+                                            var serviceName = '<b>Service:</b> ' + upcomingBooking[i].serviceName + ' </br>';
+                                            var appointmentDateTime = '<b>Date:</b> ' + upcomingBooking[i].displaydate + '  </br>';
+                                            var providerName = '<b>Provider:</b> ' + upcomingBooking[i].franchiseName + '  </br>';
+
+                                            html = html + '<div class="user-list-3 user-list-1-change">';
+                                            html = html + '<div class="col-sm-9">';
+
+                                            html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                            html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ',\'' + upcomingBooking[i].displaydate + '\',\'' + upcomingBooking[i].appointmentDate + '\')" target="_self"><i class="fa fa-pencil" style="font-size:large" aria-hidden="true"></i></a>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                            html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                            html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
+                                            html = html + '</div>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="clear"></div></div>';
+                                            $('#divUpComming').append(html);
+                                        }
+
+                                    }
+                                    else {
+                                        $('#lblUpcomingListError').text('No upcoming booking records found.!');
+                                    }
+                                    // previous booking list
+                                    if (previousBooking.length > 0) {
+
+                                        for (var i = 0; i < previousBooking.length; i++) {
+                                            var html = '';
+                                            var serviceName = '<b>Service:</b> ' + previousBooking[i].serviceName + ' </br>';
+                                            var appointmentDateTime = '<b>Date:</b> ' + previousBooking[i].displaydate + '  </br>';
+                                            var providerName = '<b>Provider:</b> ' + previousBooking[i].franchiseName + '  </br>';
+
+                                            html = html + '<div class="user-list-3 user-list-1-change">';
+                                            html = html + '<div class="col-sm-8">';
+
+                                            html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                            html = html + '</div>';
+                                            html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
+                                            html = html + '	<img src="images/BackOrForword.png" alt="Facebook" class="preload-image bg-blue-dark edit-img" /><a href="#" onclick="facebookShare(\'' + previousBooking[i].serviceName + '\',\'' + previousBooking[i].franchiseName + '\')" class="color-black" style="padding-left:35px;cursor: pointer">Facebook</a>';
+                                            html = html + '</div></div><div class="clear"></div>';
+                                            $('#divPreviousComming').append(html);
+                                        }
+
+                                    }
+                                    else {
+                                        $('#lblPreviousListError').text('No previous booking records found.!');
+                                    }
+                                }
+                                else {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
                                 }
 
+                                if (error == null || error == "") {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    }
+
+                                } else {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    } else {
+                                        alert(error);
+                                    }
+
+                                }
                             }
-                        }
-                    });
-                }
+                        });
+                    }
 
-                function facebookShare(serviceName, providerName) {
+                    function facebookShare(serviceName, providerName) {
 
-                    FacebookInAppBrowser.settings.appId = '1971418036472951';
-                    FacebookInAppBrowser.settings.redirectUrl = 'https://www.facebook.com/connect/login_success.html';
-                    FacebookInAppBrowser.settings.timeoutDuration = 7500;
+                        FacebookInAppBrowser.settings.appId = '1971418036472951';
+                        FacebookInAppBrowser.settings.redirectUrl = 'https://www.facebook.com/connect/login_success.html';
+                        FacebookInAppBrowser.settings.timeoutDuration = 7500;
 
-                    FacebookInAppBrowser.share({
-                        method: 'share_open_graph',
-                        action_type: 'og.shares',
-                        action_properties: JSON.stringify(
-                            {
-                                object: { 'og:title': serviceName, 'og:description': providerName }
-                            })
-                    })
-                }
+                        FacebookInAppBrowser.share({
+                            method: 'share_open_graph',
+                            action_type: 'og.shares',
+                            action_properties: JSON.stringify(
+                                {
+                                    object: { 'og:title': serviceName, 'og:description': providerName }
+                                })
+                        })
+                    }
 
-                function editAppointment(helperId, appointmentId, franchiseId, subServiceId, appointmentSelectedTime, appointmentDate) {
+                    function editAppointment(helperId, appointmentId, franchiseId, subServiceId, appointmentSelectedTime, appointmentDate) {
 
-                    localStorage.setItem("appointmentId", appointmentId);
-                    localStorage.setItem("helperId", helperId);
-                    localStorage.setItem("franchiseId", franchiseId);
-                    localStorage.setItem("subServiceId", subServiceId);
-                    localStorage.setItem("helperSelectedTime", appointmentSelectedTime.substring(appointmentSelectedTime.indexOf("@") + 1).trim());
-                    localStorage.setItem("providerDate", appointmentDate);
+                        localStorage.setItem("appointmentId", appointmentId);
+                        localStorage.setItem("helperId", helperId);
+                        localStorage.setItem("franchiseId", franchiseId);
+                        localStorage.setItem("subServiceId", subServiceId);
+                        localStorage.setItem("helperSelectedTime", appointmentSelectedTime.substring(appointmentSelectedTime.indexOf("@") + 1).trim());
+                        localStorage.setItem("providerDate", appointmentDate);
 
-                    window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
-                }
+                        window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
+                    }
 
-                function cancelAppointment(appointmentId) {
-                    if (isMobileDevice) {
-                        navigator.notification.confirm("Are you sure you want to cancel this appointment ?", function (button) {
-                            if (button === 1) {
-                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    function cancelAppointment(appointmentId) {
+                        if (isMobileDevice) {
+                            navigator.notification.confirm("Are you sure you want to cancel this appointment ?", function (button) {
+                                if (button === 1) {
+                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+
+                                    $.ajax({
+                                        url: api_baseUrl + 'appointment/cancelAppointment/' + appointmentId,
+                                        type: "GET",
+                                        dataType: "JSON",
+                                        success: function (response) {
+                                            window.plugins.spinnerDialog.hide();
+                                            if (response !== null && response.status === 1) {
+                                                navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
+                                            } else {
+                                                navigator.notification.alert('Appointment have already been cancelled.!', null, 'Warning', 'Close');
+                                            }
+                                        },
+                                        error: function (jqXHR, text, error) {
+                                            // Displaying if there are any errors
+                                            window.plugins.spinnerDialog.hide();
+
+                                            if (error == null || error == "") {
+                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                            } else {
+                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                            }
+                                        }
+                                    });
+                                }
+                            }, "Cancel", "Ok,Cancel");
+                        } else {
+
+                            var res = confirm("Are you sure you want to cancel this appointment ?");
+                            if (res == true) {
 
                                 $.ajax({
                                     url: api_baseUrl + 'appointment/cancelAppointment/' + appointmentId,
                                     type: "GET",
                                     dataType: "JSON",
                                     success: function (response) {
-                                        window.plugins.spinnerDialog.hide();
+
                                         if (response !== null && response.status === 1) {
                                             navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
                                         } else {
@@ -326,62 +357,62 @@
                                     },
                                     error: function (jqXHR, text, error) {
                                         // Displaying if there are any errors
-                                        window.plugins.spinnerDialog.hide();
-
-                                        if (error == null || error == "") {
-                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-
-                                        } else {
-                                            navigator.notification.alert(error, null, 'Error', 'Close');
-                                        }
+                                        alert(error);
                                     }
                                 });
                             }
-                        }, "Cancel", "Ok,Cancel");
-                    } else {
 
-                        var res = confirm("Are you sure you want to cancel this appointment ?");
-                        if (res == true) {
-
-                            $.ajax({
-                                url: api_baseUrl + 'appointment/cancelAppointment/' + appointmentId,
-                                type: "GET",
-                                dataType: "JSON",
-                                success: function (response) {
-
-                                    if (response !== null && response.status === 1) {
-                                        navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
-                                    } else {
-                                        navigator.notification.alert('Appointment have already been cancelled.!', null, 'Warning', 'Close');
-                                    }
-                                },
-                                error: function (jqXHR, text, error) {
-                                    // Displaying if there are any errors
-                                    alert(error);
-                                }
-                            });
                         }
-
                     }
-                }
 
-                function cancelRequestedAppointment(appointmentId) {
-                    if (isMobileDevice) {
-                        navigator.notification.confirm("Are you sure you want to cancel this appointment ?", function (button) {
-                            if (button === 1) {
-                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                var parameter = {
-                                    "appointmentId": appointmentId,
-                                    "userId": localStorage.getItem("userId")
+                    function cancelRequestedAppointment(appointmentId) {
+                        if (isMobileDevice) {
+                            navigator.notification.confirm("Are you sure you want to cancel this appointment ?", function (button) {
+                                if (button === 1) {
+                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    var parameter = {
+                                        "appointmentId": appointmentId,
+                                        "userId": localStorage.getItem("userId")
+                                    }
+
+                                    $.ajax({
+                                        url: api_baseUrl + 'appointment/removeRequestedAppointment/',
+                                        data: JSON.stringify(parameter),
+                                        type: "POST",
+                                        dataType: "JSON",
+                                        success: function (response) {
+                                            window.plugins.spinnerDialog.hide();
+                                            if (response !== null && response.status === 1) {
+                                                navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
+                                            } else {
+                                                navigator.notification.alert('Appointment have already been cancelled.!', null, 'Warning', 'Close');
+                                            }
+                                        },
+                                        error: function (jqXHR, text, error) {
+                                            // Displaying if there are any errors
+                                            window.plugins.spinnerDialog.hide();
+
+                                            if (error == null || error == "") {
+                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+
+                                            } else {
+                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                            }
+                                        }
+                                    });
                                 }
+                            }, "Cancel", "Ok,Cancel");
+                        } else {
+
+                            var res = confirm("Are you sure you want to cancel this appointment ?");
+                            if (res == true) {
 
                                 $.ajax({
-                                    url: api_baseUrl + 'appointment/removeRequestedAppointment/',
-                                    data: JSON.stringify(parameter),
-                                    type: "POST",
+                                    url: api_baseUrl + 'appointment/cancelAppointment/' + appointmentId,
+                                    type: "GET",
                                     dataType: "JSON",
                                     success: function (response) {
-                                        window.plugins.spinnerDialog.hide();
+
                                         if (response !== null && response.status === 1) {
                                             navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
                                         } else {
@@ -390,49 +421,18 @@
                                     },
                                     error: function (jqXHR, text, error) {
                                         // Displaying if there are any errors
-                                        window.plugins.spinnerDialog.hide();
-
-                                        if (error == null || error == "") {
-                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-
-                                        } else {
-                                            navigator.notification.alert(error, null, 'Error', 'Close');
-                                        }
+                                        alert(error);
                                     }
                                 });
                             }
-                        }, "Cancel", "Ok,Cancel");
-                    } else {
 
-                        var res = confirm("Are you sure you want to cancel this appointment ?");
-                        if (res == true) {
-
-                            $.ajax({
-                                url: api_baseUrl + 'appointment/cancelAppointment/' + appointmentId,
-                                type: "GET",
-                                dataType: "JSON",
-                                success: function (response) {
-
-                                    if (response !== null && response.status === 1) {
-                                        navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
-                                    } else {
-                                        navigator.notification.alert('Appointment have already been cancelled.!', null, 'Warning', 'Close');
-                                    }
-                                },
-                                error: function (jqXHR, text, error) {
-                                    // Displaying if there are any errors
-                                    alert(error);
-                                }
-                            });
                         }
-
                     }
-                }
 
-                function viewAppointmentDetails(appointmentId) {
-                    localStorage.setItem("appointmentId", appointmentId);
-                    window.location = "appointment-details.html?mybooking=true";
-                }
+                    function viewAppointmentDetails(appointmentId) {
+                        localStorage.setItem("appointmentId", appointmentId);
+                        window.location = "appointment-details.html?mybooking=true";
+                    }
 
             </script>
         </div>

@@ -16,7 +16,7 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    
+
     <script type="text/javascript" src="cordova.js"></script>
 
 </head>
@@ -26,7 +26,7 @@
         <div class="header header-logo-center header-light">
             <img src="images/HIVE-Logo.jpg" />
         </div>
-        <div id="page-content" class="page-content">
+        <div id="page-content" class="page-content set-background-splash2">
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
@@ -41,95 +41,95 @@
                 </div>
                 <script type="text/javascript">
 
-                    var userAddressId = null;
-                    var franchiseId = null;
+                        var userAddressId = null;
+                        var franchiseId = null;
 
-                    $(document).ready(function () {
-                        userAddressId = localStorage.getItem("userAddressId");
+                        $(document).ready(function () {
+                            userAddressId = localStorage.getItem("userAddressId");
 
-                        if (!isMobileDevice) {
-                            getAllServices();
-                        }
-                    }).on('deviceready', function () {
-                        document.addEventListener("deviceready", getAllServices, false);
-                    });
+                            if (!isMobileDevice) {
+                                getAllServices();
+                            }
+                        }).on('deviceready', function () {
+                            document.addEventListener("deviceready", getAllServices, false);
+                        });
 
-                    var isMobileDevice = isMobile();
+                        var isMobileDevice = isMobile();
 
-                    function getAllServices() {
-                        if (isMobileDevice) {
-                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                        }
-                        $.ajax({
-                            url: api_baseUrl + 'service/' + userAddressId,
-                            type: "GET",
-                            dataType: "JSON",
-                            success: function (response) {
-                                // Inserting html into the result div on success
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.hide();
-                                }
-                                if (response !== null && response.status === 1) {
+                        function getAllServices() {
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            }
+                            $.ajax({
+                                url: api_baseUrl + 'service/' + userAddressId,
+                                type: "GET",
+                                dataType: "JSON",
+                                success: function (response) {
+                                    // Inserting html into the result div on success
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    }
+                                    if (response !== null && response.status === 1) {
 
-                                    var serviceTypeData = response.data;
-                                    franchiseId = serviceTypeData.franchiseId;
-                                    localStorage.setItem("franchiseName", serviceTypeData.franchiseName);
-                                    if (serviceTypeData.service.length > 0) {
-                                        for (var i = 0; i < serviceTypeData.service.length; i++) {
+                                        var serviceTypeData = response.data;
+                                        franchiseId = serviceTypeData.franchiseId;
+                                        localStorage.setItem("franchiseName", serviceTypeData.franchiseName);
+                                        if (serviceTypeData.service.length > 0) {
+                                            for (var i = 0; i < serviceTypeData.service.length; i++) {
 
-                                            var html = '<a href="#" onclick="gotoSelectCleaningServicePage(' + serviceTypeData.service[i].serviceId + ')" class="user-list-3">';
-                                            html = html + '		<strong class="user-list-3-strong">' + serviceTypeData.service[i].serviceName + '</strong>';
-                                            html = html + '			<i class="ion-ios-arrow-forward"></i>';
-                                            html = html + '		</a>';
-                                            $('.page-userlist').append(html);
+                                                var html = '<a href="#" onclick="gotoSelectCleaningServicePage(' + serviceTypeData.service[i].serviceId + ')" class="user-list-3">';
+                                                html = html + '		<strong class="user-list-3-strong">' + serviceTypeData.service[i].serviceName + '</strong>';
+                                                html = html + '			<i class="ion-ios-arrow-forward"></i>';
+                                                html = html + '		</a>';
+                                                $('.page-userlist').append(html);
+                                            }
+                                        }
+                                        else {
+                                            if (isMobileDevice) {
+                                                navigator.notification.alert("no service available for this address", null, 'Warning', 'Close');
+
+                                            } else {
+                                                alert("no service available for this address");
+                                            }
+                                            window.location.href = "bookhelper-address-list.html";
                                         }
                                     }
                                     else {
                                         if (isMobileDevice) {
-                                            navigator.notification.alert("no service available for this address", null, 'Warning', 'Close');
-
+                                            navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                         } else {
-                                            alert("no service available for this address");
+                                            alert(response.message);
                                         }
                                         window.location.href = "bookhelper-address-list.html";
                                     }
-                                }
-                                else {
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
                                     if (isMobileDevice) {
-                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                        window.plugins.spinnerDialog.hide();
+                                    }
+                                    if (error == null || error == "") {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                        }
+
                                     } else {
-                                        alert(response.message);
-                                    }
-                                    window.location.href = "bookhelper-address-list.html";
-                                }
-                            },
-                            error: function (jqXHR, text, error) {
-                                // Displaying if there are any errors
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.hide();
-                                }
-                                if (error == null || error == "") {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                    }
-
-                                } else {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert(error, null, 'Error', 'Close');
-                                    } else {
-                                        alert(error);
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert(error, null, 'Error', 'Close');
+                                        } else {
+                                            alert(error);
+                                        }
                                     }
                                 }
-                            }
-                        });
-                    }
+                            });
+                        }
 
-                    function gotoSelectCleaningServicePage(serviceId) {
-                        localStorage.setItem("serviceId", serviceId);
-                        localStorage.setItem("franchiseId", franchiseId);
+                        function gotoSelectCleaningServicePage(serviceId) {
+                            localStorage.setItem("serviceId", serviceId);
+                            localStorage.setItem("franchiseId", franchiseId);
 
-                        location.href = "bookhelper-select-cleaning-service-list.html";
-                    }
+                            location.href = "bookhelper-select-cleaning-service-list.html";
+                        }
                 </script>
             </div>
         </div>
