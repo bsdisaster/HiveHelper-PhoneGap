@@ -8,7 +8,7 @@
   "author": "PhoneGap Team",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "res/icon/android/icon.png",
       "type": "image/png",
       "sizes": "undefinedxundefined"
     },

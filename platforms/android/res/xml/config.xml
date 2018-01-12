@@ -37,8 +37,8 @@
     PhoneGap Team
   </author>
     <content src="index.html" />
-    <icon src="icon.png" />
-    <splash src="splash.png" />
+    <icon platform="android" src="res/icon/android/icon.png" />
+    <splash platform="android" src="res/screen/android/splash-port-mdpi.png" />
     <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />
     <icon height="60" platform="ios" src="res/icon/ios/icon-60.png" width="60" />
     <icon height="120" platform="ios" src="res/icon/ios/icon-60@2x.png" width="120" />
