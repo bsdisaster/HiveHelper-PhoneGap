@@ -31,6 +31,9 @@
     },
     "uk.co.workingedge.phonegap.plugin.launchnavigator": {
       "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-ios-camera-permissions": {
+      "PACKAGE_NAME": "hive.helper.app.html"
     }
   },
   "dependent_plugins": {

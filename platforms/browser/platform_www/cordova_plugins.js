@@ -126,7 +126,8 @@ module.exports.metadata =
     "cordova-plugin-whitelist": "1.3.2",
     "cordova-plugin-x-toast": "2.6.0",
     "phonegap-plugin-push": "1.8.4",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0"
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0",
+    "cordova-plugin-ios-camera-permissions": "1.2.0"
 }
 // BOTTOM OF METADATA
 });

@@ -46,7 +46,8 @@ module.exports.metadata =
 {
   "cordova-plugin-actionsheet": "2.3.3",
   "cordova-plugin-dialogs": "1.3.3",
-  "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0"
+  "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0",
+  "cordova-plugin-ios-camera-permissions": "1.2.0"
 };
 // BOTTOM OF METADATA
 });
