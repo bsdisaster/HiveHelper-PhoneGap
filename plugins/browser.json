@@ -34,6 +34,9 @@
     }
   },
   "dependent_plugins": {
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
     "cordova-plugin-webserver": {
       "PACKAGE_NAME": "hive.helper.app.html"
     }

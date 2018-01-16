@@ -24,10 +24,8 @@
     <preference name="detect-data-types" value="true" />
     <preference name="exit-on-suspend" value="true" />
     <preference name="deployment-target" value="7.0" />
-  
-    <icon src="res/icon/android/icon.png" platform="android" />
-    <splash src="res/screen/android/splash-port-mdpi.png" platform="android" />
-  
+    <icon platform="android" src="res/icon/android/icon.png" />
+    <splash platform="android" src="res/screen/android/splash-port-mdpi.png" />
     <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />
     <icon height="60" platform="ios" src="res/icon/ios/icon-60.png" width="60" />
     <icon height="120" platform="ios" src="res/icon/ios/icon-60@2x.png" width="120" />
@@ -79,8 +77,6 @@
         <preference name="DisallowOverscroll" value="true" />
     </platform>
     <access origin="*" />
-    <engine name="android" spec="^6.3.0" />
-    <engine name="browser" spec="^5.0.0" />
     <plugin name="cordova-plugin-device" spec="~1.1.6" />
     <plugin name="cordova-plugin-dialogs" spec="~1.3.3" />
     <plugin name="cordova-plugin-spinnerdialog" spec="~1.3.2" />
@@ -93,4 +89,6 @@
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.1.0">
         <variable name="LOCATION_USAGE_DESCRIPTION" value="This app requires access to your location for navigation purposes" />
     </plugin>
+    <engine name="android" spec="^6.3.0" />
+    <engine name="browser" spec="^5.0.3" />
 </widget>
