@@ -144,26 +144,31 @@
                     function pickImage() {
 
                         $('#my_file').on("change", function (event) {
-                            var img = new Image;
-                            var selectedFile = event.target.files[0];
-                            var tmppath = img.src = URL.createObjectURL(selectedFile);
-                            var fileExtension = ['jpeg', 'jpg', 'png'];
+                            var _URL = window.URL || window.webkitURL;
 
-                            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("Only formats are allowed : " + fileExtension.join(', '), null, "Warning", "Close");
+                            var file, img;
+                            if ((file = this.files[0])) {
+                                img = new Image();
+                                img.src = _URL.createObjectURL(file);
+
+                                var fileExtension = ['jpeg', 'jpg', 'png'];
+
+                                if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("Only formats are allowed : " + fileExtension.join(', '), null, "Warning", "Close");
+                                    }
+                                    else {
+                                        alert("Only formats are allowed : " + fileExtension.join(', '));
+                                    }
+                                    return false;
                                 }
-                                else {
-                                    alert("Only formats are allowed : " + fileExtension.join(', '));
-                                }
-                                return false;
-                            }
-                            $(".img-border-radius").attr("src", tmppath);
 
-                            img.onload = function () {
+                                img.onload = function () {
+                                    $(".img-border-radius").attr("src", img.src);
+                                    fixExifOrientation(this.width, this.height);
 
-                                fixExifOrientation(img);
-                                base64String = resizeImg(img, 100, 100, 0); //HERE IS WHERE THE FUNCTION RESIZE IS CALLED!!!!
+                                    base64String = resizeImg(img, 100, 100, 0); //HERE IS WHERE THE FUNCTION RESIZE IS CALLED!!!!
+                                };
                             }
                         });
                     }
@@ -245,10 +250,11 @@
                         return dataURL;
                     }
 
-                    function fixExifOrientation($img) {
-
-                        if ($img.naturalWidth > $img.naturalHeight) {
+                    function fixExifOrientation(imgWidth, imgHeight) {
+                        if (imgWidth > imgHeight) {
                             $(".img-border-radius").addClass('rotate-90');
+                        } else {
+                            $(".img-border-radius").removeClass('rotate-90');
                         }
                     }
 
@@ -531,7 +537,7 @@
                                     tmpImg.src = response.data[0].image;
 
                                     tmpImg.onload = function () {
-                                        fixExifOrientation(tmpImg);
+                                        fixExifOrientation(tmpImg.naturalWidth, tmpImg.naturalHeight);
                                     }
 
                                     if (isMobileDevice) {
