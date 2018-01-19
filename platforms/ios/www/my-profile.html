@@ -18,6 +18,7 @@
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
     <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="scripts/load-image.all.min.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
 
@@ -29,7 +30,7 @@
 <body>
     <div id="page-transitions">
         <div class="header header-logo-center header-light">
-            <img src="images/HIVE-Logo.jpg" />
+            <img src="images/HiveHelper_Logo.png" />
         </div>
         <div id="page-content" class="page-content set-background-splash2">
             <div id="page-content-scroll" class="header-clear">
@@ -144,32 +145,72 @@
                     function pickImage() {
 
                         $('#my_file').on("change", function (event) {
-                            var _URL = window.URL || window.webkitURL;
-
-                            var file, img;
-                            if ((file = this.files[0])) {
-                                img = new Image();
-                                img.src = _URL.createObjectURL(file);
-
-                                var fileExtension = ['jpeg', 'jpg', 'png'];
-
-                                if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert("Only formats are allowed : " + fileExtension.join(', '), null, "Warning", "Close");
-                                    }
-                                    else {
-                                        alert("Only formats are allowed : " + fileExtension.join(', '));
-                                    }
-                                    return false;
-                                }
-
-                                img.onload = function () {
-                                    $(".img-border-radius").attr("src", img.src);
-                                    fixExifOrientation(this.width, this.height);
-
-                                    base64String = resizeImg(img, 100, 100, 0); //HERE IS WHERE THE FUNCTION RESIZE IS CALLED!!!!
-                                };
+                            var isValid = imageValidation(this.files[0]);
+                            if (isValid == true) {
+                                fixExifOrientation(event.target.files[0]);
                             }
+                        });
+                    }
+
+                    function imageValidation(blobOrFile) {
+                        var fileExtension = ['jpeg', 'jpg', 'png'];
+
+                        var n = blobOrFile.name.lastIndexOf('.');
+                        var imgExtension = blobOrFile.name.substring(n + 1);
+
+                        if ($.inArray(imgExtension.toString().toLowerCase(), fileExtension) == -1) {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("Only formats are allowed : " + fileExtension.join(', '), null, "Warning", "Close");
+                            }
+                            else {
+                                alert("Only formats are allowed : " + fileExtension.join(', '));
+                            }
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    function fixExifOrientation(blobOrFile) {
+
+                        loadImage.parseMetaData(blobOrFile, function (data) {
+                            //default image orientation
+                            var orientation = 0;
+                            //if exif data available, update orientation
+                            if (data.exif) {
+                                orientation = data.exif.get('Orientation');
+                            }
+                            var loadingImage = loadImage(
+                                blobOrFile,
+                                function (canvas) {
+                                    //here's the base64 data result
+                                    var base64Data = canvas.toDataURL('image/jpeg');
+
+                                    //here's example to show it as on imae preview
+                                    var img_src = base64Data.replace(/^data\:image\/\w+\;base64\,/, '');
+                                    $('.img-border-radius').attr('src', base64Data);
+
+                                    var myImageUrl = URL.createObjectURL(blobOrFile);
+                                    var myImage = new Image();
+                                    myImage.src = myImageUrl;
+
+                                    myImage.onload = function () {
+                                        var image2 = new Image();
+                                        image2.src = $('.img-border-radius').attr('src');
+
+                                        var canvas = document.createElement('canvas');
+                                        var ctx = canvas.getContext('2d');
+                                        canvas.width = 100
+                                        canvas.height = 100
+                                        ctx.drawImage(image2, 0, 0, 100, 100);
+                                        base64String = canvas.toDataURL();
+                                    }
+
+                                }, {
+                                    //should be set to canvas : true to activate auto fix orientation
+                                    canvas: true,
+                                    orientation: orientation
+                                }
+                            );
                         });
                     }
 
@@ -177,145 +218,44 @@
                         $(inputEle).mask('(999) 999-9999');
                     }
 
-                    function resizeImg(img, maxWidth, maxHeight, degrees) {
-                        var imgWidth = img.width,
-                          imgHeight = img.height;
+                    //function getPushNotification() {
+                    //    var push = PushNotification.init({
+                    //        "android": {
+                    //            "senderID": "762294569460",
+                    //            "forceShow": "true",
+                    //            "sound": true,
+                    //            "vibration": true,
+                    //            "badge": true,
+                    //            "clearBadge": true
+                    //        },
+                    //        "browser": {
+                    //        },
+                    //        "ios": {
+                    //            "sound": true,
+                    //            "vibration": true,
+                    //            "badge": true,
+                    //            "clearBadge": true
+                    //        },
+                    //        "windows": {}
+                    //    });
 
-                        var ratio = 1,
-                          ratio1 = 1,
-                          ratio2 = 1;
-                        ratio1 = maxWidth / imgWidth;
-                        ratio2 = maxHeight / imgHeight;
+                    //    push.on('registration', function (data) {
+                    //        var oldRegId = localStorage.getItem('registrationId');
+                    //        if (oldRegId !== data.registrationId) {
+                    //            // Save new registration ID
+                    //            localStorage.setItem("registrationId", data.registrationId);
+                    //        }
 
-                        // Use the smallest ratio that the image best fit into the maxWidth x maxHeight box.
-                        if (ratio1 < ratio2) {
-                            ratio = ratio1;
-                        } else {
-                            ratio = ratio2;
-                        }
-                        var canvas = document.createElement("canvas");
-                        var canvasContext = canvas.getContext("2d");
-                        var canvasCopy = document.createElement("canvas");
-                        var copyContext = canvasCopy.getContext("2d");
-                        var canvasCopy2 = document.createElement("canvas");
-                        var copyContext2 = canvasCopy2.getContext("2d");
-                        canvasCopy.width = imgWidth;
-                        canvasCopy.height = imgHeight;
-                        copyContext.drawImage(img, 0, 0);
+                    //    });
 
-                        // init
-                        canvasCopy2.width = imgWidth;
-                        canvasCopy2.height = imgHeight;
-                        copyContext2.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvasCopy2.width, canvasCopy2.height);
+                    //    push.on('notification', function (data) {
 
-                        var rounds = 1;
-                        var roundRatio = ratio * rounds;
-                        for (var i = 1; i <= rounds; i++) {
+                    //    });
 
-                            // tmp
-                            canvasCopy.width = imgWidth * roundRatio / i;
-                            canvasCopy.height = imgHeight * roundRatio / i;
-
-                            copyContext.drawImage(canvasCopy2, 0, 0, canvasCopy2.width, canvasCopy2.height, 0, 0, canvasCopy.width, canvasCopy.height);
-
-                            // copy back
-                            canvasCopy2.width = imgWidth * roundRatio / i;
-                            canvasCopy2.height = imgHeight * roundRatio / i;
-                            copyContext2.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvasCopy2.width, canvasCopy2.height);
-
-                        } // end for
-
-                        canvas.width = imgWidth * roundRatio / rounds;
-                        canvas.height = imgHeight * roundRatio / rounds;
-                        canvasContext.drawImage(canvasCopy2, 0, 0, canvasCopy2.width, canvasCopy2.height, 0, 0, canvas.width, canvas.height);
-
-                        if (degrees == 90 || degrees == 270) {
-                            canvas.width = canvasCopy2.height;
-                            canvas.height = canvasCopy2.width;
-                        } else {
-                            canvas.width = canvasCopy2.width;
-                            canvas.height = canvasCopy2.height;
-                        }
-
-                        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-                        if (degrees == 90 || degrees == 270) {
-                            canvasContext.translate(canvasCopy2.height / 2, canvasCopy2.width / 2);
-                        } else {
-                            canvasContext.translate(canvasCopy2.width / 2, canvasCopy2.height / 2);
-                        }
-                        canvasContext.rotate(degrees * Math.PI / 180);
-                        canvasContext.drawImage(canvasCopy2, -canvasCopy2.width / 2, -canvasCopy2.height / 2);
-
-                        var dataURL = canvas.toDataURL();
-                        return dataURL;
-                    }
-
-                    function fixExifOrientation(imgWidth, imgHeight) {
-                        if (imgWidth > imgHeight) {
-                            $(".img-border-radius").addClass('rotate-90');
-                        } else {
-                            $(".img-border-radius").removeClass('rotate-90');
-                        }
-                    }
-
-                    function imageUrltoBase64(url, callback) {
-                        var xhr = new XMLHttpRequest();
-                        xhr.onload = function () {
-                            var reader = new FileReader();
-                            reader.onloadend = function () {
-                                callback(reader.result);
-                            };
-                            reader.readAsDataURL(xhr.response);
-                        };
-                        if (isMobileDevice) {
-                            xhr.open('GET', url);
-                        } else {
-                            var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                            xhr.open('GET', proxyUrl + url);
-                        }
-
-                        xhr.responseType = 'blob';
-                        xhr.send();
-                    }
-
-                    function getPushNotification() {
-                        var push = PushNotification.init({
-                            "android": {
-                                "senderID": "762294569460",
-                                "forceShow": "true",
-                                "sound": true,
-                                "vibration": true,
-                                "badge": true,
-                                "clearBadge": true
-                            },
-                            "browser": {
-                            },
-                            "ios": {
-                                "sound": true,
-                                "vibration": true,
-                                "badge": true,
-                                "clearBadge": true
-                            },
-                            "windows": {}
-                        });
-
-                        push.on('registration', function (data) {
-                            var oldRegId = localStorage.getItem('registrationId');
-                            if (oldRegId !== data.registrationId) {
-                                // Save new registration ID
-                                localStorage.setItem("registrationId", data.registrationId);
-                            }
-
-                        });
-
-                        push.on('notification', function (data) {
-
-                        });
-
-                        push.on('error', function (e) {
-                            navigator.notification.alert("push error = " + e.message);
-                        });
-                    }
+                    //    push.on('error', function (e) {
+                    //        navigator.notification.alert("push error = " + e.message);
+                    //    });
+                    //}
 
                     function removeBottomMargin() {
                         $(".right-text").css("margin-bottom", "-50px");
@@ -532,21 +472,6 @@
                                     latitude = response.data[0].latitude;
                                     longitude = response.data[0].longitude;
                                     $(".img-border-radius").attr("src", response.data[0].image);
-
-                                    var tmpImg = new Image();
-                                    tmpImg.src = response.data[0].image;
-
-                                    tmpImg.onload = function () {
-                                        fixExifOrientation(tmpImg.naturalWidth, tmpImg.naturalHeight);
-                                    }
-
-                                    if (isMobileDevice) {
-                                        window.plugins.spinnerDialog.hide();
-                                    }
-                                    //get image base64 string
-                                    imageUrltoBase64(response.data[0].image, function (dataUrl) {
-                                        base64String = dataUrl;
-                                    })
                                 }
                                 else {
                                     if (isMobileDevice) {

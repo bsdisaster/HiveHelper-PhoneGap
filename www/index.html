@@ -15,7 +15,7 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    
+
     <script src="cordova.js"></script>
 </head>
 
@@ -23,38 +23,39 @@
     <div id="page-transitions">
 
         <div class="header header-logo-center header-light">
-            <img src="images/HIVE-Logo.jpg" />
+            <img src="images/HiveHelper_Logo.png" />
         </div>
         <div id="page-content" class="page-content set-background-splash2">
-                <div id="page-content-scroll">
-                    <!--Enables this element to be scrolled -->
-                    <div class="page-fullscreen">
-                        <div class="page-fullscreen-content">
-                            <div class="pageapp-login">
-                                <div class="page-login-input animate-fade">
-                                    <label class="center-text bold futura-medium">Customer Login</label>
-                                </div>
-                                <div class="page-login-input animate-fade">
-                                    <i class="login-icon ion-person"></i>
-                                    <input id="username" type="text" value="Username" onfocus="if (this.value=='Username') this.value = ''" onblur="if (this.value=='') this.value = 'Username'">
-                                </div>
-                                <div class="page-login-input animate-fade animate-delay-100">
-                                    <i class="login-icon ion-android-lock"></i>
-                                    <input id="password" type="password" value="Password" onfocus="if (this.value=='Password') this.value = ''" onblur="if (this.value=='') this.value = 'Password'">
-                                </div>
-                                <div class="pageapp-login-links">
-                                    <a href="page-register.html" target="_self" class="page-login-dual-links animate-right futura-medium">Create Account<i class="ion-person"></i></a>
-                                    <div class="clear"></div>
-                                    <a href="#" onclick="forgotPassword()" class="page-login-dual-links animate-right futura-medium">Forgot password<i class="ion-android-lock"></i></a>
-                                </div>
-                                <button id="btnSubmit" onclick="Login()" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Login</button>
-                                <a href="helper-login.html" class="button-full half-top full-bottom animate-zoom futura-medium" target="_self">Login as Helper</a>
+            <div id="page-content-scroll">
+                <!--Enables this element to be scrolled -->
+                <div class="page-fullscreen">
+                    <div class="page-fullscreen-content">
+                        <div class="pageapp-login">
+                            <div class="page-login-input animate-fade">
+                                <label class="center-text bold futura-pt-book">Client Login</label>
                             </div>
+                            <div class="page-login-input animate-fade">
+                                <i class="login-icon ion-person"></i>
+                                <input id="username" type="text" value="Username" onfocus="if (this.value=='Username') this.value = ''" onblur="if (this.value=='') this.value = 'Username'">
+                            </div>
+                            <div class="page-login-input animate-fade animate-delay-100">
+                                <i class="login-icon ion-android-lock"></i>
+                                <input id="password" type="password" value="Password" onfocus="if (this.value=='Password') this.value = ''" onblur="if (this.value=='') this.value = 'Password'">
+                            </div>
+                            <div class="pageapp-login-links">
+                                <a href="page-register.html" target="_self" class="page-login-dual-links animate-right futura-pt-book">Create Account<i class="ion-person"></i></a>
+                                <div class="clear"></div>
+                                <a href="#" onclick="forgotPassword()" class="page-login-dual-links animate-right futura-pt-book">Forgot password<i class="ion-android-lock"></i></a>
+                            </div>
+                            <button id="btnSubmit" onclick="Login()" class="button button-pantone button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Login</button>
+                            <a href="helper-login.html" class="button-full half-top full-bottom animate-zoom futura-pt-book" target="_self">Login as Helper</a>
                         </div>
+                    </div>
 
-                        <script type="text/javascript">
+                    <script type="text/javascript">
                         $(document).ready(function () {
 
+                            addWidth();
                             if (!isMobileDevice) {
                                 checkExistingSession();
                             }
@@ -62,6 +63,10 @@
                         }).on('deviceready', function () {
                             document.addEventListener("deviceready", checkExistingSession, false);
                         });
+
+                        function addWidth() {
+                            $("center").css("width", "100%");
+                        }
 
                         var isMobileDevice = isMobile();
 
@@ -293,12 +298,14 @@
                                 });
                             }
                         }
-                        </script>
-                    </div>
+                    </script>
                 </div>
+            </div>
         </div>
         <footer class="sticky-footer">
-            
+            <center>
+                <h2>We Arrive. You Thrive.</h2>
+            </center>
         </footer>
     </div>
 </body>

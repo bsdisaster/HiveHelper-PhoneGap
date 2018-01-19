@@ -17,6 +17,7 @@
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/load-image.all.min.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
 </head>
@@ -25,7 +26,7 @@
 
     <div id="page-transitions">
         <div class="header header-logo-center header-light">
-            <img src="images/HIVE-Logo.jpg" />
+            <img src="images/HiveHelper_Logo.png" />
         </div>
         <div id="page-content" class="page-content set-background-splash2">
             <div id="page-content-scroll" class="header-clear">
@@ -35,7 +36,7 @@
                         <div class="inline-block">
                             <img class="img-border-radius" width="80" height="80" />
                         </div>
-                        <div class="inline-block-bottom-text futura-medium"><label></label></div>
+                        <div class="inline-block-bottom-text Orpheus-pro italic"><label></label></div>
                     </div>
                 </div>
 
@@ -50,7 +51,7 @@
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="my-booking.html" target="_self" class="user-list-3 animate-fade">
-                            <img data-original="images/HiveHelper_icon2.png" alt="img" class="preload-image">
+                            <img data-original="images/HiveHelper_icon4.png" alt="img" class="preload-image">
                             <strong>APPOINTMENTS</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
@@ -60,7 +61,7 @@
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
                         <a href="about-us.html" target="_self" class="user-list-3 animate-fade">
-                            <img data-original="images/HiveHelper_icon4.png" alt="img" class="preload-image">
+                            <img data-original="images/HiveHelper_icon2.png" alt="img" class="preload-image">
                             <strong>ABOUT US</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
@@ -152,14 +153,33 @@
             }
         };
 
-        function fixExifOrientation($img) {
+        function fixExifOrientation(blobOrFile) {
 
-            $img.onload = function () {
-
-                if ($img.naturalWidth > $img.naturalHeight) {
-                    $(".img-border-radius").addClass('rotate-90');
+            loadImage.parseMetaData(blobOrFile, function (data) {
+                //default image orientation
+                var orientation = 0;
+                //if exif data available, update orientation
+                if (data.exif) {
+                    orientation = data.exif.get('Orientation');
                 }
-            }
+                var loadingImage = loadImage(
+                    blobOrFile,
+                    function (canvas) {
+                        //here's the base64 data result
+                        base64String = canvas.toDataURL('image/jpeg');
+
+                        //here's example to show it as on imae preview
+                        var img_src = base64String.replace(/^data\:image\/\w+\;base64\,/, '');
+                        $('.img-border-radius').attr('src', base64String);
+
+                    }, {
+                        //should be set to canvas : true to activate auto fix orientation
+                        canvas: true,
+                        orientation: orientation
+                    }
+                );
+            });
+            //base64String = resizeImg(image, 100, 100, 0); //HERE IS WHERE THE FUNCTION RESIZE IS CALLED!!!!
         }
 
         function deviceReadySuccess() {
@@ -231,7 +251,7 @@
                     // Inserting html into the result div on success
 
                     if (response !== null && response.status === 1) {
-                        $(".inline-block-bottom-text label").text("Hello " + response.data[0].firstName + "!");
+                        $(".inline-block-bottom-text label").text("Hello " + response.data[0].firstName);
 
                         $(".img-border-radius").attr("src", response.data[0].image);
 

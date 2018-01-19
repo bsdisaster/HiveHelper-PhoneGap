@@ -3767,6 +3767,11 @@ ol {
     border: solid 2px #2980b9;
 }
 
+.button-pantone{
+    background-color: #00a9e0;
+    border: solid 2px #00a9e0;
+}
+
 .button-view {
     color: #FFFFFF;
     height: 33px;
@@ -11957,7 +11962,7 @@ button.swiper-pagination-bullet {
 
 
 .sticky-footer {
-    background-color: #08A7E1;
+    background-color: #fff;
     display: inline-block;
     height: 63px;
     z-index: 9;
@@ -12007,7 +12012,7 @@ button.swiper-pagination-bullet {
 }
 
     .sticky-footer center h2 {
-        color: #fff;
+        color: #08A7E1;
     }
 
 .header-logo-center img {
