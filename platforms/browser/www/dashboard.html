@@ -253,6 +253,8 @@
                     if (response !== null && response.status === 1) {
                         $(".inline-block-bottom-text label").text("Hello " + response.data[0].firstName);
 
+                        sessionStorage.setItem("userName", response.data[0].firstName + " " + response.data[0].lastName);
+
                         $(".img-border-radius").attr("src", response.data[0].image);
 
                         var tmpImg = new Image();

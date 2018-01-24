@@ -417,7 +417,7 @@
         function gotoSelectCleaningServiceDetailPage(helperSelectedTime) {
 
             var date = new Date($("#calDate").val());
-            var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+            var calDate = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
             localStorage.setItem("providerDate", calDate);
             localStorage.setItem("helperSelectedTime", helperSelectedTime);
 

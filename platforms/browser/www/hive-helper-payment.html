@@ -341,9 +341,11 @@
                 }
 
                 function stripePayment(emailAddress, cardNumber, expiry, cvc) {
-                    Stripe.setPublishableKey('pk_test_z63RIQFh5e1As9i7kecp5AsS');
+                    //Stripe.setPublishableKey(localStorage.getItem("stripePublishableKey"));
+                    Stripe.setPublishableKey("pk_test_z63RIQFh5e1As9i7kecp5AsS");
 
                     Stripe.card.createToken({
+                        name: sessionStorage.getItem("userName"),
                         number: cardNumber,
                         cvc: cvc,
                         exp_month: expiry.split("/")[0],
@@ -373,16 +375,18 @@
                 }
 
                 function makePayment(tokenInfo) {
+
                     $.ajax({
                         type: 'POST',
                         url: 'https://api.stripe.com/v1/charges',
                         headers: {
+                            //Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
                             Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
                         },
                         data: {
                             amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),
                             source: tokenInfo.id,
-                            description: "Charge",
+                            description: "Hive Helper - " + localStorage.getItem("selectedCleaningTitle") + " - " + (localStorage.getItem("providerDate").toString().replace(/-/g, "/")),
                             currency: "USD"
                         },
                         success: (data) => {
@@ -465,6 +469,7 @@
                                 }
 
                                 localStorage.removeItem("paymentTempObject");
+                                sessionStorage.clear();
                                 window.location.href = "dashboard.html";
                             }
                             else {

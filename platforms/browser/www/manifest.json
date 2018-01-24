@@ -101,6 +101,11 @@
       "src": "res/icon/ios/icon-50@2x.png",
       "type": "image/png",
       "sizes": "100x100"
+    },
+    {
+      "src": "res/icon/ios/icon-1024.png",
+      "type": "image/png",
+      "sizes": "1024x1024"
     }
   ],
   "start_url": "index.html",

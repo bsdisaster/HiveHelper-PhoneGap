@@ -72,8 +72,12 @@
                                     if (response !== null && response.status === 1) {
 
                                         var serviceTypeData = response.data;
+                               
                                         franchiseId = serviceTypeData.franchiseId;
                                         localStorage.setItem("franchiseName", serviceTypeData.franchiseName);
+                                        localStorage.setItem("stripePublishableKey", serviceTypeData.franchise_pub_key);
+                                        localStorage.setItem("stripeSecretKey", serviceTypeData.franchise_secr_key);
+
                                         if (serviceTypeData.service.length > 0) {
                                             for (var i = 0; i < serviceTypeData.service.length; i++) {
 
