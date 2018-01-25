@@ -311,7 +311,7 @@
                     if (!regex.test(number))
                         return false;
                     else
-                        return true;;
+                        return true;
                 }
 
                 function submitPaymentInfo() {
@@ -341,8 +341,7 @@
                 }
 
                 function stripePayment(emailAddress, cardNumber, expiry, cvc) {
-                    //Stripe.setPublishableKey(localStorage.getItem("stripePublishableKey"));
-                    Stripe.setPublishableKey("pk_test_z63RIQFh5e1As9i7kecp5AsS");
+                    Stripe.setPublishableKey(localStorage.getItem("stripePublishableKey"));
 
                     Stripe.card.createToken({
                         name: sessionStorage.getItem("userName"),
@@ -380,8 +379,7 @@
                         type: 'POST',
                         url: 'https://api.stripe.com/v1/charges',
                         headers: {
-                            //Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                            Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                            Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
                         },
                         data: {
                             amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),

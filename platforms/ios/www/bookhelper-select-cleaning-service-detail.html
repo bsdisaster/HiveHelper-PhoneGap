@@ -355,15 +355,15 @@
                 var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
 
                 var parameter = {
-                    "serviceId": localStorage.setItem("serviceId"),
-                    "userId": localStorage.setItem("userId"),
-                    "subServiceId": localStorage.setItem("subServiceId"),
-                    "userAddressId": localStorage.setItem("userAddressId"),
+                    "serviceId": localStorage.getItem("serviceId"),
+                    "userId": localStorage.getItem("userId"),
+                    "subServiceId": localStorage.getItem("subServiceId"),
+                    "userAddressId": localStorage.getItem("userAddressId"),
                     "appointmentDate": calDate,
                     "appointmentFrom": $('#scheduleFrom').val(),
                     "appointmentTo": $('#scheduleTo').val(),
                     "description": $('.contactTextarea').val(),
-                    "franchiseId": localStorage.setItem("franchiseId")
+                    "franchiseId": localStorage.getItem("franchiseId")
                 }
 
                 $.ajax({
