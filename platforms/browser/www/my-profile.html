@@ -37,7 +37,7 @@
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
                     <h3 class="center-text futura-medium">My Profile</h3>
-                    <div>
+                    <div class="no-width">
                         <a href="#" class="futura-pt-book" onclick="Logout()">Logout</a>
                     </div>
                     <div class="right-text">
@@ -306,7 +306,7 @@
                     function isValidateProfile() {
                         var isResult = true;
                         var countError = 0;
-                        var msg = "Please enter following fields:\n";
+                        var msg = "Please correct following fields:\n";
 
                         var firstnameValue = $("#profile-firstname").val();
                         var lastnameValue = $("#profile-lastname").val();

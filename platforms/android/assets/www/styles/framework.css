@@ -3767,7 +3767,7 @@ ol {
     border: solid 2px #2980b9;
 }
 
-.button-pantone{
+.button-pantone {
     background-color: #00a9e0;
     border: solid 2px #00a9e0;
 }
@@ -7575,6 +7575,28 @@ ul.tabs {
     border-radius: 40px;
     position: absolute;
 }
+
+.payment-cards {
+    padding-top: 5px;
+    height: 40px;
+}
+
+    .payment-cards i {
+        padding-right: 10px;
+        position: absolute;
+        right: 0px;
+        font-size: 16px;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    .payment-cards strong {
+        font-weight: 500;
+        font-size: 15px;
+        position: absolute;
+        margin-right: 15px !important;
+        color: #004c97;
+    }
 
 .user-list-3 {
     padding-top: 10px;
@@ -11926,7 +11948,7 @@ button.swiper-pagination-bullet {
         background-size: cover;
     }
 
-    .set-background-splash2 {
+.set-background-splash2 {
     position: relative;
     overflow: hidden;
 }
@@ -12018,3 +12040,37 @@ button.swiper-pagination-bullet {
 .header-logo-center img {
     width: 300px;
 }
+
+.no-width {
+    width: 0px;
+}
+
+.help-tooltip {
+    font-size: 24px !important;
+    margin-top: -10px !important;
+    color: #08A7E1 !important;
+    width: 200px !important;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        background-color: black;
+        font-size: initial;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 5px;
+        /* Position the tooltip */
+        position: absolute;
+        display: block;
+        z-index: 1;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+    }

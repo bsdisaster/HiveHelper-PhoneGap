@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
     <script type="text/javascript" src="scripts/jquery.js"></script>
@@ -97,7 +98,7 @@
                                             if (answer == null || answer == "undefined") {
                                                 answer = "";
                                             }
-                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
+                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="input-icon"><input id="inputAnswer' + counter + '" type="text" class="input-text-box input-green-border" placeholder="Answer" value="' + answer + '"></div>';
                                         }
@@ -107,12 +108,12 @@
                                                 answer = "";
                                             }
 
-                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
+                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="input-icon"><textarea id="inputDescription' + counter + '" class="contactTextarea" style="background:lightgray; width:100%; min-height: 120px; height:auto;">' + answer + '</textarea></div>';
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "3") {
-                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
+                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="one-half last-column" style="padding-left: inherit"><div class="extra-margin" id="checkbox' + counter + '">';
                                             for (var j = 0; j < serviceQuestionsData[i].options.length; j++) {
@@ -122,7 +123,7 @@
 
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "4") {
-                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
+                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="select-box-light">';
                                             html = html + '<select id="drpAnswer' + counter + '">';
@@ -208,17 +209,17 @@
                                         counter++;
 
                                         if (serviceQuestionsData[i].fieldTypeId == "1") {
-                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
+                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="input-icon" style="padding-left: inherit"><input id="inputAnswer' + counter + '" type="text" class="input-text-box input-green-border" placeholder="Answer"></div>';
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "2") {
-                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
+                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="input-icon" style="padding-left: inherit"><textarea id="inputDescription' + counter + '" class="contactTextarea" style="background:lightgray; width:100%; min-height: 120px; height:auto;"></textarea></div>';
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "3") {
-                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
+                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="one-half last-column" style="padding-left: inherit"><div class="extra-margin" id="checkbox' + counter + '">';
                                             for (var j = 0; j < serviceQuestionsData[i].options.length; j++) {
@@ -228,7 +229,7 @@
 
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "4") {
-                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold">' + serviceQuestionsData[i].questionTitle + '</label></div>';
+                                            html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="select-box-light">';
                                             html = html + '<select id="drpAnswer' + counter + '">';
@@ -473,6 +474,15 @@
                 localStorage.setItem("paymentTempObject", JSON.stringify(arrayObject));
 
                 window.location.href = "hive-helper-payment.html";
+            }
+
+            function showHideToolTip(divEle) {
+              
+                if ($(divEle).find('span').css("visibility") == "hidden") {
+                    $(divEle).find('span').css("visibility", "visible");
+                } else {
+                    $(divEle).find('span').css("visibility", "hidden");
+                }
             }
 
         </script>
