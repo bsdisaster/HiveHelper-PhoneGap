@@ -12074,3 +12074,21 @@ button.swiper-pagination-bullet {
     .tooltip .tooltiptext {
         visibility: hidden;
     }
+
+#DivQuestionsAnswer .p70 {
+    display: block;
+    float: left;
+    width: 90%;
+}
+
+#DivQuestionsAnswer .input-icon i  {
+    width: 10% !important;
+    position: relative;
+    text-align: right;
+    line-height: 15px;
+}
+
+#DivQuestionsAnswer .tooltip .tooltiptext {    
+    width: 200px;
+    left: -170px;
+}

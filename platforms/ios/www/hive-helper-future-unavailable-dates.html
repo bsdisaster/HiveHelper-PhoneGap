@@ -364,7 +364,7 @@
                                 window.plugins.spinnerDialog.hide();
                                 if (response !== null && response.status === 1) {
 
-                                    navigator.notification.alert('Record successfully removed.!', null, 'Success', 'Close');
+                                    navigator.notification.alert('Record successfully removed.', null, 'Success', 'Close');
                                     $(divEle).parent().remove();
                                 }
                                 else {
@@ -404,7 +404,7 @@
                             // Inserting html into the result div on success
                             if (response !== null && response.status === 1) {
 
-                                alert('Record successfully removed.!');
+                                alert('Record successfully removed.');
                                 $(divEle).parent().remove();
                             }
                             else {
@@ -449,9 +449,9 @@
                         }
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                navigator.notification.alert("Your request was successfully submitted.!", null, 'Success', 'Close');
+                                navigator.notification.alert("Your request was successfully submitted.", null, 'Success', 'Close');
                             } else {
-                                alert("Your request was successfully submitted.!");
+                                alert("Your request was successfully submitted.");
                             }
                             getUpcomingUnavailableRecords();
                         }

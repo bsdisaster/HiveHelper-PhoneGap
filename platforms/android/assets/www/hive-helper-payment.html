@@ -129,6 +129,7 @@
                 var existingCustomerId = null;
                 var selectedCard = null;
                 var selectedCustomer = null;
+                var currentToken = null;
 
                 function fetchProviderInfo() {
                     var service = localStorage.getItem("selectedCleaningTitle");
@@ -179,20 +180,23 @@
                                 window.plugins.spinnerDialog.hide();
                             }
                             if (response !== null && response.status === 1) {
-                                
+
                                 var customer = response.data.customerdata;
 
                                 for (var i = 0; i < customer.length; i++) {
                                     existingCustomerId = customer[0].customerId;
 
-                                    for (var j = 0; j < customer[i].card.length; j++) {
-                                        var html = "";
+                                    if (customer[i].card.length > 0) {
+                                        $("#dvCardSelection > div").empty();
+                                        for (var j = 0; j < customer[i].card.length; j++) {
+                                            var html = "";
 
-                                        html = html + '<a href="#" class="payment-cards">';
-                                        html = html + '<strong class="user-list-3-strong" data-card-id="' + customer[i].card[j].customercardId + '" data-customer-id="' + existingCustomerId + '" onclick="getCardDetails(this)">XXXX-XXXX-XXXX-' + customer[i].card[j].last4 + '</strong>';
-                                        html = html + '<i class="fa fa-trash-o" onclick="deleteStripeCard(this)"></i></a>';
+                                            html = html + '<a href="#" class="payment-cards">';
+                                            html = html + '<strong class="user-list-3-strong" data-card-id="' + customer[i].card[j].customercardId + '" data-customer-id="' + existingCustomerId + '" onclick="getCardDetails(this)">XXXX-XXXX-XXXX-' + customer[i].card[j].last4 + '</strong>';
+                                            html = html + '<i class="fa fa-trash-o" onclick="deleteStripeCard(this)"></i></a>';
 
-                                        $("#dvCardSelection > div").html(html);
+                                            $("#dvCardSelection > div").append(html);
+                                        }
                                     }
                                 }
                             } else {
@@ -288,8 +292,8 @@
                                     type: 'DELETE',
                                     url: 'https://api.stripe.com/v1/customers/' + customerId + '/sources/' + cardId,
                                     headers: {
-                                        //Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                                        Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                                        Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
+                                        //Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
                                     },
                                     success: (data) => {
 
@@ -315,8 +319,8 @@
                                 type: 'DELETE',
                                 url: 'https://api.stripe.com/v1/customers/' + customerId + '/sources/' + cardId,
                                 headers: {
-                                    //Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                                    Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                                    Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
+                                    //Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
                                 },
                                 success: (data) => {
 
@@ -503,6 +507,38 @@
                         return true;
                 }
 
+                function createCard(secretkey, customerId, source) {
+                    
+
+                    var params = {
+                        "secretkey": secretkey,
+                        "customerId": customerId,
+                        "source": source
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: api_baseUrl + 'Savecard/createCard/',
+                        data: JSON.stringify(params),
+                        success: (data) => {
+
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            }
+
+                        },
+                        error: (response) => {
+
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
+                            } else {
+                                alert(response.responseJSON.error.message);
+                            }
+                        }
+                    })
+                }
+
                 function submitPaymentInfo() {
                     $('#btnPayment').on('click', function (event) {
 
@@ -531,8 +567,8 @@
                 }
 
                 function stripePayment(cardNumber, expiry, cvc) {
-                    //Stripe.setPublishableKey(localStorage.getItem("stripePublishableKey"));
-                    Stripe.setPublishableKey("pk_test_z63RIQFh5e1As9i7kecp5AsS");
+                    Stripe.setPublishableKey(localStorage.getItem("stripePublishableKey"));
+                    //Stripe.setPublishableKey("pk_test_z63RIQFh5e1As9i7kecp5AsS");
 
                     Stripe.card.createToken({
                         name: sessionStorage.getItem("userName"),
@@ -557,7 +593,7 @@
                         var tokenInfo = response;
                         console.log(tokenInfo);
 
-                        debugger;
+                        
                         // Save token mapping it to customer for all future payment activities
                         if (existingCustomerId == null) {
                             createCustomer(tokenInfo);
@@ -575,8 +611,8 @@
                         type: 'POST',
                         url: 'https://api.stripe.com/v1/customers',
                         headers: {
-                            //Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                            Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                            Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
+                            //Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
                         },
                         data: {
                             "email": $("#emailAddress").val(),
@@ -606,9 +642,9 @@
 
                 function makePayment(tokenInfo) {
                     var params = null;
-                    debugger;
-
+                    
                     if (tokenInfo == null && existingCustomerId != null) {
+                        
                         params = {
                             amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),
                             source: selectedCard,
@@ -637,8 +673,8 @@
                         type: 'POST',
                         url: 'https://api.stripe.com/v1/charges',
                         headers: {
-                            //Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                            Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                            Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
+                            //Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
                         },
                         data: params,
                         success: (data) => {
@@ -650,7 +686,9 @@
                                 localStorage.setItem("clientIp", "");
                             } else {
                                 localStorage.setItem("clientIp", tokenInfo.client_ip);
+                                createCard("sk_test_n3x0ZGhvUjjBbDChIBdsbRLw", data.customer, tokenInfo.id);
                             }
+
                             savePaymentInfo(data);
 
                         },
@@ -664,6 +702,7 @@
                         }
                     })
                 }
+
                 function convertTimeformat(format, time) {
                     var hours = Number(time.match(/^(\d+)/)[1]);
                     var minutes = Number(time.match(/:(\d+)/)[1]);
@@ -678,7 +717,7 @@
                 }
 
                 function saveCardDetails(cardDetails) {
-                    debugger;
+                    
                     var parameter = null;
 
                     if (existingCustomerId == null) {
