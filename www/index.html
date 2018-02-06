@@ -61,7 +61,7 @@
                             }
 
                         }).on('deviceready', function () {
-                            document.addEventListener("deviceready", checkExistingSession, false);
+                            document.addEventListener("deviceready", deviceReadySuccess, false);
                         });
 
                         function addWidth() {
@@ -69,12 +69,21 @@
                         }
 
                         var isMobileDevice = isMobile();
+                        var deviceTokenForPush = 'browser-token';
+                        var platform = 'browser';
+
+                        function deviceReadySuccess() {
+                            checkExistingSession();
+                            if (isMobileDevice) {
+                                getPushNotificationToken();
+                            }
+                        }
 
                         function checkExistingSession() {
 
                             var userName = localStorage.getItem("username");
                             var password = localStorage.getItem("password");
-                            var deviceType = localStorage.getItem("deviceType");
+                            deviceType = localStorage.getItem("deviceType");
                             var deviceToken = localStorage.getItem("deviceToken");
                             var roleId = localStorage.getItem("roleId");
 
@@ -103,6 +112,41 @@
                                     }
                                 });
                             }
+                        }
+
+                        function getPushNotificationToken() {
+                            var push = PushNotification.init({
+                                "android": {
+                                    "senderID": "762294569460",
+                                    "forceShow": "true",
+                                    "sound": true,
+                                    "vibration": true,
+                                    "badge": true,
+                                    "clearBadge": true
+                                },
+                                "browser": {
+                                },
+                                "ios": {
+                                    "sound": true,
+                                    "vibration": true,
+                                    "badge": true,
+                                    "clearBadge": true
+                                },
+                                "windows": {}
+                            });
+
+                            push.on('registration', function (data) {
+                                // Save new registration ID
+                                deviceTokenForPush = data.registrationId;
+                            });
+
+                            push.on('notification', function (data) {
+
+                            });
+
+                            push.on('error', function (e) {
+                                navigator.notification.alert("push error = " + e.message);
+                            });
                         }
 
                         function forgotPassword() {
@@ -225,18 +269,9 @@
                         function Login() {
 
                             if (isValidate()) {
-                               
-                                var deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
-                                var platform = 'browser';
 
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                }
-                                if (isMobileDevice) {
-                                    deviceToken = device.uuid;
-                                }
-
-                                if (isMobileDevice) {
                                     platform = device.platform;
                                 }
 
@@ -245,7 +280,7 @@
                                     "password": "" + $("#password").val() + "",
                                     "userRole": 4,
                                     "deviceType": platform,
-                                    "deviceToken": deviceToken
+                                    "deviceToken": deviceTokenForPush
                                 }
 
                                 $.ajax({
@@ -263,7 +298,7 @@
                                             localStorage.setItem("username", response.data.email);
                                             localStorage.setItem("password", $("#password").val());
                                             localStorage.setItem("deviceType", platform);
-                                            localStorage.setItem("deviceToken", deviceToken);
+                                            localStorage.setItem("deviceToken", deviceTokenForPush);
                                             localStorage.setItem("userId", response.data.userId);
                                             localStorage.setItem("roleId", response.data.roleId);
 

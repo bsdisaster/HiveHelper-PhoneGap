@@ -66,12 +66,12 @@
                     </div>
                     <div class="page-login-input animate-fade animate-delay-500">
                         <i class="login-icon ion-at"></i>
-                        <input id="register-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'" onclick="showAlert('city')" readonly>
+                        <input id="register-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'" onclick="showAddressAlert('city')" readonly>
                     </div>
 
                     <div class="page-login-input animate-fade animate-delay-700">
                         <i class="login-icon ion-at"></i>
-                        <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'" onclick="showAlert('zipcode')" readonly>
+                        <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'" onclick="showAddressAlert('zipcode')" readonly>
                     </div>
 
                     <button id="btnCreateAccount" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-800"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
@@ -105,7 +105,7 @@
                 fillState();
             }
         }).on('deviceready', function () {
-            document.addEventListener("deviceready", fillState, false);
+            document.addEventListener("deviceready", deviceReadySuccess, false);
             $(document).on({
                 'DOMNodeInserted': function () {
                     $('.pac-item, .pac-item span', this).addClass('needsclick');
@@ -115,6 +115,9 @@
 
         var isMobileDevice = isMobile();
         var placeSearch, autocomplete, latitude, longitude;
+        var deviceTokenForPush = 'browser-token';
+        var platform = 'browser';
+
         function initAutocomplete() {
             // Create the autocomplete object, restricting the search to geographical
 
@@ -134,11 +137,18 @@
             autocomplete.addListener('place_changed', fillInAddress);
         }
 
+        function deviceReadySuccess() {
+            fillState();
+            if (isMobileDevice) {
+                getPushNotificationToken();
+            }
+        }
+
         function addMask(inputEle) {
             $(inputEle).mask('(999) 999-9999');
         }
 
-        function showAlert(ele) {
+        function showAddressAlert(ele) {
             if (isMobileDevice) {
                 navigator.notification.alert("Please update your address to change " + ele + ".!", null, "Warning", "Close");
             }
@@ -290,24 +300,50 @@
             return isResult;
         }
 
+        function getPushNotificationToken() {
+            var push = PushNotification.init({
+                "android": {
+                    "senderID": "762294569460",
+                    "forceShow": "true",
+                    "sound": true,
+                    "vibration": true,
+                    "badge": true,
+                    "clearBadge": true
+                },
+                "browser": {
+                },
+                "ios": {
+                    "sound": true,
+                    "vibration": true,
+                    "badge": true,
+                    "clearBadge": true
+                },
+                "windows": {}
+            });
+
+            push.on('registration', function (data) {
+                // Save new registration ID
+                deviceTokenForPush = data.registrationId;
+            });
+
+            push.on('notification', function (data) {
+
+            });
+
+            push.on('error', function (e) {
+                navigator.notification.alert("push error = " + e.message);
+            });
+        }
+
         function register() {
 
             $('#btnCreateAccount').on('click', function (event) {
-
+               
                 if (isValidateregister()) {
-
-                    var deviceToken = '111777xzx7dddddxxsssswwerewdsfvdgsghfhsdfhdfhdyt';
-                    var platform = 'browser';
-
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                    }
-                    if (isMobileDevice) {
-                        deviceToken = device.uuid;
-                    }
 
                     if (isMobileDevice) {
                         platform = device.platform;
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                     }
 
                     var parameter = {
@@ -323,7 +359,7 @@
                         "latitude": latitude,
                         "longitude": longitude,
                         "deviceType": platform,
-                        "deviceToken": deviceToken,
+                        "deviceToken": deviceTokenForPush,
                         "userRole": 4
                     }
 

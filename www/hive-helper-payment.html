@@ -65,7 +65,7 @@
                         <br />
                         <div id="dvCardSelection">
                             <div>
-                                No such cards.!
+                                No card on file
                             </div>
                             <br />
                         </div>
@@ -109,7 +109,7 @@
                         </div>
                         <button id="btnPayment" class="button button-blue button-full half-top full-bottom"></button>
                     </div>
-                    <a href="#" onclick="newCardDetails()">New card ?</a><br />
+                    <a href="#" onclick="newCardDetails()">Add New Card</a><br />
                 </div>
             </div>
 
@@ -120,9 +120,8 @@
 
                     submitPaymentInfo();
                     fetchProviderInfo();
-                    listCardDetails(localStorage.getItem("userId"));
                 }).on('deviceready', function () {
-
+                    listCardDetails(localStorage.getItem("userId"));
                 });
 
                 var isMobileDevice = isMobile();
@@ -293,7 +292,7 @@
                                     url: 'https://api.stripe.com/v1/customers/' + customerId + '/sources/' + cardId,
                                     headers: {
                                         Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                                        //Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                                        //Authorization: 'Bearer sk_test_PeyWFcrok8LpSQlgTBDva9Rt'
                                     },
                                     success: (data) => {
 
@@ -320,7 +319,7 @@
                                 url: 'https://api.stripe.com/v1/customers/' + customerId + '/sources/' + cardId,
                                 headers: {
                                     Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                                    //Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                                    //Authorization: 'Bearer sk_test_PeyWFcrok8LpSQlgTBDva9Rt'
                                 },
                                 success: (data) => {
 
@@ -612,7 +611,7 @@
                         url: 'https://api.stripe.com/v1/customers',
                         headers: {
                             Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                            //Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                            //Authorization: 'Bearer sk_test_PeyWFcrok8LpSQlgTBDva9Rt'
                         },
                         data: {
                             "email": $("#emailAddress").val(),
@@ -674,7 +673,7 @@
                         url: 'https://api.stripe.com/v1/charges',
                         headers: {
                             Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
-                            //Authorization: 'Bearer sk_test_n3x0ZGhvUjjBbDChIBdsbRLw'
+                            //Authorization: 'Bearer sk_test_PeyWFcrok8LpSQlgTBDva9Rt'
                         },
                         data: params,
                         success: (data) => {
@@ -686,7 +685,7 @@
                                 localStorage.setItem("clientIp", "");
                             } else {
                                 localStorage.setItem("clientIp", tokenInfo.client_ip);
-                                createCard("sk_test_n3x0ZGhvUjjBbDChIBdsbRLw", data.customer, tokenInfo.id);
+                                createCard(localStorage.getItem("stripeSecretKey"), data.customer, tokenInfo.id);
                             }
 
                             savePaymentInfo(data);
@@ -843,9 +842,9 @@
                             if (response !== null && response.status === 1) {
 
                                 if (isMobileDevice) {
-                                    navigator.notification.alert("Your appointment successfully booked.!", null, 'Success', 'Close');
+                                    navigator.notification.alert("Your appointment successfully booked!", null, 'Success', 'Close');
                                 } else {
-                                    alert("Your appointment successfully booked.!");
+                                    alert("Your appointment successfully booked!");
                                 }
 
                                 localStorage.removeItem("paymentTempObject");
