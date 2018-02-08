@@ -15,7 +15,9 @@
     <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
     <script type="text/javascript" src="scripts/stripe.js"></script>
@@ -216,7 +218,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error',error);
                                 }
                             }
                         }
@@ -250,7 +252,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    alert(response.message);
+                                    showAlertDialog('Warning',response.message);
                                 }
                             }
                         },
@@ -270,7 +272,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error',error);
                                 }
                             }
                         }
@@ -325,12 +327,10 @@
 
                                     $(divEle).parent().remove();
                                     deleteCardDb(customerId, cardId);
-                                    alert("Card successfully deleted.!");
-
+                                    showAlertDialog("Success", "Card successfully deleted.!");
                                 },
                                 error: (response) => {
-
-                                    alert(response.responseJSON.error.message);
+                                    showAlertDialog("Error", response.responseJSON.error.message);
                                 }
                             })
                         }
@@ -345,7 +345,7 @@
                             navigator.notification.alert("Please enter promo code.!", null, 'Warning', 'Close');
 
                         } else {
-                            alert("Please enter promo code.!");
+                            showAlertDialog("Warning", "Please enter promo code.!");
                         }
                         $("#promoCode").focus();
                     }
@@ -376,7 +376,7 @@
                                         navigator.notification.alert("Promocode applied.!", null, 'Success', 'Close');
 
                                     } else {
-                                        alert("Promocode applied.!");
+                                        showAlertDialog("Success", "Promocode applied.!");
                                     }
 
                                     var regularPrice = parseFloat(localStorage.getItem("regularPrice"));
@@ -391,7 +391,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                     } else {
-                                        alert(response.message);
+                                        showAlertDialog('Warning',response.message);
                                     }
                                     $("#promoCode").css("border-color", "red");
                                 }
@@ -410,7 +410,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(error, null, 'Error', 'Close');
                                     } else {
-                                        alert(error);
+                                        showAlertDialog('Error',error);
                                     }
                                 }
                             }
@@ -472,7 +472,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(msg, null, 'Warning', 'Close');
                         } else {
-                            alert(msg);
+                            showAlertDialog('Error', msg);
                         }
                         isResult = false;
                     }
@@ -532,7 +532,7 @@
                                 window.plugins.spinnerDialog.hide();
                                 navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
                             } else {
-                                alert(response.responseJSON.error.message);
+                                showAlertDialog('Error', response.responseJSON.error.message);
                             }
                         }
                     })
@@ -557,7 +557,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert("Please select card for payment.!", null, 'Warning', 'Close');
                             } else {
-                                alert("Please select card for payment.!");
+                                showAlertDialog('Warning', "Please select card for payment.!");
                             }
                         } else {
                             makePayment();
@@ -585,7 +585,7 @@
                             window.plugins.spinnerDialog.hide();
                             navigator.notification.alert(response.error.message, null, 'Error', 'Close');
                         } else {
-                            alert(response.error.message);
+                            showAlertDialog('Error', response.error.message);
                         }
                     } else {
                         // Get the token ID:
@@ -633,7 +633,7 @@
                                 window.plugins.spinnerDialog.hide();
                                 navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
                             } else {
-                                alert(response.responseJSON.error.message);
+                                showAlertDialog('Error', response.responseJSON.error.message);
                             }
                         }
                     })
@@ -696,7 +696,7 @@
                                 window.plugins.spinnerDialog.hide();
                                 navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
                             } else {
-                                alert(response.responseJSON.error.message);
+                                showAlertDialog('Error', response.responseJSON.error.message);
                             }
                         }
                     })
@@ -773,7 +773,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    alert(response.message);
+                                    showAlertDialog('Warning',response.message);
                                 }
                             }
                         },
@@ -792,7 +792,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error',error);
                                 }
                             }
                         }
@@ -844,7 +844,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert("Your appointment successfully booked!", null, 'Success', 'Close');
                                 } else {
-                                    alert("Your appointment successfully booked!");
+                                    showAlertDialog("Success", "Your appointment successfully booked!");
                                 }
 
                                 localStorage.removeItem("paymentTempObject");
@@ -855,7 +855,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    alert(response.message);
+                                    showAlertDialog('Warning',response.message);
                                 }
                             }
                         },
@@ -874,7 +874,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error',error);
                                 }
                             }
                         }

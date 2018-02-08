@@ -54,7 +54,6 @@
     <splash height="2048" platform="ios" src="res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" />
     <splash height="1536" platform="ios" src="res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" />
     <platform name="android">
-        <resource-file src="platforms/android/google-services.json" target="platforms/android/google-services.json" />
         <preference name="orientation" value="landscape" />
         <preference name="orientation" value="portrait" />
         <preference name="android-targetSdkVersion" value="20" />
@@ -72,6 +71,7 @@
         <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png" />
     </platform>
     <platform name="ios">
+        <resource-file src="platforms/ios/GoogleService-Info.plist" />
         <preference name="orientation" value="landscape" />
         <preference name="orientation" value="portrait" />
         <preference name="DisallowOverscroll" value="true" />
@@ -95,6 +95,6 @@
         <variable name="PHOTOLIBRARY_ADD_USAGE_DESCRIPTION" value="This app needs write-access to photo library" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="This app needs read/write-access photo library access" />
     </plugin>
-    <engine name="android" spec="^6.3.0" />
     <engine name="browser" spec="^5.0.3" />
+    <engine name="ios" spec="^4.5.4" />
 </widget>

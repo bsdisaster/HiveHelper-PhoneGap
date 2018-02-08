@@ -4,8 +4,8 @@
   "displayName": "Hive Helper",
   "cordova": {
     "platforms": [
-      "android",
-      "browser"
+      "browser",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-device": {},
@@ -29,7 +29,7 @@
     }
   },
   "dependencies": {
-    "cordova-android": "^6.3.0",
+    "cordova-android": "^7.0.0",
     "cordova-browser": "^5.0.3",
     "cordova-ios": "^4.5.4",
     "cordova-plugin-actionsheet": "^2.3.3",

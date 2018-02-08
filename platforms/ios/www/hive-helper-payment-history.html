@@ -203,7 +203,7 @@
                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                     }
                     else {
-                        alert(response.message);
+                        showAlertDialog('Warning', response.message);
                     }
                 }
             },
@@ -223,7 +223,7 @@
                         navigator.notification.alert(error, null, 'Error', 'Close');
                     }
                     else {
-                        alert(error);
+                        showAlertDialog('Error', error);
                     }
                 }
             }

@@ -1025,7 +1025,7 @@ $(document).ready(function () {
     });
 })
 
-var api_baseUrl = 'http://hivehelper.project-demo.info/v1/';
+var api_baseUrl = 'http://hivehelperapp.com/appv2/v1/';
 // detect mobile devices
 function isMobile() {
     var app = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
@@ -1034,4 +1034,9 @@ function isMobile() {
     } else {
         return false;
     }
+}
+function showAlertDialog(title, message) {
+    var alertDialogDiv = "<div id='alertDialog' style='display:none' title=" + title + "><p>" + message.replace(/\n/g, "<br />") + "</p></div>";
+    $(alertDialogDiv).appendTo("body");
+    $(alertDialogDiv).dialog();
 }

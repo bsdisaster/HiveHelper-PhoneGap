@@ -16,7 +16,9 @@
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQUPe-GBmzqn0f8sb_8xZNcseul1N0yU&libraries=places&callback=initAutocomplete" defer></script>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
     <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
@@ -153,7 +155,7 @@
                 navigator.notification.alert("Please update your address to change " + ele + ".!", null, "Warning", "Close");
             }
             else {
-                alert("Please update your address to change " + ele + ".!");
+                showAlertDialog('Warning', "Please update your address to change " + ele + ".!");
             }
         }
 
@@ -202,7 +204,7 @@
                             navigator.notification.alert(response.message, null, 'Error', 'Close');
                         }
                         else {
-                            alert(response.message);
+                            showAlertDialog('Error', response.message);
                         }
                     }
                 },
@@ -221,7 +223,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            alert(error);
+                            showAlertDialog('Error', error);
                         }
                     }
                 }
@@ -292,7 +294,7 @@
                     navigator.notification.alert(msg, null, 'Warning', 'Close');
                 }
                 else {
-                    alert(msg);
+                    showAlertDialog('Warning', msg);
                 }
                 isResult = false;
             }
@@ -378,7 +380,7 @@
                                     navigator.notification.alert('Your registration was successful.!', null, 'Success', 'Close');
                                 }
                                 else {
-                                    alert("Your registration was successful.!");
+                                    showAlertDialog('Success', "Your registration was successful.!");
                                 }
                                 window.location = "index.html";
                             }
@@ -387,7 +389,7 @@
                                     navigator.notification.alert(response.message, null, 'Error', 'Close');
                                 }
                                 else {
-                                    alert(response.message);
+                                    showAlertDialog('Error', response.message);
                                 }
                             }
                         },
@@ -405,7 +407,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }

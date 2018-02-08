@@ -156,6 +156,7 @@
             });
             $("#calDate").datepicker("setDate", new Date());
             removeFocus('#calDate');
+            $("#alertDialog").dialog();
 
         }).on('deviceready', function () {
             document.addEventListener("deviceready", devicereadySuccess, false);
@@ -172,6 +173,10 @@
         function devicereadySuccess() {
             //checkPreviousHelperAvailibility();
             //getAllSelectCleaningServices();
+        }
+
+        function showAlert() {
+
         }
 
         function requestPreviousHelper() {
@@ -225,7 +230,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            alert(error);
+                            showAlertDialog('Error',error);
                         }
                     }
                 }
@@ -299,7 +304,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(error, null, 'Error', 'Close');
                             } else {
-                                alert(error);
+                                showAlertDialog('Error',error);
                             }
                         }
                     }
@@ -309,7 +314,7 @@
                 if (isMobileDevice) {
                     navigator.notification.alert("Please enter date!", null, 'Error', 'Close');
                 } else {
-                    alert("Please enter date!");
+                    showAlertDialog('Error', 'Please enter date!');
                 }
             }
         }
@@ -329,7 +334,7 @@
                 if (isMobileDevice) {
                     navigator.notification.alert("Please select schedule from.!", null, "Warning", "Close");
                 } else {
-                    alert("Please select schedule from.!");
+                    showAlertDialog('Warning', 'Please select schedule from.!');
                 }
             }
             else if ($('#scheduleTo').val() == null || $('#scheduleTo').val() == "Select Time") {
@@ -337,13 +342,13 @@
                 if (isMobileDevice) {
                     navigator.notification.alert("Please select schedule to.!", null, "Warning", "Close");
                 } else {
-                    alert("Please select schedule to.!");
+                    showAlertDialog('Warning', 'Please select schedule to.!');
                 }
             } else if ($('.contactTextarea').val() == "") {
                 if (isMobileDevice) {
                     navigator.notification.alert("Please enter description.!", null, "Warning", "Close");
                 } else {
-                    alert("Please enter description.!");
+                    showAlertDialog('Warning', 'Please enter description.!');
                 }
             }
             else {
@@ -380,7 +385,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert("Your request has been sent.!", null, "Success", "Close");
                             } else {
-                                alert("Your request has been sent.!");
+                                showAlertDialog('Success', 'Your request has been sent.!');
                             }
                             window.location.href = "dashboard.html";
                         }
@@ -388,7 +393,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(response.message, null, "Warning", "Close");
                             } else {
-                                alert(response.message);
+                                showAlertDialog('Warning',response.message);
                             }
                         }
                     },
@@ -406,7 +411,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(error, null, 'Error', 'Close');
                             } else {
-                                alert(error);
+                                showAlertDialog('Error',error);
                             }
                         }
                     }

@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
 
@@ -90,7 +92,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                     } else {
-                                        alert(response.message);
+                                        showAlertDialog('Warning',response.message);
                                     }
                                 }
                             },
@@ -108,7 +110,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(error, null, 'Error', 'Close');
                                     } else {
-                                        alert(error);
+                                        showAlertDialog('Error',error);
                                     }
                                 }
                             }

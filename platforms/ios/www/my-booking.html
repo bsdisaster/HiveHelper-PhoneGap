@@ -14,7 +14,9 @@
     <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script src="scripts/phonegap.facebook.inappbrowser.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
@@ -44,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-container">
+                    <!--<div class="accordion-container">
                         <a href="#" class="accordion-toggle Orpheus-pro">Due Services</a>
                         <div class="accordion-content futura-pt-book">
                             <div>
@@ -63,7 +65,7 @@
                             <div id="divPending" class="page-userlist content-scroll">
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="accordion-container">
                         <a href="#" class="accordion-toggle Orpheus-pro">Previous Services</a>
                         <div class="accordion-content futura-pt-book">
@@ -128,67 +130,67 @@
                                 }
                                 if (response !== null && response.status === 1) {
 
-                                    var dueBooking = response.data.duedateBooking;
-                                    var pendingBooking = response.data.pendingBooking;
+                                    //var dueBooking = response.data.duedateBooking;
+                                    //var pendingBooking = response.data.pendingBooking;
                                     var upcomingBooking = response.data.upcomingBooking;
                                     var previousBooking = response.data.previousBooking;
 
                                     // due booking list
-                                    if (dueBooking.length > 0) {
+                                    //if (dueBooking.length > 0) {
 
-                                        for (var i = 0; i < dueBooking.length; i++) {
-                                            var html = '';
-                                            var serviceName = '<b>Service:</b> ' + dueBooking[i].serviceName + ' </br>';
-                                            var appointmentDateTime = '<b>Date:</b> ' + dueBooking[i].appointmentDate + '  </br>';
-                                            var providerName = '<b>Provider:</b> ' + dueBooking[i].franchiseName + ' </br>';
+                                    //    for (var i = 0; i < dueBooking.length; i++) {
+                                    //        var html = '';
+                                    //        var serviceName = '<b>Service:</b> ' + dueBooking[i].serviceName + ' </br>';
+                                    //        var appointmentDateTime = '<b>Date:</b> ' + dueBooking[i].appointmentDate + '  </br>';
+                                    //        var providerName = '<b>Provider:</b> ' + dueBooking[i].franchiseName + ' </br>';
 
-                                            html = html + '<div class="user-list-3 user-list-1-change">';
-                                            html = html + '<div class="col-sm-10">';
+                                    //        html = html + '<div class="user-list-3 user-list-1-change">';
+                                    //        html = html + '<div class="col-sm-10">';
 
-                                            html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
-                                            html = html + '</div>';
-                                            html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                            html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + dueBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
-                                            html = html + '</div>';
-                                            html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                            html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + dueBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
-                                            html = html + '</div>';
-                                            html = html + '</div>';
-                                            html = html + '<div class="clear"></div></div>';
-                                            $('#divDue').append(html);
-                                        }
+                                    //        html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                    //        html = html + '</div>';
+                                    //        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                    //        html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + dueBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
+                                    //        html = html + '</div>';
+                                    //        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                    //        html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + dueBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
+                                    //        html = html + '</div>';
+                                    //        html = html + '</div>';
+                                    //        html = html + '<div class="clear"></div></div>';
+                                    //        $('#divDue').append(html);
+                                    //    }
 
-                                    }
-                                    else {
-                                        $('#lblDueListError').text('No due booking records found.!');
-                                    }
+                                    //}
+                                    //else {
+                                    //    $('#lblDueListError').text('No due booking records found.!');
+                                    //}
 
-                                    // pending booking list
-                                    if (pendingBooking.length > 0) {
+                                    //// pending booking list
+                                    //if (pendingBooking.length > 0) {
 
-                                        for (var i = 0; i < pendingBooking.length; i++) {
-                                            var html = '';
-                                            var serviceName = '<b>Service:</b> ' + pendingBooking[i].serviceName + ' </br>';
-                                            var appointmentDateTime = '<b>Date:</b> ' + pendingBooking[i].appointmentDate + '  </br>';
-                                            var providerName = '<b>Provider:</b> ' + pendingBooking[i].franchiseName + ' </br>';
+                                    //    for (var i = 0; i < pendingBooking.length; i++) {
+                                    //        var html = '';
+                                    //        var serviceName = '<b>Service:</b> ' + pendingBooking[i].serviceName + ' </br>';
+                                    //        var appointmentDateTime = '<b>Date:</b> ' + pendingBooking[i].appointmentDate + '  </br>';
+                                    //        var providerName = '<b>Provider:</b> ' + pendingBooking[i].franchiseName + ' </br>';
 
-                                            html = html + '<div class="user-list-3 user-list-1-change">';
-                                            html = html + '<div class="col-sm-10">';
+                                    //        html = html + '<div class="user-list-3 user-list-1-change">';
+                                    //        html = html + '<div class="col-sm-10">';
 
-                                            html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
-                                            html = html + '</div>';
-                                            html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
-                                            html = html + '<a href="#" target="_self" onclick="cancelRequestedAppointment(' + pendingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
-                                            html = html + '</div>';
-                                            html = html + '</div>';
-                                            html = html + '<div class="clear"></div></div>';
-                                            $('#divPending').append(html);
-                                        }
+                                    //        html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                    //        html = html + '</div>';
+                                    //        html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
+                                    //        html = html + '<a href="#" target="_self" onclick="cancelRequestedAppointment(' + pendingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
+                                    //        html = html + '</div>';
+                                    //        html = html + '</div>';
+                                    //        html = html + '<div class="clear"></div></div>';
+                                    //        $('#divPending').append(html);
+                                    //    }
 
-                                    }
-                                    else {
-                                        $('#lblPendingListError').text('No pending booking records found.!');
-                                    }
+                                    //}
+                                    //else {
+                                    //    $('#lblPendingListError').text('No pending booking records found.!');
+                                    //}
 
                                     // upcoming booking list
                                     if (upcomingBooking.length > 0) {
@@ -251,7 +253,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                     } else {
-                                        alert(response.message);
+                                        showAlertDialog('Warning', response.message);
                                     }
                                 }
                             },
@@ -270,7 +272,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(error, null, 'Error', 'Close');
                                     } else {
-                                        alert(error);
+                                        showAlertDialog('Error', error);
                                     }
 
                                 }
@@ -350,14 +352,14 @@
                                     success: function (response) {
 
                                         if (response !== null && response.status === 1) {
-                                            navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
+                                            showAlertDialog('Success','Appointment have been cancelled.!');
                                         } else {
-                                            navigator.notification.alert('Appointment have already been cancelled.!', null, 'Warning', 'Close');
+                                            showAlertDialog('Warning', 'Appointment have already been cancelled.!');
                                         }
                                     },
                                     error: function (jqXHR, text, error) {
                                         // Displaying if there are any errors
-                                        alert(error);
+                                        showAlertDialog('Error', error);
                                     }
                                 });
                             }
@@ -414,14 +416,15 @@
                                     success: function (response) {
 
                                         if (response !== null && response.status === 1) {
-                                            navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
+                                            showAlertDialog('Success', 'Appointment have been cancelled.!');
+
                                         } else {
-                                            navigator.notification.alert('Appointment have already been cancelled.!', null, 'Warning', 'Close');
+                                            showAlertDialog('Warning', 'Appointment have already been cancelled.!');
                                         }
                                     },
                                     error: function (jqXHR, text, error) {
                                         // Displaying if there are any errors
-                                        alert(error);
+                                        showAlertDialog('Error', error);
                                     }
                                 });
                             }

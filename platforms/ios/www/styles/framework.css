@@ -2795,6 +2795,7 @@ ol {
     .heading-strip h3, .heading-strip h4, .heading-strip h2, .heading-strip h1 {
         z-index: 99;
         position: relative;
+        visibility: visible;
     }
 
     .heading-strip p {
@@ -12080,14 +12081,52 @@ button.swiper-pagination-bullet {
     width: 90%;
 }
 
-#DivQuestionsAnswer .input-icon i  {
+#DivQuestionsAnswer .input-icon i {
     width: 10% !important;
     position: relative;
     text-align: right;
     line-height: 15px;
 }
 
-#DivQuestionsAnswer .tooltip .tooltiptext {    
+#DivQuestionsAnswer .tooltip .tooltiptext {
     width: 200px;
     left: -170px;
 }
+
+.numberCircle {
+    border-radius: 50%;
+    width: 2%;
+    height: 2%;
+    padding: 5px;
+    background: #fff;
+    border: 2px solid #666;
+    color: white;
+    text-align: center;
+    background-color: red;
+}
+
+/******* 08-02 Start *******/
+.notification-list {
+    display: inline-block;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.notification-list p {
+    color: #004c97;
+    margin-bottom: 0;
+}
+
+.notification-button{
+    visibility: visible;  
+    -webkit-transform: scale(1); 
+    opacity: 1;
+    transform: scale(1); 
+    opacity: 1;
+    -webkit-transition: -webkit-transform 0.5s ease-in-out 0.6s, opacity 0.5s ease-in-out 0.6s; 
+    transition: transform 0.5s ease-in-out 0.6s, opacity 0.5s ease-in-out 0.6s;
+    width: 50% !important;
+    margin:0 auto;
+}
+/******* 08-02 End *******/
