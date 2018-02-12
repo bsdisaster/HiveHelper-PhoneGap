@@ -122,6 +122,9 @@
 
                     submitPaymentInfo();
                     fetchProviderInfo();
+                    if (!isMobileDevice) {
+                        listCardDetails(localStorage.getItem("userId"));
+                    }
                 }).on('deviceready', function () {
                     listCardDetails(localStorage.getItem("userId"));
                 });
@@ -182,22 +185,19 @@
                             }
                             if (response !== null && response.status === 1) {
 
-                                var customer = response.data.customerdata;
+                                var customer = response.data.customerdata[0];
+                                existingCustomerId = customer.customerId;
 
-                                for (var i = 0; i < customer.length; i++) {
-                                    existingCustomerId = customer[0].customerId;
+                                if (customer.card.length > 0) {
+                                    $("#dvCardSelection > div").empty();
+                                    for (var j = 0; j < customer.card.length; j++) {
+                                        var html = "";
 
-                                    if (customer[i].card.length > 0) {
-                                        $("#dvCardSelection > div").empty();
-                                        for (var j = 0; j < customer[i].card.length; j++) {
-                                            var html = "";
+                                        html = html + '<a href="#" class="payment-cards">';
+                                        html = html + '<strong class="user-list-3-strong" data-card-id="' + customer.card[j].customercardId + '" data-customer-id="' + existingCustomerId + '" onclick="getCardDetails(this)">XXXX-XXXX-XXXX-' + customer.card[j].last4 + '</strong>';
+                                        html = html + '<i class="fa fa-trash-o" onclick="deleteStripeCard(this)"></i></a>';
 
-                                            html = html + '<a href="#" class="payment-cards">';
-                                            html = html + '<strong class="user-list-3-strong" data-card-id="' + customer[i].card[j].customercardId + '" data-customer-id="' + existingCustomerId + '" onclick="getCardDetails(this)">XXXX-XXXX-XXXX-' + customer[i].card[j].last4 + '</strong>';
-                                            html = html + '<i class="fa fa-trash-o" onclick="deleteStripeCard(this)"></i></a>';
-
-                                            $("#dvCardSelection > div").append(html);
-                                        }
+                                        $("#dvCardSelection > div").append(html);
                                     }
                                 }
                             } else {
@@ -506,7 +506,7 @@
                         return true;
                 }
 
-                function createCard(secretkey, customerId, source) {
+                function createCard(secretkey, customerId, source, parameters, tokenInfo) {
                     
 
                     var params = {
@@ -524,7 +524,9 @@
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             }
-
+                            if (parameters != null && tokenInfo != null) {
+                                createCharge(parameters, tokenInfo);
+                            }
                         },
                         error: (response) => {
 
@@ -651,13 +653,17 @@
                             description: "Hive Helper - " + localStorage.getItem("selectedCleaningTitle") + " - " + (localStorage.getItem("providerDate").toString().replace(/-/g, "/")),
                             currency: "USD"
                         }
+                        createCharge(params, tokenInfo);
                     } else if (tokenInfo != null && existingCustomerId != null) {
+
                         params = {
                             amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),
+                            source: tokenInfo.card.id,
                             customer: existingCustomerId,
                             description: "Hive Helper - " + localStorage.getItem("selectedCleaningTitle") + " - " + (localStorage.getItem("providerDate").toString().replace(/-/g, "/")),
                             currency: "USD"
                         }
+                        createCard(localStorage.getItem("stripeSecretKey"), existingCustomerId, tokenInfo.id, params, tokenInfo);
                     }
                     else {
                         params = {
@@ -666,8 +672,12 @@
                             description: "Hive Helper - " + localStorage.getItem("selectedCleaningTitle") + " - " + (localStorage.getItem("providerDate").toString().replace(/-/g, "/")),
                             currency: "USD"
                         }
+                        createCharge(params, tokenInfo);
                     }
 
+                }
+
+                function createCharge(parameters, tokenInfo) {
                     $.ajax({
                         type: 'POST',
                         url: 'https://api.stripe.com/v1/charges',
@@ -675,7 +685,7 @@
                             Authorization: 'Bearer ' + localStorage.getItem("stripeSecretKey")
                             //Authorization: 'Bearer sk_test_PeyWFcrok8LpSQlgTBDva9Rt'
                         },
-                        data: params,
+                        data: parameters,
                         success: (data) => {
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
@@ -685,7 +695,6 @@
                                 localStorage.setItem("clientIp", "");
                             } else {
                                 localStorage.setItem("clientIp", tokenInfo.client_ip);
-                                createCard(localStorage.getItem("stripeSecretKey"), data.customer, tokenInfo.id);
                             }
 
                             savePaymentInfo(data);

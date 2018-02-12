@@ -62,7 +62,7 @@
 
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300">
-                        <input id="profile-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; }; addMask(this);">
+                        <input id="profile-phone" type="tel" maxlength="10" placeholder="Phone" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; }; addMask(this);">
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
 
@@ -70,7 +70,7 @@
 
                     </div>
 
-                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300 select-profile">
+                    <!--<div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300 select-profile">
 
                         <div class="col-sm-12 ">
                             <div class="col-sm-6 ">
@@ -91,12 +91,21 @@
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-400">
                         <input id="profile-zipcode" type="text" value="Zip code" onfocus="if (this.value=='Zip code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip code'" onclick="showAlert('zipcode')" readonly>
 
-                    </div>
+                    </div>-->
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-500">
 
                         <input id="profile-email" type="text" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
 
                     </div>
+                    <!--<div class="select-box-light profile">
+                        <select id="ddlNotification">
+                            <option value="0">Select notification type</option>
+                            <option value="1">Email</option>
+                            <option value="2">Notification</option>
+                            <option value="3">Both</option>
+                        </select>
+                    </div>-->
+
                     <div class="page-login-input my-profile-removed-left-pedding full-bottom animate-fadeanimate-delay-600">
                         <input id="profile-password" type="password" class="changepassword-text" placeholder="Password" disabled="disabled">
                         <a href="#" onclick="enablePassword(true)" style="padding-top:10px;">CHANGE</a>
@@ -279,6 +288,7 @@
                         var emailValue = $("#profile-email").val();
                         var cityValue = $("#profile-city").val();
                         var stateValue = $("#ddlState").val();
+                        //var notificationValue = $("#ddlNotification").val();
                         var zipcodeValue = $("#profile-zipcode").val();
 
                         if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
@@ -313,6 +323,10 @@
                             countError = countError + 1;
                             msg += "Email address!\n";
                         }
+                        //if (notificationValue === "0") {
+                        //    countError = countError + 1;
+                        //    msg += "Notification type!\n";
+                        //}
                         if (emailValue !== null && emailValue !== '' && emailValue !== 'Email address') {
                             var x = emailValue;
                             var atpos = x.indexOf("@");
@@ -356,6 +370,7 @@
                                     "latitude": latitude,
                                     "longitude": longitude,
                                     "image": base64String
+                                    //"notification": $("#ddlNotification").val()
                                 };
 
                                 $.ajax({
@@ -428,6 +443,7 @@
                                     $("#profile-phone").val(response.data[0].phone);
                                     $("#profile-address").val(response.data[0].address);
                                     $("#profile-city").val(response.data[0].city);
+                                    //$("#ddlNotification").val(response.data[0].notification);
 
                                     setTimeout(function () {
                                         $("#ddlState").val(response.data[0].state);

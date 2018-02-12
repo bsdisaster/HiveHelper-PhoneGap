@@ -139,6 +139,10 @@
                                         html = html + '<div class="clear"></div>';
                                         $("#DivQuestionsAnswer").append(html);
                                     }
+
+                                    $("#DivQuestionsAnswer").append('<div style="padding-left: inherit" class="input-icon"><label class="bold p70">' + response.data["privacy_policy_text"] + '</label></div>');
+                                    $("#DivQuestionsAnswer").append('<div class="input-icon padding-left"><a href="' + response.data["privacy_policy_link"] + '" target="_blank">' + response.data["privacy_policy_link"] + '</a></div>');
+
                                     $("#DivQuestionsAnswer").append('<div class="clear"></div>');
                                     $("#DivQuestionsAnswer").append('<button class="button button-blue button-full half-top full-bottom" onclick="updateDateTime()">Update</button>');
 
@@ -158,7 +162,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    showAlertDialog('Warning',response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -202,7 +206,7 @@
                             }
                             if (response !== null && response.status === 1) {
 
-                                var serviceQuestionsData = response.data;
+                                var serviceQuestionsData = response.data.servicequestion;
                                 if (serviceQuestionsData.length > 0) {
                                     var counter = 0;
                                     for (var i = 0; i < serviceQuestionsData.length; i++) {
@@ -244,6 +248,9 @@
                                         html = html + '<div class="clear"></div>';
                                         $("#DivQuestionsAnswer").append(html);
                                     }
+
+                                    $("#DivQuestionsAnswer").append('<div style="padding-left: inherit" class="input-icon"><label class="bold p70">' + response.data["privacy_policy_text"] + '</label></div>');
+                                    $("#DivQuestionsAnswer").append('<div class="input-icon padding-left"><a href="' + response.data["privacy_policy_link"] + '" target="_blank">' + response.data["privacy_policy_link"] + '</a></div>');
                                     $("#DivQuestionsAnswer").append('<div class="clear"></div>');
                                     $("#DivQuestionsAnswer").append('<button onclick="paymentTempArray()" class="button button-blue button-full half-top full-bottom">Pay Now</button>');
                                     localStorage.setItem("appointmentArray", JSON.stringify(serviceQuestionsData));
@@ -253,7 +260,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    showAlertDialog('Warning',response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -392,7 +399,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(response.message, null, 'Warning', 'Close');
                             } else {
-                                showAlertDialog('Warning',response.message);
+                                showAlertDialog('Warning', response.message);
                             }
                         }
                     },

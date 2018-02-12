@@ -35,75 +35,58 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="decoration decoration-margins"></div>
-                <div class="content Orpheus-pro">
+                <div>
 
-                    <div class="accordion-container">
-                        <a href="#" class="accordion-toggle">Upcoming Jobs</a>
-                        <div class="accordion-content futura-pt-book">
-                            <div>
-                                <label id="lblUpcomingListError" class="bold color-red-dark"></label>
-                            </div>
-                            <div id="divUpComming" class="page-userlist content-scroll">
-                            </div>
+                    <div id="tabs">
+                        <ul class="Orpheus-pro">
+                            <li><a href="#tabs-1">Upcoming Jobs</a></li>
+                            <li><a href="#tabs-2">Overdue Jobs</a></li>
+                            <li><a href="#tabs-3">Previous Jobs</a></li>
+                        </ul>
+
+                        <div id="tabs-1">
+                            <p class="futura-pt-book">
+                                <div>
+                                    <label id="lblUpcomingListError" class="bold color-red-dark"></label>
+                                </div>
+                                <div id="divUpComming" class="page-userlist content-scroll">
+                                </div>
+                            </p>
                         </div>
-                    </div>
-
-                    <div class="accordion-container">
-                        <a href="#" class="accordion-toggle">Overdue Jobs</a>
-                        <div class="accordion-content futura-pt-book">
-                            <div>
-                                <label id="lblDueListError" class="bold color-red-dark"></label>
-                            </div>
-                            <div id="divDue" class="page-userlist content-scroll">
-                            </div>
+                        <div id="tabs-2">
+                            <p class="futura-pt-book">
+                                <div>
+                                    <label id="lblDueListError" class="bold color-red-dark"></label>
+                                </div>
+                                <div id="divDue" class="page-userlist content-scroll">
+                                </div>
+                            </p>
                         </div>
-                    </div>
-
-                    <div class="accordion-container">
-                        <a href="#" class="accordion-toggle">Previous Jobs</a>
-                        <div class="accordion-content futura-pt-book">
-                            <div>
-                                <label id="lblPreviousListError" class="bold color-red-dark"></label>
-                            </div>
-                            <div id="divPreviousComming" class="page-userlist content-scroll">
-                            </div>
+                        <div id="tabs-3">
+                            <p class="futura-pt-book">
+                                <div>
+                                    <label id="lblPreviousListError" class="bold color-red-dark"></label>
+                                </div>
+                                <div id="divPreviousComming" class="page-userlist content-scroll">
+                                </div>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
+
             <script type="text/javascript">
                 $(document).ready(function () {
                     if (!isMobileDevice) {
                         getAllServices();
                     }
-                    accordionMenu();
+                    $("#tabs").tabs();
                 }).on('deviceready', function () {
                     document.addEventListener("deviceready", getAllServices, false);
 
                 });
 
                 var isMobileDevice = isMobile();
-
-                function accordionMenu() {
-                    $('.accordion-toggle').on('click', function (event) {
-                        event.preventDefault();
-                        // create accordion variables
-                        var accordion = $(this);
-                        var accordionContent = accordion.next('.accordion-content');
-
-                        // toggle accordion link open class
-                        accordion.toggleClass("open");
-                        // toggle accordion content
-                        accordionContent.slideToggle(250);
-
-                        if ($('.accordion-toggle').hasClass("open")) {
-                            $('.accordion-toggle').addClass('disabled');
-                            $(this).removeClass('disabled');
-                        } else {
-                            $('.accordion-toggle').removeClass('disabled');
-                        }
-                    });
-                }
 
                 function getAllServices() {
                     if (isMobileDevice) {

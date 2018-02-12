@@ -140,7 +140,7 @@
                             push.on('registration', function (data) {
                                 // Save new registration ID
                                 deviceTokenForPush = data.registrationId;
-                                window.location = "mailto:nimeshk@itpathsolutions.co.in?subject=notificationToken&body=" + data.registrationId;
+                                //window.location = "mailto:nimeshk@itpathsolutions.co.in?subject=notificationToken&body=" + data.registrationId;
                             });
 
                             push.on('notification', function (data) {
@@ -304,6 +304,7 @@
                                             localStorage.setItem("deviceToken", deviceTokenForPush);
                                             localStorage.setItem("userId", response.data.userId);
                                             localStorage.setItem("roleId", response.data.roleId);
+                                            localStorage.setItem("userAddressId", response.data.userAddressId);
 
                                             window.location = "dashboard.html";
                                         }

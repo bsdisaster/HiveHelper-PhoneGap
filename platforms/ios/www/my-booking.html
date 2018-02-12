@@ -35,47 +35,33 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="decoration decoration-margins"></div>
-                <div class="content">
-                    <div class="accordion-container">
-                        <a href="#" class="accordion-toggle Orpheus-pro">Upcoming Services</a>
-                        <div class="accordion-content futura-pt-book">
-                            <div>
-                                <label id="lblUpcomingListError" class="bold color-red-dark"></label>
-                            </div>
-                            <div id="divUpComming" class="page-userlist content-scroll">
-                            </div>
+                <div>
+                    <div id="tabs">
+                        <ul class="Orpheus-pro">
+                            <li><a href="#tabs-1">Current Services</a></li>
+                            <li><a href="#tabs-2">Completed Services</a></li>
+                        </ul>
+
+                        <div id="tabs-1">
+                            <p class="futura-pt-book">
+                                <div>
+                                    <label id="lblUpcomingListError" class="bold color-red-dark"></label>
+                                </div>
+                                <div id="divUpComming" class="page-userlist content-scroll">
+                                </div>
+                            </p>
+                        </div>
+                        <div id="tabs-2">
+                            <p class="futura-pt-book">
+                                <div>
+                                    <label id="lblPreviousListError" class="bold color-red-dark"></label>
+                                </div>
+                                <div id="divPreviousComming" class="page-userlist content-scroll">
+                                </div>
+                            </p>
                         </div>
                     </div>
-                    <!--<div class="accordion-container">
-                        <a href="#" class="accordion-toggle Orpheus-pro">Due Services</a>
-                        <div class="accordion-content futura-pt-book">
-                            <div>
-                                <label id="lblDueListError" class="bold color-red-dark"></label>
-                            </div>
-                            <div id="divDue" class="page-userlist content-scroll">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-container">
-                        <a href="#" class="accordion-toggle Orpheus-pro">Pending Services</a>
-                        <div class="accordion-content futura-pt-book">
-                            <div>
-                                <label id="lblPendingListError" class="bold color-red-dark"></label>
-                            </div>
-                            <div id="divPending" class="page-userlist content-scroll">
-                            </div>
-                        </div>
-                    </div>-->
-                    <div class="accordion-container">
-                        <a href="#" class="accordion-toggle Orpheus-pro">Previous Services</a>
-                        <div class="accordion-content futura-pt-book">
-                            <div>
-                                <label id="lblPreviousListError" class="bold color-red-dark"></label>
-                            </div>
-                            <div id="divPreviousComming" class="page-userlist content-scroll">
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <script type="text/javascript">
@@ -84,34 +70,14 @@
                         if (!isMobileDevice) {
                             getAllServices();
                         }
-                        accordionMenu();
+
+                        $("#tabs").tabs();
                     }).on('deviceready', function () {
 
                         document.addEventListener("deviceready", getAllServices, false);
                     });
 
                     var isMobileDevice = isMobile();
-
-                    function accordionMenu() {
-                        $('.accordion-toggle').on('click', function (event) {
-                            event.preventDefault();
-                            // create accordion variables
-                            var accordion = $(this);
-                            var accordionContent = accordion.next('.accordion-content');
-
-                            // toggle accordion link open class
-                            accordion.toggleClass("open");
-                            // toggle accordion content
-                            accordionContent.slideToggle(250);
-
-                            if ($('.accordion-toggle').hasClass("open")) {
-                                $('.accordion-toggle').addClass('disabled');
-                                $(this).removeClass('disabled');
-                            } else {
-                                $('.accordion-toggle').removeClass('disabled');
-                            }
-                        });
-                    }
 
                     function getAllServices() {
                         if (isMobileDevice) {
@@ -209,9 +175,9 @@
                                             html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
                                             html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ',\'' + upcomingBooking[i].displaydate + '\',\'' + upcomingBooking[i].appointmentDate + '\')" target="_self"><i class="fa fa-pencil" style="font-size:large" aria-hidden="true"></i></a>';
                                             html = html + '</div>';
-                                            html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                            html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
-                                            html = html + '</div>';
+                                            //html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                            //html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
+                                            //html = html + '</div>';
                                             html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
                                             html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
                                             html = html + '</div>';
@@ -222,7 +188,7 @@
 
                                     }
                                     else {
-                                        $('#lblUpcomingListError').text('No upcoming booking records found.!');
+                                        $('#lblUpcomingListError').text('No current services found.!');
                                     }
                                     // previous booking list
                                     if (previousBooking.length > 0) {
@@ -246,7 +212,7 @@
 
                                     }
                                     else {
-                                        $('#lblPreviousListError').text('No previous booking records found.!');
+                                        $('#lblPreviousListError').text('No completed services found.!');
                                     }
                                 }
                                 else {
