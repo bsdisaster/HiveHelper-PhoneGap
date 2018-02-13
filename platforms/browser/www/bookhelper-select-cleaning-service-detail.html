@@ -195,6 +195,8 @@
         function checkPreviousHelperAvailibility() {
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
 
             var parameter = {
@@ -211,7 +213,10 @@
                     // Inserting html into the result div on success
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (response.status === 0) {
                         $("#btnPreviousHelper").hide();
                     }
@@ -220,7 +225,10 @@
                     // Displaying if there are any errors
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -242,6 +250,8 @@
             if ($("#calDate").val() != '') {
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
                 }
 
                 var date = new Date($("#calDate").val());
@@ -262,6 +272,8 @@
                         // Inserting html into the result div on success
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
 
                         if (response.data.length != 0 && response.status == 1) {
@@ -294,7 +306,10 @@
                         // Displaying if there are any errors
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (error == null || error == "") {
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -354,6 +369,8 @@
             else {
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
                 }
 
                 var date = new Date($("#calDate").val());
@@ -380,7 +397,10 @@
                         // Inserting html into the result div on success
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
                                 navigator.notification.alert("Your request has been sent.!", null, "Success", "Close");
@@ -401,7 +421,10 @@
                         // Displaying if there are any errors
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (error == null || error == "") {
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

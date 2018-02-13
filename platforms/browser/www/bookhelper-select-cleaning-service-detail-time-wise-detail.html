@@ -71,6 +71,8 @@
                 if (getParameterByName("editAppointment")) {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
 
                     $(".header-icon-5").attr("href", "my-booking.html");
@@ -83,7 +85,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
                                 $("#dvChangeDateTime").removeClass('disabled');
 
@@ -170,7 +175,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -189,6 +197,8 @@
                 else {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
 
                     $(".header-icon-5").attr("href", "bookhelper-select-cleaning-service-detail.html");
@@ -203,7 +213,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
                                 var serviceQuestionsData = response.data.servicequestion;
@@ -268,7 +281,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -376,6 +392,8 @@
 
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
                 }
 
                 $.ajax({
@@ -386,7 +404,10 @@
                         // Inserting html into the result div on success
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
                                 navigator.notification.alert("Your data successfully updated.!", null, 'Success', 'Close');
@@ -408,7 +429,10 @@
                         // Displaying if there are any errors
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (error == null || error == "") {
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

@@ -56,7 +56,10 @@
                 function getHelperUnfilledJobs() {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
+
                     var userId = localStorage.getItem("userId");
 
                     $.ajax({
@@ -67,7 +70,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
                                 var responseData = response.data;
                                 if (responseData != null && responseData.length > 0) {
@@ -111,7 +117,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -131,7 +140,10 @@
                 function takeJob(object) {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
+
                     var helperId = $(object).attr("data-helper-id");
                     var appointmentId = $(object).attr("data-appointmentId-id");
 
@@ -146,6 +158,8 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
 
                             if (response !== null && response.status === 1) {
@@ -170,7 +184,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

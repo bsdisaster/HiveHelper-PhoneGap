@@ -90,7 +90,10 @@
                                 } else {
                                     if (isMobileDevice) {
                                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    } else {
+                                        showLoading(true);
                                     }
+
                                     var parameter = {
                                         "username": "" + $("#username").val() + "",
                                         "userRole": 3
@@ -105,7 +108,10 @@
                                             // Inserting html into the result div on success
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
+                                            } else {
+                                                showLoading(false);
                                             }
+
                                             if (response !== null && response.status === 1) {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert(response.message, null, 'Success', 'Close');
@@ -125,7 +131,10 @@
                                             // Displaying if there are any errors
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
+                                            } else {
+                                                showLoading(false);
                                             }
+
                                             if (error == null || error == "") {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -228,6 +237,8 @@
                                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                                         deviceToken = device.uuid;
                                         platform = device.platform;
+                                    } else {
+                                        showLoading(true);
                                     }
 
                                     var parameter = {
@@ -247,7 +258,10 @@
                                             // Inserting html into the result div on success
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
+                                            } else {
+                                                showLoading(false);
                                             }
+
                                             if (response !== null && response.status === 1) {
                                                 localStorage.setItem("username", response.data.email);
                                                 localStorage.setItem("password", $("#password").val());
@@ -271,7 +285,10 @@
                                             // Displaying if there are any errors
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
+                                            } else {
+                                                showLoading(false);
                                             }
+
                                             if (error == null || error == "") {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

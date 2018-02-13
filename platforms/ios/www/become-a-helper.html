@@ -187,7 +187,10 @@
                 if (IsValidatePage()) {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
+
                     var phoneValue = $("#become-a-helper-phone").val().replace(/\D/g, "");
 
                     var parameter = {
@@ -210,7 +213,10 @@
                         success: function (response) {
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             // Inserting html into the result div on success
                             if (response !== null && response.status === 1) {
                                 if (isMobileDevice) {
@@ -232,7 +238,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

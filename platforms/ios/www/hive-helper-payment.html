@@ -172,6 +172,8 @@
 
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
 
                     $.ajax({
@@ -182,7 +184,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
                                 var customer = response.data.customerdata[0];
@@ -208,7 +213,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -229,7 +237,10 @@
 
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
+
                     var params = {
 
                         "customerId": customerId,
@@ -245,7 +256,10 @@
                         success: function (response) {
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
                             } else {
@@ -262,7 +276,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -315,7 +332,7 @@
 
                         var res = confirm("Are you sure you want to delete this card  ?");
                         if (res == true) {
-
+                            showLoading(true);
                             $.ajax({
                                 type: 'DELETE',
                                 url: 'https://api.stripe.com/v1/customers/' + customerId + '/sources/' + cardId,
@@ -324,12 +341,13 @@
                                     //Authorization: 'Bearer sk_test_PeyWFcrok8LpSQlgTBDva9Rt'
                                 },
                                 success: (data) => {
-
+                                    showLoading(false);
                                     $(divEle).parent().remove();
                                     deleteCardDb(customerId, cardId);
                                     showAlertDialog("Success", "Card successfully deleted.!");
                                 },
                                 error: (response) => {
+                                    showLoading(false);
                                     showAlertDialog("Error", response.responseJSON.error.message);
                                 }
                             })
@@ -352,6 +370,8 @@
                     else {
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.show("Please wait...", "Validating code...", true);
+                        } else {
+                            showLoading(true);
                         }
 
                         var parameter = {
@@ -370,7 +390,10 @@
                                 // Inserting html into the result div on success
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
+
                                 if (response !== null && response.status === 1) {
                                     if (isMobileDevice) {
                                         navigator.notification.alert("Promocode applied.!", null, 'Success', 'Close');
@@ -400,7 +423,10 @@
                                 // Displaying if there are any errors
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                }else {
+                                    showLoading(false);
                                 }
+
                                 if (error == null || error == "") {
                                     if (isMobileDevice) {
                                         navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -523,7 +549,10 @@
 
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (parameters != null && tokenInfo != null) {
                                 createCharge(parameters, tokenInfo);
                             }
@@ -534,6 +563,7 @@
                                 window.plugins.spinnerDialog.hide();
                                 navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
                             } else {
+                                showLoading(false);
                                 showAlertDialog('Error', response.responseJSON.error.message);
                             }
                         }
@@ -547,6 +577,8 @@
                             if (isValidatePaymentInfo()) {
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                } else {
+                                    showLoading(true);
                                 }
 
                                 var cardNumber = $("#cardNumber").val();
@@ -587,13 +619,13 @@
                             window.plugins.spinnerDialog.hide();
                             navigator.notification.alert(response.error.message, null, 'Error', 'Close');
                         } else {
+                            showLoading(false);
                             showAlertDialog('Error', response.error.message);
                         }
                     } else {
                         // Get the token ID:
                         var tokenInfo = response;
                         console.log(tokenInfo);
-
                         
                         // Save token mapping it to customer for all future payment activities
                         if (existingCustomerId == null) {
@@ -623,6 +655,8 @@
 
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
 
                             localStorage.setItem("clientIp", tokenInfo.client_ip);
@@ -635,6 +669,7 @@
                                 window.plugins.spinnerDialog.hide();
                                 navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
                             } else {
+                                showLoading(false);
                                 showAlertDialog('Error', response.responseJSON.error.message);
                             }
                         }
@@ -689,6 +724,8 @@
                         success: (data) => {
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
 
                             if (tokenInfo == null) {
@@ -705,6 +742,7 @@
                                 window.plugins.spinnerDialog.hide();
                                 navigator.notification.alert(response.responseJSON.error.message, null, 'Error', 'Close');
                             } else {
+                                showLoading(false);
                                 showAlertDialog('Error', response.responseJSON.error.message);
                             }
                         }
@@ -774,7 +812,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
                             }
@@ -791,7 +832,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -847,7 +891,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
                                 if (isMobileDevice) {
@@ -873,7 +920,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

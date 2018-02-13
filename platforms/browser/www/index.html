@@ -23,7 +23,7 @@
 
 <body>
     <div id="page-transitions">
-
+        
         <div class="header header-logo-center header-light">
             <img src="images/HiveHelper_Logo.png" />
         </div>
@@ -173,7 +173,10 @@
                                 } else {
                                     if (isMobileDevice) {
                                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    } else {
+                                        showLoading(true);
                                     }
+
                                     var parameter = {
                                         "username": "" + $("#username").val() + "",
                                         "userRole": 4
@@ -188,7 +191,10 @@
                                             // Inserting html into the result div on success
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
+                                            } else {
+                                                showLoading(false);
                                             }
+
                                             if (response !== null && response.status === 1) {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert(response.message, null, 'Success', 'Close');
@@ -210,7 +216,10 @@
                                             // Displaying if there are any errors
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
+                                            } else {
+                                                showLoading(false);
                                             }
+
                                             if (error == null || error == "") {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -296,7 +305,10 @@
                                         // Inserting html into the result div on success
                                         if (isMobileDevice) {
                                             window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
                                         }
+
                                         if (response !== null && response.status === 1) {
                                             localStorage.setItem("username", response.data.email);
                                             localStorage.setItem("password", $("#password").val());
@@ -320,7 +332,10 @@
                                         // Displaying if there are any errors
                                         if (isMobileDevice) {
                                             window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
                                         }
+
                                         if (error == null || error == "") {
                                             if (isMobileDevice) {
                                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

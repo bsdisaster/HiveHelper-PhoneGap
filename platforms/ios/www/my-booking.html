@@ -70,7 +70,7 @@
                         if (!isMobileDevice) {
                             getAllServices();
                         }
-
+                        
                         $("#tabs").tabs();
                     }).on('deviceready', function () {
 
@@ -82,18 +82,22 @@
                     function getAllServices() {
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        } else {
+                            showLoading(true);
                         }
-                        var userId = localStorage.getItem("userId");
 
                         $.ajax({
-                            url: api_baseUrl + 'appointment/userbookings/' + userId,
+                            url: api_baseUrl + 'appointment/userbookings/' + localStorage.getItem("userId"),
                             type: "GET",
                             dataType: "JSON",
                             success: function (response) {
                                 // Inserting html into the result div on success
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
+
                                 if (response !== null && response.status === 1) {
 
                                     //var dueBooking = response.data.duedateBooking;
@@ -165,12 +169,13 @@
                                             var html = '';
                                             var serviceName = '<b>Service:</b> ' + upcomingBooking[i].serviceName + ' </br>';
                                             var appointmentDateTime = '<b>Date:</b> ' + upcomingBooking[i].displaydate + '  </br>';
+                                            var hours = '<b>Hours:</b> ' + upcomingBooking[i].hours + '  </br>';
                                             var providerName = '<b>Provider:</b> ' + upcomingBooking[i].franchiseName + '  </br>';
 
                                             html = html + '<div class="user-list-3 user-list-1-change">';
                                             html = html + '<div class="col-sm-9">';
 
-                                            html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                            html = html + '	<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
                                             html = html + '</div>';
                                             html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
                                             html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ',\'' + upcomingBooking[i].displaydate + '\',\'' + upcomingBooking[i].appointmentDate + '\')" target="_self"><i class="fa fa-pencil" style="font-size:large" aria-hidden="true"></i></a>';
@@ -197,12 +202,13 @@
                                             var html = '';
                                             var serviceName = '<b>Service:</b> ' + previousBooking[i].serviceName + ' </br>';
                                             var appointmentDateTime = '<b>Date:</b> ' + previousBooking[i].displaydate + '  </br>';
+                                            var hours = '<b>Hours:</b> ' + previousBooking[i].hours + '  </br>';
                                             var providerName = '<b>Provider:</b> ' + previousBooking[i].franchiseName + '  </br>';
 
                                             html = html + '<div class="user-list-3 user-list-1-change">';
                                             html = html + '<div class="col-sm-8">';
 
-                                            html = html + '	<em>' + serviceName + appointmentDateTime + providerName + '  </em>';
+                                            html = html + '	<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
                                             html = html + '</div>';
                                             html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
                                             html = html + '	<img src="images/BackOrForword.png" alt="Facebook" class="preload-image bg-blue-dark edit-img" /><a href="#" onclick="facebookShare(\'' + previousBooking[i].serviceName + '\',\'' + previousBooking[i].franchiseName + '\')" class="color-black" style="padding-left:35px;cursor: pointer">Facebook</a>';
@@ -227,6 +233,8 @@
                                 // Displaying if there are any errors
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
 
                                 if (error == null || error == "") {
@@ -287,9 +295,9 @@
                                         success: function (response) {
                                             window.plugins.spinnerDialog.hide();
                                             if (response !== null && response.status === 1) {
-                                                navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
+                                                navigator.notification.alert('Appointment have been cancelled', null, 'Success', 'Close');
                                             } else {
-                                                navigator.notification.alert('Appointment have already been cancelled.!', null, 'Warning', 'Close');
+                                                navigator.notification.alert('Appointment have already been cancelled', null, 'Warning', 'Close');
                                             }
                                         },
                                         error: function (jqXHR, text, error) {
@@ -310,21 +318,23 @@
 
                             var res = confirm("Are you sure you want to cancel this appointment ?");
                             if (res == true) {
+                                showLoading(true);
 
                                 $.ajax({
                                     url: api_baseUrl + 'appointment/cancelAppointment/' + appointmentId,
                                     type: "GET",
                                     dataType: "JSON",
                                     success: function (response) {
-
+                                        showLoading(false);
                                         if (response !== null && response.status === 1) {
-                                            showAlertDialog('Success','Appointment have been cancelled.!');
+                                            showAlertDialog('Success','Appointment have been cancelled');
                                         } else {
-                                            showAlertDialog('Warning', 'Appointment have already been cancelled.!');
+                                            showAlertDialog('Warning', 'Appointment have already been cancelled');
                                         }
                                     },
                                     error: function (jqXHR, text, error) {
                                         // Displaying if there are any errors
+                                        showLoading(false);
                                         showAlertDialog('Error', error);
                                     }
                                 });
@@ -351,9 +361,9 @@
                                         success: function (response) {
                                             window.plugins.spinnerDialog.hide();
                                             if (response !== null && response.status === 1) {
-                                                navigator.notification.alert('Appointment have been cancelled.!', null, 'Success', 'Close');
+                                                navigator.notification.alert('Appointment have been cancelled', null, 'Success', 'Close');
                                             } else {
-                                                navigator.notification.alert('Appointment have already been cancelled.!', null, 'Warning', 'Close');
+                                                navigator.notification.alert('Appointment have already been cancelled', null, 'Warning', 'Close');
                                             }
                                         },
                                         error: function (jqXHR, text, error) {
@@ -374,22 +384,23 @@
 
                             var res = confirm("Are you sure you want to cancel this appointment ?");
                             if (res == true) {
-
+                                showLoading(true);
                                 $.ajax({
                                     url: api_baseUrl + 'appointment/cancelAppointment/' + appointmentId,
                                     type: "GET",
                                     dataType: "JSON",
                                     success: function (response) {
-
+                                        showLoading(false);
                                         if (response !== null && response.status === 1) {
-                                            showAlertDialog('Success', 'Appointment have been cancelled.!');
+                                            showAlertDialog('Success', 'Appointment have been cancelled');
 
                                         } else {
-                                            showAlertDialog('Warning', 'Appointment have already been cancelled.!');
+                                            showAlertDialog('Warning', 'Appointment have already been cancelled');
                                         }
                                     },
                                     error: function (jqXHR, text, error) {
                                         // Displaying if there are any errors
+                                        showLoading(false);
                                         showAlertDialog('Error', error);
                                     }
                                 });

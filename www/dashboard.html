@@ -139,7 +139,10 @@
 
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
+
             $.ajax({
                 url: api_baseUrl + 'Notification/' + localStorage.getItem("userId"),
                 type: "GET",
@@ -148,6 +151,8 @@
                     // Inserting html into the result div on success
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
 
                     if (response !== null && response.status === 1) {
@@ -161,7 +166,10 @@
                     // Displaying if there are any errors
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -255,7 +263,10 @@
         function getHelperPortalDetails() {
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
+
             $.ajax({
                 url: api_baseUrl + 'helperportal/',
                 type: "GET",
@@ -264,6 +275,8 @@
                     // Inserting html into the result div on success
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
 
                     if (response !== null && response.status === 1) {
@@ -285,7 +298,10 @@
                     // Displaying if there are any errors
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -306,6 +322,8 @@
             var userId = localStorage.getItem("userId");
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
 
             $.ajax({
@@ -329,6 +347,8 @@
 
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
                     }
                     else {
@@ -336,6 +356,7 @@
                             window.plugins.spinnerDialog.hide();
                             navigator.notification.alert(response.message, null, 'Error', 'Close');
                         } else {
+                            showLoading(false);
                             showAlertDialog('Error', response.message);
                         }
                     }
@@ -346,7 +367,10 @@
 
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

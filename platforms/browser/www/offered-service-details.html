@@ -58,6 +58,8 @@
                         function getServiceDetails() {
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            } else {
+                                showLoading(true);
                             }
 
                             $("#serviceDescription").append(JSON.parse(localStorage.getItem("serviceDescription")));
@@ -65,6 +67,8 @@
 
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
                         }
 

@@ -100,9 +100,9 @@
                     <!--<div class="select-box-light profile">
                         <select id="ddlNotification">
                             <option value="0">Select notification type</option>
-                            <option value="1">Email</option>
-                            <option value="2">Notification</option>
-                            <option value="3">Both</option>
+                            <option value="1">Notify me by Email</option>
+                            <option value="2">Notify me by Notification</option>
+                            <option value="3"> Notify me by Both</option>
                         </select>
                     </div>-->
 
@@ -286,10 +286,10 @@
                         var addressValue = $("#profile-address").val();
                         var phoneValue = $("#profile-phone").val();
                         var emailValue = $("#profile-email").val();
-                        var cityValue = $("#profile-city").val();
-                        var stateValue = $("#ddlState").val();
+                        //var cityValue = $("#profile-city").val();
+                        //var stateValue = $("#ddlState").val();
                         //var notificationValue = $("#ddlNotification").val();
-                        var zipcodeValue = $("#profile-zipcode").val();
+                        //var zipcodeValue = $("#profile-zipcode").val();
 
                         if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
                             countError = countError + 1;
@@ -307,18 +307,18 @@
                             countError = countError + 1;
                             msg += "Address!\n";
                         }
-                        if (cityValue === '' || cityValue === null || cityValue === 'City') {
-                            countError = countError + 1;
-                            msg += "City!\n";
-                        }
-                        if (stateValue === "0") {
-                            countError = countError + 1;
-                            msg += "State!\n";
-                        }
-                        if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zip code') {
-                            countError = countError + 1;
-                            msg += "Zip Code!\n";
-                        }
+                        //if (cityValue === '' || cityValue === null || cityValue === 'City') {
+                        //    countError = countError + 1;
+                        //    msg += "City!\n";
+                        //}
+                        //if (stateValue === "0") {
+                        //    countError = countError + 1;
+                        //    msg += "State!\n";
+                        //}
+                        //if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zip code') {
+                        //    countError = countError + 1;
+                        //    msg += "Zip Code!\n";
+                        //}
                         if (emailValue === '' || emailValue === null || emailValue === 'Email address') {
                             countError = countError + 1;
                             msg += "Email address!\n";
@@ -355,7 +355,10 @@
                             if (isValidateProfile()) {
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                } else {
+                                    showLoading(true);
                                 }
+
                                 var parameter = {
                                     "userId": localStorage.getItem("userId"),
                                     "firstName": $("#profile-firstname").val(),
@@ -364,9 +367,9 @@
                                     "phone": $("#profile-phone").val(),
                                     "password": $("#profile-password").val(),
                                     "address": $("#profile-address").val(),
-                                    "city": $("#profile-city").val(),
-                                    "state": $("#ddlState").val(),
-                                    "zipcode": $("#profile-zipcode").val(),
+                                    //"city": $("#profile-city").val(),
+                                    //"state": $("#ddlState").val(),
+                                    //"zipcode": $("#profile-zipcode").val(),
                                     "latitude": latitude,
                                     "longitude": longitude,
                                     "image": base64String
@@ -382,7 +385,10 @@
                                         // Inserting html into the result div on success
                                         if (isMobileDevice) {
                                             window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
                                         }
+
                                         if (response !== null && response.status === 1) {
                                             if (isMobileDevice) {
                                                 navigator.notification.alert("Profile successfully updated.!", null, 'Success', 'Close');
@@ -403,6 +409,8 @@
                                         // Displaying if there are any errors
                                         if (isMobileDevice) {
                                             window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
                                         }
 
                                         if (error == null || error == "") {
@@ -428,7 +436,10 @@
                         var userId = localStorage.getItem("userId");
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        } else {
+                            showLoading(true);
                         }
+
                         $.ajax({
                             url: api_baseUrl + 'profile/' + userId,
                             type: "GET",
@@ -458,6 +469,7 @@
                                         window.plugins.spinnerDialog.hide();
                                         navigator.notification.alert(response.message, null, 'Error', 'Close');
                                     } else {
+                                        showLoading(false);
                                         showAlertDialog("Error", response.message);
                                     }
                                 }
@@ -465,7 +477,10 @@
                             error: function (jqXHR, text, error) {
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
+
                                 if (error == null || error == "") {
                                     if (isMobileDevice) {
                                         navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -486,6 +501,8 @@
                     function fillState() {
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        } else {
+                            showLoading(true);
                         }
 
                         $.ajax({
@@ -497,7 +514,10 @@
                                 // Inserting html into the result div on success
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
+
                                 if (response !== null && response.status === 1) {
                                     var stateData = response.data;
                                     var defaultV = new Option("Select State", 0, true);
@@ -522,6 +542,8 @@
                                 // Displaying if there are any errors
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
 
                                 if (error == null || error == "") {

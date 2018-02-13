@@ -468,6 +468,8 @@
                         function fetchSchedule() {
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            } else {
+                                showLoading(true);
                             }
 
                             $.ajax({
@@ -478,7 +480,10 @@
                                     // Inserting html into the result div on success
                                     if (isMobileDevice) {
                                         window.plugins.spinnerDialog.hide();
+                                    } else {
+                                        showLoading(false);
                                     }
+
                                     if (response !== null && response.data.schedule.length > 0 && response.status === 1) {
                                         for (var i = 0; i < response.data.schedule.length; i++) {
                                             if (response.data.schedule[i].weekDayId == "1") {
@@ -533,7 +538,10 @@
                                     // Displaying if there are any errors
                                     if (isMobileDevice) {
                                         window.plugins.spinnerDialog.hide();
+                                    } else {
+                                        showLoading(false);
                                     }
+
                                     if (error == null || error == "") {
                                         if (isMobileDevice) {
                                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -661,7 +669,10 @@
                                     mainArray.schedule = arrayItem;
                                     if (isMobileDevice) {
                                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    } else {
+                                        showLoading(true);
                                     }
+
                                     $.ajax({
                                         url: api_baseUrl + 'helperworktime',
                                         type: "POST",
@@ -671,7 +682,10 @@
                                             // Inserting html into the result div on success
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
+                                            } else {
+                                                showLoading(false);
                                             }
+
                                             if (response !== null && response.status === 1) {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert("Schedule set successfully.", null, "Success", "Close");
@@ -691,7 +705,10 @@
                                             // Displaying if there are any errors
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
+                                            } else {
+                                                showLoading(false);
                                             }
+
                                             if (error == null || error == "") {
                                                 if (isMobileDevice) {
                                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

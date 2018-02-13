@@ -64,7 +64,10 @@
                 function getAllAddress() {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
+
                     var userId = localStorage.getItem("userId");
 
                     $.ajax({
@@ -75,7 +78,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
                                 var addressData = response.data;
@@ -119,7 +125,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -172,12 +181,14 @@
 
                         var res = confirm("Are you sure you want to delete ?");
                         if (res == true) {
-
+                            showLoading(true);
                             $.ajax({
                                 url: api_baseUrl + 'useraddress/removeUserAddress/' + userAddressId,
                                 type: "GET",
                                 dataType: "json",
                                 success: function (response) {
+                                    showLoading(false);
+
                                     if (response !== null && response.status === 1) {
                                         $(object).parent().parent().remove();
                                         showAlertDialog('Success', 'Address removed successfully!');
@@ -185,6 +196,8 @@
                                 },
                                 error: function (jqXHR, text, error) {
                                     // Displaying if there are any errors
+                                    showLoading(false);
+
                                     showAlertDialog('Error',error);
                                 }
                             });

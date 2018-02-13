@@ -179,7 +179,10 @@
         function fillState() {
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
+
             $.ajax({
                 url: api_baseUrl + 'state',
                 type: "get",
@@ -188,7 +191,10 @@
                     // Inserting html into the result div on success
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (response !== null && response.status === 1) {
                         var stateData = response.data;
 
@@ -212,6 +218,8 @@
                     // Displaying if there are any errors
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
 
                     if (error == null || error == "") {
@@ -374,7 +382,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
                                 if (isMobileDevice) {
                                     navigator.notification.alert('Your registration was successful.!', null, 'Success', 'Close');
@@ -397,7 +408,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');

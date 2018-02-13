@@ -1042,3 +1042,13 @@ function showAlertDialog(title, message) {
     $(alertDialogDiv).appendTo("body");
     $(alertDialogDiv).dialog();
 }
+
+function showLoading(visibility) {
+    var loader = "<div class='loader'></div>";
+    
+    if (visibility == true) {
+        $(".header-light").append(loader);
+    } else {
+        $(".loader").remove();
+    }
+}
