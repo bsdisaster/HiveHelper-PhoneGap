@@ -403,9 +403,9 @@
 
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                navigator.notification.alert("Your request has been sent.!", null, "Success", "Close");
+                                navigator.notification.alert("Your request has been sent", null, "Success", "Close");
                             } else {
-                                showAlertDialog('Success', 'Your request has been sent.!');
+                                showAlertDialog('Success', 'Your request has been sent');
                             }
                             window.location.href = "dashboard.html";
                         }

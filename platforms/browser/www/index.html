@@ -23,7 +23,7 @@
 
 <body>
     <div id="page-transitions">
-        
+
         <div class="header header-logo-center header-light">
             <img src="images/HiveHelper_Logo.png" />
         </div>
@@ -72,13 +72,58 @@
 
                         var isMobileDevice = isMobile();
                         var deviceTokenForPush = 'browser-token';
-                        var platform = 'browser';
+                        var platform = 'web';
 
                         function deviceReadySuccess() {
                             checkExistingSession();
+
                             if (isMobileDevice) {
+                                checkAppUpdates();
                                 getPushNotificationToken();
                             }
+                        }
+
+                        function checkAppUpdates() {
+
+                            window.plugins.spinnerDialog.show("Please wait...", "Checking for updates...", true);
+
+                            var parameter = {
+                                "version": "1.0.4"
+                            }
+
+                            $.ajax({
+                                url: api_baseUrl + 'version',
+                                type: "POST",
+                                data: JSON.stringify(parameter),
+                                dataType: "JSON",
+                                success: function (response) {
+                                    window.plugins.spinnerDialog.hide();
+
+                                    if (response !== null && response.status === 1) {
+                                        navigator.notification.confirm(response.message, function (button) {
+                                            if (button === 1) {
+                                                if (device.platform.toString().toLowerCase() == "android") {
+                                                    window.open('https://play.google.com/store/apps/details?id=hive.helper.app.html', '_system');
+                                                } else if (device.platform.toString().toLowerCase() == "ios") {
+                                                    window.open('https://itunes.apple.com/us/app/hive-helper/id1337600390', '_system');
+                                                }
+                                            } else {
+                                                navigator.app.exitApp();
+                                            }
+                                        }, "Upgrade app", "Update,Close")
+                                    }
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
+
+                                    window.plugins.spinnerDialog.hide();
+                                    if (error == null || error == "") {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    } else {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    }
+                                }
+                            });
                         }
 
                         function checkExistingSession() {
@@ -98,12 +143,23 @@
                             }
 
                             if (userName != null && password != null) {
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                } else {
+                                    showLoading(true);
+                                }
+
                                 $.ajax({
                                     url: api_baseUrl + 'login',
                                     type: "POST",
                                     data: JSON.stringify(parameter),
                                     dataType: "JSON",
                                     success: function (response) {
+                                        if (isMobileDevice) {
+                                            window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
+                                        }
 
                                         if (response !== null && response.status === 1) {
                                             window.location = "dashboard.html";
@@ -178,7 +234,7 @@
                                     }
 
                                     var parameter = {
-                                        "username": "" + $("#username").val() + "",
+                                        "username": $("#username").val(),
                                         "userRole": 4
                                     }
 
@@ -284,12 +340,12 @@
 
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                    platform = device.platform;
+                                    platform = device.platform.toString().toLowerCase();
                                 }
 
                                 var parameter = {
-                                    "username": "" + $("#username").val() + "",
-                                    "password": "" + $("#password").val() + "",
+                                    "username": $("#username").val(),
+                                    "password": $("#password").val(),
                                     "userRole": 4,
                                     "deviceType": platform,
                                     "deviceToken": deviceTokenForPush

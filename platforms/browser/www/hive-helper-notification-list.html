@@ -103,9 +103,9 @@
 
                 if (response !== null && response.status === 1) {
                     if (isMobileDevice) {
-                        navigator.notification.alert("Notification successfully removed.!", null, 'Success', 'Close');
+                        navigator.notification.alert("Notification successfully removed!", null, 'Success', 'Close');
                     } else {
-                        showAlertDialog('Success', "Notification successfully removed.!");
+                        showAlertDialog('Success', "Notification successfully removed!");
                     }
                     window.location = "dashboard.html";
                 } else {

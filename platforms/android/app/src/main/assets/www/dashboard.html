@@ -36,8 +36,8 @@
                 <div class="heading-strip">
                     <div class="left-logo">
                         <div class="inline-block-bottom-text right-text">
-                            <!--<span class="numberCircle" style="display:none"></span>
-                            <a href="#" onclick="getNotificationList()"><i class="fa fa-bell color-blue-light"></i></a>-->
+                            <span class="numberCircle" style="display:none"></span>
+                            <a href="#" onclick="getNotificationList()"><i class="fa fa-bell color-blue-light"></i></a>
                         </div>
 
                         <div class="inline-block" onclick="redirectToMyProfile()">
@@ -191,10 +191,10 @@
                 window.location = "hive-helper-notification-list.html";
             } else {
                 if (isMobileDevice) {
-                    navigator.notification.alert("No new notification found.!", null, 'Warning', 'Close');
+                    navigator.notification.alert("No new notification found!", null, 'Warning', 'Close');
 
                 } else {
-                    showAlertDialog("Warning","No new notification found.!");
+                    showAlertDialog("Warning","No new notification found!");
                 }
             }
         }
@@ -319,7 +319,7 @@
         }
 
         function getProfileDetail() {
-            var userId = localStorage.getItem("userId");
+        
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
             } else {
@@ -327,7 +327,7 @@
             }
 
             $.ajax({
-                url: api_baseUrl + 'profile/' + userId,
+                url: api_baseUrl + 'profile/' + localStorage.getItem("userId"),
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {

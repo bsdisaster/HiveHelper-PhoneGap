@@ -388,10 +388,10 @@
 
                             if (response !== null && response.status === 1) {
                                 if (isMobileDevice) {
-                                    navigator.notification.alert('Your registration was successful.!', null, 'Success', 'Close');
+                                    navigator.notification.alert('Your registration was successful', null, 'Success', 'Close');
                                 }
                                 else {
-                                    showAlertDialog('Success', "Your registration was successful.!");
+                                    showAlertDialog('Success', "Your registration was successful");
                                 }
                                 window.location = "index.html";
                             }

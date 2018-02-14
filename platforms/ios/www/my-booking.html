@@ -22,7 +22,6 @@
     <script type="text/javascript" src="scripts/custom.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
-
 </head>
 
 <body>
@@ -70,7 +69,7 @@
                         if (!isMobileDevice) {
                             getAllServices();
                         }
-                        
+
                         $("#tabs").tabs();
                     }).on('deviceready', function () {
 
@@ -100,10 +99,7 @@
 
                                 if (response !== null && response.status === 1) {
 
-                                    //var dueBooking = response.data.duedateBooking;
-                                    //var pendingBooking = response.data.pendingBooking;
-                                    var upcomingBooking = response.data.upcomingBooking;
-                                    var previousBooking = response.data.previousBooking;
+                                    var responseData = response.data;
 
                                     // due booking list
                                     //if (dueBooking.length > 0) {
@@ -163,14 +159,20 @@
                                     //}
 
                                     // upcoming booking list
-                                    if (upcomingBooking.length > 0) {
+                                    if (responseData.upcomingBooking.length > 0) {
 
-                                        for (var i = 0; i < upcomingBooking.length; i++) {
+                                        for (var i = 0; i < responseData.upcomingBooking.length; i++) {
+                                            var helperAssigned = responseData.upcomingBooking[i].helperassign;
+                                            var helperName = '';
+                                            for (var j = 0; j < helperAssigned.length; j++) {
+                                                helperName = helperName + helperAssigned[j].firstName + " " + helperAssigned[j].lastName + ", ";
+                                            }
+
                                             var html = '';
-                                            var serviceName = '<b>Service:</b> ' + upcomingBooking[i].serviceName + ' </br>';
-                                            var appointmentDateTime = '<b>Date:</b> ' + upcomingBooking[i].displaydate + '  </br>';
-                                            var hours = '<b>Hours:</b> ' + upcomingBooking[i].hours + '  </br>';
-                                            var providerName = '<b>Provider:</b> ' + upcomingBooking[i].franchiseName + '  </br>';
+                                            var serviceName = '<b>Service:</b> ' + responseData.upcomingBooking[i].serviceName + ' </br>';
+                                            var appointmentDateTime = '<b>Date:</b> ' + responseData.upcomingBooking[i].displaydate + '  </br>';
+                                            var hours = '<b>Man Hours:</b> ' + responseData.upcomingBooking[i].hours + '  </br>';
+                                            var providerName = '<b>Provider:</b> ' + helperName.replace(/,\s*$/, "") + '  </br>';
 
                                             html = html + '<div class="user-list-3 user-list-1-change">';
                                             html = html + '<div class="col-sm-9">';
@@ -178,13 +180,13 @@
                                             html = html + '	<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
                                             html = html + '</div>';
                                             html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                            html = html + '<a href="#" onclick="editAppointment(' + upcomingBooking[i].helperId + ',' + upcomingBooking[i].appointmentId + ',' + upcomingBooking[i].franchiseId + ',' + upcomingBooking[i].subServiceId + ',\'' + upcomingBooking[i].displaydate + '\',\'' + upcomingBooking[i].appointmentDate + '\')" target="_self"><i class="fa fa-pencil" style="font-size:large" aria-hidden="true"></i></a>';
+                                            html = html + '<a href="#" onclick="editAppointment(' + responseData.upcomingBooking[i].helperId + ',' + responseData.upcomingBooking[i].appointmentId + ',' + responseData.upcomingBooking[i].franchiseId + ',' + responseData.upcomingBooking[i].subServiceId + ',\'' + responseData.upcomingBooking[i].displaydate + '\',\'' + responseData.upcomingBooking[i].appointmentDate + '\')" target="_self"><i class="fa fa-pencil" style="font-size:large" aria-hidden="true"></i></a>';
                                             html = html + '</div>';
                                             //html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
                                             //html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
                                             //html = html + '</div>';
                                             html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                            html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
+                                            html = html + '<a href="#" target="_self" onclick="cancelAppointment(' + responseData.upcomingBooking[i].appointmentId + ')"><i class="fa fa-times" style="font-size:large" aria-hidden="true"></i></a>';
                                             html = html + '</div>';
                                             html = html + '</div>';
                                             html = html + '<div class="clear"></div></div>';
@@ -196,14 +198,20 @@
                                         $('#lblUpcomingListError').text('No current services found.!');
                                     }
                                     // previous booking list
-                                    if (previousBooking.length > 0) {
+                                    if (responseData.previousBooking.length > 0) {
 
-                                        for (var i = 0; i < previousBooking.length; i++) {
+                                        for (var i = 0; i < responseData.previousBooking.length; i++) {
+                                            var helperAssigned = responseData.previousBooking[i].helperassign;
+                                            var helperName = '';
+                                            for (var j = 0; j < helperAssigned.length; j++) {
+                                                helperName = helperName + helperAssigned[j].firstName + " " + helperAssigned[j].lastName + ", ";
+                                            }
+
                                             var html = '';
-                                            var serviceName = '<b>Service:</b> ' + previousBooking[i].serviceName + ' </br>';
-                                            var appointmentDateTime = '<b>Date:</b> ' + previousBooking[i].displaydate + '  </br>';
-                                            var hours = '<b>Hours:</b> ' + previousBooking[i].hours + '  </br>';
-                                            var providerName = '<b>Provider:</b> ' + previousBooking[i].franchiseName + '  </br>';
+                                            var serviceName = '<b>Service:</b> ' + responseData.previousBooking[i].serviceName + ' </br>';
+                                            var appointmentDateTime = '<b>Date:</b> ' + responseData.previousBooking[i].displaydate + '  </br>';
+                                            var hours = '<b>Man Hours:</b> ' + responseData.previousBooking[i].hours + '  </br>';
+                                            var providerName = '<b>Provider:</b> ' + helperName.replace(/,\s*$/, "") + '  </br>';
 
                                             html = html + '<div class="user-list-3 user-list-1-change">';
                                             html = html + '<div class="col-sm-8">';
@@ -211,7 +219,7 @@
                                             html = html + '	<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
                                             html = html + '</div>';
                                             html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
-                                            html = html + '	<img src="images/BackOrForword.png" alt="Facebook" class="preload-image bg-blue-dark edit-img" /><a href="#" onclick="facebookShare(\'' + previousBooking[i].serviceName + '\',\'' + previousBooking[i].franchiseName + '\')" class="color-black" style="padding-left:35px;cursor: pointer">Facebook</a>';
+                                            html = html + '	<img src="images/BackOrForword.png" alt="Facebook" class="preload-image bg-blue-dark edit-img" /><a href="#" onclick="facebookShare(\'' + responseData.previousBooking[i].serviceName + '\',\'' + responseData.previousBooking[i].franchiseName + '\')" class="color-black" style="padding-left:35px;cursor: pointer">Facebook</a>';
                                             html = html + '</div></div><div class="clear"></div>';
                                             $('#divPreviousComming').append(html);
                                         }
@@ -295,9 +303,9 @@
                                         success: function (response) {
                                             window.plugins.spinnerDialog.hide();
                                             if (response !== null && response.status === 1) {
-                                                navigator.notification.alert('Appointment have been cancelled', null, 'Success', 'Close');
+                                                navigator.notification.alert('Appointment has been cancelled', null, 'Success', 'Close');
                                             } else {
-                                                navigator.notification.alert('Appointment have already been cancelled', null, 'Warning', 'Close');
+                                                navigator.notification.alert('Appointment has already been cancelled', null, 'Warning', 'Close');
                                             }
                                         },
                                         error: function (jqXHR, text, error) {
@@ -327,9 +335,9 @@
                                     success: function (response) {
                                         showLoading(false);
                                         if (response !== null && response.status === 1) {
-                                            showAlertDialog('Success','Appointment have been cancelled');
+                                            showAlertDialog('Success', 'Appointment has been cancelled');
                                         } else {
-                                            showAlertDialog('Warning', 'Appointment have already been cancelled');
+                                            showAlertDialog('Warning', 'Appointment has already been cancelled');
                                         }
                                     },
                                     error: function (jqXHR, text, error) {
@@ -361,9 +369,9 @@
                                         success: function (response) {
                                             window.plugins.spinnerDialog.hide();
                                             if (response !== null && response.status === 1) {
-                                                navigator.notification.alert('Appointment have been cancelled', null, 'Success', 'Close');
+                                                navigator.notification.alert('Appointment has been cancelled', null, 'Success', 'Close');
                                             } else {
-                                                navigator.notification.alert('Appointment have already been cancelled', null, 'Warning', 'Close');
+                                                navigator.notification.alert('Appointment has already been cancelled', null, 'Warning', 'Close');
                                             }
                                         },
                                         error: function (jqXHR, text, error) {
@@ -392,10 +400,10 @@
                                     success: function (response) {
                                         showLoading(false);
                                         if (response !== null && response.status === 1) {
-                                            showAlertDialog('Success', 'Appointment have been cancelled');
+                                            showAlertDialog('Success', 'Appointment has been cancelled');
 
                                         } else {
-                                            showAlertDialog('Warning', 'Appointment have already been cancelled');
+                                            showAlertDialog('Warning', 'Appointment has already been cancelled');
                                         }
                                     },
                                     error: function (jqXHR, text, error) {

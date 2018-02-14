@@ -61,7 +61,7 @@
 
                         var isMobileDevice = isMobile();
                         var deviceTokenForPush = 'browser-token';
-                        var platform = 'browser';
+                        var platform = 'web';
 
                         function deviceReadySuccess() {
                             if (isMobileDevice) {
@@ -95,7 +95,7 @@
                                     }
 
                                     var parameter = {
-                                        "username": "" + $("#username").val() + "",
+                                        "username": $("#username").val(),
                                         "userRole": 3
                                     }
 
@@ -236,14 +236,14 @@
                                     if (isMobileDevice) {
                                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                                         deviceToken = device.uuid;
-                                        platform = device.platform;
+                                        platform = device.platform.toString().toLowerCase();
                                     } else {
                                         showLoading(true);
                                     }
 
                                     var parameter = {
-                                        "username": "" + $("#username").val() + "",
-                                        "password": "" + $("#password").val() + "",
+                                        "username": $("#username").val(),
+                                        "password": $("#password").val(),
                                         "userRole": 3,
                                         "deviceType": platform,
                                         "deviceToken": deviceTokenForPush

@@ -476,9 +476,9 @@
 
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                navigator.notification.alert("Your request was successfully submitted.", null, 'Success', 'Close');
+                                navigator.notification.alert("Your request was successfully submitted", null, 'Success', 'Close');
                             } else {
-                                showAlertDialog('Success', 'Your request was successfully submitted.');
+                                showAlertDialog('Success', 'Your request was successfully submitted');
                             }
                             getUpcomingUnavailableRecords();
                         }

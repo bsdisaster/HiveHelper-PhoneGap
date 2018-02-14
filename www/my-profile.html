@@ -97,14 +97,14 @@
                         <input id="profile-email" type="text" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
 
                     </div>
-                    <!--<div class="select-box-light profile">
+                    <div class="select-box-light profile">
                         <select id="ddlNotification">
-                            <option value="0">Select notification type</option>
-                            <option value="1">Notify me by Email</option>
-                            <option value="2">Notify me by Notification</option>
-                            <option value="3"> Notify me by Both</option>
+                            <option value="0">select notification type</option>
+                            <option value="1">Send me notification via email</option>
+                            <option value="2">Send me notification via push message</option>
+                            <option value="3">Send me notification via email and push message</option>
                         </select>
-                    </div>-->
+                    </div>
 
                     <div class="page-login-input my-profile-removed-left-pedding full-bottom animate-fadeanimate-delay-600">
                         <input id="profile-password" type="password" class="changepassword-text" placeholder="Password" disabled="disabled">
@@ -288,9 +288,9 @@
                         var emailValue = $("#profile-email").val();
                         //var cityValue = $("#profile-city").val();
                         //var stateValue = $("#ddlState").val();
-                        //var notificationValue = $("#ddlNotification").val();
+                        var notificationValue = $("#ddlNotification").val();
                         //var zipcodeValue = $("#profile-zipcode").val();
-
+                        
                         if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
                             countError = countError + 1;
                             msg += "First Name!\n";
@@ -323,10 +323,10 @@
                             countError = countError + 1;
                             msg += "Email address!\n";
                         }
-                        //if (notificationValue === "0") {
-                        //    countError = countError + 1;
-                        //    msg += "Notification type!\n";
-                        //}
+                        if (notificationValue === "0") {
+                            countError = countError + 1;
+                            msg += "Notification type!\n";
+                        }
                         if (emailValue !== null && emailValue !== '' && emailValue !== 'Email address') {
                             var x = emailValue;
                             var atpos = x.indexOf("@");
@@ -372,8 +372,8 @@
                                     //"zipcode": $("#profile-zipcode").val(),
                                     "latitude": latitude,
                                     "longitude": longitude,
-                                    "image": base64String
-                                    //"notification": $("#ddlNotification").val()
+                                    "image": base64String,
+                                    "notification": $("#ddlNotification").val()
                                 };
 
                                 $.ajax({
@@ -391,9 +391,9 @@
 
                                         if (response !== null && response.status === 1) {
                                             if (isMobileDevice) {
-                                                navigator.notification.alert("Profile successfully updated.!", null, 'Success', 'Close');
+                                                navigator.notification.alert("Profile successfully updated", null, 'Success', 'Close');
                                             } else {
-                                                showAlertDialog("Success", "Profile successfully updated.!");
+                                                showAlertDialog("Success", "Profile successfully updated");
                                             }
                                             window.location = "dashboard.html";
                                         }
@@ -454,8 +454,8 @@
                                     $("#profile-phone").val(response.data[0].phone);
                                     $("#profile-address").val(response.data[0].address);
                                     $("#profile-city").val(response.data[0].city);
-                                    //$("#ddlNotification").val(response.data[0].notification);
-
+                                    $("#ddlNotification").val(response.data[0].notification);
+                                    
                                     setTimeout(function () {
                                         $("#ddlState").val(response.data[0].state);
                                     }, 0);

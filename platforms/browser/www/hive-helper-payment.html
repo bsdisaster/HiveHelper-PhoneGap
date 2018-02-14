@@ -302,7 +302,7 @@
                     var cardId = $(divEle).siblings().attr("data-card-id");
 
                     if (isMobileDevice) {
-                        navigator.notification.confirm("Are you sure you want to delete this card ?", function (button) {
+                        navigator.notification.confirm("Are you sure you want to delete this card?", function (button) {
                             if (button === 1) {
                                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
 
@@ -318,7 +318,7 @@
                                         window.plugins.spinnerDialog.hide();
                                         $(divEle).parent().remove();
                                         deleteCardDb(customerId, cardId);
-                                        navigator.notification.alert("Card successfully deleted.!", null, 'Success', 'Close');
+                                        navigator.notification.alert("Card successfully deleted!", null, 'Success', 'Close');
                                     },
                                     error: (response) => {
 
@@ -330,7 +330,7 @@
                         }, "Cancel", "Ok,Cancel");
                     } else {
 
-                        var res = confirm("Are you sure you want to delete this card  ?");
+                        var res = confirm("Are you sure you want to delete this card?");
                         if (res == true) {
                             showLoading(true);
                             $.ajax({
@@ -344,7 +344,7 @@
                                     showLoading(false);
                                     $(divEle).parent().remove();
                                     deleteCardDb(customerId, cardId);
-                                    showAlertDialog("Success", "Card successfully deleted.!");
+                                    showAlertDialog("Success", "Card successfully deleted!");
                                 },
                                 error: (response) => {
                                     showLoading(false);
@@ -360,10 +360,10 @@
 
                     if ($("#promoCode").val() == "") {
                         if (isMobileDevice) {
-                            navigator.notification.alert("Please enter promo code.!", null, 'Warning', 'Close');
+                            navigator.notification.alert("Please enter promo code!", null, 'Warning', 'Close');
 
                         } else {
-                            showAlertDialog("Warning", "Please enter promo code.!");
+                            showAlertDialog("Warning", "Please enter promo code!");
                         }
                         $("#promoCode").focus();
                     }
@@ -396,10 +396,10 @@
 
                                 if (response !== null && response.status === 1) {
                                     if (isMobileDevice) {
-                                        navigator.notification.alert("Promocode applied.!", null, 'Success', 'Close');
+                                        navigator.notification.alert("Promocode applied", null, 'Success', 'Close');
 
                                     } else {
-                                        showAlertDialog("Success", "Promocode applied.!");
+                                        showAlertDialog("Success", "Promocode applied");
                                     }
 
                                     var regularPrice = parseFloat(localStorage.getItem("regularPrice"));
@@ -589,9 +589,9 @@
                             }
                         } else if (selectedCard == null && selectedCustomer == null) {
                             if (isMobileDevice) {
-                                navigator.notification.alert("Please select card for payment.!", null, 'Warning', 'Close');
+                                navigator.notification.alert("Please select card for payment!", null, 'Warning', 'Close');
                             } else {
-                                showAlertDialog('Warning', "Please select card for payment.!");
+                                showAlertDialog('Warning', "Please select card for payment!");
                             }
                         } else {
                             makePayment();

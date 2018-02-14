@@ -410,9 +410,9 @@
 
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                navigator.notification.alert("Your data successfully updated.!", null, 'Success', 'Close');
+                                navigator.notification.alert("Your data successfully updated", null, 'Success', 'Close');
                             } else {
-                                showAlertDialog('Success', 'Your data successfully updated.!');
+                                showAlertDialog('Success', 'Your data successfully updated');
                             }
                             window.location.href = "my-booking.html";
                         }
