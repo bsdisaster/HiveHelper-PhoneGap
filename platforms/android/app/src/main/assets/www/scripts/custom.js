@@ -1025,7 +1025,8 @@ $(document).ready(function () {
     });
 })
 
-var api_baseUrl = 'http://hivehelperapp.com/v2/';
+var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
+//var api_baseUrl = 'http://hivehelperapp.com/v2/';
 //var api_baseUrl = 'http://hivehelper.project-demo.info/v1/';
 
 // detect mobile devices
