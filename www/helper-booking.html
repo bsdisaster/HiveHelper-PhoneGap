@@ -140,7 +140,7 @@
                                     }
                                 }
                                 else {
-                                    $("#lblUpcomingListError").text("No Upcoming jobs found.!");
+                                    $("#lblUpcomingListError").text("No Upcoming jobs found");
                                 }
 
                                 // due jobs list
@@ -168,7 +168,7 @@
                                     }
                                 }
                                 else {
-                                    $("#lblDueListError").text("No Upcoming jobs found.!");
+                                    $("#lblDueListError").text("No Due jobs found");
                                 }
 
                                 // previous jobs list
@@ -194,7 +194,7 @@
 
                                 }
                                 else {
-                                    $("#lblPreviousListError").text("No Previous jobs found.!");
+                                    $("#lblPreviousListError").text("No Previous jobs found");
                                 }
                             }
                             else {
@@ -216,7 +216,7 @@
 
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    navigator.notification.alert("It looks like you're offline", null, 'Error', 'Close');
                                 }
 
                             } else {

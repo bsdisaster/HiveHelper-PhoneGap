@@ -65,33 +65,12 @@
                         <input id="profile-phone" type="tel" maxlength="10" placeholder="Phone" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; }; addMask(this);">
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-
-                        <input id="profile-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value=='') this.value = 'Address'">
-
+                        <input id="profile-address-line-1" type="text" value="Address Line 1" onfocus="if (this.value == 'Address Line 1') this.value = '';" onblur="if (this.value == '')this.value = 'Address Line 1'">
+                    </div>
+                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
+                        <input id="profile-address-line-2" type="text" value="Address Line 2" onfocus="if (this.value == 'Address Line 2') this.value = '';" onblur="if (this.value=='') this.value = 'Address Line 2'">
                     </div>
 
-                    <!--<div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300 select-profile">
-
-                        <div class="col-sm-12 ">
-                            <div class="col-sm-6 ">
-                                <input id="profile-city" type="text" value="City" onfocus="if (this.value == 'City') this.value = ''" onblur="if (this.value == '') this.value = 'City'" onclick="showAlert('city')" readonly>
-
-                            </div>
-                            <div class="col-sm-6 ">
-
-                                <div class="select-box-small">
-                                    <div class="select-box-light profile">
-                                        <select id="ddlState" disabled></select>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-400">
-                        <input id="profile-zipcode" type="text" value="Zip code" onfocus="if (this.value=='Zip code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip code'" onclick="showAlert('zipcode')" readonly>
-
-                    </div>-->
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-500">
 
                         <input id="profile-email" type="text" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
@@ -123,7 +102,6 @@
                         pickImage();
 
                         if (!isMobileDevice) {
-                            fillState();
                             getProfileDetail();
                         }
 
@@ -234,7 +212,6 @@
                     }
 
                     function deviceReadySuccess() {
-                        fillState();
                         getProfileDetail();
                     }
 
@@ -243,15 +220,15 @@
                         // Create the autocomplete object, restricting the search to geographical
 
                         autocomplete = new google.maps.places.Autocomplete(
-                        (document.getElementById('profile-address')),
+                        (document.getElementById('profile-address-line-1')),
                         { types: ['geocode'] });
                         autocomplete.addListener('place_changed', fillInAddress);
 
-                        if ($("#profile-address").val() != '') {
-                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('profile-address')), { types: ['geocode'] });
+                        if ($("#profile-address-line-1").val() != '') {
+                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('profile-address-line-1')), { types: ['geocode'] });
                         }
                         else {
-                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('profile-address')), { types: ['geocode'] });
+                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('profile-address-line-1')), { types: ['geocode'] });
                         }
                         // When the user selects an address from the dropdown, populate the address
                         // fields in the form.
@@ -283,13 +260,11 @@
                         var firstnameValue = $("#profile-firstname").val();
                         var lastnameValue = $("#profile-lastname").val();
                         var passwordValue = $("#profile-password").val();
-                        var addressValue = $("#profile-address").val();
+                        var addressLine1 = $("#profile-address-line-1").val();
+                        var addressLine2 = $("#profile-address-line-2").val();
                         var phoneValue = $("#profile-phone").val();
                         var emailValue = $("#profile-email").val();
-                        //var cityValue = $("#profile-city").val();
-                        //var stateValue = $("#ddlState").val();
                         var notificationValue = $("#ddlNotification").val();
-                        //var zipcodeValue = $("#profile-zipcode").val();
                         
                         if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
                             countError = countError + 1;
@@ -303,22 +278,14 @@
                             countError = countError + 1;
                             msg += "Phone!\n";
                         }
-                        if (addressValue === '' || addressValue === null || addressValue === 'Address') {
+                        if (addressLine1 === '' || addressLine1 === null || addressLine1 === 'Address Line 1') {
                             countError = countError + 1;
-                            msg += "Address!\n";
+                            msg += "Address Line 1!\n";
                         }
-                        //if (cityValue === '' || cityValue === null || cityValue === 'City') {
-                        //    countError = countError + 1;
-                        //    msg += "City!\n";
-                        //}
-                        //if (stateValue === "0") {
-                        //    countError = countError + 1;
-                        //    msg += "State!\n";
-                        //}
-                        //if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zip code') {
-                        //    countError = countError + 1;
-                        //    msg += "Zip Code!\n";
-                        //}
+                        if (addressLine2 === '' || addressLine2 === null || addressLine2 === 'Address Line 2') {
+                            countError = countError + 1;
+                            msg += "Address Line 2!\n";
+                        }
                         if (emailValue === '' || emailValue === null || emailValue === 'Email address') {
                             countError = countError + 1;
                             msg += "Email address!\n";
@@ -366,10 +333,8 @@
                                     "email": $("#profile-email").val(),
                                     "phone": $("#profile-phone").val(),
                                     "password": $("#profile-password").val(),
-                                    "address": $("#profile-address").val(),
-                                    //"city": $("#profile-city").val(),
-                                    //"state": $("#ddlState").val(),
-                                    //"zipcode": $("#profile-zipcode").val(),
+                                    "address": $("#profile-address-line-1").val(),
+                                    "addressTitle": $("#profile-address-line-2").val(),
                                     "latitude": latitude,
                                     "longitude": longitude,
                                     "image": base64String,
@@ -445,21 +410,21 @@
                             type: "GET",
                             dataType: "JSON",
                             success: function (response) {
-                                // Inserting html into the result div on success
+
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
+                                }
 
                                 if (response !== null && response.status === 1) {
                                     $("#profile-firstname").val(response.data[0].firstName);
                                     $("#profile-lastname").val(response.data[0].lastName);
                                     $("#profile-email").val(response.data[0].email);
                                     $("#profile-phone").val(response.data[0].phone);
-                                    $("#profile-address").val(response.data[0].address);
-                                    $("#profile-city").val(response.data[0].city);
+                                    $("#profile-address-line-1").val(response.data[0].address);
+                                    $("#profile-address-line-2").val(response.data[0].addressTitle);
                                     $("#ddlNotification").val(response.data[0].notification);
-                                    
-                                    setTimeout(function () {
-                                        $("#ddlState").val(response.data[0].state);
-                                    }, 0);
-                                    $("#profile-zipcode").val(response.data[0].zipcode);
                                     latitude = response.data[0].latitude;
                                     longitude = response.data[0].longitude;
                                     $(".img-border-radius").attr("src", response.data[0].image);
@@ -498,69 +463,6 @@
                         });
                     }
 
-                    function fillState() {
-                        if (isMobileDevice) {
-                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                        } else {
-                            showLoading(true);
-                        }
-
-                        $.ajax({
-                            url: api_baseUrl + 'state',
-                            type: "get",
-                            // data: JSON.stringify(parameter),
-                            dataType: "json",
-                            success: function (response) {
-                                // Inserting html into the result div on success
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.hide();
-                                } else {
-                                    showLoading(false);
-                                }
-
-                                if (response !== null && response.status === 1) {
-                                    var stateData = response.data;
-                                    var defaultV = new Option("Select State", 0, true);
-
-                                    $('#ddlState').append(defaultV);
-                                    for (var i = 0; i < stateData.length; i++) {
-                                        var opt = new Option(stateData[i].stateName, stateData[i].stateId);
-                                        $('#ddlState').append(opt);
-                                    }
-                                    $('select option:first-child').attr('id', 'first');
-                                }
-                                else {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert(response.message, null, 'Error', 'Close');
-                                    }
-                                    else {
-                                        showAlertDialog("Error", response.message);
-                                    }
-                                }
-                            },
-                            error: function (jqXHR, text, error) {
-                                // Displaying if there are any errors
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.hide();
-                                } else {
-                                    showLoading(false);
-                                }
-
-                                if (error == null || error == "") {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                    }
-
-                                } else {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert(error, null, 'Error', 'Close');
-                                    } else {
-                                        showAlertDialog("Error", error);
-                                    }
-                                }
-                            }
-                        });
-                    }
                     function enablePassword(isEnabled) {
                         if (isEnabled == true) {
                             $("#profile-password").removeAttr("disabled");

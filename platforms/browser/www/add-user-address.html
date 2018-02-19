@@ -42,7 +42,11 @@
                 <div class="page-login content">
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-                        <input id="user-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value=='') this.value = 'Address'">
+                        <input id="user-address-line-1" type="text" value="Address Line 1" onfocus="if (this.value == 'Address Line 1') this.value = '';" onblur="if (this.value == '')this.value = 'Address Line 1'">
+                    </div>
+
+                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
+                        <input id="user-address-line-2" type="text" value="Address Line 2" onfocus="if (this.value == 'Address Line 2') this.value = '';" onblur="if (this.value == '') this.value = 'Address Line 2'">
                     </div>
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300 select-profile">
@@ -116,7 +120,8 @@
                                     }
 
                                     if (response !== null && response.status === 1) {
-                                        $("#user-address").val(response.data["address"]);
+                                        $("#user-address-line-1").val(response.data["address"]);
+                                        $("#user-address-line-2").val(response.data["addressTitle"]);
                                         $("#user-city").val(response.data["city"]);
                                         $("#ddlState").val(response.data["state"]);
                                         $("#user-zipcode").val(response.data["zipcode"]);
@@ -152,15 +157,15 @@
                         // Create the autocomplete object, restricting the search to geographical
 
                         autocomplete = new google.maps.places.Autocomplete(
-                        (document.getElementById('user-address')),
+                        (document.getElementById('user-address-line-1')),
                         { types: ['geocode'] });
                         autocomplete.addListener('place_changed', fillInAddress);
 
-                        if ($("#user-address").val() != '') {
-                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('user-address')), { types: ['geocode'] });
+                        if ($("#user-address-line-1").val() != '') {
+                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('user-address-line-1')), { types: ['geocode'] });
                         }
                         else {
-                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('user-address')), { types: ['geocode'] });
+                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('user-address-line-1')), { types: ['geocode'] });
                         }
                         // When the user selects an address from the dropdown, populate the address
                         // fields in the form.
@@ -189,14 +194,19 @@
                         var countError = 0;
                         var msg = "Please correct following fields:\n";
 
-                        var addressValue = $("#user-address").val();
+                        var addressLine1 = $("#user-address-line-1").val();
+                        var addressLine2 = $("#user-address-line-2").val();
                         var cityValue = $("#user-city").val();
                         var stateValue = $("#ddlState").val();
                         var zipcodeValue = $("#user-zipcode").val();
 
-                        if (addressValue === '' || addressValue === null || addressValue === 'Address') {
+                        if (addressLine1 === '' || addressLine1 === null || addressLine1 === 'Address Line 1') {
                             countError = countError + 1;
-                            msg += "Address!\n";
+                            msg += "Address Line 1!\n";
+                        }
+                        if (addressLine2 === '' || addressLine2 === null || addressLine2 === 'Address Line 2') {
+                            countError = countError + 1;
+                            msg += "Address Line 2!\n";
                         }
                         if (cityValue === '' || cityValue === null || cityValue === 'City') {
                             countError = countError + 1;
@@ -245,7 +255,8 @@
                                 var parameter = {
                                     "userAddressId": getParameterByName("id"),
                                     "userId": localStorage.getItem("userId"),
-                                    "address": $("#user-address").val(),
+                                    "address": $("#user-address-line-1").val(),
+                                    "addressTitle": $("#user-address-line-2").val(),
                                     "city": $("#user-city").val(),
                                     "state": $("#ddlState").val(),
                                     "zipcode": $("#user-zipcode").val(),

@@ -98,8 +98,14 @@
                         <div class="bottom-line"></div>
 
                         <div class="page-login-input animate-fade">
-                            <label class="bold inline-block" id="lblAddress">Address: </label>
+                            <label class="bold inline-block" id="lblAddress">Address Line 1: </label>
                             <label class="inline-block blueColor" onclick="storeMapAddress(this)"></label>
+                        </div>
+                        <div class="bottom-line"></div>
+
+                        <div class="page-login-input animate-fade">
+                            <label class="bold inline-block" id="lblAddressTitle">Address Line 2: </label>
+                            <label class="inline-block"></label>
                         </div>
                         <div class="bottom-line"></div>
 
@@ -228,6 +234,7 @@
                         $("#lblAppointmentFrom").next().html(appointmentDetails[0].appointmentFrom);
                         $("#lblAppointmentTo").next().html(appointmentDetails[0].appointmentTo);
                         $("#lblDate").next().html(appointmentDetails[0].appointmentDate);
+                        $("#lblAddressTitle").next().html(appointmentDetails[0].addressTitle);
                         $("#lblAddress").next().html(appointmentDetails[0].address);
 
                         // get helpers

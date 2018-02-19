@@ -58,22 +58,11 @@
 
                     <div class="page-login-input animate-fade animate-delay-400">
                         <i class="login-icon ion-at"></i>
-                        <input id="register-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value == '') this.value = 'Address'">
+                        <input id="register-address-line-1" type="text" value="Address Line 1" onfocus="if (this.value == 'Address Line 1') this.value = '';" onblur="if (this.value == '') this.value = 'Address Line 1'">
                     </div>
-                    <div class="page-login-input animate-fade animate-delay-600">
+                    <div class="page-login-input animate-fade animate-delay-400">
                         <i class="login-icon ion-at"></i>
-                        <div class="select-box-light">
-                            <select id="ddlState" disabled></select>
-                        </div>
-                    </div>
-                    <div class="page-login-input animate-fade animate-delay-500">
-                        <i class="login-icon ion-at"></i>
-                        <input id="register-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'" onclick="showAddressAlert('city')" readonly>
-                    </div>
-
-                    <div class="page-login-input animate-fade animate-delay-700">
-                        <i class="login-icon ion-at"></i>
-                        <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'" onclick="showAddressAlert('zipcode')" readonly>
+                        <input id="register-address-line-2" type="text" value="Address Line 2" onfocus="if (this.value == 'Address Line 2') this.value = '';" onblur="if (this.value == '') this.value = 'Address Line 2'">
                     </div>
 
                     <button id="btnCreateAccount" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-800"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
@@ -103,9 +92,6 @@
         $(document).ready(function () {
             register();
 
-            if (!isMobileDevice) {
-                fillState();
-            }
         }).on('deviceready', function () {
             document.addEventListener("deviceready", deviceReadySuccess, false);
             $(document).on({
@@ -124,15 +110,15 @@
             // Create the autocomplete object, restricting the search to geographical
 
             autocomplete = new google.maps.places.Autocomplete(
-            (document.getElementById('register-address')),
+            (document.getElementById('register-address-line-1')),
             { types: ['geocode'] });
             autocomplete.addListener('place_changed', fillInAddress);
 
-            if ($("#register-address").val() != '') {
-                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address')), { types: ['geocode'] });
+            if ($("#register-address-line-1").val() != '') {
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address-line-1')), { types: ['geocode'] });
             }
             else {
-                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address')), { types: ['geocode'] });
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address-line-1')), { types: ['geocode'] });
             }
             // When the user selects an address from the dropdown, populate the address
             // fields in the form.
@@ -140,7 +126,7 @@
         }
 
         function deviceReadySuccess() {
-            fillState();
+           
             if (isMobileDevice) {
                 getPushNotificationToken();
             }
@@ -148,15 +134,6 @@
 
         function addMask(inputEle) {
             $(inputEle).mask('(999) 999-9999');
-        }
-
-        function showAddressAlert(ele) {
-            if (isMobileDevice) {
-                navigator.notification.alert("Please update your address to change " + ele + ".!", null, "Warning", "Close");
-            }
-            else {
-                showAlertDialog('Warning', "Please update your address to change " + ele + ".!");
-            }
         }
 
         function fillInAddress() {
@@ -176,67 +153,6 @@
             }
         }
 
-        function fillState() {
-            if (isMobileDevice) {
-                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-            } else {
-                showLoading(true);
-            }
-
-            $.ajax({
-                url: api_baseUrl + 'state',
-                type: "get",
-                dataType: "json",
-                success: function (response) {
-                    // Inserting html into the result div on success
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.hide();
-                    } else {
-                        showLoading(false);
-                    }
-
-                    if (response !== null && response.status === 1) {
-                        var stateData = response.data;
-
-                        var defaultV = new Option("Select State", 0, true);
-                        $('#ddlState').append(defaultV);
-                        for (var i = 0; i < stateData.length; i++) {
-                            var opt = new Option(stateData[i].stateName, stateData[i].stateId);
-                            $('#ddlState').append(opt);
-                        }
-                    }
-                    else {
-                        if (isMobileDevice) {
-                            navigator.notification.alert(response.message, null, 'Error', 'Close');
-                        }
-                        else {
-                            showAlertDialog('Error', response.message);
-                        }
-                    }
-                },
-                error: function (jqXHR, text, error) {
-                    // Displaying if there are any errors
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.hide();
-                    } else {
-                        showLoading(false);
-                    }
-
-                    if (error == null || error == "") {
-                        if (isMobileDevice) {
-                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                        }
-
-                    } else {
-                        if (isMobileDevice) {
-                            navigator.notification.alert(error, null, 'Error', 'Close');
-                        } else {
-                            showAlertDialog('Error', error);
-                        }
-                    }
-                }
-            });
-        }
         function isValidateregister() {
             var isResult = true;
             var countError = 0;
@@ -246,11 +162,10 @@
             var lastnameValue = $("#register-lastname").val();
             var passwordValue = $("#register-password").val();
             var phoneValue = $("#register-phone").val();
-            var addressValue = $("#register-address").val();
+            var addressLine1 = $("#register-address-line-1").val();
+            var addressLine2 = $("#register-address-line-2").val();
             var emailValue = $("#register-email").val();
-            var cityValue = $("#register-city").val();
-            var stateValue = $("#ddlState").val();
-            var zipcodeValue = $("#register-zipcode").val();
+
             if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
                 countError = countError + 1;
                 msg += "First name!\n";
@@ -271,22 +186,15 @@
                 countError = countError + 1;
                 msg += "Phone!\n";
             }
-            if (addressValue === '' || addressValue === null || addressValue === 'Address') {
+            if (addressLine1 === '' || addressLine1 === null || addressLine1 === 'Address Line 1') {
                 countError = countError + 1;
-                msg += "Address!\n";
+                msg += "Address Line 1!\n";
             }
-            if (stateValue === '0') {
+            if (addressLine2 === '' || addressLine2 === null || addressLine2 === 'Address Line 2') {
                 countError = countError + 1;
-                msg += "State!\n";
+                msg += "Address Line 2!\n";
             }
-            if (cityValue === '' || cityValue === null || cityValue === 'City') {
-                countError = countError + 1;
-                msg += "City!\n";
-            }
-            if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zipcode') {
-                countError = countError + 1;
-                msg += "Zipcode!\n";
-            }
+
             if (emailValue !== null && emailValue !== '' && emailValue != 'Email address') {
                 var x = emailValue;
                 var atpos = x.indexOf("@");
@@ -362,10 +270,8 @@
                         "email": $("#register-email").val(),
                         "password": $("#register-password").val(),
                         "phone": $("#register-phone").val(),
-                        "address": $("#register-address").val(),
-                        "city": $("#register-city").val(),
-                        "state": $("#ddlState").val(),
-                        "zipcode": $("#register-zipcode").val(),
+                        "address": $("#register-address-line-1").val(),
+                        "addressTitle": $("#register-address-line-2").val(),
                         "latitude": latitude,
                         "longitude": longitude,
                         "deviceType": platform,
