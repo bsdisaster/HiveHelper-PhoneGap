@@ -97,61 +97,6 @@
                         getUserAddressData();
                     }
 
-                    function getUserAddressData() {
-
-                        var userAddressId = getParameterByName("id");
-                        if (userAddressId) {
-                            if (isMobileDevice) {
-                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                            } else {
-                                showLoading(true);
-                            }
-
-                            $.ajax({
-                                url: api_baseUrl + 'Useraddress/getUserAddress/' + userAddressId,
-                                type: "GET",
-                                dataType: "json",
-                                success: function (response) {
-                                    // Inserting html into the result div on success
-                                    if (isMobileDevice) {
-                                        window.plugins.spinnerDialog.hide();
-                                    } else {
-                                        showLoading(false);
-                                    }
-
-                                    if (response !== null && response.status === 1) {
-                                        $("#user-address-line-1").val(response.data["address"]);
-                                        $("#user-address-line-2").val(response.data["addressTitle"]);
-                                        $("#user-city").val(response.data["city"]);
-                                        $("#ddlState").val(response.data["state"]);
-                                        $("#user-zipcode").val(response.data["zipcode"]);
-                                    }
-                                },
-                                error: function (jqXHR, text, error) {
-                                    // Displaying if there are any errors
-                                    if (isMobileDevice) {
-                                        window.plugins.spinnerDialog.hide();
-                                    } else {
-                                        showLoading(false);
-                                    }
-
-                                    if (error == null || error == "") {
-                                        if (isMobileDevice) {
-                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                        }
-
-                                    } else {
-                                        if (isMobileDevice) {
-                                            navigator.notification.alert(error, null, 'Error', 'Close');
-                                        } else {
-                                            showAlertDialog('Error',error);
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    }
-
                     var placeSearch, autocomplete, latitude, longitude;
                     function initAutocomplete() {
                         // Create the autocomplete object, restricting the search to geographical
@@ -189,7 +134,64 @@
                         }
                     }
 
-                    function IsValidateProfile() {
+                    function getUserAddressData() {
+
+                        var userAddressId = getParameterByName("id");
+                        if (userAddressId) {
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            } else {
+                                showLoading(true);
+                            }
+
+                            $.ajax({
+                                url: api_baseUrl + 'Useraddress/getUserAddress/' + userAddressId,
+                                type: "GET",
+                                dataType: "json",
+                                success: function (response) {
+                                    // Inserting html into the result div on success
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    } else {
+                                        showLoading(false);
+                                    }
+
+                                    if (response !== null && response.status === 1) {
+                                        $("#user-address-line-1").val(response.data["address"]);
+                                        $("#user-address-line-2").val(response.data["addressTitle"]);
+                                        $("#user-city").val(response.data["city"]);
+                                        $("#ddlState").val(response.data["state"]);
+                                        $("#user-zipcode").val(response.data["zipcode"]);
+                                        latitude = response.data["latitude"];
+                                        longitude = response.data["longitude"];
+                                    }
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    } else {
+                                        showLoading(false);
+                                    }
+
+                                    if (error == null || error == "") {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                        }
+
+                                    } else {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert(error, null, 'Error', 'Close');
+                                        } else {
+                                            showAlertDialog('Error', error);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                    function isValidateUserAddress() {
                         var isResult = true;
                         var countError = 0;
                         var msg = "Please correct following fields:\n";
@@ -245,7 +247,7 @@
                     function addAddress() {
                         $('#btnAddEdit').on('click', function (event) {
 
-                            if (IsValidateProfile()) {
+                            if (isValidateUserAddress()) {
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                                 } else {

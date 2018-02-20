@@ -56,7 +56,7 @@
 
                     <script type="text/javascript">
                         $(document).ready(function () {
-
+                         
                             addWidth();
                             if (!isMobileDevice) {
                                 checkExistingSession();
@@ -88,7 +88,7 @@
                             window.plugins.spinnerDialog.show("Please wait...", "Checking for updates...", true);
 
                             var parameter = {
-                                "version": "2.0.0"
+                                "version": appVersion
                             }
 
                             $.ajax({
@@ -97,6 +97,7 @@
                                 data: JSON.stringify(parameter),
                                 dataType: "JSON",
                                 success: function (response) {
+                                 
                                     window.plugins.spinnerDialog.hide();
 
                                     if (response !== null && response.status === 1) {

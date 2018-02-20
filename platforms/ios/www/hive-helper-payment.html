@@ -534,6 +534,11 @@
 
                 function createCard(secretkey, customerId, source, parameters, tokenInfo) {
                     
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
+                    }
 
                     var params = {
                         "secretkey": secretkey,
@@ -713,6 +718,12 @@
                 }
 
                 function createCharge(parameters, tokenInfo) {
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
+                    }
+
                     $.ajax({
                         type: 'POST',
                         url: 'https://api.stripe.com/v1/charges',
@@ -763,7 +774,12 @@
                 }
 
                 function saveCardDetails(cardDetails) {
-                    
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
+                    }
+
                     var parameter = null;
 
                     if (existingCustomerId == null) {
@@ -853,6 +869,12 @@
                 }
 
                 function savePaymentInfo(tokenInfo) {
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
+                    }
+
                     var helperSelectedTime = localStorage.getItem("helperSelectedTime");
 
                     var parameter = {

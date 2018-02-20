@@ -1025,9 +1025,14 @@ $(document).ready(function () {
     });
 })
 
+var appVersion = '2.0.2';
 var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
 //var api_baseUrl = 'http://hivehelperapp.com/v2/';
-//var api_baseUrl = 'http://hivehelper.project-demo.info/v1/';
+
+var pageTitle = $(document.getElementsByTagName('title')[0]).html();
+var lastIndex = pageTitle.lastIndexOf(" ");
+pageTitle = pageTitle.substring(0, lastIndex) + " " + appVersion;
+$(document.getElementsByTagName('title')[0]).html(pageTitle);
 
 // detect mobile devices
 function isMobile() {
@@ -1046,7 +1051,7 @@ function showAlertDialog(title, message) {
 
 function showLoading(visibility) {
     var loader = "<div class='loader'></div>";
-    
+
     if (visibility == true) {
         $(".header-light").append(loader);
     } else {
