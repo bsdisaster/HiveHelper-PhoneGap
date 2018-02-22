@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="2.0.2" id="hive.helper.app.html" ios-CFBundleVersion="2.0.4" version="2.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget android-versionCode="3.0.0" id="hive.helper.app.html" ios-CFBundleVersion="2.0.5" version="2.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
@@ -18,40 +18,6 @@
     <feature name="GestureHandler">
         <param name="ios-package" value="CDVGestureHandler" />
         <param name="onload" value="true" />
-    </feature>
-    <feature name="ActionSheet">
-        <param name="ios-package" value="ActionSheet" />
-    </feature>
-    <feature name="Device">
-        <param name="ios-package" value="CDVDevice" />
-    </feature>
-    <feature name="Notification">
-        <param name="ios-package" value="CDVNotification" />
-    </feature>
-    <feature name="Geolocation">
-        <param name="ios-package" value="CDVLocation" />
-    </feature>
-    <feature name="InAppBrowser">
-        <param name="ios-package" value="CDVInAppBrowser" />
-    </feature>
-    <feature name="SpinnerDialog">
-        <param name="ios-package" value="CDVSpinnerDialog" />
-    </feature>
-    <feature name="SplashScreen">
-        <param name="ios-package" value="CDVSplashScreen" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="CordovaStripe">
-        <param name="ios-package" value="CordovaStripe" />
-    </feature>
-    <feature name="Toast">
-        <param name="ios-package" value="Toast" />
-    </feature>
-    <feature name="PushNotification">
-        <param name="ios-package" value="PushPlugin" />
-    </feature>
-    <feature name="LaunchNavigator">
-        <param name="ios-package" value="LaunchNavigator" />
     </feature>
     <name>Hive Helper</name>
     <description>
@@ -91,7 +57,7 @@
     <splash height="2048" platform="ios" src="res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" />
     <splash height="1536" platform="ios" src="res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" />
     <access origin="*" />
-    <resource-file src="platforms/ios/GoogleService-Info.plist" />
+    <resource-file src="GoogleService-Info.plist" />
     <preference name="AllowInlineMediaPlayback" value="false" />
     <preference name="BackupWebStorage" value="cloud" />
     <preference name="DisallowOverscroll" value="true" />

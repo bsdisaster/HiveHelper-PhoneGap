@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
@@ -77,7 +78,7 @@
                             if (response !== null && response.status === 1) {
                                 var responseData = response.data;
                                 if (responseData != null && responseData.length > 0) {
-
+                                    
                                     for (var i = 0; i < responseData.length; i++) {
                                         var html = '';
                                         var serviceName = '<b>Service:</b> ' + responseData[i].Service + ' <br />';
@@ -90,13 +91,9 @@
 
                                         html = html + '	<em>' + serviceName + date + clientName + address + '  </em>';
                                         html = html + '</div>';
-                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '	<a href="#" data-helper-id = ' + responseData[i].helperId + ' data-appointmentId-id = ' + responseData[i].appointmentId + ' onclick="takeJob(this)">Take Job</a>';
+                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;width: 104px;font-size: medium;">';
+                                        html = html + '	<a href="#" data-helper-id = ' + responseData[i].userId + ' data-appointmentId-id = ' + responseData[i].appointmentId + ' onclick="takeJob(this)">Take Job <i style="font-size: larger;position: inherit;" class="fa fa-check-circle"></i></a>';
                                         html = html + '</div>';
-                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                        html = html + '	<a href="#"><img src="images/RightSign.png" alt="Edit" class="preload-image bg-blue edit-img" /></a>';
-                                        html = html + '</div>';
-
                                         html = html + '</div>';
                                         html = html + '<div class="decoration decoration-margins"></div>';
                                         $('.page-userlist').append(html);

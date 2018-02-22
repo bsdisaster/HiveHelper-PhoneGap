@@ -14,7 +14,9 @@
     <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
 
@@ -69,6 +71,8 @@
                 if (getParameterByName("editAppointment")) {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
 
                     $(".header-icon-5").attr("href", "my-booking.html");
@@ -81,7 +85,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
                                 $("#dvChangeDateTime").removeClass('disabled');
 
@@ -137,6 +144,10 @@
                                         html = html + '<div class="clear"></div>';
                                         $("#DivQuestionsAnswer").append(html);
                                     }
+
+                                    $("#DivQuestionsAnswer").append('<div style="padding-left: inherit" class="input-icon"><label class="bold p70">' + response.data["privacy_policy_text"] + '</label></div>');
+                                    $("#DivQuestionsAnswer").append('<div class="input-icon padding-left"><a href="' + response.data["privacy_policy_link"] + '" target="_blank">' + response.data["privacy_policy_link"] + '</a></div>');
+
                                     $("#DivQuestionsAnswer").append('<div class="clear"></div>');
                                     $("#DivQuestionsAnswer").append('<button class="button button-blue button-full half-top full-bottom" onclick="updateDateTime()">Update</button>');
 
@@ -147,7 +158,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert('No records found!', null, 'Warning', 'Close');
                                     } else {
-                                        alert('No records found!');
+                                        showAlertDialog('Warning', 'No records found!');
                                     }
                                     window.location.href = "my-booking.html";
                                 }
@@ -156,7 +167,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    alert(response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -164,7 +175,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -174,7 +188,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }
@@ -183,10 +197,16 @@
                 else {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
 
                     $(".header-icon-5").attr("href", "bookhelper-select-cleaning-service-detail.html");
-                    var parameter = { "serviceId": localStorage.getItem("serviceId"), "franchiseId": localStorage.getItem("franchiseId") };
+                    var parameter = {
+                        "serviceId": localStorage.getItem("serviceId"),
+                        "franchiseId": localStorage.getItem("franchiseId"),
+                        "userId": localStorage.getItem("userId")
+                    };
 
                     $.ajax({
                         url: api_baseUrl + 'Servicedetails/serviceQuestions/',
@@ -197,10 +217,13 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
-                                var serviceQuestionsData = response.data;
+                                var serviceQuestionsData = response.data.servicequestion;
                                 if (serviceQuestionsData.length > 0) {
                                     var counter = 0;
                                     for (var i = 0; i < serviceQuestionsData.length; i++) {
@@ -211,19 +234,19 @@
                                         if (serviceQuestionsData[i].fieldTypeId == "1") {
                                             html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
-                                            html = html + '<div class="input-icon" style="padding-left: inherit"><input id="inputAnswer' + counter + '" type="text" class="input-text-box input-green-border" placeholder="Answer"></div>';
+                                            html = html + '<div class="input-icon" style="padding-left: inherit"><input id="inputAnswer' + counter + '" type="text" class="input-text-box input-green-border" placeholder="Answer">' + serviceQuestionsData[i].answer + '</div>';
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "2") {
                                             html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
-                                            html = html + '<div class="input-icon" style="padding-left: inherit"><textarea id="inputDescription' + counter + '" class="contactTextarea" style="background: #fff;width: 100%;min-height: 120px;height: auto;border: 1px solid #CBCBCB;"></textarea></div>';
+                                            html = html + '<div class="input-icon" style="padding-left: inherit"><textarea id="inputDescription' + counter + '" class="contactTextarea" placeholder="Answer" style="background: #fff;width: 100%;min-height: 120px;height: auto;border: 1px solid #CBCBCB;">' + serviceQuestionsData[i].answer + '</textarea></div>';
                                         }
                                         else if (serviceQuestionsData[i].fieldTypeId == "3") {
                                             html = html + '<div style="padding-left: inherit" class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
 
                                             html = html + '<div class="one-half last-column" style="padding-left: inherit"><div class="extra-margin" id="checkbox' + counter + '">';
                                             for (var j = 0; j < serviceQuestionsData[i].options.length; j++) {
-                                                html = html + '<div class="fac fac-checkbox fac-default"><span></span><input id="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" type="checkbox" value="' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '"><label for="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '">' + serviceQuestionsData[i].options[j].optionTitle + '</label></div>';
+                                                html = html + '<div class="fac fac-checkbox fac-default"><span></span><input id="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" type="checkbox" value="' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" data-checked ="' + serviceQuestionsData[i].options[j].isanswer + '"><label for="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '">' + serviceQuestionsData[i].options[j].optionTitle + '</label></div>';
                                             }
                                             html = html + '</div></div>';
 
@@ -234,7 +257,7 @@
                                             html = html + '<div class="select-box-light">';
                                             html = html + '<select id="drpAnswer' + counter + '">';
                                             for (var j = 0; j < serviceQuestionsData[i].options.length; j++) {
-                                                html = html + '<option value="' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '">' + serviceQuestionsData[i].options[j].optionTitle + '</option>';
+                                                html = html + '<option value="' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" data-checked ="' + serviceQuestionsData[i].options[j].isanswer + '">' + serviceQuestionsData[i].options[j].optionTitle + '</option>';
                                             }
                                             html = html + '</select>';
                                             html = html + '</div>';
@@ -242,16 +265,20 @@
                                         html = html + '<div class="clear"></div>';
                                         $("#DivQuestionsAnswer").append(html);
                                     }
+
+                                    $("#DivQuestionsAnswer").append('<div style="padding-left: inherit" class="input-icon"><label class="bold p70">' + response.data["privacy_policy_text"] + '</label></div>');
+                                    $("#DivQuestionsAnswer").append('<div class="input-icon padding-left"><a href="' + response.data["privacy_policy_link"] + '" target="_blank">' + response.data["privacy_policy_link"] + '</a></div>');
                                     $("#DivQuestionsAnswer").append('<div class="clear"></div>');
                                     $("#DivQuestionsAnswer").append('<button onclick="paymentTempArray()" class="button button-blue button-full half-top full-bottom">Pay Now</button>');
                                     localStorage.setItem("appointmentArray", JSON.stringify(serviceQuestionsData));
+                                    getSelectedAnswers();
                                 }
                             }
                             else {
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    alert(response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -259,7 +286,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -269,7 +299,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }
@@ -367,6 +397,8 @@
 
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
                 }
 
                 $.ajax({
@@ -377,12 +409,15 @@
                         // Inserting html into the result div on success
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                navigator.notification.alert("Your data successfully updated.!", null, 'Success', 'Close');
+                                navigator.notification.alert("Your data successfully updated", null, 'Success', 'Close');
                             } else {
-                                alert("Your data successfully updated.!");
+                                showAlertDialog('Success', 'Your data successfully updated');
                             }
                             window.location.href = "my-booking.html";
                         }
@@ -390,7 +425,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(response.message, null, 'Warning', 'Close');
                             } else {
-                                alert(response.message);
+                                showAlertDialog('Warning', response.message);
                             }
                         }
                     },
@@ -399,7 +434,10 @@
                         // Displaying if there are any errors
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (error == null || error == "") {
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -409,7 +447,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(error, null, 'Error', 'Close');
                             } else {
-                                alert(error);
+                                showAlertDialog('Error', error);
                             }
                         }
                     }
@@ -477,7 +515,7 @@
             }
 
             function showHideToolTip(divEle) {
-              
+
                 if ($(divEle).find('span').css("visibility") == "hidden") {
                     $(divEle).find('span').css("visibility", "visible");
                 } else {

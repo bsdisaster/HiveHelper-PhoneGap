@@ -263,6 +263,7 @@
                                             }
 
                                             if (response !== null && response.status === 1) {
+                                               
                                                 localStorage.setItem("username", response.data.email);
                                                 localStorage.setItem("password", $("#password").val());
                                                 localStorage.setItem("deviceType", platform);
@@ -270,6 +271,7 @@
                                                 localStorage.setItem("userId", response.data.userId);
                                                 localStorage.setItem("roleId", response.data.roleId);
                                                 localStorage.setItem("firstName", response.data.firstName);
+                                                localStorage.setItem("isTrainee", response.data.helperTrainee);
                                                 window.location = "dashboard.html";
                                             }
                                             else {

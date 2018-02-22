@@ -14,9 +14,10 @@
     <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQUPe-GBmzqn0f8sb_8xZNcseul1N0yU&libraries=places&callback=initAutocomplete" defer></script>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
     <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
@@ -56,22 +57,12 @@
 
                     <div class="page-login-input animate-fade animate-delay-400">
                         <i class="login-icon ion-at"></i>
-                        <input id="register-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value == '') this.value = 'Address'">
-                    </div>
-                    <div class="page-login-input animate-fade animate-delay-600">
-                        <i class="login-icon ion-at"></i>
-                        <div class="select-box-light">
-                            <select id="ddlState" disabled></select>
-                        </div>
-                    </div>
-                    <div class="page-login-input animate-fade animate-delay-500">
-                        <i class="login-icon ion-at"></i>
-                        <input id="register-city" type="text" value="City" onfocus="if (this.value=='City') this.value = ''" onblur="if (this.value=='') this.value = 'City'" onclick="showAddressAlert('city')" readonly>
+                        <input id="register-address-line-1" type="text" value="Address Line 1" onfocus="if (this.value == 'Address Line 1') this.value = '';" onblur="if (this.value == '') this.value = 'Address Line 1'">
                     </div>
 
-                    <div class="page-login-input animate-fade animate-delay-700">
+                    <div class="page-login-input animate-fade animate-delay-400">
                         <i class="login-icon ion-at"></i>
-                        <input id="register-zipcode" type="text" value="Zipcode" onfocus="if (this.value=='Zipcode') this.value = ''" onblur="if (this.value=='') this.value = 'Zipcode'" onclick="showAddressAlert('zipcode')" readonly>
+                        <input id="register-address-line-2" type="text" value="Address Line 2" onfocus="if (this.value == 'Address Line 2') this.value = '';" onblur="if (this.value == '') this.value = 'Address Line 2'">
                     </div>
 
                     <button id="btnCreateAccount" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-800"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
@@ -100,21 +91,20 @@
     <script type="text/javascript">
         $(document).ready(function () {
             register();
+            loadGoogleScript();
 
-            if (!isMobileDevice) {
-                fillState();
-            }
-        }).on('deviceready', function () {
-            document.addEventListener("deviceready", deviceReadySuccess, false);
             $(document).on({
                 'DOMNodeInserted': function () {
                     $('.pac-item, .pac-item span', this).addClass('needsclick');
                 }
             }, '.pac-container');
+
+        }).on('deviceready', function () {
+            document.addEventListener("deviceready", deviceReadySuccess, false);
         });
 
         var isMobileDevice = isMobile();
-        var placeSearch, autocomplete, latitude, longitude;
+        var placeSearch, autocomplete, latitude, longitude, city, state, zipcode;
         var deviceTokenForPush = 'browser-token';
         var platform = 'browser';
 
@@ -122,15 +112,15 @@
             // Create the autocomplete object, restricting the search to geographical
 
             autocomplete = new google.maps.places.Autocomplete(
-            (document.getElementById('register-address')),
+            (document.getElementById('register-address-line-1')),
             { types: ['geocode'] });
             autocomplete.addListener('place_changed', fillInAddress);
 
-            if ($("#register-address").val() != '') {
-                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address')), { types: ['geocode'] });
+            if ($("#register-address-line-1").val() != '') {
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address-line-1')), { types: ['geocode'] });
             }
             else {
-                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address')), { types: ['geocode'] });
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById('register-address-line-1')), { types: ['geocode'] });
             }
             // When the user selects an address from the dropdown, populate the address
             // fields in the form.
@@ -138,7 +128,7 @@
         }
 
         function deviceReadySuccess() {
-            fillState();
+           
             if (isMobileDevice) {
                 getPushNotificationToken();
             }
@@ -146,15 +136,6 @@
 
         function addMask(inputEle) {
             $(inputEle).mask('(999) 999-9999');
-        }
-
-        function showAddressAlert(ele) {
-            if (isMobileDevice) {
-                navigator.notification.alert("Please update your address to change " + ele + ".!", null, "Warning", "Close");
-            }
-            else {
-                alert("Please update your address to change " + ele + ".!");
-            }
         }
 
         function fillInAddress() {
@@ -165,69 +146,16 @@
 
             for (var i = 0; i < place.address_components.length; i++) {
                 if (place.address_components[i].types[0] == "locality")
-                { $("#register-city").val(place.address_components[i].long_name) }
+                { city = place.address_components[i].long_name }
                 else if (place.address_components[i].types[0] == "administrative_area_level_1")
-                { $('#ddlState option:contains("' + place.address_components[i].long_name + '")').prop('selected', true); }
+                { state = place.address_components[i].long_name }
                 else if (place.address_components[i].types[0] == "postal_code") {
-                    $("#register-zipcode").val(place.address_components[i].short_name)
+                    zipcode = place.address_components[i].short_name
                 }
             }
         }
 
-        function fillState() {
-            if (isMobileDevice) {
-                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-            }
-            $.ajax({
-                url: api_baseUrl + 'state',
-                type: "get",
-                dataType: "json",
-                success: function (response) {
-                    // Inserting html into the result div on success
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.hide();
-                    }
-                    if (response !== null && response.status === 1) {
-                        var stateData = response.data;
-
-                        var defaultV = new Option("Select State", 0, true);
-                        $('#ddlState').append(defaultV);
-                        for (var i = 0; i < stateData.length; i++) {
-                            var opt = new Option(stateData[i].stateName, stateData[i].stateId);
-                            $('#ddlState').append(opt);
-                        }
-                    }
-                    else {
-                        if (isMobileDevice) {
-                            navigator.notification.alert(response.message, null, 'Error', 'Close');
-                        }
-                        else {
-                            alert(response.message);
-                        }
-                    }
-                },
-                error: function (jqXHR, text, error) {
-                    // Displaying if there are any errors
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.hide();
-                    }
-
-                    if (error == null || error == "") {
-                        if (isMobileDevice) {
-                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                        }
-
-                    } else {
-                        if (isMobileDevice) {
-                            navigator.notification.alert(error, null, 'Error', 'Close');
-                        } else {
-                            alert(error);
-                        }
-                    }
-                }
-            });
-        }
-        function isValidateregister() {
+        function isValidateRegister() {
             var isResult = true;
             var countError = 0;
             var msg = "Please correct following fields:\n";
@@ -236,11 +164,9 @@
             var lastnameValue = $("#register-lastname").val();
             var passwordValue = $("#register-password").val();
             var phoneValue = $("#register-phone").val();
-            var addressValue = $("#register-address").val();
+            var addressLine1 = $("#register-address-line-1").val();
             var emailValue = $("#register-email").val();
-            var cityValue = $("#register-city").val();
-            var stateValue = $("#ddlState").val();
-            var zipcodeValue = $("#register-zipcode").val();
+
             if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
                 countError = countError + 1;
                 msg += "First name!\n";
@@ -261,22 +187,11 @@
                 countError = countError + 1;
                 msg += "Phone!\n";
             }
-            if (addressValue === '' || addressValue === null || addressValue === 'Address') {
+            if (addressLine1 === '' || addressLine1 === null || addressLine1 === 'Address Line 1') {
                 countError = countError + 1;
-                msg += "Address!\n";
+                msg += "Address Line 1!\n";
             }
-            if (stateValue === '0') {
-                countError = countError + 1;
-                msg += "State!\n";
-            }
-            if (cityValue === '' || cityValue === null || cityValue === 'City') {
-                countError = countError + 1;
-                msg += "City!\n";
-            }
-            if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zipcode') {
-                countError = countError + 1;
-                msg += "Zipcode!\n";
-            }
+
             if (emailValue !== null && emailValue !== '' && emailValue != 'Email address') {
                 var x = emailValue;
                 var atpos = x.indexOf("@");
@@ -292,7 +207,7 @@
                     navigator.notification.alert(msg, null, 'Warning', 'Close');
                 }
                 else {
-                    alert(msg);
+                    showAlertDialog('Warning', msg);
                 }
                 isResult = false;
             }
@@ -339,7 +254,7 @@
 
             $('#btnCreateAccount').on('click', function (event) {
                
-                if (isValidateregister()) {
+                if (isValidateRegister()) {
 
                     if (isMobileDevice) {
                         platform = device.platform;
@@ -352,10 +267,11 @@
                         "email": $("#register-email").val(),
                         "password": $("#register-password").val(),
                         "phone": $("#register-phone").val(),
-                        "address": $("#register-address").val(),
-                        "city": $("#register-city").val(),
-                        "state": $("#ddlState").val(),
-                        "zipcode": $("#register-zipcode").val(),
+                        "address": $("#register-address-line-1").val(),
+                        "addressTitle": ($("#register-address-line-2").val() == "Address Line 2") ? "" : $("#register-address-line-2").val(),
+                        "city": city,
+                        "state": state,
+                        "zipcode": zipcode,
                         "latitude": latitude,
                         "longitude": longitude,
                         "deviceType": platform,
@@ -372,13 +288,16 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
                                 if (isMobileDevice) {
-                                    navigator.notification.alert('Your registration was successful.!', null, 'Success', 'Close');
+                                    navigator.notification.alert('Your registration was successful', null, 'Success', 'Close');
                                 }
                                 else {
-                                    alert("Your registration was successful.!");
+                                    showAlertDialog('Success', "Your registration was successful");
                                 }
                                 window.location = "index.html";
                             }
@@ -387,7 +306,7 @@
                                     navigator.notification.alert(response.message, null, 'Error', 'Close');
                                 }
                                 else {
-                                    alert(response.message);
+                                    showAlertDialog('Error', response.message);
                                 }
                             }
                         },
@@ -395,7 +314,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -405,7 +327,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }

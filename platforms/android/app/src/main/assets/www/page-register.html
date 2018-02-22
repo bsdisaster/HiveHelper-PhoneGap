@@ -14,7 +14,6 @@
     <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQUPe-GBmzqn0f8sb_8xZNcseul1N0yU&libraries=places&callback=initAutocomplete" defer></script>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
@@ -60,6 +59,7 @@
                         <i class="login-icon ion-at"></i>
                         <input id="register-address-line-1" type="text" value="Address Line 1" onfocus="if (this.value == 'Address Line 1') this.value = '';" onblur="if (this.value == '') this.value = 'Address Line 1'">
                     </div>
+
                     <div class="page-login-input animate-fade animate-delay-400">
                         <i class="login-icon ion-at"></i>
                         <input id="register-address-line-2" type="text" value="Address Line 2" onfocus="if (this.value == 'Address Line 2') this.value = '';" onblur="if (this.value == '') this.value = 'Address Line 2'">
@@ -91,18 +91,20 @@
     <script type="text/javascript">
         $(document).ready(function () {
             register();
+            loadGoogleScript();
 
-        }).on('deviceready', function () {
-            document.addEventListener("deviceready", deviceReadySuccess, false);
             $(document).on({
                 'DOMNodeInserted': function () {
                     $('.pac-item, .pac-item span', this).addClass('needsclick');
                 }
             }, '.pac-container');
+
+        }).on('deviceready', function () {
+            document.addEventListener("deviceready", deviceReadySuccess, false);
         });
 
         var isMobileDevice = isMobile();
-        var placeSearch, autocomplete, latitude, longitude;
+        var placeSearch, autocomplete, latitude, longitude, city, state, zipcode;
         var deviceTokenForPush = 'browser-token';
         var platform = 'browser';
 
@@ -144,16 +146,16 @@
 
             for (var i = 0; i < place.address_components.length; i++) {
                 if (place.address_components[i].types[0] == "locality")
-                { $("#register-city").val(place.address_components[i].long_name) }
+                { city = place.address_components[i].long_name }
                 else if (place.address_components[i].types[0] == "administrative_area_level_1")
-                { $('#ddlState option:contains("' + place.address_components[i].long_name + '")').prop('selected', true); }
+                { state = place.address_components[i].long_name }
                 else if (place.address_components[i].types[0] == "postal_code") {
-                    $("#register-zipcode").val(place.address_components[i].short_name)
+                    zipcode = place.address_components[i].short_name
                 }
             }
         }
 
-        function isValidateregister() {
+        function isValidateRegister() {
             var isResult = true;
             var countError = 0;
             var msg = "Please correct following fields:\n";
@@ -163,7 +165,6 @@
             var passwordValue = $("#register-password").val();
             var phoneValue = $("#register-phone").val();
             var addressLine1 = $("#register-address-line-1").val();
-            var addressLine2 = $("#register-address-line-2").val();
             var emailValue = $("#register-email").val();
 
             if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
@@ -189,10 +190,6 @@
             if (addressLine1 === '' || addressLine1 === null || addressLine1 === 'Address Line 1') {
                 countError = countError + 1;
                 msg += "Address Line 1!\n";
-            }
-            if (addressLine2 === '' || addressLine2 === null || addressLine2 === 'Address Line 2') {
-                countError = countError + 1;
-                msg += "Address Line 2!\n";
             }
 
             if (emailValue !== null && emailValue !== '' && emailValue != 'Email address') {
@@ -257,7 +254,7 @@
 
             $('#btnCreateAccount').on('click', function (event) {
                
-                if (isValidateregister()) {
+                if (isValidateRegister()) {
 
                     if (isMobileDevice) {
                         platform = device.platform;
@@ -271,7 +268,10 @@
                         "password": $("#register-password").val(),
                         "phone": $("#register-phone").val(),
                         "address": $("#register-address-line-1").val(),
-                        "addressTitle": $("#register-address-line-2").val(),
+                        "addressTitle": ($("#register-address-line-2").val() == "Address Line 2") ? "" : $("#register-address-line-2").val(),
+                        "city": city,
+                        "state": state,
+                        "zipcode": zipcode,
                         "latitude": latitude,
                         "longitude": longitude,
                         "deviceType": platform,

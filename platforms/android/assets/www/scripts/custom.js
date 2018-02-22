@@ -1025,7 +1025,15 @@ $(document).ready(function () {
     });
 })
 
-var api_baseUrl = 'http://hivehelper.project-demo.info/v1/';
+var appVersion = '2.0.3';
+var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
+//var api_baseUrl = 'http://hivehelperapp.com/v2/';
+
+var pageTitle = $(document.getElementsByTagName('title')[0]).html();
+var lastIndex = pageTitle.lastIndexOf(" ");
+pageTitle = pageTitle.substring(0, lastIndex) + " " + appVersion;
+$(document.getElementsByTagName('title')[0]).html(pageTitle);
+
 // detect mobile devices
 function isMobile() {
     var app = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
@@ -1034,4 +1042,32 @@ function isMobile() {
     } else {
         return false;
     }
+}
+function showAlertDialog(title, message) {
+    var alertDialogDiv = "<div id='alertDialog' style='display:none' title=" + title + "><p>" + message.replace(/\n/g, "<br />") + "</p></div>";
+    $(".ui-dialog").remove();
+    $(alertDialogDiv).appendTo("body");
+    $(alertDialogDiv).dialog();
+}
+
+function showLoading(visibility) {
+    var loader = "<div class='loader'></div>";
+
+    if (visibility == true) {
+        $(".header-light").append(loader);
+    } else {
+        $(".loader").remove();
+    }
+}
+
+function loadGoogleScript() {
+    var apiKey = localStorage.getItem("googleApiKey");
+    if (apiKey == null) {
+        apiKey = "AIzaSyCqi3ztBwwTvIQxhP57PkF8I7gAqXhLL8Y";
+    }
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://maps.googleapis.com/maps/api/js' +
+        '?key=' + apiKey + '&libraries=places&callback=initAutocomplete';
+    document.body.appendChild(script);
 }

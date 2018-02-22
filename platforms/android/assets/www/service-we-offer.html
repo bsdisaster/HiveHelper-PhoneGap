@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
 
@@ -41,13 +43,7 @@
                 </div>
                 <script type="text/javascript">
 
-                    var userId = null;
-                    var franchiseId = null;
-
                     $(document).ready(function () {
-
-                        userId = localStorage.getItem("userId");
-
                         if (!isMobileDevice) {
                             getAllServices();
                         }
@@ -61,25 +57,28 @@
                     function getAllServices() {
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        } else {
+                            showLoading(true);
                         }
+
                         $.ajax({
-                            url: api_baseUrl + 'service/' + userId,
+                            url: api_baseUrl + 'service/' + localStorage.getItem("userAddressId"),
                             type: "get",
                             dataType: "json",
                             success: function (response) {
                                 // Inserting html into the result div on success
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
+
                                 if (response !== null && response.status === 1) {
 
                                     var serviceTypeData = response.data;
-                                    franchiseId = serviceTypeData.franchiseId;
                                     if (serviceTypeData.service.length > 0) {
                                         for (var i = 0; i < serviceTypeData.service.length; i++) {
-
                                             var html = '<a href="#" class="user-list-3"><div class="col-sm-12"><div class="col-sm-1"><img src="' + serviceTypeData.service[i].image + '" /></div><div class="col-sm-11" onclick="gotoServiceDetailsPage(\'' + serviceTypeData.service[i].description.toString().replace(/(\r\n|\n|\r)/gm, "") + '\',\'' + serviceTypeData.service[i].image + '\')"><strong class="user-list-3-strong Orpheus-pro">' + serviceTypeData.service[i].serviceName + '</strong></div></div><div class="col-sm-12"></div><i class="ion-ios-arrow-forward"></i></a>';
-
                                             $('.page-userlist').append(html);
                                         }
                                     }
@@ -89,7 +88,7 @@
                                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                     }
                                     else {
-                                        alert(response.message);
+                                        showAlertDialog('Warning',response.message);
                                     }
                                 }
                             },
@@ -97,6 +96,8 @@
                                 // Displaying if there are any errors
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
 
                                 if (error == null || error == "") {
@@ -108,7 +109,7 @@
                                         navigator.notification.alert(error, null, 'Error', 'Close');
                                     }
                                     else {
-                                        alert(error);
+                                        showAlertDialog('Error', error);
                                     }
                                 }
                             }

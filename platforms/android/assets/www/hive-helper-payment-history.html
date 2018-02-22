@@ -155,7 +155,10 @@
     function getPaymentHistory() {
         if (isMobileDevice) {
             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+        } else {
+            showLoading(true);
         }
+
         var fromDate = "";
         var toDate = "";
 
@@ -182,6 +185,8 @@
                 // Inserting html into the result div on success
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.hide();
+                } else {
+                    showLoading(false);
                 }
 
                 $('#tblPayment').find("tr:gt(0)").remove();
@@ -203,7 +208,7 @@
                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                     }
                     else {
-                        alert(response.message);
+                        showAlertDialog('Warning', response.message);
                     }
                 }
             },
@@ -211,6 +216,8 @@
                 // Displaying if there are any errors
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.hide();
+                } else {
+                    showLoading(false);
                 }
 
                 if (error == null || error == "") {
@@ -223,7 +230,7 @@
                         navigator.notification.alert(error, null, 'Error', 'Close');
                     }
                     else {
-                        alert(error);
+                        showAlertDialog('Error', error);
                     }
                 }
             }

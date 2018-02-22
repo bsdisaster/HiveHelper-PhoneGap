@@ -4,8 +4,7 @@
   "displayName": "Hive Helper",
   "cordova": {
     "platforms": [
-      "browser",
-      "ios"
+      "android"
     ],
     "plugins": {
       "cordova-plugin-device": {},
@@ -36,6 +35,7 @@
     "cordova-plugin-device": "~1.1.6",
     "cordova-plugin-dialogs": "~1.3.3",
     "cordova-plugin-ios-camera-permissions": "^1.2.0",
+    "cordova-plugin-local-notifications": "^1.0.0",
     "cordova-plugin-spinnerdialog": "~1.3.2",
     "cordova-plugin-splashscreen": "~4.0.3",
     "cordova-plugin-webserver": "^1.0.3",

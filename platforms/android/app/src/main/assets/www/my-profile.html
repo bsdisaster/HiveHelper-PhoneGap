@@ -23,8 +23,6 @@
     <script type="text/javascript" src="scripts/load-image.all.min.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
-
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQUPe-GBmzqn0f8sb_8xZNcseul1N0yU&libraries=places&callback=initAutocomplete" defer></script>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
 
 </head>
@@ -64,8 +62,9 @@
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300">
                         <input id="profile-phone" type="tel" maxlength="10" placeholder="Phone" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; }; addMask(this);">
                     </div>
+
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-                        <input id="profile-address-line-1" type="text" value="Address Line 1" onfocus="if (this.value == 'Address Line 1') this.value = '';" onblur="if (this.value == '')this.value = 'Address Line 1'">
+                        <input id="profile-address-line-1" type="text" value="Address Line 1" onfocus="if (this.value == 'Address Line 1') this.value = '';" onblur="if (this.value=='') this.value = 'Address Line 1'">
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
                         <input id="profile-address-line-2" type="text" value="Address Line 2" onfocus="if (this.value == 'Address Line 2') this.value = '';" onblur="if (this.value=='') this.value = 'Address Line 2'">
@@ -87,7 +86,7 @@
 
                     <div class="page-login-input my-profile-removed-left-pedding full-bottom animate-fadeanimate-delay-600">
                         <input id="profile-password" type="password" class="changepassword-text" placeholder="Password" disabled="disabled">
-                        <a href="#" onclick="enablePassword(true)" style="padding-top:10px;">CHANGE</a>
+                        <a href="#" onclick="enablePassword()" class="column-center-image">CHANGE</a>
                     </div>
 
                     <button id="btnupdateProfile" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
@@ -98,21 +97,22 @@
                     $(document).ready(function () {
                         updateProfile();
                         removeBottomMargin();
-                        enablePassword(false);
                         pickImage();
+                        loadGoogleScript();
 
                         if (!isMobileDevice) {
                             getProfileDetail();
                         }
-
-                    }).on('deviceready', function () {
-                        document.addEventListener("deviceready", deviceReadySuccess, false);
 
                         $(document).on({
                             'DOMNodeInserted': function () {
                                 $('.pac-item, .pac-item span', this).addClass('needsclick');
                             }
                         }, '.pac-container');
+
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", deviceReadySuccess, false);
+
                     });
 
                     var isMobileDevice = isMobile();
@@ -215,7 +215,7 @@
                         getProfileDetail();
                     }
 
-                    var placeSearch, autocomplete, latitude, longitude;
+                    var placeSearch, autocomplete, latitude, longitude, city, state, zipcode;
                     function initAutocomplete() {
                         // Create the autocomplete object, restricting the search to geographical
 
@@ -243,11 +243,11 @@
 
                         for (var i = 0; i < place.address_components.length; i++) {
                             if (place.address_components[i].types[0] == "locality")
-                            { $("#profile-city").val(place.address_components[i].long_name) }
+                            { city = place.address_components[i].long_name }
                             else if (place.address_components[i].types[0] == "administrative_area_level_1")
-                            { $('#ddlState option:contains("' + place.address_components[i].long_name + '")').prop('selected', true); }
+                            { state = place.address_components[i].long_name }
                             else if (place.address_components[i].types[0] == "postal_code") {
-                                $("#profile-zipcode").val(place.address_components[i].short_name)
+                                zipcode = place.address_components[i].short_name
                             }
                         }
                     }
@@ -261,11 +261,10 @@
                         var lastnameValue = $("#profile-lastname").val();
                         var passwordValue = $("#profile-password").val();
                         var addressLine1 = $("#profile-address-line-1").val();
-                        var addressLine2 = $("#profile-address-line-2").val();
                         var phoneValue = $("#profile-phone").val();
                         var emailValue = $("#profile-email").val();
                         var notificationValue = $("#ddlNotification").val();
-                        
+
                         if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
                             countError = countError + 1;
                             msg += "First Name!\n";
@@ -281,10 +280,6 @@
                         if (addressLine1 === '' || addressLine1 === null || addressLine1 === 'Address Line 1') {
                             countError = countError + 1;
                             msg += "Address Line 1!\n";
-                        }
-                        if (addressLine2 === '' || addressLine2 === null || addressLine2 === 'Address Line 2') {
-                            countError = countError + 1;
-                            msg += "Address Line 2!\n";
                         }
                         if (emailValue === '' || emailValue === null || emailValue === 'Email address') {
                             countError = countError + 1;
@@ -334,7 +329,10 @@
                                     "phone": $("#profile-phone").val(),
                                     "password": $("#profile-password").val(),
                                     "address": $("#profile-address-line-1").val(),
-                                    "addressTitle": $("#profile-address-line-2").val(),
+                                    "addressTitle": ($("#profile-address-line-2").val() == "Address Line 2") ? "" : $("#profile-address-line-2").val(),
+                                    "city": city,
+                                    "state": state,
+                                    "zipcode": zipcode,
                                     "latitude": latitude,
                                     "longitude": longitude,
                                     "image": base64String,
@@ -427,6 +425,9 @@
                                     $("#ddlNotification").val(response.data[0].notification);
                                     latitude = response.data[0].latitude;
                                     longitude = response.data[0].longitude;
+                                    city = response.data[0].city;
+                                    state = response.data[0].state;
+                                    zipcode = response.data[0].zipcode;
                                     $(".img-border-radius").attr("src", response.data[0].image);
                                 }
                                 else {
@@ -463,14 +464,9 @@
                         });
                     }
 
-                    function enablePassword(isEnabled) {
-                        if (isEnabled == true) {
-                            $("#profile-password").removeAttr("disabled");
-                            $("#profile-password").focus();
-                        }
-                        else {
-                            $("#profile-password").attr("disabled", "disabled");
-                        }
+                    function enablePassword() {
+                        $("#profile-password").removeAttr("disabled");
+                        $("#profile-password").focus();
                     }
 
                     function Logout() {

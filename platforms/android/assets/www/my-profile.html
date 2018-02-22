@@ -14,15 +14,15 @@
     <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
     <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
     <script type="text/javascript" src="scripts/load-image.all.min.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
-
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQUPe-GBmzqn0f8sb_8xZNcseul1N0yU&libraries=places&callback=initAutocomplete" defer></script>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
 
 </head>
@@ -60,44 +60,33 @@
 
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300">
-                        <input id="profile-phone" type="tel" maxlength="10" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; }; addMask(this);">
+                        <input id="profile-phone" type="tel" maxlength="10" placeholder="Phone" value="Phone" onfocus="if (this.value == 'Phone') { this.value = ''; }; addMask(this);">
+                    </div>
+
+                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
+                        <input id="profile-address-line-1" type="text" value="Address Line 1" onfocus="if (this.value == 'Address Line 1') this.value = '';" onblur="if (this.value=='') this.value = 'Address Line 1'">
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-
-                        <input id="profile-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value=='') this.value = 'Address'">
-
+                        <input id="profile-address-line-2" type="text" value="Address Line 2" onfocus="if (this.value == 'Address Line 2') this.value = '';" onblur="if (this.value=='') this.value = 'Address Line 2'">
                     </div>
 
-                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300 select-profile">
-
-                        <div class="col-sm-12 ">
-                            <div class="col-sm-6 ">
-                                <input id="profile-city" type="text" value="City" onfocus="if (this.value == 'City') this.value = ''" onblur="if (this.value == '') this.value = 'City'" onclick="showAlert('city')" readonly>
-
-                            </div>
-                            <div class="col-sm-6 ">
-
-                                <div class="select-box-small">
-                                    <div class="select-box-light profile">
-                                        <select id="ddlState" disabled></select>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-400">
-                        <input id="profile-zipcode" type="text" value="Zip code" onfocus="if (this.value=='Zip code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip code'" onclick="showAlert('zipcode')" readonly>
-
-                    </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-500">
 
                         <input id="profile-email" type="text" value="Email address" onfocus="if (this.value=='Email address') this.value = ''" onblur="if (this.value=='') this.value = 'Email address'">
 
                     </div>
+                    <div class="select-box-light profile">
+                        <select id="ddlNotification">
+                            <option value="0">Select Notification type</option>
+                            <option value="1">Email Notification</option>
+                            <option value="2">Push Notifications</option>
+                            <option value="3">Push and Email</option>
+                        </select>
+                    </div>
+
                     <div class="page-login-input my-profile-removed-left-pedding full-bottom animate-fadeanimate-delay-600">
                         <input id="profile-password" type="password" class="changepassword-text" placeholder="Password" disabled="disabled">
-                        <a href="#" onclick="enablePassword(true)" style="padding-top:10px;">CHANGE</a>
+                        <a href="#" onclick="enablePassword()" class="column-center-image">CHANGE</a>
                     </div>
 
                     <button id="btnupdateProfile" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
@@ -108,22 +97,22 @@
                     $(document).ready(function () {
                         updateProfile();
                         removeBottomMargin();
-                        enablePassword(false);
                         pickImage();
+                        loadGoogleScript();
 
                         if (!isMobileDevice) {
-                            fillState();
                             getProfileDetail();
                         }
-
-                    }).on('deviceready', function () {
-                        document.addEventListener("deviceready", deviceReadySuccess, false);
 
                         $(document).on({
                             'DOMNodeInserted': function () {
                                 $('.pac-item, .pac-item span', this).addClass('needsclick');
                             }
                         }, '.pac-container');
+
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", deviceReadySuccess, false);
+
                     });
 
                     var isMobileDevice = isMobile();
@@ -138,7 +127,7 @@
                             navigator.notification.alert("Please update your address to change " + ele + ".!", null, "Warning", "Close");
                         }
                         else {
-                            alert("Please update your address to change " + ele + ".!");
+                            showAlertDialog("Warning", "Please update your address to change " + ele + ".!");
                         }
                     }
 
@@ -163,7 +152,7 @@
                                 navigator.notification.alert("Only formats are allowed : " + fileExtension.join(', '), null, "Warning", "Close");
                             }
                             else {
-                                alert("Only formats are allowed : " + fileExtension.join(', '));
+                                showAlertDialog("Warning", "Only formats are allowed : " + fileExtension.join(', '));
                             }
                             return false;
                         }
@@ -223,24 +212,23 @@
                     }
 
                     function deviceReadySuccess() {
-                        fillState();
                         getProfileDetail();
                     }
 
-                    var placeSearch, autocomplete, latitude, longitude;
+                    var placeSearch, autocomplete, latitude, longitude, city, state, zipcode;
                     function initAutocomplete() {
                         // Create the autocomplete object, restricting the search to geographical
 
                         autocomplete = new google.maps.places.Autocomplete(
-                        (document.getElementById('profile-address')),
+                        (document.getElementById('profile-address-line-1')),
                         { types: ['geocode'] });
                         autocomplete.addListener('place_changed', fillInAddress);
 
-                        if ($("#profile-address").val() != '') {
-                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('profile-address')), { types: ['geocode'] });
+                        if ($("#profile-address-line-1").val() != '') {
+                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('profile-address-line-1')), { types: ['geocode'] });
                         }
                         else {
-                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('profile-address')), { types: ['geocode'] });
+                            autocomplete = new google.maps.places.Autocomplete((document.getElementById('profile-address-line-1')), { types: ['geocode'] });
                         }
                         // When the user selects an address from the dropdown, populate the address
                         // fields in the form.
@@ -255,11 +243,11 @@
 
                         for (var i = 0; i < place.address_components.length; i++) {
                             if (place.address_components[i].types[0] == "locality")
-                            { $("#profile-city").val(place.address_components[i].long_name) }
+                            { city = place.address_components[i].long_name }
                             else if (place.address_components[i].types[0] == "administrative_area_level_1")
-                            { $('#ddlState option:contains("' + place.address_components[i].long_name + '")').prop('selected', true); }
+                            { state = place.address_components[i].long_name }
                             else if (place.address_components[i].types[0] == "postal_code") {
-                                $("#profile-zipcode").val(place.address_components[i].short_name)
+                                zipcode = place.address_components[i].short_name
                             }
                         }
                     }
@@ -272,12 +260,10 @@
                         var firstnameValue = $("#profile-firstname").val();
                         var lastnameValue = $("#profile-lastname").val();
                         var passwordValue = $("#profile-password").val();
-                        var addressValue = $("#profile-address").val();
+                        var addressLine1 = $("#profile-address-line-1").val();
                         var phoneValue = $("#profile-phone").val();
                         var emailValue = $("#profile-email").val();
-                        var cityValue = $("#profile-city").val();
-                        var stateValue = $("#ddlState").val();
-                        var zipcodeValue = $("#profile-zipcode").val();
+                        var notificationValue = $("#ddlNotification").val();
 
                         if (firstnameValue === '' || firstnameValue === null || firstnameValue === 'First name') {
                             countError = countError + 1;
@@ -291,25 +277,17 @@
                             countError = countError + 1;
                             msg += "Phone!\n";
                         }
-                        if (addressValue === '' || addressValue === null || addressValue === 'Address') {
+                        if (addressLine1 === '' || addressLine1 === null || addressLine1 === 'Address Line 1') {
                             countError = countError + 1;
-                            msg += "Address!\n";
-                        }
-                        if (cityValue === '' || cityValue === null || cityValue === 'City') {
-                            countError = countError + 1;
-                            msg += "City!\n";
-                        }
-                        if (stateValue === "0") {
-                            countError = countError + 1;
-                            msg += "State!\n";
-                        }
-                        if (zipcodeValue === '' || zipcodeValue === null || zipcodeValue === 'Zip code') {
-                            countError = countError + 1;
-                            msg += "Zip Code!\n";
+                            msg += "Address Line 1!\n";
                         }
                         if (emailValue === '' || emailValue === null || emailValue === 'Email address') {
                             countError = countError + 1;
                             msg += "Email address!\n";
+                        }
+                        if (notificationValue === "0") {
+                            countError = countError + 1;
+                            msg += "Notification type!\n";
                         }
                         if (emailValue !== null && emailValue !== '' && emailValue !== 'Email address') {
                             var x = emailValue;
@@ -326,7 +304,7 @@
                                 navigator.notification.alert(msg, null, 'Warning', 'Close');
                             }
                             else {
-                                alert(msg);
+                                showAlertDialog("Warning", msg);
                             }
                             isResult = false;
                         }
@@ -339,7 +317,10 @@
                             if (isValidateProfile()) {
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                } else {
+                                    showLoading(true);
                                 }
+
                                 var parameter = {
                                     "userId": localStorage.getItem("userId"),
                                     "firstName": $("#profile-firstname").val(),
@@ -347,13 +328,15 @@
                                     "email": $("#profile-email").val(),
                                     "phone": $("#profile-phone").val(),
                                     "password": $("#profile-password").val(),
-                                    "address": $("#profile-address").val(),
-                                    "city": $("#profile-city").val(),
-                                    "state": $("#ddlState").val(),
-                                    "zipcode": $("#profile-zipcode").val(),
+                                    "address": $("#profile-address-line-1").val(),
+                                    "addressTitle": ($("#profile-address-line-2").val() == "Address Line 2") ? "" : $("#profile-address-line-2").val(),
+                                    "city": city,
+                                    "state": state,
+                                    "zipcode": zipcode,
                                     "latitude": latitude,
                                     "longitude": longitude,
-                                    "image": base64String
+                                    "image": base64String,
+                                    "notification": $("#ddlNotification").val()
                                 };
 
                                 $.ajax({
@@ -365,12 +348,15 @@
                                         // Inserting html into the result div on success
                                         if (isMobileDevice) {
                                             window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
                                         }
+
                                         if (response !== null && response.status === 1) {
                                             if (isMobileDevice) {
-                                                navigator.notification.alert("Profile successfully updated.!", null, 'Success', 'Close');
+                                                navigator.notification.alert("Profile successfully updated", null, 'Success', 'Close');
                                             } else {
-                                                alert("Profile successfully updated.!");
+                                                showAlertDialog("Success", "Profile successfully updated");
                                             }
                                             window.location = "dashboard.html";
                                         }
@@ -378,7 +364,7 @@
                                             if (isMobileDevice) {
                                                 navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                             } else {
-                                                alert(response.message);
+                                                showAlertDialog("Warning", response.message);
                                             }
                                         }
                                     },
@@ -386,6 +372,8 @@
                                         // Displaying if there are any errors
                                         if (isMobileDevice) {
                                             window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
                                         }
 
                                         if (error == null || error == "") {
@@ -396,7 +384,8 @@
                                             if (isMobileDevice) {
                                                 navigator.notification.alert(error, null, 'Error', 'Close');
                                             } else {
-                                                alert(error);
+                                                showAlertDialog("Error", error);
+
                                             }
                                         }
                                     }
@@ -410,28 +399,35 @@
                         var userId = localStorage.getItem("userId");
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        } else {
+                            showLoading(true);
                         }
+
                         $.ajax({
                             url: api_baseUrl + 'profile/' + userId,
                             type: "GET",
                             dataType: "JSON",
                             success: function (response) {
-                                // Inserting html into the result div on success
+
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
+                                }
 
                                 if (response !== null && response.status === 1) {
                                     $("#profile-firstname").val(response.data[0].firstName);
                                     $("#profile-lastname").val(response.data[0].lastName);
                                     $("#profile-email").val(response.data[0].email);
                                     $("#profile-phone").val(response.data[0].phone);
-                                    $("#profile-address").val(response.data[0].address);
-                                    $("#profile-city").val(response.data[0].city);
-
-                                    setTimeout(function () {
-                                        $("#ddlState").val(response.data[0].state);
-                                    }, 0);
-                                    $("#profile-zipcode").val(response.data[0].zipcode);
+                                    $("#profile-address-line-1").val(response.data[0].address);
+                                    $("#profile-address-line-2").val(response.data[0].addressTitle);
+                                    $("#ddlNotification").val(response.data[0].notification);
                                     latitude = response.data[0].latitude;
                                     longitude = response.data[0].longitude;
+                                    city = response.data[0].city;
+                                    state = response.data[0].state;
+                                    zipcode = response.data[0].zipcode;
                                     $(".img-border-radius").attr("src", response.data[0].image);
                                 }
                                 else {
@@ -439,14 +435,18 @@
                                         window.plugins.spinnerDialog.hide();
                                         navigator.notification.alert(response.message, null, 'Error', 'Close');
                                     } else {
-                                        alert(response.message);
+                                        showLoading(false);
+                                        showAlertDialog("Error", response.message);
                                     }
                                 }
                             },
                             error: function (jqXHR, text, error) {
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
                                 }
+
                                 if (error == null || error == "") {
                                     if (isMobileDevice) {
                                         navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -457,77 +457,16 @@
                                         navigator.notification.alert(error, null, 'Error', 'Close');
                                     }
                                     else {
-                                        alert(error);
+                                        showAlertDialog("Error", error);
                                     }
                                 }
                             }
                         });
                     }
 
-                    function fillState() {
-                        if (isMobileDevice) {
-                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                        }
-
-                        $.ajax({
-                            url: api_baseUrl + 'state',
-                            type: "get",
-                            // data: JSON.stringify(parameter),
-                            dataType: "json",
-                            success: function (response) {
-                                // Inserting html into the result div on success
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.hide();
-                                }
-                                if (response !== null && response.status === 1) {
-                                    var stateData = response.data;
-                                    var defaultV = new Option("Select State", 0, true);
-
-                                    $('#ddlState').append(defaultV);
-                                    for (var i = 0; i < stateData.length; i++) {
-                                        var opt = new Option(stateData[i].stateName, stateData[i].stateId);
-                                        $('#ddlState').append(opt);
-                                    }
-                                    $('select option:first-child').attr('id', 'first');
-                                }
-                                else {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert(response.message, null, 'Error', 'Close');
-                                    }
-                                    else {
-                                        alert(response.message);
-                                    }
-                                }
-                            },
-                            error: function (jqXHR, text, error) {
-                                // Displaying if there are any errors
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.hide();
-                                }
-
-                                if (error == null || error == "") {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                    }
-
-                                } else {
-                                    if (isMobileDevice) {
-                                        navigator.notification.alert(error, null, 'Error', 'Close');
-                                    } else {
-                                        alert(error);
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    function enablePassword(isEnabled) {
-                        if (isEnabled == true) {
-                            $("#profile-password").removeAttr("disabled");
-                            $("#profile-password").focus();
-                        }
-                        else {
-                            $("#profile-password").attr("disabled", "disabled");
-                        }
+                    function enablePassword() {
+                        $("#profile-password").removeAttr("disabled");
+                        $("#profile-password").focus();
                     }
 
                     function Logout() {

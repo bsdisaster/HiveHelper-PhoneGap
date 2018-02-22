@@ -89,7 +89,10 @@
                                 if (addressData.length > 0) {
                                     for (var i = 0; i < addressData.length; i++) {
                                         var fullAddress = '';
-                                        fullAddress = addressData[i].addressTitle + ', ' + addressData[i].address + ', ' + addressData[i].city + ', ' + addressData[i].stateName + ', ' + addressData[i].zipcode + '.';
+
+                                        var addressTitle = (addressData[i].addressTitle == "") ? "" : addressData[i].addressTitle + ', ';
+
+                                        fullAddress = addressTitle + addressData[i].address + ', ' + addressData[i].city + ', ' + addressData[i].state + ', ' + addressData[i].zipcode + '.';
                                         var html = '<div class="fac fac-radio fac-default col-sm-12"><span></span>';
 
                                         html = html + '<div class="col-sm-10">';

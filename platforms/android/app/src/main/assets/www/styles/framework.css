@@ -12074,3 +12074,8 @@ button.swiper-pagination-bullet {
     height: 100%;
     background: url(../images/loader.gif) no-repeat center center;
 }
+
+#lnkPromoCode i {
+    font-size: xx-large;
+    color: black;
+}

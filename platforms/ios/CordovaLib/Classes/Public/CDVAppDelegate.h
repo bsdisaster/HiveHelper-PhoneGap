@@ -19,8 +19,9 @@
 
 #import <Foundation/Foundation.h>
 #import "CDVViewController.h"
+#import <UserNotifications/UserNotifications.h>
 
-@interface CDVAppDelegate : NSObject <UIApplicationDelegate>{}
+@interface CDVAppDelegate : NSObject <UIApplicationDelegate,UNUserNotificationCenterDelegate>{}
 
 @property (nonatomic, strong) IBOutlet UIWindow* window;
 @property (nonatomic, strong) IBOutlet CDVViewController* viewController;

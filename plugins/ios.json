@@ -6,60 +6,6 @@
   "config_munge": {
     "files": {}
   },
-  "installed_plugins": {
-    "cordova-plugin-device": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-dialogs": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-ios-camera-permissions": {
-      "CAMERA_USAGE_DESCRIPTION": "This app needs camera access",
-      "MICROPHONE_USAGE_DESCRIPTION": "This app needs microphone access",
-      "PHOTOLIBRARY_ADD_USAGE_DESCRIPTION": "This app needs write-access to photo library",
-      "PHOTOLIBRARY_USAGE_DESCRIPTION": "This app needs read/write-access photo library access",
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-spinnerdialog": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "phonegap-plugin-push": {
-      "SENDER_ID": "762294569460",
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
-      "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes",
-      "PACKAGE_NAME": "hive.helper.app.html"
-    }
-  },
-  "dependent_plugins": {
-    "cordova-plugin-actionsheet": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-compat": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-geolocation": {
-      "GEOLOCATION_USAGE_DESCRIPTION": " ",
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-inappbrowser": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-stripe": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-webserver": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    }
-  }
+  "installed_plugins": {},
+  "dependent_plugins": {}
 }

@@ -14,7 +14,9 @@
     <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
 
@@ -55,7 +57,10 @@
                 function getHelperUpcomingJobs() {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
+
                     var userId = localStorage.getItem("userId");
 
                     $.ajax({
@@ -66,7 +71,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
                                 var responseData = response.data;
@@ -102,7 +110,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    alert(response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -110,7 +118,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -120,7 +131,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }

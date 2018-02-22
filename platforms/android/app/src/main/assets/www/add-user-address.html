@@ -21,8 +21,6 @@
     <script type="text/javascript" src="scripts/custom.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
-
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQUPe-GBmzqn0f8sb_8xZNcseul1N0yU&libraries=places&callback=initAutocomplete" defer></script>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
 
 </head>
@@ -73,14 +71,12 @@
                 <script type="text/javascript">
                     $(document).ready(function () {
                         addAddress();
+                        loadGoogleScript();
 
                         if (!isMobileDevice) {
                             fillState();
                             getUserAddressData();
                         }
-
-                    }).on('deviceready', function () {
-                        document.addEventListener("deviceready", deviceReadySuccess, false);
 
                         $(document).on({
                             'DOMNodeInserted': function () {
@@ -88,6 +84,8 @@
                             }
                         }, '.pac-container');
 
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", deviceReadySuccess, false);
                     });
 
                     var isMobileDevice = isMobile();
@@ -197,7 +195,6 @@
                         var msg = "Please correct following fields:\n";
 
                         var addressLine1 = $("#user-address-line-1").val();
-                        var addressLine2 = $("#user-address-line-2").val();
                         var cityValue = $("#user-city").val();
                         var stateValue = $("#ddlState").val();
                         var zipcodeValue = $("#user-zipcode").val();
@@ -205,10 +202,6 @@
                         if (addressLine1 === '' || addressLine1 === null || addressLine1 === 'Address Line 1') {
                             countError = countError + 1;
                             msg += "Address Line 1!\n";
-                        }
-                        if (addressLine2 === '' || addressLine2 === null || addressLine2 === 'Address Line 2') {
-                            countError = countError + 1;
-                            msg += "Address Line 2!\n";
                         }
                         if (cityValue === '' || cityValue === null || cityValue === 'City') {
                             countError = countError + 1;
@@ -258,7 +251,7 @@
                                     "userAddressId": getParameterByName("id"),
                                     "userId": localStorage.getItem("userId"),
                                     "address": $("#user-address-line-1").val(),
-                                    "addressTitle": $("#user-address-line-2").val(),
+                                    "addressTitle": ($("#user-address-line-2").val() == "Address Line 2") ? "" : $("#user-address-line-2").val(),
                                     "city": $("#user-city").val(),
                                     "state": $("#ddlState").val(),
                                     "zipcode": $("#user-zipcode").val(),

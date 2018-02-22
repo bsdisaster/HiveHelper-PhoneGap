@@ -1025,7 +1025,7 @@ $(document).ready(function () {
     });
 })
 
-var appVersion = '2.0.2';
+var appVersion = '2.0.3';
 var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
 //var api_baseUrl = 'http://hivehelperapp.com/v2/';
 
@@ -1045,6 +1045,7 @@ function isMobile() {
 }
 function showAlertDialog(title, message) {
     var alertDialogDiv = "<div id='alertDialog' style='display:none' title=" + title + "><p>" + message.replace(/\n/g, "<br />") + "</p></div>";
+    $(".ui-dialog").remove();
     $(alertDialogDiv).appendTo("body");
     $(alertDialogDiv).dialog();
 }
@@ -1057,4 +1058,16 @@ function showLoading(visibility) {
     } else {
         $(".loader").remove();
     }
+}
+
+function loadGoogleScript() {
+    var apiKey = localStorage.getItem("googleApiKey");
+    if (apiKey == null) {
+        apiKey = "AIzaSyCqi3ztBwwTvIQxhP57PkF8I7gAqXhLL8Y";
+    }
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://maps.googleapis.com/maps/api/js' +
+        '?key=' + apiKey + '&libraries=places&callback=initAutocomplete';
+    document.body.appendChild(script);
 }

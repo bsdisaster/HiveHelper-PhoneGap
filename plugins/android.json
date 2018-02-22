@@ -6,6 +6,54 @@
   "config_munge": {
     "files": {}
   },
-  "installed_plugins": {},
-  "dependent_plugins": {}
+  "installed_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-ios-camera-permissions": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-spinnerdialog": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "phonegap-plugin-push": {
+      "SENDER_ID": "762294569460",
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-stripe": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-webserver": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    }
+  }
 }

@@ -14,7 +14,9 @@
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
 
@@ -62,7 +64,10 @@
                 function getAllAddress() {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
                     }
+
                     var userId = localStorage.getItem("userId");
 
                     $.ajax({
@@ -73,7 +78,10 @@
                             // Inserting html into the result div on success
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (response !== null && response.status === 1) {
 
                                 var addressData = response.data;
@@ -81,7 +89,10 @@
                                 if (addressData.length > 0) {
                                     for (var i = 0; i < addressData.length; i++) {
                                         var fullAddress = '';
-                                        fullAddress = addressData[i].address + ', ' + addressData[i].city + ', ' + addressData[i].stateName + ', ' + addressData[i].zipcode + '.';
+
+                                        var addressTitle = (addressData[i].addressTitle == "") ? "" : addressData[i].addressTitle + ', ';
+
+                                        fullAddress = addressTitle + addressData[i].address + ', ' + addressData[i].city + ', ' + addressData[i].state + ', ' + addressData[i].zipcode + '.';
                                         var html = '<div class="fac fac-radio fac-default col-sm-12"><span></span>';
 
                                         html = html + '<div class="col-sm-10">';
@@ -109,7 +120,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    alert(response.message);
+                                    showAlertDialog('Warning',response.message);
                                 }
                             }
                         },
@@ -117,7 +128,10 @@
                             // Displaying if there are any errors
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
                             }
+
                             if (error == null || error == "") {
                                 if (isMobileDevice) {
                                     navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -127,7 +141,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    alert(error);
+                                    showAlertDialog('Error',error);
                                 }
                             }
                         }
@@ -170,20 +184,24 @@
 
                         var res = confirm("Are you sure you want to delete ?");
                         if (res == true) {
-
+                            showLoading(true);
                             $.ajax({
                                 url: api_baseUrl + 'useraddress/removeUserAddress/' + userAddressId,
                                 type: "GET",
                                 dataType: "json",
                                 success: function (response) {
+                                    showLoading(false);
+
                                     if (response !== null && response.status === 1) {
                                         $(object).parent().parent().remove();
-                                        alert('Address removed successfully!');
+                                        showAlertDialog('Success', 'Address removed successfully!');
                                     }
                                 },
                                 error: function (jqXHR, text, error) {
                                     // Displaying if there are any errors
-                                    alert(error);
+                                    showLoading(false);
+
+                                    showAlertDialog('Error',error);
                                 }
                             });
                         }

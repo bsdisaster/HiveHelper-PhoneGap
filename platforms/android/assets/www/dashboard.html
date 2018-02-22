@@ -14,7 +14,9 @@
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
     <script type="text/javascript" src="scripts/load-image.all.min.js"></script>
@@ -32,11 +34,16 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
-                    <div class="left-logo" onclick="redirectToMyProfile()">
-                        <div class="inline-block">
+                    <div class="left-logo">
+                        <div class="inline-block-bottom-text right-text">
+                            <span class="numberCircle" style="display:none"></span>
+                            <a href="#" onclick="getNotificationList()"><i class="fa fa-bell color-blue-light"></i></a>
+                        </div>
+
+                        <div class="inline-block" onclick="redirectToMyProfile()">
                             <img class="img-border-radius" width="80" height="80" />
                         </div>
-                        <div class="inline-block-bottom-text Orpheus-pro italic"><label></label></div>
+                        <div class="inline-block-bottom-text Orpheus-pro italic" onclick="redirectToMyProfile()"><label></label></div>
                     </div>
                 </div>
 
@@ -72,7 +79,7 @@
                             <strong>MY SCHEDULE</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
-                        <a href="helper-app-take-jobs.html" target="_self" class="user-list-3 animate-fade">
+                        <a href="helper-app-take-jobs.html" target="_self" class="user-list-3 animate-fade" id="takeJobs" style="display:none">
                             <img data-original="images/HiveHelper_icon2.png" alt="img" class="preload-image">
                             <strong>TAKE JOBS</strong>
                             <i class="ion-ios-arrow-forward"></i>
@@ -125,6 +132,72 @@
         var lastTimeBackPress = 0;
         var timePeriodToExit = 2000;
         var isMobileDevice = isMobile();
+
+        function getNotifications() {
+            $(".heading-strip i").css({ 'height': '0', 'line-height': '23px' });
+            $(".numberCircle").next().css({ 'display': 'inline', 'margin-left': '20px' });
+
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
+            }
+
+            $.ajax({
+                url: api_baseUrl + 'Notification/' + localStorage.getItem("userId"),
+                type: "GET",
+                dataType: "JSON",
+                success: function (response) {
+                    // Inserting html into the result div on success
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
+                    }
+
+                    if (response !== null && response.status === 1) {
+                        if (response.status == "1" && response.data.length > 0) {
+                            $(".numberCircle").show();
+                            $(".numberCircle").html(response.data.length);
+                        }
+                    }
+                },
+                error: function (jqXHR, text, error) {
+                    // Displaying if there are any errors
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
+                    }
+
+                    if (error == null || error == "") {
+                        if (isMobileDevice) {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        }
+
+                    } else {
+                        if (isMobileDevice) {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        } else {
+                            showAlertDialog('Error', error);
+                        }
+                    }
+                }
+            });
+        }
+
+        function getNotificationList() {
+            if ($(".numberCircle").is(":visible")) {
+                window.location = "hive-helper-notification-list.html";
+            } else {
+                if (isMobileDevice) {
+                    navigator.notification.alert("No new notification found!", null, 'Warning', 'Close');
+
+                } else {
+                    showAlertDialog("Warning","No new notification found!");
+                }
+            }
+        }
 
         function addWidth() {
             $("center").css("width", "100%");
@@ -184,12 +257,16 @@
         function deviceReadySuccess() {
             getProfileDetail();
             getHelperPortalDetails();
+            getNotifications();
         }
 
         function getHelperPortalDetails() {
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
+
             $.ajax({
                 url: api_baseUrl + 'helperportal/',
                 type: "GET",
@@ -198,6 +275,8 @@
                     // Inserting html into the result div on success
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
 
                     if (response !== null && response.status === 1) {
@@ -211,7 +290,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(response.message, null, 'Error', 'Close');
                         } else {
-                            alert(response.message);
+                            showAlertDialog('Error', response.message);
                         }
                     }
                 },
@@ -219,7 +298,10 @@
                     // Displaying if there are any errors
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -229,7 +311,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            alert(error);
+                            showAlertDialog('Error', error);
                         }
                     }
                 }
@@ -237,13 +319,15 @@
         }
 
         function getProfileDetail() {
-            var userId = localStorage.getItem("userId");
+        
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
 
             $.ajax({
-                url: api_baseUrl + 'profile/' + userId,
+                url: api_baseUrl + 'profile/' + localStorage.getItem("userId"),
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
@@ -263,6 +347,8 @@
 
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
                     }
                     else {
@@ -270,7 +356,8 @@
                             window.plugins.spinnerDialog.hide();
                             navigator.notification.alert(response.message, null, 'Error', 'Close');
                         } else {
-                            alert(response.message);
+                            showLoading(false);
+                            showAlertDialog('Error', response.message);
                         }
                     }
 
@@ -280,7 +367,10 @@
 
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -290,7 +380,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            alert(error);
+                            showAlertDialog('Error', error);
                         }
                     }
                 }
@@ -307,6 +397,10 @@
             else {
                 $("#divGeneralUser").removeClass('disabled');
                 $("#divHelperUser").addClass('disabled');
+            }
+
+            if (localStorage.getItem("isTrainee") == "false") {
+                $("#takeJobs").show();
             }
         }
     </script>

@@ -192,7 +192,10 @@
         function fetchSchedule() {
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
+
             $.ajax({
                 url: api_baseUrl + 'getSchedule/' + localStorage.getItem("userId"),
                 type: "GET",
@@ -201,6 +204,8 @@
                     // Inserting html into the result div on success
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
 
                     if (response !== null && response.data.schedule.length > 0 && response.status === 1) {
@@ -212,7 +217,10 @@
                     // Displaying if there are any errors
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -222,7 +230,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            alert(error);
+                            showAlertDialog('Error', error);
                         }
                     }
                 }
@@ -263,7 +271,7 @@
                     if (isMobileDevice) {
                         navigator.notification.alert("Please select time.", null, 'Warning', 'Close');
                     } else {
-                        alert("Please select time.");
+                        showAlertDialog("Warning", "Please select time.");
                     }
                 }
                 else {
@@ -277,7 +285,10 @@
         function getUpcomingUnavailableRecords() {
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
+
             $('.page-userlist').html('');
             var helperId = localStorage.getItem("userId");
 
@@ -289,6 +300,8 @@
                     // Inserting html into the result div on success
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
 
                     if (response !== null && response.status === 1) {
@@ -309,7 +322,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert("No upcoming unavailable records found.!", null, 'Warning', 'Close');
                             } else {
-                                alert("No upcoming unavailable records found.!");
+                                showAlertDialog("Warning", "No upcoming unavailable records found.!");
                             }
                         }
                     }
@@ -317,7 +330,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(response.message, null, 'Warning', 'Close');
                         } else {
-                            alert(response.message);
+                            showAlertDialog("Warning", response.message);
                         }
                     }
                 },
@@ -325,7 +338,10 @@
                     // Displaying if there are any errors
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -335,7 +351,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            alert(error);
+                            showAlertDialog('Error', error);
                         }
                     }
                 }
@@ -390,6 +406,8 @@
                 var res = confirm("Are you sure you want to delete ?");
 
                 if (res == true) {
+                    showLoading(true);
+
                     var parameter = {
                         "helperId": localStorage.getItem("userId"),
                         "userUnavailableId": userUnavailableId
@@ -401,19 +419,22 @@
                         data: JSON.stringify(parameter),
                         dataType: "json",
                         success: function (response) {
+                            showLoading(false);
+
                             // Inserting html into the result div on success
                             if (response !== null && response.status === 1) {
 
-                                alert('Record successfully removed.');
+                                showAlertDialog('Success', 'Record successfully removed.');
                                 $(divEle).parent().remove();
                             }
                             else {
-                                alert(response.message);
+                                showAlertDialog('Warning', response.message);
                             }
                         },
                         error: function (jqXHR, text, error) {
                             // Displaying if there are any errors
-                            alert(error);
+                            showLoading(true);
+                            showAlertDialog('Error', error);
                         }
                     });
                 }
@@ -424,7 +445,10 @@
         function saveFutureUnavailableDates() {
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
+
             if (checkExistingSchedules()) {
                 var date = new Date($("#calDate").val());
                 var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
@@ -446,12 +470,15 @@
                         // Inserting html into the result div on success
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                navigator.notification.alert("Your request was successfully submitted.", null, 'Success', 'Close');
+                                navigator.notification.alert("Your request was successfully submitted", null, 'Success', 'Close');
                             } else {
-                                alert("Your request was successfully submitted.");
+                                showAlertDialog('Success', 'Your request was successfully submitted');
                             }
                             getUpcomingUnavailableRecords();
                         }
@@ -459,7 +486,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(response.message, null, 'Error', 'Close');
                             } else {
-                                alert(response.message);
+                                showAlertDialog('Error', response.message);
                             }
                         }
                     },
@@ -467,7 +494,10 @@
                         // Displaying if there are any errors
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
                         }
+
                         if (error == null || error == "") {
                             if (isMobileDevice) {
                                 navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -477,7 +507,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(error, null, 'Error', 'Close');
                             } else {
-                                alert(error);
+                                showAlertDialog('Error', error);
                             }
                         }
                     }
@@ -487,7 +517,8 @@
                     navigator.notification.alert("Sorry,helper not available on this day.!", null, 'Warning', 'Close');
                     window.plugins.spinnerDialog.hide();
                 } else {
-                    alert("Sorry,helper not available on this day.!");
+                    showLoading(false);
+                    showAlertDialog('Warning', 'Sorry,helper not available on this day.!');
                 }
             }
         }

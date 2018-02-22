@@ -14,7 +14,9 @@
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
     
@@ -29,7 +31,7 @@
             <img src="images/HiveHelper_Logo.png" />
         </div>
         <div id="page-content" class="page-content">
-            <div class="set-background-splash">
+            <div class="set-background-splash2">
                 <div id="page-content-scroll" class="header-clear">
                     <div class="clear">&nbsp;</div>
                     <h3 class="center-text futura-medium">Appointment details</h3>
@@ -96,8 +98,14 @@
                         <div class="bottom-line"></div>
 
                         <div class="page-login-input animate-fade">
-                            <label class="bold inline-block" id="lblAddress">Address: </label>
+                            <label class="bold inline-block" id="lblAddress">Address Line 1: </label>
                             <label class="inline-block blueColor" onclick="storeMapAddress(this)"></label>
+                        </div>
+                        <div class="bottom-line"></div>
+
+                        <div class="page-login-input animate-fade">
+                            <label class="bold inline-block" id="lblAddressTitle">Address Line 2: </label>
+                            <label class="inline-block"></label>
                         </div>
                         <div class="bottom-line"></div>
 
@@ -196,6 +204,8 @@
         function getAppointmentDetails() {
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
             }
 
             $.ajax({
@@ -206,6 +216,8 @@
                     // Inserting html into the result div on success
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
 
                     if (response !== null && response.status === 1) {
@@ -222,6 +234,7 @@
                         $("#lblAppointmentFrom").next().html(appointmentDetails[0].appointmentFrom);
                         $("#lblAppointmentTo").next().html(appointmentDetails[0].appointmentTo);
                         $("#lblDate").next().html(appointmentDetails[0].appointmentDate);
+                        $("#lblAddressTitle").next().html(appointmentDetails[0].addressTitle);
                         $("#lblAddress").next().html(appointmentDetails[0].address);
 
                         // get helpers
@@ -259,7 +272,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(response.message, null, 'Warning', 'Close');
                         } else {
-                            alert(response.message);
+                            showAlertDialog('Warning', response.message);
                         }
                     }
                 },
@@ -267,7 +280,10 @@
                     // Displaying if there are any errors
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
                     }
+
                     if (error == null || error == "") {
                         if (isMobileDevice) {
                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
@@ -277,7 +293,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            alert(error);
+                            showAlertDialog('Error',error);
                         }
                     }
                 }

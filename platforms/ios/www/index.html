@@ -163,6 +163,12 @@
                                         }
 
                                         if (response !== null && response.status === 1) {
+                                            if (api_baseUrl.split("/").indexOf("appv2") == -1) {
+                                                localStorage.setItem("googleApiKey", response.data.liveapi);
+                                            } else {
+                                                localStorage.setItem("googleApiKey", response.data.testapi);
+                                            }
+
                                             window.location = "dashboard.html";
                                         }
                                         else {
@@ -187,9 +193,10 @@
                                 },
                                 "ios": {
                                     "sound": true,
+                                    "forceShow": "true",
                                     "vibration": true,
                                     "badge": true,
-                                    "clearBadge": true
+                                    "clearBadge": true,
                                 },
                                 "windows": {}
                             });
@@ -376,7 +383,12 @@
                                             localStorage.setItem("userId", response.data.userId);
                                             localStorage.setItem("roleId", response.data.roleId);
                                             localStorage.setItem("userAddressId", response.data.userAddressId);
-
+                                         
+                                            if (api_baseUrl.split("/").indexOf("appv2") == -1) {
+                                                localStorage.setItem("googleApiKey", response.data.liveapi);
+                                            } else {
+                                                localStorage.setItem("googleApiKey", response.data.testapi);
+                                            }
                                             window.location = "dashboard.html";
                                         }
                                         else {

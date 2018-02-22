@@ -79,7 +79,7 @@
                             <strong>MY SCHEDULE</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
-                        <a href="helper-app-take-jobs.html" target="_self" class="user-list-3 animate-fade">
+                        <a href="helper-app-take-jobs.html" target="_self" class="user-list-3 animate-fade" id="takeJobs" style="display:none">
                             <img data-original="images/HiveHelper_icon2.png" alt="img" class="preload-image">
                             <strong>TAKE JOBS</strong>
                             <i class="ion-ios-arrow-forward"></i>
@@ -397,6 +397,10 @@
             else {
                 $("#divGeneralUser").removeClass('disabled');
                 $("#divHelperUser").addClass('disabled');
+            }
+
+            if (localStorage.getItem("isTrainee") == "false") {
+                $("#takeJobs").show();
             }
         }
     </script>
