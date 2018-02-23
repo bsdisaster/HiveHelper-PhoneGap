@@ -145,7 +145,6 @@ html, body {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
     vertical-align: baseline;
     outline: none;
     font-size-adjust: none;
@@ -11747,10 +11746,6 @@ button.swiper-pagination-bullet {
 
 .calendar-bgcolor {
     background: rgba(0,0,0,0.3);
-}
-
-.calendar-line-height {
-    line-height: 66px !important;
 }
 
 .heading-strip-fix-padding {

@@ -52,11 +52,11 @@
                 <div class="page-login content">
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade">
-                        <input id="profile-firstname" type="text" value="First name" onfocus="if (this.value=='First name') this.value = ''" onblur="if (this.value=='') this.value = 'First name'">
+                        <input id="profile-firstname" type="text" value="First name" onfocus="if (this.value=='First name') this.value = ''" onblur="if (this.value=='') this.value = 'First name'" onkeyup="restrictSpecialChars(this)">
 
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100">
-                        <input id="profile-lastname" type="text" value="Last name" onfocus="if (this.value=='Last name') this.value = ''" onblur="if (this.value=='') this.value = 'Last name'">
+                        <input id="profile-lastname" type="text" value="Last name" onfocus="if (this.value=='Last name') this.value = ''" onblur="if (this.value=='') this.value = 'Last name'" onkeyup="restrictSpecialChars(this)">
 
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-300">
@@ -86,7 +86,7 @@
 
                     <div class="page-login-input my-profile-removed-left-pedding full-bottom animate-fadeanimate-delay-600">
                         <input id="profile-password" type="password" class="changepassword-text" placeholder="Password" disabled="disabled">
-                        <a href="#" onclick="enablePassword()" class="column-center-image">CHANGE</a>
+                        <a href="#" onclick="enablePassword()" class="column-center-image">Change</a>
                     </div>
 
                     <button id="btnupdateProfile" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>

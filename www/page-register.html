@@ -36,11 +36,11 @@
                 <div class="pageapp-login content">
                     <div class="page-login-input animate-fade">
                         <i class="login-icon ion-person"></i>
-                        <input id="register-firstname" type="text" value="First name" onfocus="if (this.value=='First name') this.value = ''" onblur="if (this.value=='') this.value = 'First name'">
+                        <input id="register-firstname" type="text" value="First name" onfocus="if (this.value == 'First name') this.value = ''" onblur="if (this.value == '')this.value = 'First name'" onkeyup="restrictSpecialChars(this)">
                     </div>
                     <div class="page-login-input animate-fade animate-delay-100">
                         <i class="login-icon ion-person"></i>
-                        <input id="register-lastname" type="text" value="Last name" onfocus="if (this.value=='Last name') this.value = ''" onblur="if (this.value=='') this.value = 'Last name'">
+                        <input id="register-lastname" type="text" value="Last name" onfocus="if (this.value=='Last name') this.value = ''" onblur="if (this.value=='') this.value = 'Last name'" onkeyup="restrictSpecialChars(this)">
                     </div>
                     <div class="page-login-input animate-fade animate-delay-200">
                         <i class="login-icon ion-android-mail"></i>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="page-login-input full-bottom animate-fade animate-delay-300">
                         <i class="login-icon ion-asterisk"></i>
-                        <input id="register-password" type="password" value="Password" onfocus="if (this.value=='Password') this.value = ''" onblur="if (this.value=='') this.value = 'Password'">
+                        <input id="register-password" type="text" value="Password">
                     </div>
                     <div class="page-login-input full-bottom animate-fade animate-delay-300">
                         <i class="login-icon ion-at"></i>
@@ -127,8 +127,20 @@
             autocomplete.addListener('place_changed', fillInAddress);
         }
 
+        $('#register-password').on('focus', function () {
+            if ($(this).val() == "Password") {
+                $(this).prop('type', 'password').val('');
+            }
+        });
+        $('#register-password').on('blur', function () {
+            if ($(this).val() == "") {
+                $(this).val("Password");
+                $(this).prop('type', 'text');
+            }
+        });
+
         function deviceReadySuccess() {
-           
+
             if (isMobileDevice) {
                 getPushNotificationToken();
             }
@@ -155,6 +167,11 @@
             }
         }
 
+        $('#register-password').on('keypress', function (event) {
+            if (event.keyCode == 32) // 32 is the ASCII value for a space
+                event.preventDefault();
+        });
+
         function isValidateRegister() {
             var isResult = true;
             var countError = 0;
@@ -179,9 +196,9 @@
                 countError = countError + 1;
                 msg += "Email address!\n";
             }
-            if (passwordValue === '' || passwordValue === null || passwordValue === 'Password') {
+            if (passwordValue === '' || passwordValue === null || passwordValue === 'Password' || passwordValue.length < 5) {
                 countError = countError + 1;
-                msg += "Password!\n";
+                msg += "Min 5 character password!\n";
             }
             if (phoneValue === '(___) ___-____' || phoneValue === null || phoneValue === 'Phone') {
                 countError = countError + 1;
@@ -253,7 +270,7 @@
         function register() {
 
             $('#btnCreateAccount').on('click', function (event) {
-               
+
                 if (isValidateRegister()) {
 
                     if (isMobileDevice) {

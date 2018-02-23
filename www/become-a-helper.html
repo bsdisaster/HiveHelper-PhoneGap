@@ -40,12 +40,12 @@
                     <div class="page-login-input select-profile col-sm-12 my-profile-removed-left-pedding animate-fade">
                         <div class="col-sm-12 no-padding-right">
                             <div class="col-sm-6 changepassword-text">
-                                <input id="become-a-helper-firstname" type="text">
-                                <label>First Name</label>
+                                <input id="become-a-helper-firstname" type="text" onkeyup="restrictSpecialChars(this)">
+                                <label>First Name*</label>
                             </div>
                             <div class="col-sm-6 no-padding-right changepassword-text">
-                                <input id="become-a-helper-lastname" type="text">
-                                <label>Last Name</label>
+                                <input id="become-a-helper-lastname" type="text" onkeyup="restrictSpecialChars(this)">
+                                <label>Last Name*</label>
                             </div>
                         </div>
 
@@ -113,7 +113,7 @@
         var isMobileDevice = isMobile();
 
         // validation for pages.
-        function IsValidatePage() {
+        function isValidatePage() {
             var isResult = true;
             var countError = 0;
             var msg = "Please correct following fields:\n";
@@ -149,11 +149,11 @@
 
             if (aboutExperienceValue === '' || aboutExperienceValue === null) {
                 countError = countError + 1;
-                msg += "About Experience!\n";
+                msg += "About experience!\n";
             }
             if (professionalReferencesValue === '' || professionalReferencesValue === null) {
                 countError = countError + 1;
-                msg += "Professional References!\n";
+                msg += "Professional references!\n";
             }
             if (availibilityValue === '' || availibilityValue === null) {
                 countError = countError + 1;
@@ -184,7 +184,7 @@
         function SendData() {
             $('#btnSend').on('click', function (event) {
 
-                if (IsValidatePage()) {
+                if (isValidatePage()) {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                     } else {

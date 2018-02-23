@@ -33,18 +33,18 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip header-div">
-                    <h3 class="center-text futura-medium">Franchising Oppurutnities</h3>
+                    <h3 class="center-text futura-medium">Franchising Opportunities</h3>
                     <p class="futura-medium">HIVE HELPER is a task service company based in Oklahoma City that is franchising nationwide!</p>
                 </div>
                 <div class="page-login content">
                     <div class="page-login-input select-profile col-sm-12 my-profile-removed-left-pedding animate-fade">
                         <div class="col-sm-12 no-padding-right">
                             <div class="col-sm-6">
-                                <input id="franchising-opportunities-firstname" type="text" class="changepassword-text input">
+                                <input id="franchising-opportunities-firstname" type="text" class="changepassword-text input" onkeyup="restrictSpecialChars(this)">
                                 <label>First Name*</label>
                             </div>
                             <div class="col-sm-6 no-padding-right">
-                                <input id="franchising-opportunities-lastname" type="text" class="changepassword-text input">
+                                <input id="franchising-opportunities-lastname" type="text" class="changepassword-text input" onkeyup="restrictSpecialChars(this)">
                                 <label>Last Name*</label>
                             </div>
                         </div>
@@ -60,13 +60,11 @@
                     </div>
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-
                         <input id="franchising-opportunities-phone" type="tel" class="changepassword-text input" maxlength="10">
                         <label>Phone*</label>
                     </div>
-
+                    
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-
                         <textarea id="franchising-opportunities-about-you" class="contactTextarea" col="6" row="10"></textarea>
                         <label>Tell us about you*</label>
                     </div>
@@ -137,7 +135,7 @@
             }
             if (aboutExperienceValue === '' || aboutExperienceValue === null) {
                 countError = countError + 1;
-                msg += "About You!\n";
+                msg += "About you!\n";
             }
             if (emailValue !== null && emailValue !== '') {
                 var x = emailValue;

@@ -1025,13 +1025,14 @@ $(document).ready(function () {
     });
 })
 
-var appVersion = '2.0.3';
+var androidAppVersion = '2.0.3';
+var iosAppVersion = '2.0.1';
 var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
 //var api_baseUrl = 'http://hivehelperapp.com/v2/';
 
 var pageTitle = $(document.getElementsByTagName('title')[0]).html();
 var lastIndex = pageTitle.lastIndexOf(" ");
-pageTitle = pageTitle.substring(0, lastIndex) + " " + appVersion;
+pageTitle = pageTitle.substring(0, lastIndex) + " " + androidAppVersion;
 $(document.getElementsByTagName('title')[0]).html(pageTitle);
 
 // detect mobile devices
@@ -1070,4 +1071,16 @@ function loadGoogleScript() {
     script.src = 'https://maps.googleapis.com/maps/api/js' +
         '?key=' + apiKey + '&libraries=places&callback=initAutocomplete';
     document.body.appendChild(script);
+}
+
+//restrict special characters firstname,lastname
+function restrictSpecialChars(ele) {
+    var charReg = /^\s*[a-zA-Z0-9,\s]+\s*$/;
+    var inputVal = $(ele).val();
+
+    if (!charReg.test(inputVal)) {
+        $(ele).val(inputVal.substring(0, inputVal.length - 1));
+    } else if ($(ele).val().lastIndexOf(" ") == ($(ele).val().length - 1)) {
+        $(ele).val(inputVal.substring(0, inputVal.length - 1));
+    }
 }

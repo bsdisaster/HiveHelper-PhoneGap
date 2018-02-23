@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-400">
-                        <input id="user-zipcode" type="text" value="Zip Code" onfocus="if (this.value=='Zip Code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip Code'">
+                        <input id="user-zipcode" type="text" value="Zip Code" onfocus="if (this.value=='Zip Code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip Code'" maxlength="6">
                     </div>
                     <button id="btnAddEdit" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
                 </div>
@@ -94,6 +94,13 @@
                         fillState();
                         getUserAddressData();
                     }
+
+                    $("#user-zipcode").on('keypress',function (e) {
+                        //if the letter is not digit then display error and don't type anything
+                        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                            return false;
+                        }
+                    });
 
                     var placeSearch, autocomplete, latitude, longitude;
                     function initAutocomplete() {
@@ -158,10 +165,13 @@
                                         $("#user-address-line-1").val(response.data["address"]);
                                         $("#user-address-line-2").val(response.data["addressTitle"]);
                                         $("#user-city").val(response.data["city"]);
-                                        $("#ddlState").val(response.data["state"]);
                                         $("#user-zipcode").val(response.data["zipcode"]);
                                         latitude = response.data["latitude"];
                                         longitude = response.data["longitude"];
+
+                                        setTimeout(function () {
+                                            $("#ddlState").val(response.data["state"]);
+                                        }, 500);
                                     }
                                 },
                                 error: function (jqXHR, text, error) {
