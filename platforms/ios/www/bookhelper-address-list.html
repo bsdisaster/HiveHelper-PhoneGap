@@ -85,7 +85,7 @@
                             if (response !== null && response.status === 1) {
 
                                 var addressData = response.data;
-                               
+
                                 if (addressData.length > 0) {
                                     for (var i = 0; i < addressData.length; i++) {
                                         var fullAddress = '';
@@ -120,7 +120,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    showAlertDialog('Warning',response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -141,7 +141,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }
@@ -201,7 +201,7 @@
                                     // Displaying if there are any errors
                                     showLoading(false);
 
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             });
                         }

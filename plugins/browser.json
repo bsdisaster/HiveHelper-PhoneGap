@@ -27,25 +27,29 @@
     },
     "cordova-plugin-x-toast": {
       "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "phonegap-plugin-push": {
+      "SENDER_ID": "762294569460",
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-actionsheet": {
       "PACKAGE_NAME": "io.cordova.hellocordova"
     },
-    "cordova-plugin-compat": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-geolocation": {
+    "cordova-plugin-app-event": {
       "PACKAGE_NAME": "io.cordova.hellocordova"
     },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "io.cordova.hellocordova"
     },
     "cordova-plugin-stripe": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-webserver": {
       "PACKAGE_NAME": "io.cordova.hellocordova"
     }
   }

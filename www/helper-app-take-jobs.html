@@ -78,7 +78,7 @@
                             if (response !== null && response.status === 1) {
                                 var responseData = response.data;
                                 if (responseData != null && responseData.length > 0) {
-                                    
+
                                     for (var i = 0; i < responseData.length; i++) {
                                         var html = '';
                                         var serviceName = '<b>Service:</b> ' + responseData[i].Service + ' <br />';
@@ -107,7 +107,10 @@
                                 } else {
                                     showAlertDialog('Warning', response.message);
                                 }
-                                window.location.href = "dashboard.html";
+
+                                setTimeout(function () {
+                                    window.location.href = "dashboard.html";
+                                }, 1000);
                             }
                         },
                         error: function (jqXHR, text, error) {
@@ -127,7 +130,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }
@@ -194,7 +197,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }

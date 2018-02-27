@@ -203,7 +203,10 @@
                                 } else {
                                     showAlertDialog('Warning', response.message);
                                 }
-                                window.location = "hive-helper-my-schedule.html";
+
+                                setTimeout(function () {
+                                    window.location = "hive-helper-my-schedule.html";
+                                }, 1000);
                             }
                         },
                         error: function (jqXHR, text, error) {
@@ -223,7 +226,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }
@@ -282,7 +285,7 @@
                                 error: function (jqXHR, text, error) {
                                     // Displaying if there are any errors
                                     showLoading(false);
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             });
                         }

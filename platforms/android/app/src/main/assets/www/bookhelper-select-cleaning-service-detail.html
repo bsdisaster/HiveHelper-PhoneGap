@@ -238,7 +238,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            showAlertDialog('Error',error);
+                            showAlertDialog('Error', error);
                         }
                     }
                 }
@@ -319,7 +319,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(error, null, 'Error', 'Close');
                             } else {
-                                showAlertDialog('Error',error);
+                                showAlertDialog('Error', error);
                             }
                         }
                     }
@@ -407,13 +407,16 @@
                             } else {
                                 showAlertDialog('Success', 'Your request has been sent');
                             }
-                            window.location.href = "dashboard.html";
+
+                            setTimeout(function () {
+                                window.location.href = "dashboard.html";
+                            }, 1000);
                         }
                         else {
                             if (isMobileDevice) {
                                 navigator.notification.alert(response.message, null, "Warning", "Close");
                             } else {
-                                showAlertDialog('Warning',response.message);
+                                showAlertDialog('Warning', response.message);
                             }
                         }
                     },
@@ -434,7 +437,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(error, null, 'Error', 'Close');
                             } else {
-                                showAlertDialog('Error',error);
+                                showAlertDialog('Error', error);
                             }
                         }
                     }

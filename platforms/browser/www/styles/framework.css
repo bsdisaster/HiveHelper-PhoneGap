@@ -12074,3 +12074,7 @@ button.swiper-pagination-bullet {
     font-size: xx-large;
     color: black;
 }
+
+.notification-widget{
+    box-shadow: 10px 10px 8px #888888;
+}

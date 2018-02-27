@@ -100,7 +100,9 @@
                                         } else {
                                             showAlertDialog('Warning', 'No service available for this address');
                                         }
-                                        window.location.href = "bookhelper-address-list.html";
+                                        setTimeout(function () {
+                                            window.location.href = "bookhelper-address-list.html";
+                                        }, 1000);
                                     }
                                 }
                                 else {
@@ -109,7 +111,10 @@
                                     } else {
                                         showAlertDialog('Warning', response.message);
                                     }
-                                    window.location.href = "bookhelper-address-list.html";
+
+                                    setTimeout(function () {
+                                        window.location.href = "bookhelper-address-list.html";
+                                    }, 1000);
                                 }
                             },
                             error: function (jqXHR, text, error) {

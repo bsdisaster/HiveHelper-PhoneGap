@@ -226,7 +226,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }
@@ -266,7 +266,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    showAlertDialog('Warning',response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -289,7 +289,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }
@@ -414,7 +414,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                     } else {
-                                        showAlertDialog('Warning',response.message);
+                                        showAlertDialog('Warning', response.message);
                                     }
                                     $("#promoCode").css("border-color", "red");
                                 }
@@ -423,7 +423,7 @@
                                 // Displaying if there are any errors
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
-                                }else {
+                                } else {
                                     showLoading(false);
                                 }
 
@@ -436,7 +436,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(error, null, 'Error', 'Close');
                                     } else {
-                                        showAlertDialog('Error',error);
+                                        showAlertDialog('Error', error);
                                     }
                                 }
                             }
@@ -533,7 +533,7 @@
                 }
 
                 function createCard(secretkey, customerId, source, parameters, tokenInfo) {
-                    
+
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                     } else {
@@ -631,7 +631,7 @@
                         // Get the token ID:
                         var tokenInfo = response;
                         console.log(tokenInfo);
-                        
+
                         // Save token mapping it to customer for all future payment activities
                         if (existingCustomerId == null) {
                             createCustomer(tokenInfo);
@@ -683,9 +683,9 @@
 
                 function makePayment(tokenInfo) {
                     var params = null;
-                    
+
                     if (tokenInfo == null && existingCustomerId != null) {
-                        
+
                         params = {
                             amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),
                             source: selectedCard,
@@ -839,7 +839,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    showAlertDialog('Warning',response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -861,7 +861,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }
@@ -927,13 +927,16 @@
 
                                 localStorage.removeItem("paymentTempObject");
                                 sessionStorage.clear();
-                                window.location.href = "dashboard.html";
+
+                                setTimeout(function () {
+                                    window.location.href = "dashboard.html";
+                                }, 1000);
                             }
                             else {
                                 if (isMobileDevice) {
                                     navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                 } else {
-                                    showAlertDialog('Warning',response.message);
+                                    showAlertDialog('Warning', response.message);
                                 }
                             }
                         },
@@ -955,7 +958,7 @@
                                 if (isMobileDevice) {
                                     navigator.notification.alert(error, null, 'Error', 'Close');
                                 } else {
-                                    showAlertDialog('Error',error);
+                                    showAlertDialog('Error', error);
                                 }
                             }
                         }

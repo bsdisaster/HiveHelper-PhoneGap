@@ -4,7 +4,9 @@
   "displayName": "Hive Helper",
   "cordova": {
     "platforms": [
-      "android"
+      "browser",
+      "android",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-device": {},
@@ -24,7 +26,8 @@
         "MICROPHONE_USAGE_DESCRIPTION": "This app needs microphone access",
         "PHOTOLIBRARY_ADD_USAGE_DESCRIPTION": "This app needs write-access to photo library",
         "PHOTOLIBRARY_USAGE_DESCRIPTION": "This app needs read/write-access photo library access"
-      }
+      },
+      "de.appplant.cordova.plugin.local-notification": {}
     }
   },
   "dependencies": {
@@ -32,17 +35,18 @@
     "cordova-browser": "^5.0.3",
     "cordova-ios": "^4.5.4",
     "cordova-plugin-actionsheet": "^2.3.3",
+    "cordova-plugin-app-event": "^1.2.1",
     "cordova-plugin-device": "~1.1.6",
     "cordova-plugin-dialogs": "~1.3.3",
     "cordova-plugin-ios-camera-permissions": "^1.2.0",
     "cordova-plugin-local-notifications": "^1.0.0",
     "cordova-plugin-spinnerdialog": "~1.3.2",
     "cordova-plugin-splashscreen": "~4.0.3",
-    "cordova-plugin-webserver": "^1.0.3",
     "cordova-plugin-whitelist": "~1.3.2",
     "cordova-plugin-wkwebview": "^0.6.10",
     "cordova-plugin-write-log": "0.0.5",
     "cordova-plugin-x-toast": "~2.6.0",
+    "de.appplant.cordova.plugin.local-notification": "^0.8.5",
     "es6-promise-plugin": "^4.1.0",
     "phonegap-plugin-push": "^1.8.4",
     "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.1.0"

@@ -316,7 +316,10 @@
                                 else {
                                     showAlertDialog('Success', "Your registration was successful");
                                 }
-                                window.location = "index.html";
+
+                                setTimeout(function () {
+                                    window.location = "index.html";
+                                }, 1000);
                             }
                             else {
                                 if (isMobileDevice) {

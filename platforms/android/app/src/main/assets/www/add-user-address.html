@@ -95,7 +95,7 @@
                         getUserAddressData();
                     }
 
-                    $("#user-zipcode").on('keypress',function (e) {
+                    $("#user-zipcode").on('keypress', function (e) {
                         //if the letter is not digit then display error and don't type anything
                         if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                             return false;
@@ -284,17 +284,20 @@
 
                                         if (response !== null && response.status === 1) {
                                             if (isMobileDevice) {
-                                                navigator.notification.alert('Data saved successfully!', null, 'Success', 'Close');
+                                                navigator.notification.alert('Address saved successfully!', null, 'Success', 'Close');
                                             } else {
-                                                showAlertDialog('Success', 'Data saved successfully!');
+                                                showAlertDialog('Success', 'Address saved successfully!');
                                             }
-                                            window.location = "bookhelper-address-list.html";
+
+                                            setTimeout(function () {
+                                                window.location = "bookhelper-address-list.html";
+                                            }, 1000);
                                         }
                                         else {
                                             if (isMobileDevice) {
                                                 navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                             } else {
-                                                showAlertDialog('Warning',response.message);
+                                                showAlertDialog('Warning', response.message);
                                             }
                                         }
                                     },
@@ -315,7 +318,7 @@
                                             if (isMobileDevice) {
                                                 navigator.notification.alert(error, null, 'Error', 'Close');
                                             } else {
-                                                showAlertDialog('Error',error);
+                                                showAlertDialog('Error', error);
                                             }
                                         }
                                     }
@@ -359,7 +362,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(response.message, null, 'Error', 'Close');
                                     } else {
-                                        showAlertDialog('Warning',response.message);
+                                        showAlertDialog('Warning', response.message);
                                     }
                                 }
                             },
@@ -379,7 +382,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(error, null, 'Error', 'Close');
                                     } else {
-                                        showAlertDialog('Error',error);
+                                        showAlertDialog('Error', error);
                                     }
                                 }
                             }

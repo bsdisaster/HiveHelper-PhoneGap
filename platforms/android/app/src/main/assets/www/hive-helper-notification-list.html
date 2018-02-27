@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>Login - Hive Helper 1.0</title>
+    <title>Notifications - Hive Helper 1.0</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
@@ -107,7 +107,10 @@
                     } else {
                         showAlertDialog('Success', "Notification successfully removed!");
                     }
-                    window.location = "dashboard.html";
+
+                    setTimeout(function () {
+                        window.location = "dashboard.html";
+                    }, 1000);
                 } else {
                     if (isMobileDevice) {
                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
@@ -161,7 +164,7 @@
                 
                 if (response !== null && response.status === 1 && response.data.length > 0) {
                     for (var i = 0; i < response.data.length; i++) {
-                        var html =  '<div class="notification-list"><p>' + response.data[i].description + '</p></div>';
+                        var html =  '<div class="notification-list notification-widget"><p>' + response.data[i].description + '</p></div><div class="clear">&nbsp;</div>';
                         $('.page-userlist').append(html);
                     }
                 }

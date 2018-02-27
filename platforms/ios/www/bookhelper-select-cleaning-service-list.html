@@ -42,106 +42,113 @@
                 </div>
 
                 <script type="text/javascript">
-                        var serviceId = null;
-                        $(document).ready(function () {
-                            serviceId = localStorage.getItem("serviceId");
+                    var serviceId = null;
+                    $(document).ready(function () {
+                        serviceId = localStorage.getItem("serviceId");
 
-                            if (!isMobileDevice) {
-                                getAllServices();
-                            }
-                        }).on('deviceready', function () {
-                            document.addEventListener("deviceready", getAllServices, false);
-                        });
+                        if (!isMobileDevice) {
+                            getAllServices();
+                        }
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", getAllServices, false);
+                    });
 
-                        var isMobileDevice = isMobile();
+                    var isMobileDevice = isMobile();
 
-                        function getAllServices() {
-                            if (isMobileDevice) {
-                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                            } else {
-                                showLoading(true);
-                            }
+                    function getAllServices() {
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        } else {
+                            showLoading(true);
+                        }
 
-                            var parameter = { "serviceId": serviceId, "franchiseId": localStorage.getItem("franchiseId") };
+                        var parameter = { "serviceId": serviceId, "franchiseId": localStorage.getItem("franchiseId") };
 
-                            $.ajax({
-                                url: api_baseUrl + 'service/getsubService/',
-                                type: "POST",
-                                data: JSON.stringify(parameter),
-                                dataType: "json",
-                                success: function (response) {
-                                    // Inserting html into the result div on success
+                        $.ajax({
+                            url: api_baseUrl + 'service/getsubService/',
+                            type: "POST",
+                            data: JSON.stringify(parameter),
+                            dataType: "json",
+                            success: function (response) {
+                                // Inserting html into the result div on success
 
-                                    if (isMobileDevice) {
-                                        window.plugins.spinnerDialog.hide();
-                                    } else {
-                                        showLoading(false);
-                                    }
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
+                                }
 
-                                    if (response !== null && response.status === 1) {
+                                if (response !== null && response.status === 1) {
 
-                                        var serviceCleaningData = response.data;
+                                    var serviceCleaningData = response.data;
 
-                                        if (serviceCleaningData.length > 0) {
-                                            for (var i = 0; i < serviceCleaningData.length; i++) {
+                                    if (serviceCleaningData.length > 0) {
+                                        for (var i = 0; i < serviceCleaningData.length; i++) {
 
-                                                var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(' + serviceCleaningData[i].subServiceId + ',' + serviceCleaningData[i].franchiseId + ',\'' + serviceCleaningData[i].displaytitle + '\',\'' + serviceCleaningData[i].regularPrice + '\')" class="user-list-3">';
-                                                html = html + '<strong>' + serviceCleaningData[i].displaytitle + '</strong>';
-                                                html = html + '<i class="ion-ios-arrow-forward"></i>';
-                                                html = html + '</a>';
-                                                $('.page-userlist').append(html);
-                                            }
-                                        }
-                                        else {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert("no subservice found", null, 'Warning', 'Close');
-                                            } else {
-                                                showAlertDialog('Warning', 'No subservice found.!');
-                                            }
-                                            window.location.href = "bookhelper-service-type-list.html";
+                                            var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(' + serviceCleaningData[i].subServiceId + ',' + serviceCleaningData[i].franchiseId + ',\'' + serviceCleaningData[i].displaytitle + '\',\'' + serviceCleaningData[i].regularPrice + '\')" class="user-list-3">';
+                                            html = html + '<strong>' + serviceCleaningData[i].displaytitle + '</strong>';
+                                            html = html + '<i class="ion-ios-arrow-forward"></i>';
+                                            html = html + '</a>';
+                                            $('.page-userlist').append(html);
                                         }
                                     }
                                     else {
                                         if (isMobileDevice) {
-                                            navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                            navigator.notification.alert("no subservice found", null, 'Warning', 'Close');
                                         } else {
-                                            showAlertDialog('Warning',response.message);
-                                        }
-                                        window.location.href = "bookhelper-service-type-list.html";
-                                    }
-                                },
-                                error: function (jqXHR, text, error) {
-                                    // Displaying if there are any errors
-                                    if (isMobileDevice) {
-                                        window.plugins.spinnerDialog.hide();
-                                    } else {
-                                        showLoading(false);
-                                    }
-
-                                    if (error == null || error == "") {
-                                        if (isMobileDevice) {
-                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                            showAlertDialog('Warning', 'No subservice found.!');
                                         }
 
-                                    } else {
-                                        if (isMobileDevice) {
-                                            navigator.notification.alert(error, null, 'Error', 'Close');
-                                        } else {
-                                            showAlertDialog('Error',error);
-                                        }
+                                        setTimeout(function () {
+                                            window.location.href = "bookhelper-service-type-list.html";
+                                        }, 1000);
                                     }
                                 }
-                            });
-                        }
+                                else {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                    } else {
+                                        showAlertDialog('Warning', response.message);
+                                    }
 
-                        function gotoSelectCleaningServiceDetailPage(subServiceId, franchiseId, displaytitle, regularPrice) {
-                            localStorage.setItem('helperName', '');
-                            localStorage.setItem('subServiceId', subServiceId);
-                            localStorage.setItem("selectedCleaningTitle", displaytitle);
-                            localStorage.setItem("regularPrice", regularPrice);
+                                    setTimeout(function () {
+                                        window.location.href = "bookhelper-service-type-list.html";
+                                    }, 1000);
 
-                            window.location.href = "bookhelper-select-cleaning-service-detail.html";
-                        }
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
+                                }
+
+                                if (error == null || error == "") {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    }
+
+                                } else {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    } else {
+                                        showAlertDialog('Error', error);
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    function gotoSelectCleaningServiceDetailPage(subServiceId, franchiseId, displaytitle, regularPrice) {
+                        localStorage.setItem('helperName', '');
+                        localStorage.setItem('subServiceId', subServiceId);
+                        localStorage.setItem("selectedCleaningTitle", displaytitle);
+                        localStorage.setItem("regularPrice", regularPrice);
+
+                        window.location.href = "bookhelper-select-cleaning-service-detail.html";
+                    }
                 </script>
             </div>
         </div>

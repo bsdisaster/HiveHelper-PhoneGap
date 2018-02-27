@@ -160,7 +160,10 @@
                                     } else {
                                         showAlertDialog('Warning', 'No records found!');
                                     }
-                                    window.location.href = "my-booking.html";
+
+                                    setTimeout(function () {
+                                        window.location.href = "my-booking.html";
+                                    }, 1000);
                                 }
                             }
                             else {
@@ -415,11 +418,14 @@
 
                         if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                navigator.notification.alert("Your data successfully updated", null, 'Success', 'Close');
+                                navigator.notification.alert("Your appointment successfully updated", null, 'Success', 'Close');
                             } else {
-                                showAlertDialog('Success', 'Your data successfully updated');
+                                showAlertDialog('Success', 'Your appointment successfully updated');
                             }
-                            window.location.href = "my-booking.html";
+
+                            setTimeout(function () {
+                                window.location.href = "my-booking.html";
+                            }, 1000);
                         }
                         else {
                             if (isMobileDevice) {

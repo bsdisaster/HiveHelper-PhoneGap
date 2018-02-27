@@ -358,7 +358,10 @@
                                             } else {
                                                 showAlertDialog("Success", "Profile successfully updated");
                                             }
-                                            window.location = "dashboard.html";
+
+                                            setTimeout(function () {
+                                                window.location = "dashboard.html";
+                                            }, 1000);
                                         }
                                         else {
                                             if (isMobileDevice) {

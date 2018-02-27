@@ -33,20 +33,6 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-geolocation.geolocation",
-    "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
-    "pluginId": "cordova-plugin-geolocation",
-    "clobbers": [
-      "navigator.geolocation"
-    ]
-  },
-  {
-    "id": "cordova-plugin-geolocation.PositionError",
-    "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
-    "pluginId": "cordova-plugin-geolocation",
-    "runs": true
-  },
-  {
     "id": "cordova-plugin-inappbrowser.inappbrowser",
     "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
     "pluginId": "cordova-plugin-inappbrowser",
@@ -150,6 +136,14 @@ module.exports = [
     "merges": [
       "launchnavigator"
     ]
+  },
+  {
+    "id": "cordova-plugin-calendar.Calendar",
+    "file": "plugins/cordova-plugin-calendar/www/Calendar.js",
+    "pluginId": "cordova-plugin-calendar",
+    "clobbers": [
+      "Calendar"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -157,21 +151,19 @@ module.exports.metadata =
 {
   "cordova-plugin-actionsheet": "2.3.3",
   "cordova-plugin-app-event": "1.2.1",
-  "cordova-plugin-compat": "1.0.0",
   "cordova-plugin-device": "1.1.6",
   "cordova-plugin-dialogs": "1.3.3",
-  "cordova-plugin-geolocation": "2.4.3",
   "cordova-plugin-inappbrowser": "1.7.1",
   "cordova-plugin-ios-camera-permissions": "1.2.0",
   "cordova-plugin-spinnerdialog": "1.3.2",
   "cordova-plugin-splashscreen": "4.0.3",
   "cordova-plugin-stripe": "1.5.3",
-  "cordova-plugin-webserver": "1.0.3",
   "cordova-plugin-whitelist": "1.3.2",
   "cordova-plugin-x-toast": "2.6.0",
   "de.appplant.cordova.plugin.local-notification": "0.8.5",
   "phonegap-plugin-push": "1.8.4",
-  "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0"
+  "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0",
+  "cordova-plugin-calendar": "5.0.0"
 };
 // BOTTOM OF METADATA
 });
