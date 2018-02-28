@@ -22,6 +22,7 @@
     <script type="text/javascript" src="scripts/load-image.all.min.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
+
 </head>
 
 <body>
@@ -31,13 +32,16 @@
             <img src="images/HiveHelper_Logo.png" />
         </div>
         <div id="page-content" class="page-content set-background-splash2">
+
+
             <div id="page-content-scroll" class="header-clear">
+
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
                     <div class="left-logo">
+
                         <div class="inline-block-bottom-text right-text">
-                            <span class="numberCircle" style="display:none"></span>
-                            <a href="#" onclick="getNotificationList()"><i class="fa fa-bell color-blue-light"></i></a>
+                            <i class="fa fa-bell color-blue-light notification_badge" data-badge="0" onclick="getNotificationList(this)"></i>
                         </div>
 
                         <div class="inline-block" onclick="redirectToMyProfile()">
@@ -122,6 +126,7 @@
             if (!isMobileDevice) {
                 getProfileDetail();
                 getHelperPortalDetails();
+                getNotifications();
             }
 
             document.addEventListener("backbutton", onBackKeyDown, false);
@@ -135,7 +140,6 @@
 
         function getNotifications() {
             $(".heading-strip i").css({ 'height': '0', 'line-height': '23px' });
-            $(".numberCircle").next().css({ 'display': 'inline', 'margin-left': '20px' });
 
             if (isMobileDevice) {
                 window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
@@ -157,9 +161,10 @@
 
                     if (response !== null && response.status === 1) {
                         if (response.status == "1" && response.data.length > 0) {
-                            $(".numberCircle").show();
-                            $(".numberCircle").html(response.data.length);
+                            $(".notification_badge").attr("data-badge", response.data.length);
                         }
+                    } else {
+                        $(".notification_badge").removeAttr("data-badge");
                     }
                 },
                 error: function (jqXHR, text, error) {
@@ -186,8 +191,8 @@
             });
         }
 
-        function getNotificationList() {
-            if ($(".numberCircle").is(":visible")) {
+        function getNotificationList(ele) {
+            if ($(ele).attr("data-badge") && $(ele).attr("data-badge") != "0") {
                 window.location = "hive-helper-notification-list.html";
             } else {
                 if (isMobileDevice) {
