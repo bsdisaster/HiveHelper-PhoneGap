@@ -175,9 +175,11 @@
             //getAllSelectCleaningServices();
         }
 
-        function showAlert() {
-
-        }
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                getAllSelectCleaningServices();
+            }
+        });
 
         function requestPreviousHelper() {
             window.location.href = "bookhelper-request-previous-helper.html";

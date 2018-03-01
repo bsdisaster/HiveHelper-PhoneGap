@@ -74,6 +74,12 @@
                         var deviceTokenForPush = 'browser-token';
                         var platform = 'web';
 
+                        $(document).keypress(function (e) {
+                            if (e.which == 13) {
+                                Login();
+                            }
+                        });
+
                         function deviceReadySuccess() {
                             checkExistingSession();
 

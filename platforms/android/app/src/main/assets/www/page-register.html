@@ -65,7 +65,7 @@
                         <input id="register-address-line-2" type="text" value="Address Line 2" onfocus="if (this.value == 'Address Line 2') this.value = '';" onblur="if (this.value == '') this.value = 'Address Line 2'">
                     </div>
 
-                    <button id="btnCreateAccount" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-800"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
+                    <button id="btnCreateAccount" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-800" onclick="register()"><i class="ion-ios-arrow-thin-right"></i>Create Account</button>
                     <div class="clear"></div>
                 </div>
             </div>
@@ -90,7 +90,6 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            register();
             loadGoogleScript();
 
             $(document).on({
@@ -136,6 +135,12 @@
             if ($(this).val() == "") {
                 $(this).val("Password");
                 $(this).prop('type', 'text');
+            }
+        });
+
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                register();
             }
         });
 
@@ -269,91 +274,88 @@
 
         function register() {
 
-            $('#btnCreateAccount').on('click', function (event) {
+            if (isValidateRegister()) {
 
-                if (isValidateRegister()) {
+                if (isMobileDevice) {
+                    platform = device.platform;
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                }
 
-                    if (isMobileDevice) {
-                        platform = device.platform;
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                    }
+                var parameter = {
+                    "firstName": $("#register-firstname").val(),
+                    "lastName": $("#register-lastname").val(),
+                    "email": $("#register-email").val(),
+                    "password": $("#register-password").val(),
+                    "phone": $("#register-phone").val(),
+                    "address": $("#register-address-line-1").val(),
+                    "addressTitle": ($("#register-address-line-2").val() == "Address Line 2") ? "" : $("#register-address-line-2").val(),
+                    "city": city,
+                    "state": state,
+                    "zipcode": zipcode,
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "deviceType": platform,
+                    "deviceToken": deviceTokenForPush,
+                    "userRole": 4
+                }
 
-                    var parameter = {
-                        "firstName": $("#register-firstname").val(),
-                        "lastName": $("#register-lastname").val(),
-                        "email": $("#register-email").val(),
-                        "password": $("#register-password").val(),
-                        "phone": $("#register-phone").val(),
-                        "address": $("#register-address-line-1").val(),
-                        "addressTitle": ($("#register-address-line-2").val() == "Address Line 2") ? "" : $("#register-address-line-2").val(),
-                        "city": city,
-                        "state": state,
-                        "zipcode": zipcode,
-                        "latitude": latitude,
-                        "longitude": longitude,
-                        "deviceType": platform,
-                        "deviceToken": deviceTokenForPush,
-                        "userRole": 4
-                    }
+                $.ajax({
+                    url: api_baseUrl + 'register',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    dataType: "JSON",
+                    success: function (response) {
+                        // Inserting html into the result div on success
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
 
-                    $.ajax({
-                        url: api_baseUrl + 'register',
-                        type: "POST",
-                        data: JSON.stringify(parameter),
-                        dataType: "JSON",
-                        success: function (response) {
-                            // Inserting html into the result div on success
+                        if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
-                            } else {
-                                showLoading(false);
-                            }
-
-                            if (response !== null && response.status === 1) {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert('Your registration was successful', null, 'Success', 'Close');
-                                }
-                                else {
-                                    showAlertDialog('Success', "Your registration was successful");
-                                }
-
-                                setTimeout(function () {
-                                    window.location = "index.html";
-                                }, 1000);
+                                navigator.notification.alert('Your registration was successful', null, 'Success', 'Close');
                             }
                             else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(response.message, null, 'Error', 'Close');
-                                }
-                                else {
-                                    showAlertDialog('Error', response.message);
-                                }
+                                showAlertDialog('Success', "Your registration was successful");
                             }
-                        },
-                        error: function (jqXHR, text, error) {
-                            // Displaying if there are any errors
+
+                            setTimeout(function () {
+                                window.location = "index.html";
+                            }, 1000);
+                        }
+                        else {
                             if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
-                            } else {
-                                showLoading(false);
+                                navigator.notification.alert(response.message, null, 'Error', 'Close');
                             }
-
-                            if (error == null || error == "") {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-
-                            } else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(error, null, 'Error', 'Close');
-                                } else {
-                                    showAlertDialog('Error', error);
-                                }
+                            else {
+                                showAlertDialog('Error', response.message);
                             }
                         }
-                    });
-                }
-            });
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (error == null || error == "") {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+
+                        } else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                showAlertDialog('Error', error);
+                            }
+                        }
+                    }
+                });
+            }
         }
     </script>
 </body>

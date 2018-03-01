@@ -1032,8 +1032,8 @@ $(document).ready(function () {
 
 var androidAppVersion = '2.0.5';
 var iosAppVersion = '2.0.3';
-//var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
-var api_baseUrl = 'http://hivehelperapp.com/v2/';
+var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
+//var api_baseUrl = 'http://hivehelperapp.com/v2/';
 
 var pageTitle = $(document.getElementsByTagName('title')[0]).html();
 var lastIndex = pageTitle.lastIndexOf(" ");

@@ -48,13 +48,13 @@
                                 <div class="clear"></div>
                                 <a href="#" onclick="forgotPassword()" class="page-login-create animate-right futura-medium">Forgot password<i class="ion-android-lock"></i></a>
                             </div>
-                            <button id="btnSubmit" class="button button-blue button-icon button-full half-top full-bottom animate-zoom"><i class="ion-ios-arrow-thin-right"></i>Login</button>
+                            <button class="button button-blue button-icon button-full half-top full-bottom animate-zoom" onclick="Login()"><i class="ion-ios-arrow-thin-right"></i>Login</button>
                         </div>
                     </div>
 
                     <script type="text/javascript">
                         $(document).ready(function () {
-                            Login();
+
                         }).on('deviceready', function () {
                             document.addEventListener("deviceready", deviceReadySuccess, false);
                         });
@@ -68,6 +68,12 @@
                                 getPushNotificationToken();
                             }
                         }
+
+                        $(document).keypress(function (e) {
+                            if (e.which == 13) {
+                                Login();
+                            }
+                        });
 
                         $('#password').on('focus', function () {
                             if ($(this).val() == "Password") {
@@ -242,91 +248,88 @@
 
                         // login functionality
                         function Login() {
-                            $('#btnSubmit').on('click', function (event) {
-                                if (IsValidate()) {
 
-                                    if (isMobileDevice) {
-                                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                        deviceToken = device.uuid;
-                                        platform = device.platform.toString().toLowerCase();
-                                    } else {
-                                        showLoading(true);
-                                    }
-
-                                    var parameter = {
-                                        "username": $("#username").val(),
-                                        "password": $("#password").val(),
-                                        "userRole": 3,
-                                        "deviceType": platform,
-                                        "deviceToken": deviceTokenForPush
-                                    }
-
-                                    $.ajax({
-                                        url: api_baseUrl + 'login',
-                                        type: "POST",
-                                        data: JSON.stringify(parameter),
-                                        dataType: "JSON",
-                                        success: function (response) {
-                                            // Inserting html into the result div on success
-                                            if (isMobileDevice) {
-                                                window.plugins.spinnerDialog.hide();
-                                            } else {
-                                                showLoading(false);
-                                            }
-
-                                            if (response !== null && response.status === 1) {
-                                               
-                                                localStorage.setItem("username", response.data.email);
-                                                localStorage.setItem("password", $("#password").val());
-                                                localStorage.setItem("deviceType", platform);
-                                                localStorage.setItem("deviceToken", deviceTokenForPush);
-                                                localStorage.setItem("userId", response.data.userId);
-                                                localStorage.setItem("roleId", response.data.roleId);
-                                                localStorage.setItem("firstName", response.data.firstName);
-                                                localStorage.setItem("isTrainee", response.data.helperTrainee);
-
-                                                if (api_baseUrl.split("/").indexOf("appv2") == -1) {
-                                                    localStorage.setItem("googleApiKey", response.data.liveapi);
-                                                } else {
-                                                    localStorage.setItem("googleApiKey", response.data.testapi);
-                                                }
-
-                                                window.location = "dashboard.html";
-                                            }
-                                            else {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
-                                                } else {
-                                                    showAlertDialog('Warning', response.message);
-                                                }
-                                            }
-
-                                        },
-                                        error: function (jqXHR, text, error) {
-                                            // Displaying if there are any errors
-                                            if (isMobileDevice) {
-                                                window.plugins.spinnerDialog.hide();
-                                            } else {
-                                                showLoading(false);
-                                            }
-
-                                            if (error == null || error == "") {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                                }
-
-                                            } else {
-                                                if (isMobileDevice) {
-                                                    navigator.notification.alert(error, null, 'Error', 'Close');
-                                                } else {
-                                                    showAlertDialog('Error', error);
-                                                }
-                                            }
-                                        }
-                                    });
+                            if (IsValidate()) {
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    deviceToken = device.uuid;
+                                    platform = device.platform.toString().toLowerCase();
+                                } else {
+                                    showLoading(true);
                                 }
 
-                            });
+                                var parameter = {
+                                    "username": $("#username").val(),
+                                    "password": $("#password").val(),
+                                    "userRole": 3,
+                                    "deviceType": platform,
+                                    "deviceToken": deviceTokenForPush
+                                }
+
+                                $.ajax({
+                                    url: api_baseUrl + 'login',
+                                    type: "POST",
+                                    data: JSON.stringify(parameter),
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        // Inserting html into the result div on success
+                                        if (isMobileDevice) {
+                                            window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
+                                        }
+
+                                        if (response !== null && response.status === 1) {
+
+                                            localStorage.setItem("username", response.data.email);
+                                            localStorage.setItem("password", $("#password").val());
+                                            localStorage.setItem("deviceType", platform);
+                                            localStorage.setItem("deviceToken", deviceTokenForPush);
+                                            localStorage.setItem("userId", response.data.userId);
+                                            localStorage.setItem("roleId", response.data.roleId);
+                                            localStorage.setItem("firstName", response.data.firstName);
+                                            localStorage.setItem("isTrainee", response.data.helperTrainee);
+
+                                            if (api_baseUrl.split("/").indexOf("appv2") == -1) {
+                                                localStorage.setItem("googleApiKey", response.data.liveapi);
+                                            } else {
+                                                localStorage.setItem("googleApiKey", response.data.testapi);
+                                            }
+
+                                            window.location = "dashboard.html";
+                                        }
+                                        else {
+                                            if (isMobileDevice) {
+                                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                            } else {
+                                                showAlertDialog('Warning', response.message);
+                                            }
+                                        }
+
+                                    },
+                                    error: function (jqXHR, text, error) {
+                                        // Displaying if there are any errors
+                                        if (isMobileDevice) {
+                                            window.plugins.spinnerDialog.hide();
+                                        } else {
+                                            showLoading(false);
+                                        }
+
+                                        if (error == null || error == "") {
+                                            if (isMobileDevice) {
+                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                            }
+
+                                        } else {
+                                            if (isMobileDevice) {
+                                                navigator.notification.alert(error, null, 'Error', 'Close');
+                                            } else {
+                                                showAlertDialog('Error', error);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
                         }
                     </script>
                 </div>

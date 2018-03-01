@@ -37,7 +37,7 @@
 
 
                 <div class="content">
-                    <div class="page-userlist futura-medium">
+                    <div class="page-userlist">
 
                     </div>
                     <button id="btnSubmit" onclick="removeNotifications()" class="button button-pantone button-icon button-full half-top full-bottom animate-fade animate-delay-600 notification-button" data-sr-id="6"><i class="ion-ios-arrow-thin-right"></i>Clear</button>
@@ -165,7 +165,7 @@
 
                 if (response !== null && response.status === 1 && response.data.length > 0) {
                     for (var i = 0; i < response.data.length; i++) {
-                        var html = '<div class="notification-list notification-widget"><p>' + response.data[i].description + '</p></div><div class="clear">&nbsp;</div>';
+                        var html = '<div class="notification-list notification-widget"><p><b>' + response.data[i].title + '</b></p><p>' + response.data[i].description + '</p></div><div class="clear">&nbsp;</div>';
                         $('.page-userlist').append(html);
                     }
                 }

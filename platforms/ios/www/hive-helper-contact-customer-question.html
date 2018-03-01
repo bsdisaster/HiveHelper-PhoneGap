@@ -49,7 +49,7 @@
                 <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100">
                     <textarea id="customer-details" class="contactTextarea" placeholder="Details" col="6" row="10"></textarea>
                 </div>
-                <button id="btnSend" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-200"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
+                <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-200" onclick="SendData()"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
             </div>
         </div>
         <footer class="sticky-footer">
@@ -72,80 +72,81 @@
     </div>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            SendData();
-        })
 
         var isMobileDevice = isMobile();
 
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                SendData();
+            }
+        });
+
         function SendData() {
-            $('#btnSend').on('click', function (event) {
-                if (IsValidatePage()) {
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                    } else {
-                        showLoading(true);
-                    }
+            if (IsValidatePage()) {
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
+                }
 
-                    var parameter = {
-                        "userId": "" + localStorage.getItem("userId") + "",
-                        "contactFor": "Contact - Customer Reason",
-                        "contactReasonId": "" + $("#customer-reason").val() + "",
-                        "details": "" + $("#customer-details").val() + ""
-                    };
-                    $.ajax({
-                        url: api_baseUrl + 'Contact/customerQuestion',
-                        type: "POST",
-                        data: JSON.stringify(parameter),
-                        dataType: "json",
-                        success: function (response) {
+                var parameter = {
+                    "userId": "" + localStorage.getItem("userId") + "",
+                    "contactFor": "Contact - Customer Reason",
+                    "contactReasonId": "" + $("#customer-reason").val() + "",
+                    "details": "" + $("#customer-details").val() + ""
+                };
+                $.ajax({
+                    url: api_baseUrl + 'Contact/customerQuestion',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    dataType: "json",
+                    success: function (response) {
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+                        // Inserting html into the result div on success
+                        if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert("Your request sent successfully!", null, 'Success', 'Close');
                             } else {
-                                showLoading(false);
+                                showAlertDialog("Success", "Your request sent successfully!");
                             }
-                            // Inserting html into the result div on success
-                            if (response !== null && response.status === 1) {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("Your request sent successfully!", null, 'Success', 'Close');
-                                } else {
-                                    showAlertDialog("Success", "Your request sent successfully!");
-                                }
-                                ClearData();
-                            }
-                            else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
-                                } else {
-                                    showAlertDialog("Warning", response.message);
-                                }
-                            }
-
-                        },
-                        error: function (jqXHR, text, error) {
-                            // Displaying if there are any errors
+                            ClearData();
+                        }
+                        else {
                             if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
                             } else {
-                                showLoading(false);
-                            }
-
-                            if (error == null || error == "") {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-
-                            } else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(error, null, 'Error', 'Close');
-                                } else {
-                                    showAlertDialog("Error", error);
-                                }
+                                showAlertDialog("Warning", response.message);
                             }
                         }
-                    });
-                }
-            });
+
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (error == null || error == "") {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+
+                        } else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                showAlertDialog("Error", error);
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         // validation for pages.

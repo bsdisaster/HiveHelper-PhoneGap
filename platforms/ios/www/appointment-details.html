@@ -19,7 +19,7 @@
     <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-    
+
     <script src="cordova.js"></script>
 
 </head>
@@ -99,7 +99,7 @@
 
                         <div class="page-login-input animate-fade">
                             <label class="bold inline-block" id="lblAddress">Address Line 1: </label>
-                            <label class="inline-block blueColor" onclick="storeMapAddress(this)"></label>
+                            <label class="inline-block blueColor" onclick="navigateToMapAddress(this)"></label>
                         </div>
                         <div class="bottom-line"></div>
 
@@ -186,19 +186,23 @@
             }
         }
 
-        function storeMapAddress(ele) {
-          
-            launchnavigator.isAppAvailable(launchnavigator.APP.GOOGLE_MAPS, function (isAvailable) {
-                var app;
-                if (isAvailable) {
-                    app = launchnavigator.APP.GOOGLE_MAPS;
-                } else {
-                    app = launchnavigator.APP.USER_SELECT;
-                }
-                launchnavigator.navigate(ele.innerText, {
-                    app: app
+        function navigateToMapAddress(ele) {
+
+            if (isMobileDevice) {
+                launchnavigator.isAppAvailable(launchnavigator.APP.GOOGLE_MAPS, function (isAvailable) {
+                    var app;
+                    if (isAvailable) {
+                        app = launchnavigator.APP.GOOGLE_MAPS;
+                    } else {
+                        app = launchnavigator.APP.USER_SELECT;
+                    }
+                    launchnavigator.navigate(ele.innerText, {
+                        app: app
+                    });
                 });
-            });
+            } else {
+                Object.assign(document.createElement('a'), { target: '_blank', href: 'http://maps.google.co.uk/maps?q=' + ele.innerText }).click();
+            }
         }
 
         function getAppointmentDetails() {
@@ -293,7 +297,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            showAlertDialog('Error',error);
+                            showAlertDialog('Error', error);
                         }
                     }
                 }

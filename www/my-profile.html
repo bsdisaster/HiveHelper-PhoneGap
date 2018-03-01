@@ -89,13 +89,12 @@
                         <a href="#" onclick="enablePassword()" class="column-center-image">Change</a>
                     </div>
 
-                    <button id="btnupdateProfile" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
+                    <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600" onclick="updateProfile()"><i class="ion-ios-arrow-thin-right"></i>Save</button>
 
                 </div>
 
                 <script type="text/javascript">
                     $(document).ready(function () {
-                        updateProfile();
                         removeBottomMargin();
                         pickImage();
                         loadGoogleScript();
@@ -121,6 +120,12 @@
                     function clickImage() {
                         $("#my_file").click();
                     }
+
+                    $(document).keypress(function (e) {
+                        if (e.which == 13) {
+                            updateProfile();
+                        }
+                    });
 
                     function showAlert(ele) {
                         if (isMobileDevice) {
@@ -312,90 +317,88 @@
                     }
 
                     function updateProfile() {
-                        $('#btnupdateProfile').on('click', function (event) {
 
-                            if (isValidateProfile()) {
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                } else {
-                                    showLoading(true);
-                                }
+                        if (isValidateProfile()) {
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            } else {
+                                showLoading(true);
+                            }
 
-                                var parameter = {
-                                    "userId": localStorage.getItem("userId"),
-                                    "firstName": $("#profile-firstname").val(),
-                                    "lastName": $("#profile-lastname").val(),
-                                    "email": $("#profile-email").val(),
-                                    "phone": $("#profile-phone").val(),
-                                    "password": $("#profile-password").val(),
-                                    "address": $("#profile-address-line-1").val(),
-                                    "addressTitle": ($("#profile-address-line-2").val() == "Address Line 2") ? "" : $("#profile-address-line-2").val(),
-                                    "city": city,
-                                    "state": state,
-                                    "zipcode": zipcode,
-                                    "latitude": latitude,
-                                    "longitude": longitude,
-                                    "image": base64String,
-                                    "notification": $("#ddlNotification").val()
-                                };
+                            var parameter = {
+                                "userId": localStorage.getItem("userId"),
+                                "firstName": $("#profile-firstname").val(),
+                                "lastName": $("#profile-lastname").val(),
+                                "email": $("#profile-email").val(),
+                                "phone": $("#profile-phone").val(),
+                                "password": $("#profile-password").val(),
+                                "address": $("#profile-address-line-1").val(),
+                                "addressTitle": ($("#profile-address-line-2").val() == "Address Line 2") ? "" : $("#profile-address-line-2").val(),
+                                "city": city,
+                                "state": state,
+                                "zipcode": zipcode,
+                                "latitude": latitude,
+                                "longitude": longitude,
+                                "image": base64String,
+                                "notification": $("#ddlNotification").val()
+                            };
 
-                                $.ajax({
-                                    url: api_baseUrl + 'profile/edit',
-                                    type: "POST",
-                                    data: JSON.stringify(parameter),
-                                    dataType: "json",
-                                    success: function (response) {
-                                        // Inserting html into the result div on success
+                            $.ajax({
+                                url: api_baseUrl + 'profile/edit',
+                                type: "POST",
+                                data: JSON.stringify(parameter),
+                                dataType: "json",
+                                success: function (response) {
+                                    // Inserting html into the result div on success
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    } else {
+                                        showLoading(false);
+                                    }
+
+                                    if (response !== null && response.status === 1) {
                                         if (isMobileDevice) {
-                                            window.plugins.spinnerDialog.hide();
+                                            navigator.notification.alert("Profile successfully updated", null, 'Success', 'Close');
                                         } else {
-                                            showLoading(false);
+                                            showAlertDialog("Success", "Profile successfully updated");
                                         }
 
-                                        if (response !== null && response.status === 1) {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert("Profile successfully updated", null, 'Success', 'Close');
-                                            } else {
-                                                showAlertDialog("Success", "Profile successfully updated");
-                                            }
-
-                                            setTimeout(function () {
-                                                window.location = "dashboard.html";
-                                            }, 1000);
-                                        }
-                                        else {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
-                                            } else {
-                                                showAlertDialog("Warning", response.message);
-                                            }
-                                        }
-                                    },
-                                    error: function (jqXHR, text, error) {
-                                        // Displaying if there are any errors
+                                        setTimeout(function () {
+                                            window.location = "dashboard.html";
+                                        }, 1000);
+                                    }
+                                    else {
                                         if (isMobileDevice) {
-                                            window.plugins.spinnerDialog.hide();
+                                            navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                         } else {
-                                            showLoading(false);
-                                        }
-
-                                        if (error == null || error == "") {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                            }
-                                        } else {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert(error, null, 'Error', 'Close');
-                                            } else {
-                                                showAlertDialog("Error", error);
-
-                                            }
+                                            showAlertDialog("Warning", response.message);
                                         }
                                     }
-                                });
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    } else {
+                                        showLoading(false);
+                                    }
 
-                            }
-                        });
+                                    if (error == null || error == "") {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                        }
+                                    } else {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert(error, null, 'Error', 'Close');
+                                        } else {
+                                            showAlertDialog("Error", error);
+
+                                        }
+                                    }
+                                }
+                            });
+
+                        }
                     }
 
                     function getProfileDetail() {
