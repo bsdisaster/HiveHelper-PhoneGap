@@ -197,16 +197,16 @@
                 var phoneValue = $("#become-a-helper-phone").val().replace(/\D/g, "");
 
                 var parameter = {
-                    "userId": "" + localStorage.getItem("userId") + "",
+                    "userId": localStorage.getItem("userId"),
                     "contactFor": "Contact - Become a Helper",
-                    "firstName": "" + $("#become-a-helper-firstname").val() + "",
-                    "lastName": "" + $("#become-a-helper-lastname").val() + "",
-                    "email": "" + $("#become-a-helper-email").val() + "",
-                    "location": "" + $("#become-a-helper-location").val() + "",
-                    "phone": "" + phoneValue + "",
-                    "your_experience": "" + $("#become-a-helper-about-experience").val() + "",
-                    "professional_references": "" + $("#become-a-helper-professional-references").val() + "",
-                    "your_availability": "" + $("#become-a-helper-availibility").val() + ""
+                    "firstName": $("#become-a-helper-firstname").val(),
+                    "lastName": $("#become-a-helper-lastname").val(),
+                    "email": $("#become-a-helper-email").val(),
+                    "location": $("#become-a-helper-location").val(),
+                    "phone": phoneValue,
+                    "your_experience": $("#become-a-helper-about-experience").val(),
+                    "professional_references": $("#become-a-helper-professional-references").val(),
+                    "your_availability": $("#become-a-helper-availibility").val()
                 };
                 $.ajax({
                     url: api_baseUrl + 'Becomehelper/',

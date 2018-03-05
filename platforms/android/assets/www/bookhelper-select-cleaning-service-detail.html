@@ -56,7 +56,7 @@
 
                 <div class="content">
                     <div class="page-login-input light calendar-bgcolor">
-                        <i class="login-icon ion-calendar calendar-line-height"></i>
+                        <i class="login-icon ion-calendar"></i>
 
                         <input id="calDate" type="text">
                     </div>
@@ -175,9 +175,11 @@
             //getAllSelectCleaningServices();
         }
 
-        function showAlert() {
-
-        }
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                getAllSelectCleaningServices();
+            }
+        });
 
         function requestPreviousHelper() {
             window.location.href = "bookhelper-request-previous-helper.html";
@@ -238,7 +240,7 @@
                         if (isMobileDevice) {
                             navigator.notification.alert(error, null, 'Error', 'Close');
                         } else {
-                            showAlertDialog('Error',error);
+                            showAlertDialog('Error', error);
                         }
                     }
                 }
@@ -319,7 +321,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(error, null, 'Error', 'Close');
                             } else {
-                                showAlertDialog('Error',error);
+                                showAlertDialog('Error', error);
                             }
                         }
                     }
@@ -407,13 +409,16 @@
                             } else {
                                 showAlertDialog('Success', 'Your request has been sent');
                             }
-                            window.location.href = "dashboard.html";
+
+                            setTimeout(function () {
+                                window.location.href = "dashboard.html";
+                            }, 1000);
                         }
                         else {
                             if (isMobileDevice) {
                                 navigator.notification.alert(response.message, null, "Warning", "Close");
                             } else {
-                                showAlertDialog('Warning',response.message);
+                                showAlertDialog('Warning', response.message);
                             }
                         }
                     },
@@ -434,7 +439,7 @@
                             if (isMobileDevice) {
                                 navigator.notification.alert(error, null, 'Error', 'Close');
                             } else {
-                                showAlertDialog('Error',error);
+                                showAlertDialog('Error', error);
                             }
                         }
                     }

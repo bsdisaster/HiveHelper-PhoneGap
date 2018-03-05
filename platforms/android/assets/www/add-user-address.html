@@ -63,14 +63,13 @@
                         </div>
                     </div>
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-400">
-                        <input id="user-zipcode" type="text" value="Zip Code" onfocus="if (this.value=='Zip Code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip Code'">
+                        <input id="user-zipcode" type="text" value="Zip Code" onfocus="if (this.value=='Zip Code') this.value = ''" onblur="if (this.value=='') this.value = 'Zip Code'" maxlength="6">
                     </div>
-                    <button id="btnAddEdit" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Save</button>
+                    <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-600" onclick="addAddress()"><i class="ion-ios-arrow-thin-right"></i>Save</button>
                 </div>
 
                 <script type="text/javascript">
                     $(document).ready(function () {
-                        addAddress();
                         loadGoogleScript();
 
                         if (!isMobileDevice) {
@@ -94,6 +93,19 @@
                         fillState();
                         getUserAddressData();
                     }
+
+                    $(document).keypress(function (e) {
+                        if (e.which == 13) {
+                            addAddress();
+                        }
+                    });
+
+                    $("#user-zipcode").on('keypress', function (e) {
+                        //if the letter is not digit then display error and don't type anything
+                        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                            return false;
+                        }
+                    });
 
                     var placeSearch, autocomplete, latitude, longitude;
                     function initAutocomplete() {
@@ -158,10 +170,13 @@
                                         $("#user-address-line-1").val(response.data["address"]);
                                         $("#user-address-line-2").val(response.data["addressTitle"]);
                                         $("#user-city").val(response.data["city"]);
-                                        $("#ddlState").val(response.data["state"]);
                                         $("#user-zipcode").val(response.data["zipcode"]);
                                         latitude = response.data["latitude"];
                                         longitude = response.data["longitude"];
+
+                                        setTimeout(function () {
+                                            $("#ddlState").val(response.data["state"]);
+                                        }, 500);
                                     }
                                 },
                                 error: function (jqXHR, text, error) {
@@ -238,81 +253,81 @@
                     }
 
                     function addAddress() {
-                        $('#btnAddEdit').on('click', function (event) {
+                        if (isValidateUserAddress()) {
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                            } else {
+                                showLoading(true);
+                            }
 
-                            if (isValidateUserAddress()) {
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                } else {
-                                    showLoading(true);
-                                }
+                            var parameter = {
+                                "userAddressId": getParameterByName("id"),
+                                "userId": localStorage.getItem("userId"),
+                                "address": $("#user-address-line-1").val(),
+                                "addressTitle": ($("#user-address-line-2").val() == "Address Line 2") ? "" : $("#user-address-line-2").val(),
+                                "city": $("#user-city").val(),
+                                "state": $("#ddlState").val(),
+                                "zipcode": $("#user-zipcode").val(),
+                                "latitude": latitude,
+                                "longitude": longitude
+                            };
 
-                                var parameter = {
-                                    "userAddressId": getParameterByName("id"),
-                                    "userId": localStorage.getItem("userId"),
-                                    "address": $("#user-address-line-1").val(),
-                                    "addressTitle": ($("#user-address-line-2").val() == "Address Line 2") ? "" : $("#user-address-line-2").val(),
-                                    "city": $("#user-city").val(),
-                                    "state": $("#ddlState").val(),
-                                    "zipcode": $("#user-zipcode").val(),
-                                    "latitude": latitude,
-                                    "longitude": longitude
-                                };
+                            $.ajax({
+                                url: api_baseUrl + 'useraddress/addedit/',
+                                type: "POST",
+                                data: JSON.stringify(parameter),
+                                dataType: "JSON",
+                                success: function (response) {
+                                    // Inserting html into the result div on success
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    } else {
+                                        showLoading(false);
+                                    }
 
-                                $.ajax({
-                                    url: api_baseUrl + 'useraddress/addedit/',
-                                    type: "POST",
-                                    data: JSON.stringify(parameter),
-                                    dataType: "JSON",
-                                    success: function (response) {
-                                        // Inserting html into the result div on success
+                                    if (response !== null && response.status === 1) {
                                         if (isMobileDevice) {
-                                            window.plugins.spinnerDialog.hide();
+                                            navigator.notification.alert('Address saved successfully!', null, 'Success', 'Close');
                                         } else {
-                                            showLoading(false);
+                                            showAlertDialog('Success', 'Address saved successfully!');
                                         }
 
-                                        if (response !== null && response.status === 1) {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert('Data saved successfully!', null, 'Success', 'Close');
-                                            } else {
-                                                showAlertDialog('Success', 'Data saved successfully!');
-                                            }
+                                        setTimeout(function () {
                                             window.location = "bookhelper-address-list.html";
-                                        }
-                                        else {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
-                                            } else {
-                                                showAlertDialog('Warning',response.message);
-                                            }
-                                        }
-                                    },
-                                    error: function (jqXHR, text, error) {
-                                        // Displaying if there are any errors
+                                        }, 1000);
+                                    }
+                                    else {
                                         if (isMobileDevice) {
-                                            window.plugins.spinnerDialog.hide();
+                                            navigator.notification.alert(response.message, null, 'Warning', 'Close');
                                         } else {
-                                            showLoading(false);
-                                        }
-
-                                        if (error == null || error == "") {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                            }
-
-                                        } else {
-                                            if (isMobileDevice) {
-                                                navigator.notification.alert(error, null, 'Error', 'Close');
-                                            } else {
-                                                showAlertDialog('Error',error);
-                                            }
+                                            showAlertDialog('Warning', response.message);
                                         }
                                     }
-                                });
+                                },
+                                error: function (jqXHR, text, error) {
+                                    // Displaying if there are any errors
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.hide();
+                                    } else {
+                                        showLoading(false);
+                                    }
 
-                            }
-                        });
+                                    if (error == null || error == "") {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                        }
+
+                                    } else {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert(error, null, 'Error', 'Close');
+                                        } else {
+                                            showAlertDialog('Error', error);
+                                        }
+                                    }
+                                }
+                            });
+
+                        }
                     }
 
                     function fillState() {
@@ -349,7 +364,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(response.message, null, 'Error', 'Close');
                                     } else {
-                                        showAlertDialog('Warning',response.message);
+                                        showAlertDialog('Warning', response.message);
                                     }
                                 }
                             },
@@ -369,7 +384,7 @@
                                     if (isMobileDevice) {
                                         navigator.notification.alert(error, null, 'Error', 'Close');
                                     } else {
-                                        showAlertDialog('Error',error);
+                                        showAlertDialog('Error', error);
                                     }
                                 }
                             }

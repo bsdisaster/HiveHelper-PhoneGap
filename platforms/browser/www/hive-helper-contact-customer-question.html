@@ -90,10 +90,10 @@
                 }
 
                 var parameter = {
-                    "userId": "" + localStorage.getItem("userId") + "",
+                    "userId": localStorage.getItem("userId"),
                     "contactFor": "Contact - Customer Reason",
-                    "contactReasonId": "" + $("#customer-reason").val() + "",
-                    "details": "" + $("#customer-details").val() + ""
+                    "contactReasonId": $("#customer-reason").val(),
+                    "details": $("#customer-details").val()
                 };
                 $.ajax({
                     url: api_baseUrl + 'Contact/customerQuestion',

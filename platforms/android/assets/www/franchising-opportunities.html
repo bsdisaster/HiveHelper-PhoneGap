@@ -33,18 +33,18 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip header-div">
-                    <h3 class="center-text futura-medium">Franchising Oppurutnities</h3>
+                    <h3 class="center-text futura-medium">Franchising Opportunities</h3>
                     <p class="futura-medium">HIVE HELPER is a task service company based in Oklahoma City that is franchising nationwide!</p>
                 </div>
                 <div class="page-login content">
                     <div class="page-login-input select-profile col-sm-12 my-profile-removed-left-pedding animate-fade">
                         <div class="col-sm-12 no-padding-right">
                             <div class="col-sm-6">
-                                <input id="franchising-opportunities-firstname" type="text" class="changepassword-text input">
+                                <input id="franchising-opportunities-firstname" type="text" class="changepassword-text input" onkeyup="restrictSpecialChars(this)">
                                 <label>First Name*</label>
                             </div>
                             <div class="col-sm-6 no-padding-right">
-                                <input id="franchising-opportunities-lastname" type="text" class="changepassword-text input">
+                                <input id="franchising-opportunities-lastname" type="text" class="changepassword-text input" onkeyup="restrictSpecialChars(this)">
                                 <label>Last Name*</label>
                             </div>
                         </div>
@@ -60,18 +60,16 @@
                     </div>
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-
                         <input id="franchising-opportunities-phone" type="tel" class="changepassword-text input" maxlength="10">
                         <label>Phone*</label>
                     </div>
 
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-200">
-
                         <textarea id="franchising-opportunities-about-you" class="contactTextarea" col="6" row="10"></textarea>
                         <label>Tell us about you*</label>
                     </div>
 
-                    <button id="btnSend" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-700"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
+                    <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-700" onclick="SendData()"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
                 </div>
             </div>
         </div>
@@ -96,7 +94,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            SendData();
+
             $("#franchising-opportunities-firstname").focus();
             $("#franchising-opportunities-phone").mask("(999) 999-9999");
         });
@@ -137,7 +135,7 @@
             }
             if (aboutExperienceValue === '' || aboutExperienceValue === null) {
                 countError = countError + 1;
-                msg += "About You!\n";
+                msg += "About you!\n";
             }
             if (emailValue !== null && emailValue !== '') {
                 var x = emailValue;
@@ -160,83 +158,87 @@
             return isResult;
         }
 
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                SendData();
+            }
+        });
+
         function SendData() {
-            $('#btnSend').on('click', function (event) {
-                if (isValidatePage()) {
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                    } else {
-                        showLoading(true);
-                    }
+            if (isValidatePage()) {
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
+                }
 
-                    var phoneValue = $("#franchising-opportunities-phone").val().replace(/\D/g, "");
+                var phoneValue = $("#franchising-opportunities-phone").val().replace(/\D/g, "");
 
-                    var parameter = {
-                        "userId": "" + localStorage.getItem("userId") + "",
-                        "contactFor": "Contact - Franchising opportunity",
-                        "firstName": "" + $("#franchising-opportunities-firstname").val() + "",
-                        "lastName": "" + $("#franchising-opportunities-lastname").val() + "",
-                        "email": "" + $("#franchising-opportunities-email").val() + "",
-                        "location": "" + $("#franchising-opportunities-location").val() + "",
-                        "phone": "" + phoneValue + "",
-                        "about_you": "" + $("#franchising-opportunities-about-you").val() + ""
-                    };
+                var parameter = {
+                    "userId": "" + localStorage.getItem("userId") + "",
+                    "contactFor": "Contact - Franchising opportunity",
+                    "firstName": "" + $("#franchising-opportunities-firstname").val() + "",
+                    "lastName": "" + $("#franchising-opportunities-lastname").val() + "",
+                    "email": "" + $("#franchising-opportunities-email").val() + "",
+                    "location": "" + $("#franchising-opportunities-location").val() + "",
+                    "phone": "" + phoneValue + "",
+                    "about_you": "" + $("#franchising-opportunities-about-you").val() + ""
+                };
 
-                    $.ajax({
-                        url: api_baseUrl + 'Contact/franchiseOpportunity',
-                        type: "POST",
-                        data: JSON.stringify(parameter),
-                        dataType: "json",
-                        success: function (response) {
+                $.ajax({
+                    url: api_baseUrl + 'Contact/franchiseOpportunity',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    dataType: "json",
+                    success: function (response) {
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        // Inserting html into the result div on success
+                        if (response !== null && response.status === 1) {
+
                             if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert("Your request send successfully!", null, 'Success', 'Close');
                             } else {
-                                showLoading(false);
+                                showAlertDialog('Success', 'Your request send successfully!');
                             }
-
-                            // Inserting html into the result div on success
-                            if (response !== null && response.status === 1) {
-
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("Your request send successfully!", null, 'Success', 'Close');
-                                } else {
-                                    showAlertDialog('Success', 'Your request send successfully!');
-                                }
-                                ClearData();
-                            }
-                            else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(response.message, null, "Warning", "Close");
-                                } else {
-                                    showAlertDialog('Warning', response.message);
-                                }
-                            }
-
-                        },
-                        error: function (jqXHR, text, error) {
-                            // Displaying if there are any errors
+                            ClearData();
+                        }
+                        else {
                             if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert(response.message, null, "Warning", "Close");
                             } else {
-                                showLoading(false);
-                            }
-
-                            if (error == null || error == "") {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-
-                            } else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(error, null, 'Error', 'Close');
-                                } else {
-                                    showAlertDialog('Error', error);
-                                }
+                                showAlertDialog('Warning', response.message);
                             }
                         }
-                    });
-                }
-            });
+
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (error == null || error == "") {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+
+                        } else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                showAlertDialog('Error', error);
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         function ClearData() {

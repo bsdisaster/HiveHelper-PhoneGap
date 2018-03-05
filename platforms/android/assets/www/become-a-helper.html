@@ -40,12 +40,12 @@
                     <div class="page-login-input select-profile col-sm-12 my-profile-removed-left-pedding animate-fade">
                         <div class="col-sm-12 no-padding-right">
                             <div class="col-sm-6 changepassword-text">
-                                <input id="become-a-helper-firstname" type="text">
-                                <label>First Name</label>
+                                <input id="become-a-helper-firstname" type="text" onkeyup="restrictSpecialChars(this)">
+                                <label>First Name*</label>
                             </div>
                             <div class="col-sm-6 no-padding-right changepassword-text">
-                                <input id="become-a-helper-lastname" type="text">
-                                <label>Last Name</label>
+                                <input id="become-a-helper-lastname" type="text" onkeyup="restrictSpecialChars(this)">
+                                <label>Last Name*</label>
                             </div>
                         </div>
 
@@ -79,8 +79,7 @@
                         <label class="no-bottom">What is your availibility?*</label>
                     </div>
 
-
-                    <button id="btnSend" class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-700"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
+                    <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-700" onclick="SendData()"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
                 </div>
             </div>
         </div>
@@ -105,7 +104,7 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            SendData();
+        
             $("#become-a-helper-firstname").focus();
             $("#become-a-helper-phone").mask("(999) 999-9999");
         });
@@ -113,7 +112,7 @@
         var isMobileDevice = isMobile();
 
         // validation for pages.
-        function IsValidatePage() {
+        function isValidatePage() {
             var isResult = true;
             var countError = 0;
             var msg = "Please correct following fields:\n";
@@ -149,11 +148,11 @@
 
             if (aboutExperienceValue === '' || aboutExperienceValue === null) {
                 countError = countError + 1;
-                msg += "About Experience!\n";
+                msg += "About experience!\n";
             }
             if (professionalReferencesValue === '' || professionalReferencesValue === null) {
                 countError = countError + 1;
-                msg += "Professional References!\n";
+                msg += "Professional references!\n";
             }
             if (availibilityValue === '' || availibilityValue === null) {
                 countError = countError + 1;
@@ -181,83 +180,86 @@
             return isResult;
         }
 
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                SendData();
+            }
+        });
+
         function SendData() {
-            $('#btnSend').on('click', function (event) {
+            if (isValidatePage()) {
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
+                }
 
-                if (IsValidatePage()) {
-                    if (isMobileDevice) {
-                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                    } else {
-                        showLoading(true);
-                    }
+                var phoneValue = $("#become-a-helper-phone").val().replace(/\D/g, "");
 
-                    var phoneValue = $("#become-a-helper-phone").val().replace(/\D/g, "");
+                var parameter = {
+                    "userId": "" + localStorage.getItem("userId") + "",
+                    "contactFor": "Contact - Become a Helper",
+                    "firstName": "" + $("#become-a-helper-firstname").val() + "",
+                    "lastName": "" + $("#become-a-helper-lastname").val() + "",
+                    "email": "" + $("#become-a-helper-email").val() + "",
+                    "location": "" + $("#become-a-helper-location").val() + "",
+                    "phone": "" + phoneValue + "",
+                    "your_experience": "" + $("#become-a-helper-about-experience").val() + "",
+                    "professional_references": "" + $("#become-a-helper-professional-references").val() + "",
+                    "your_availability": "" + $("#become-a-helper-availibility").val() + ""
+                };
+                $.ajax({
+                    url: api_baseUrl + 'Becomehelper/',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    dataType: "json",
+                    success: function (response) {
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
 
-                    var parameter = {
-                        "userId": "" + localStorage.getItem("userId") + "",
-                        "contactFor": "Contact - Become a Helper",
-                        "firstName": "" + $("#become-a-helper-firstname").val() + "",
-                        "lastName": "" + $("#become-a-helper-lastname").val() + "",
-                        "email": "" + $("#become-a-helper-email").val() + "",
-                        "location": "" + $("#become-a-helper-location").val() + "",
-                        "phone": "" + phoneValue + "",
-                        "your_experience": "" + $("#become-a-helper-about-experience").val() + "",
-                        "professional_references": "" + $("#become-a-helper-professional-references").val() + "",
-                        "your_availability": "" + $("#become-a-helper-availibility").val() + ""
-                    };
-                    $.ajax({
-                        url: api_baseUrl + 'Becomehelper/',
-                        type: "POST",
-                        data: JSON.stringify(parameter),
-                        dataType: "json",
-                        success: function (response) {
+                        // Inserting html into the result div on success
+                        if (response !== null && response.status === 1) {
                             if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert("your request have been received!", null, 'Success', 'Close');
                             } else {
-                                showLoading(false);
+                                showAlertDialog('Success', 'your request have been received!');
                             }
-
-                            // Inserting html into the result div on success
-                            if (response !== null && response.status === 1) {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("your request have been received!", null, 'Success', 'Close');
-                                } else {
-                                    showAlertDialog('Success', 'your request have been received!');
-                                }
-                                ClearData();
-                            }
-                            else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
-                                } else {
-                                    showAlertDialog('Warning',response.message);
-                                }
-                            }
-                        },
-                        error: function (jqXHR, text, error) {
-                            // Displaying if there are any errors
+                            ClearData();
+                        }
+                        else {
                             if (isMobileDevice) {
-                                window.plugins.spinnerDialog.hide();
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
                             } else {
-                                showLoading(false);
-                            }
-
-                            if (error == null || error == "") {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                                }
-
-                            } else {
-                                if (isMobileDevice) {
-                                    navigator.notification.alert(error, null, 'Error', 'Close');
-                                } else {
-                                    showAlertDialog('Error',error);
-                                }
+                                showAlertDialog('Warning', response.message);
                             }
                         }
-                    });
-                }
-            });
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (error == null || error == "") {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+
+                        } else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                showAlertDialog('Error', error);
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         function ClearData() {

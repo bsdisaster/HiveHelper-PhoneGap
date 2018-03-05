@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="3.0.0" id="hive.helper.app.html" ios-CFBundleVersion="2.0.5" version="2.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget android-versionCode="1.0.0" id="hive.helper.app.html" ios-CFBundleVersion="2" version="2.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <feature name="ActionSheet">
         <param name="android-package" value="nl.xservices.plugins.actionsheet.ActionSheet" />
     </feature>
@@ -8,9 +8,6 @@
     </feature>
     <feature name="Notification">
         <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
-    </feature>
-    <feature name="Geolocation">
-        <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
     </feature>
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
@@ -31,6 +28,9 @@
     </feature>
     <feature name="Toast">
         <param name="android-package" value="nl.xservices.plugins.Toast" />
+    </feature>
+    <feature name="LocalNotification">
+        <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
     </feature>
     <feature name="PushNotification">
         <param name="android-package" value="com.adobe.phonegap.push.PushPlugin" />
@@ -90,7 +90,7 @@
     <splash density="port-xxhdpi" src="res/screen/android/splash-port-xxhdpi.png" />
     <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png" />
     <preference name="loglevel" value="DEBUG" />
-    <preference name="android-versionCode" value="3.0" />
+    <preference name="android-versionCode" value="1.0" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#ee6e73" />
     <preference name="StatusBarStyle" value="blacktranslucent" />
@@ -98,7 +98,7 @@
     <preference name="android-minSdkVersion" value="16" />
     <preference name="android-targetSdkVersion" value="20" />
     <preference name="android-installLocation" value="auto" />
-    <preference name="android-windowSoftInputMode" value="stateHidden|adjustPan" />
+    <preference name="android-windowSoftInputMode" value="stateHidden|adjustResize" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="target-device" value="universal" />

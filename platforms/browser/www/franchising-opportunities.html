@@ -175,14 +175,14 @@
                 var phoneValue = $("#franchising-opportunities-phone").val().replace(/\D/g, "");
 
                 var parameter = {
-                    "userId": "" + localStorage.getItem("userId") + "",
+                    "userId": localStorage.getItem("userId"),
                     "contactFor": "Contact - Franchising opportunity",
-                    "firstName": "" + $("#franchising-opportunities-firstname").val() + "",
-                    "lastName": "" + $("#franchising-opportunities-lastname").val() + "",
-                    "email": "" + $("#franchising-opportunities-email").val() + "",
-                    "location": "" + $("#franchising-opportunities-location").val() + "",
-                    "phone": "" + phoneValue + "",
-                    "about_you": "" + $("#franchising-opportunities-about-you").val() + ""
+                    "firstName": $("#franchising-opportunities-firstname").val(),
+                    "lastName": $("#franchising-opportunities-lastname").val(),
+                    "email": $("#franchising-opportunities-email").val(),
+                    "location": $("#franchising-opportunities-location").val(),
+                    "phone": phoneValue,
+                    "about_you": $("#franchising-opportunities-about-you").val()
                 };
 
                 $.ajax({
