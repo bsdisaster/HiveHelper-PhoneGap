@@ -9,7 +9,6 @@
   </author>
     <content src="index.html" />
     <icon platform="android" src="res/icon/android/icon.png" />
-    <splash platform="android" src="res/screen/android/splash-port-mdpi.png" />
     <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />
     <icon height="60" platform="ios" src="res/icon/ios/icon-60.png" width="60" />
     <icon height="120" platform="ios" src="res/icon/ios/icon-60@2x.png" width="120" />
@@ -49,6 +48,7 @@
     <preference name="android-windowSoftInputMode" value="stateHidden|adjustResize" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="target-device" value="universal" />
     <preference name="prerendered-icon" value="true" />
     <preference name="detect-data-types" value="true" />

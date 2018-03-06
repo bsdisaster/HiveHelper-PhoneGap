@@ -9,15 +9,14 @@
     <feature name="Notification">
         <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
     </feature>
+    <feature name="Geolocation">
+        <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
+    </feature>
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
     <feature name="SpinnerDialog">
         <param name="android-package" value="hu.dpal.phonegap.plugins.SpinnerDialog" />
-    </feature>
-    <feature name="SplashScreen">
-        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
-        <param name="onload" value="true" />
     </feature>
     <feature name="CordovaStripe">
         <param name="android-package" value="com.zyramedia.cordova.stripe.CordovaStripe" />
@@ -38,6 +37,10 @@
     <feature name="LaunchNavigator">
         <param name="android-package" value="uk.co.workingedge.phonegap.plugin.LaunchNavigator" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
     <name>Hive Helper</name>
     <description>
     Phonegap app
@@ -47,7 +50,6 @@
   </author>
     <content src="index.html" />
     <icon platform="android" src="res/icon/android/icon.png" />
-    <splash platform="android" src="res/screen/android/splash-port-mdpi.png" />
     <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />
     <icon height="60" platform="ios" src="res/icon/ios/icon-60.png" width="60" />
     <icon height="120" platform="ios" src="res/icon/ios/icon-60@2x.png" width="120" />
@@ -101,6 +103,7 @@
     <preference name="android-windowSoftInputMode" value="stateHidden|adjustResize" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="target-device" value="universal" />
     <preference name="prerendered-icon" value="true" />
     <preference name="detect-data-types" value="true" />

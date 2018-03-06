@@ -19,9 +19,6 @@
     "cordova-plugin-spinnerdialog": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
@@ -37,6 +34,9 @@
     },
     "uk.co.workingedge.phonegap.plugin.launchnavigator": {
       "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "hive.helper.app.html"
     }
   },
   "dependent_plugins": {
@@ -46,10 +46,19 @@
     "cordova-plugin-app-event": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
     "cordova-plugin-stripe": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-webserver": {
       "PACKAGE_NAME": "hive.helper.app.html"
     }
   }

@@ -70,20 +70,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
-        "id": "cordova-plugin-splashscreen.SplashScreen",
-        "pluginId": "cordova-plugin-splashscreen",
-        "clobbers": [
-            "navigator.splashscreen"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-splashscreen/src/browser/SplashScreenProxy.js",
-        "id": "cordova-plugin-splashscreen.SplashScreenProxy",
-        "pluginId": "cordova-plugin-splashscreen",
-        "runs": true
-    },
-    {
         "file": "plugins/cordova-plugin-stripe/www/CordovaStripe.js",
         "id": "cordova-plugin-stripe.stripe",
         "pluginId": "cordova-plugin-stripe",
@@ -168,6 +154,20 @@ module.exports = [
         "clobbers": [
             "localforage"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+        "id": "cordova-plugin-splashscreen.SplashScreen",
+        "pluginId": "cordova-plugin-splashscreen",
+        "clobbers": [
+            "navigator.splashscreen"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-splashscreen/src/browser/SplashScreenProxy.js",
+        "id": "cordova-plugin-splashscreen.SplashScreenProxy",
+        "pluginId": "cordova-plugin-splashscreen",
+        "runs": true
     }
 ];
 module.exports.metadata = 
@@ -180,13 +180,13 @@ module.exports.metadata =
     "cordova-plugin-inappbrowser": "1.7.1",
     "cordova-plugin-ios-camera-permissions": "1.2.0",
     "cordova-plugin-spinnerdialog": "1.3.2",
-    "cordova-plugin-splashscreen": "4.0.3",
     "cordova-plugin-stripe": "1.5.3",
     "cordova-plugin-whitelist": "1.3.2",
     "cordova-plugin-x-toast": "2.6.0",
     "de.appplant.cordova.plugin.local-notification": "0.8.5",
     "phonegap-plugin-push": "1.8.4",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0"
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.1.0",
+    "cordova-plugin-splashscreen": "5.0.2"
 }
 // BOTTOM OF METADATA
 });

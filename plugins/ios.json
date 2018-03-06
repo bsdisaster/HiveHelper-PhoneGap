@@ -23,9 +23,6 @@
     "cordova-plugin-spinnerdialog": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
@@ -41,6 +38,9 @@
     },
     "uk.co.workingedge.phonegap.plugin.launchnavigator": {
       "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes",
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "hive.helper.app.html"
     }
   },
