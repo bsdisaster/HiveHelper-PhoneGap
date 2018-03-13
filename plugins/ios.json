@@ -53,9 +53,6 @@
     },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "hive.helper.app.html"
-    },
-    "cordova-plugin-stripe": {
-      "PACKAGE_NAME": "hive.helper.app.html"
     }
   }
 }

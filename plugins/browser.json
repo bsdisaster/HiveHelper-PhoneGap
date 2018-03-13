@@ -48,9 +48,6 @@
     },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-stripe": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
     }
   }
 }

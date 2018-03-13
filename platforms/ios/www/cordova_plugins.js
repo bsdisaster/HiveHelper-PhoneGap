@@ -42,14 +42,6 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-stripe.stripe",
-    "file": "plugins/cordova-plugin-stripe/www/CordovaStripe.js",
-    "pluginId": "cordova-plugin-stripe",
-    "clobbers": [
-      "cordova.plugins.stripe"
-    ]
-  },
-  {
     "id": "cordova-plugin-x-toast.Toast",
     "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
     "pluginId": "cordova-plugin-x-toast",
@@ -140,7 +132,6 @@ module.exports.metadata =
   "cordova-plugin-inappbrowser": "1.7.1",
   "cordova-plugin-ios-camera-permissions": "1.2.0",
   "cordova-plugin-spinnerdialog": "1.3.2",
-  "cordova-plugin-stripe": "1.5.3",
   "cordova-plugin-whitelist": "1.3.2",
   "cordova-plugin-x-toast": "2.6.0",
   "de.appplant.cordova.plugin.local-notification": "0.8.5",
