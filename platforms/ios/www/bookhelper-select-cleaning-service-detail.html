@@ -159,7 +159,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="bookhelper-select-cleaning-service-list.html" target="_self">
+                    <a href="#" target="_self" onclick="redirectBack()">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -226,12 +226,7 @@
 
             $(this).parent().next('div').find('select').find(":lt(" + index + ")").prop("disabled", true);
             $(this).parent().next('div').find('select').find(":eq(" + index + ")").prop("disabled", true);
-
-            //var value = $(this).val().split(':')[0];
-            //$(this).parent().next('div').find('select').find(":lt(" + parseInt(value - 7) + ")").prop("disabled", true);
-            //$(this).parent().next('div').find('select').find(":eq(" + parseInt(value - 7) + ")").prop("disabled", true);
         })
-
 
         function checkPreviousHelperAvailibility() {
             if (isMobileDevice) {
@@ -251,7 +246,7 @@
                 data: JSON.stringify(parameter),
                 dataType: "JSON",
                 success: function (response) {
-                    // Inserting html into the result div on success
+                    
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
                     } else {
@@ -310,7 +305,7 @@
                     data: JSON.stringify(parameter),
                     datatype: "json",
                     success: function (response) {
-                        // Inserting html into the result div on success
+                        
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
                         } else {
@@ -435,7 +430,7 @@
                     data: JSON.stringify(parameter),
                     dataType: "JSON",
                     success: function (response) {
-                        // Inserting html into the result div on success
+                        
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
                         } else {
@@ -483,6 +478,14 @@
                         }
                     }
                 });
+            }
+        }
+
+        function redirectBack() {
+            if (getParameterByName("editAppointment")) {
+                window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
+            } else {
+                window.location.href = "bookhelper-select-cleaning-service-list.html";
             }
         }
 

@@ -229,7 +229,7 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
-                    // Inserting html into the result div on success
+                    
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
                     } else {
@@ -325,7 +325,7 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
-                    // Inserting html into the result div on success
+                    
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
                     } else {
@@ -404,7 +404,7 @@
                             data: JSON.stringify(parameter),
                             dataType: "json",
                             success: function (response) {
-                                // Inserting html into the result div on success
+                                
                                 window.plugins.spinnerDialog.hide();
                                 if (response !== null && response.status === 1) {
 
@@ -449,7 +449,7 @@
                         success: function (response) {
                             showLoading(false);
 
-                            // Inserting html into the result div on success
+                            
                             if (response !== null && response.status === 1) {
 
                                 showAlertDialog('Success', 'Record successfully removed.');
@@ -495,7 +495,7 @@
                     data: JSON.stringify(parameter),
                     dataType: "JSON",
                     success: function (response) {
-                        // Inserting html into the result div on success
+                        
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
                         } else {

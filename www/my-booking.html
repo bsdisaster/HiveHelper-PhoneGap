@@ -90,7 +90,7 @@
                         type: "GET",
                         dataType: "JSON",
                         success: function (response) {
-                            // Inserting html into the result div on success
+
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             } else {
@@ -180,7 +180,7 @@
                                         html = html + '	<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" onclick="editAppointment(' + responseData.upcomingBooking[i].helperId + ',' + responseData.upcomingBooking[i].appointmentId + ',' + responseData.upcomingBooking[i].franchiseId + ',' + responseData.upcomingBooking[i].subServiceId + ',\'' + responseData.upcomingBooking[i].displaydate + '\',\'' + responseData.upcomingBooking[i].appointmentDate + '\')" target="_self"><i class="fa fa-pencil" style="font-size:large" aria-hidden="true"></i></a>';
+                                        html = html + '<a href="#" onclick="editAppointment(' + responseData.upcomingBooking[i].appointmentId + ',' + responseData.upcomingBooking[i].franchiseId + ',' + responseData.upcomingBooking[i].subServiceId + ',\'' + responseData.upcomingBooking[i].displaydate + '\',\'' + responseData.upcomingBooking[i].appointmentDate + '\')" target="_self"><i class="fa fa-pencil" style="font-size:large" aria-hidden="true"></i></a>';
                                         html = html + '</div>';
                                         //html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
                                         //html = html + '<a href="#" target="_self" onclick="viewAppointmentDetails(' + upcomingBooking[i].appointmentId + ')"><i class="fa fa-eye" style="font-size:large" aria-hidden="true"></i></a>';
@@ -223,7 +223,6 @@
                                         html = html + '</div></div><div class="clear"></div>';
                                         $('#divPreviousComming').append(html);
                                     }
-
                                 }
                                 else {
                                     $('#lblPreviousListError').text('No completed services found.!');
@@ -278,10 +277,9 @@
                     })
                 }
 
-                function editAppointment(helperId, appointmentId, franchiseId, subServiceId, appointmentSelectedTime, appointmentDate) {
+                function editAppointment(appointmentId, franchiseId, subServiceId, appointmentSelectedTime, appointmentDate) {
 
                     localStorage.setItem("appointmentId", appointmentId);
-                    localStorage.setItem("helperId", helperId);
                     localStorage.setItem("franchiseId", franchiseId);
                     localStorage.setItem("subServiceId", subServiceId);
                     localStorage.setItem("helperSelectedTime", appointmentSelectedTime.substring(appointmentSelectedTime.indexOf("@") + 1).trim());
@@ -314,7 +312,6 @@
 
                                         if (error == null || error == "") {
                                             navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-
                                         } else {
                                             navigator.notification.alert(error, null, 'Error', 'Close');
                                         }

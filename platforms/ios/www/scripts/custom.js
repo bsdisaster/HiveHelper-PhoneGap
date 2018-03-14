@@ -1030,8 +1030,8 @@ $(document).ready(function () {
     });
 })
 
-var androidAppVersion = '2.0.5';
-var iosAppVersion = '2.0.3';
+var androidAppVersion = '2.0.6';
+var iosAppVersion = '2.0.4';
 var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
 //var api_baseUrl = 'http://hivehelperapp.com/v2/';
 

@@ -38,7 +38,7 @@
                             </div>
                             <div class="page-login-input animate-fade">
                                 <i class="login-icon ion-person"></i>
-                                <input id="username" type="text" value="Username" onfocus="if (this.value=='Username') this.value = ''" onblur="if (this.value=='') this.value = 'Username'">
+                                <input id="username" type="text" value="Email" onfocus="if (this.value == 'Email') this.value = ''" onblur="if (this.value == '')this.value = 'Email'">
                             </div>
                             <div class="page-login-input animate-fade animate-delay-100">
                                 <i class="login-icon ion-android-lock"></i>
@@ -244,14 +244,14 @@
                         }
 
                         function forgotPassword() {
-                            if ($("#username").val() === '' || $("#username").val() === null || $("#username").val() === 'Username') {
+                            if ($("#username").val() === '' || $("#username").val() === null || $("#username").val() === 'Email') {
                                 if (isMobileDevice) {
-                                    navigator.notification.alert("Please enter username!", null, 'Warning', 'Close');
+                                    navigator.notification.alert("Please enter email!", null, 'Warning', 'Close');
                                 } else {
-                                    showAlertDialog("Warning", "Please enter username!");
+                                    showAlertDialog("Warning", "Please enter email!");
                                 }
                             }
-                            else if ($("#username").val() !== null && $("#username").val() !== '' && $("#username").val() !== 'Username') {
+                            else if ($("#username").val() !== null && $("#username").val() !== '' && $("#username").val() !== 'Email') {
                                 var x = $("#username").val();
                                 var atpos = x.indexOf("@");
                                 var dotpos = x.lastIndexOf(".");
@@ -279,7 +279,7 @@
                                         data: JSON.stringify(parameter),
                                         dataType: "JSON",
                                         success: function (response) {
-                                            // Inserting html into the result div on success
+                                            
                                             if (isMobileDevice) {
                                                 window.plugins.spinnerDialog.hide();
                                             } else {
@@ -337,9 +337,9 @@
 
                             var msg = "Please correct following fields:\n";
 
-                            if (usernameValue === '' || usernameValue === null || usernameValue === 'Username') {
+                            if (usernameValue === '' || usernameValue === null || usernameValue === 'Email') {
                                 countError = countError + 1;
-                                msg += "Username!\n";
+                                msg += "Email!\n";
 
                             }
                             if (passwordValue === '' || passwordValue === null || passwordValue === 'Password') {
@@ -348,7 +348,7 @@
 
                             }
 
-                            if (usernameValue !== null && usernameValue !== '' && usernameValue !== 'Username') {
+                            if (usernameValue !== null && usernameValue !== '' && usernameValue !== 'Email') {
                                 var x = usernameValue;
                                 var atpos = x.indexOf("@");
                                 var dotpos = x.lastIndexOf(".");
@@ -395,7 +395,7 @@
                                     data: JSON.stringify(parameter),
                                     dataType: "JSON",
                                     success: function (response) {
-                                        // Inserting html into the result div on success
+                                        
                                         if (isMobileDevice) {
                                             window.plugins.spinnerDialog.hide();
                                         } else {

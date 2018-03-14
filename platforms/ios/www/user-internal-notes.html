@@ -6,24 +6,25 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>Notifications - Hive Helper 1.0</title>
+    <title>Client Notes - Hive Helper 1.0</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
-
-    <script src="cordova.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
 
 </head>
 
 <body>
     <div id="page-transitions">
+
         <div class="header header-logo-center header-light">
             <img src="images/HiveHelper_Logo.png" />
         </div>
@@ -31,23 +32,25 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
-                    <h3 class="text-center futura-medium">Notifications</h3>
+                    <h3 class="text-center futura-medium">Client Notes</h3>
                 </div>
                 <div class="decoration decoration-margins"></div>
 
-
                 <div class="content">
-                    <div class="page-userlist">
-
+                    <div class="page-login-input animate-fade">
+                        <label>Client Note</label>
                     </div>
-                    <button id="btnSubmit" onclick="removeNotifications()" class="button button-pantone button-icon button-full half-top full-bottom animate-fade animate-delay-600 notification-button" data-sr-id="6"><i class="ion-ios-arrow-thin-right"></i>Clear</button>
+                    <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100">
+                        <textarea id="customer-details" class="contactTextarea" placeholder="Details" col="6" row="10"></textarea>
+                    </div>
+                    <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-200" onclick="submitInternalNote()"><i class="ion-ios-arrow-thin-right"></i>Submit</button>
                 </div>
             </div>
         </div>
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="dashboard.html" target="_self">
+                    <a href="helper-booking.html" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -64,21 +67,84 @@
     </div>
 </body>
 </html>
-
-<script type="text/javascript">
-
+<script>
     $(document).ready(function () {
+
         if (!isMobileDevice) {
-            getNotificationList();
+            fetchInternalNote();
         }
 
     }).on('deviceready', function () {
-        document.addEventListener("deviceready", getNotificationList, false);
+        document.addEventListener("deviceready", fetchInternalNote, false);
     });
 
     var isMobileDevice = isMobile();
 
-    function removeNotifications() {
+    function fetchInternalNote() {
+        if (isMobileDevice) {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+        } else {
+            showLoading(true);
+        }
+
+        $.ajax({
+            url: api_baseUrl + 'helper/getInternalNotes/' + localStorage.getItem("userIdForNotes"),
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+                
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.hide();
+                } else {
+                    showLoading(false);
+                }
+
+                if (response !== null && response.status === 1) {
+                    $(".contactTextarea").val(response.data.internalNote);
+                }
+                else {
+                    if (isMobileDevice) {
+                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                    } else {
+                        showAlertDialog('Warning', response.message);
+                    }
+                }
+            },
+            error: function (jqXHR, text, error) {
+                // Displaying if there are any errors
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.hide();
+                } else {
+                    showLoading(false);
+                }
+
+                if (error == null || error == "") {
+                    if (isMobileDevice) {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                    }
+
+                } else {
+                    if (isMobileDevice) {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+                    } else {
+                        showAlertDialog('Error', error);
+                    }
+                }
+            }
+        })
+    }
+    function submitInternalNote() {
+
+        if ($(".contactTextarea").val().trim() == "") {
+            if (isMobileDevice) {
+                navigator.notification.alert("Client note is required!", null, 'Warning', 'Close');
+            } else {
+                showAlertDialog("Warning", "Client note is required!");
+            }
+            $(".contactTextarea").val('');
+            return false;
+        }
+
         if (isMobileDevice) {
             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
         } else {
@@ -86,11 +152,12 @@
         }
 
         var parameter = {
-            "userid": localStorage.getItem("userId")
+            "userid": localStorage.getItem("userIdForNotes"),
+            "internalnote": $(".contactTextarea").val()
         }
 
         $.ajax({
-            url: api_baseUrl + '/notification/removenotification/',
+            url: api_baseUrl + 'helper/updateInternalNotes/',
             type: "POST",
             data: JSON.stringify(parameter),
             dataType: "JSON",
@@ -104,15 +171,17 @@
 
                 if (response !== null && response.status === 1) {
                     if (isMobileDevice) {
-                        navigator.notification.alert("Notification successfully removed!", null, 'Success', 'Close');
+                        navigator.notification.alert("Client note successfully saved!", null, 'Success', 'Close');
                     } else {
-                        showAlertDialog('Success', "Notification successfully removed!");
+                        showAlertDialog("Success", "Client note successfully saved!");
                     }
 
                     setTimeout(function () {
-                        window.location = "dashboard.html";
+                        window.location = "helper-booking.html";
                     }, 1000);
-                } else {
+                }
+                else {
+
                     if (isMobileDevice) {
                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                     } else {
@@ -144,53 +213,10 @@
         });
     }
 
-    function getNotificationList() {
-        if (isMobileDevice) {
-            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-        } else {
-            showLoading(true);
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            submitInternalNote();
         }
+    });
 
-        $.ajax({
-            url: api_baseUrl + 'Notification/' + localStorage.getItem("userId"),
-            type: "GET",
-            dataType: "JSON",
-            success: function (response) {
-                
-                if (isMobileDevice) {
-                    window.plugins.spinnerDialog.hide();
-                } else {
-                    showLoading(false);
-                }
-
-                if (response !== null && response.status === 1 && response.data.length > 0) {
-                    for (var i = 0; i < response.data.length; i++) {
-                        var html = '<div class="notification-list notification-widget"><p><b>' + response.data[i].title + '</b></p><p>' + response.data[i].description + '</p></div><div class="clear">&nbsp;</div>';
-                        $('.page-userlist').append(html);
-                    }
-                }
-            },
-            error: function (jqXHR, text, error) {
-                // Displaying if there are any errors
-                if (isMobileDevice) {
-                    window.plugins.spinnerDialog.hide();
-                } else {
-                    showLoading(false);
-                }
-
-                if (error == null || error == "") {
-                    if (isMobileDevice) {
-                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
-                    }
-
-                } else {
-                    if (isMobileDevice) {
-                        navigator.notification.alert(error, null, 'Error', 'Close');
-                    } else {
-                        showAlertDialog('Error', error);
-                    }
-                }
-            }
-        });
-    }
 </script>

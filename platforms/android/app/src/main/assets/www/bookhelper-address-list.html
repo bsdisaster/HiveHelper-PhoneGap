@@ -75,7 +75,7 @@
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
-                            // Inserting html into the result div on success
+                            
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             } else {
@@ -159,7 +159,7 @@
                                     type: "GET",
                                     dataType: "json",
                                     success: function (response) {
-                                        // Inserting html into the result div on success
+                                        
                                         window.plugins.spinnerDialog.hide();
                                         if (response !== null && response.status === 1) {
                                             $(object).parent().parent().remove();
