@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>My Booking - Hive Helper 1.0</title>
+    <title>Helper Booking - Hive Helper 1.0</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
@@ -136,7 +136,7 @@
                                         html = html + '<a href="#" target="_self" onclick="completeAppointment(' + upcomingJobs[i].appointmentId + ')"><i class="fa fa-check-circle" style="font-size:large" aria-hidden="true"></i></a>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" target="_self" onclick="updateInternalNote(' + upcomingJobs[i].userId + ')"><i class="fa fa-sticky-note-o" style="font-size:large" aria-hidden="true"></i></a>';
+                                        html = html + '<a href="#" target="_self" onclick="updateInternalNote(' + upcomingJobs[i].userId + ',' + upcomingJobs[i].appointmentId + ')"><i class="fa fa-sticky-note-o" style="font-size:large" aria-hidden="true"></i></a>';
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';
                                         $('#divUpComming').append(html);
@@ -299,8 +299,10 @@
                     localStorage.setItem("appointmentId", appointmentId);
                     window.location = "appointment-details.html?helperbooking=true";
                 }
-                function updateInternalNote(userId) {
+                function updateInternalNote(userId, appointmentId) {
                     localStorage.setItem("userIdForNotes", userId);
+                    localStorage.setItem("appointmentId", appointmentId);
+
                     window.location = "user-internal-notes.html";
                 }
 

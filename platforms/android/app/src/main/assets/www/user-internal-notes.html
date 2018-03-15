@@ -43,7 +43,11 @@
                     <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100">
                         <textarea id="customer-details" class="contactTextarea" placeholder="Details" col="6" row="10"></textarea>
                     </div>
-                    <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-200" onclick="submitInternalNote()"><i class="ion-ios-arrow-thin-right"></i>Submit</button>
+
+                    <div class="futura-pt-book" id="DivQuestionsAnswer">
+                        <h3><u>Questions/answers :</u></h3>
+                    </div>
+                    <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-200" onclick="updateQuestionsAnswers()"><i class="ion-ios-arrow-thin-right"></i>Submit</button>
                 </div>
             </div>
         </div>
@@ -71,11 +75,11 @@
     $(document).ready(function () {
 
         if (!isMobileDevice) {
-            fetchInternalNote();
+            getAppointmentQuestions();
         }
 
     }).on('deviceready', function () {
-        document.addEventListener("deviceready", fetchInternalNote, false);
+        document.addEventListener("deviceready", getAppointmentQuestions, false);
     });
 
     var isMobileDevice = isMobile();
@@ -92,7 +96,7 @@
             type: "GET",
             dataType: "JSON",
             success: function (response) {
-                
+
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.hide();
                 } else {
@@ -100,7 +104,7 @@
                 }
 
                 if (response !== null && response.status === 1) {
-                    $(".contactTextarea").val(response.data.internalNote);
+                    $("#customer-details").val(response.data.internalNote);
                 }
                 else {
                     if (isMobileDevice) {
@@ -133,17 +137,10 @@
             }
         })
     }
-    function submitInternalNote() {
 
-        if ($(".contactTextarea").val().trim() == "") {
-            if (isMobileDevice) {
-                navigator.notification.alert("Client note is required!", null, 'Warning', 'Close');
-            } else {
-                showAlertDialog("Warning", "Client note is required!");
-            }
-            $(".contactTextarea").val('');
-            return false;
-        }
+    function getAppointmentQuestions() {
+
+        fetchInternalNote();
 
         if (isMobileDevice) {
             window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
@@ -151,18 +148,12 @@
             showLoading(true);
         }
 
-        var parameter = {
-            "userid": localStorage.getItem("userIdForNotes"),
-            "internalnote": $(".contactTextarea").val()
-        }
-
         $.ajax({
-            url: api_baseUrl + 'helper/updateInternalNotes/',
-            type: "POST",
-            data: JSON.stringify(parameter),
+            url: api_baseUrl + 'appointment/getQuestionAnswer/' + localStorage.getItem("appointmentId"),
+            type: "GET",
             dataType: "JSON",
             success: function (response) {
-                
+
                 if (isMobileDevice) {
                     window.plugins.spinnerDialog.hide();
                 } else {
@@ -170,18 +161,71 @@
                 }
 
                 if (response !== null && response.status === 1) {
-                    if (isMobileDevice) {
-                        navigator.notification.alert("Client note successfully saved!", null, 'Success', 'Close');
-                    } else {
-                        showAlertDialog("Success", "Client note successfully saved!");
-                    }
 
-                    setTimeout(function () {
-                        window.location = "helper-booking.html";
-                    }, 1000);
+                    var serviceQuestionsData = response.data.serviceQuestions;
+                    if (serviceQuestionsData != null && serviceQuestionsData.length > 0) {
+                        var counter = 0;
+                        for (var i = 0; i < serviceQuestionsData.length; i++) {
+
+                            var html = '';
+                            counter++;
+                            if (serviceQuestionsData[i].fieldTypeId == "1") {
+
+                                var answer = serviceQuestionsData[i].answer;
+                                if (answer == null || answer == "undefined") {
+                                    answer = "";
+                                }
+                                html = html + '<div class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
+
+                                html = html + '<div class="input-icon"><input id="inputAnswer' + counter + '" type="text" class="input-text-box input-green-border" placeholder="Answer" value="' + answer + '"></div>';
+                            }
+                            else if (serviceQuestionsData[i].fieldTypeId == "2") {
+                                var answer = serviceQuestionsData[i].answer;
+                                if (answer == null || answer == "undefined") {
+                                    answer = "";
+                                }
+
+                                html = html + '<div class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
+                                html = html + '<div class="input-icon"><textarea id="inputDescription' + counter + '" class="contactTextarea" style="background: #fff;width: 100%;min-height: 120px;height: auto;border: 1px solid #CBCBCB;">' + answer + '</textarea></div>';
+                            }
+                            else if (serviceQuestionsData[i].fieldTypeId == "3") {
+                                html = html + '<div class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
+
+                                html = html + '<div class="one-half last-column"><div class="extra-margin" id="checkbox' + counter + '">';
+                                for (var j = 0; j < serviceQuestionsData[i].options.length; j++) {
+                                    html = html + '<div class="fac fac-checkbox fac-default"><span></span><input id="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" type="checkbox" value="' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" data-checked ="' + serviceQuestionsData[i].options[j].isanswer + '"><label for="checkbox' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '">' + serviceQuestionsData[i].options[j].optionTitle + '</label></div>';
+                                }
+                                html = html + '</div></div>';
+                            }
+                            else if (serviceQuestionsData[i].fieldTypeId == "4") {
+                                html = html + '<div class="input-icon"><label id="questionTitle' + counter + '" data-val="' + serviceQuestionsData[i].serviceQuestionId + '" class="bold p70">' + serviceQuestionsData[i].questionTitle + '</label><i class="fa fa-question-circle help-tooltip tooltip" onclick="showHideToolTip(this)"><span class="tooltiptext">' + serviceQuestionsData[i].questionTag + '</span></i></div>';
+
+                                html = html + '<div class="select-box-light">';
+                                html = html + '<select id="drpAnswer' + counter + '" style="padding-left: 0px">';
+                                for (var j = 0; j < serviceQuestionsData[i].options.length; j++) {
+                                    html = html + '<option value="' + serviceQuestionsData[i].options[j].serviceQuestionOptionId + '" data-checked ="' + serviceQuestionsData[i].options[j].isanswer + '">' + serviceQuestionsData[i].options[j].optionTitle + '</option>';
+                                }
+
+                                html = html + '</select>';
+                                html = html + '</div>';
+                            }
+                            html = html + '<div class="clear"></div>';
+
+                            $("#DivQuestionsAnswer").append(html);
+                        }
+
+                        localStorage.setItem("appointmentArray", JSON.stringify(serviceQuestionsData));
+                        getSelectedAnswers();
+                    } else {
+
+                        if (isMobileDevice) {
+                            navigator.notification.alert('No records found!', null, 'Warning', 'Close');
+                        } else {
+                            showAlertDialog('Warning', 'No records found!');
+                        }
+                    }
                 }
                 else {
-
                     if (isMobileDevice) {
                         navigator.notification.alert(response.message, null, 'Warning', 'Close');
                     } else {
@@ -213,9 +257,152 @@
         });
     }
 
+    function getSelectedAnswers() {
+        $("input[type=checkbox]").each(function () {
+            if ($(this).attr("data-checked") == "1") {
+                $(this).attr("checked", true);
+            }
+        })
+        $("select option").each(function () {
+            if ($(this).attr("data-checked") == "1") {
+                $(this).attr("selected", true);
+            }
+        })
+    }
+
+    function updateQuestionsAnswers() {
+
+        if ($("#customer-details").val().trim() == "") {
+            if (isMobileDevice) {
+                navigator.notification.alert("Client note is required!", null, 'Warning', 'Close');
+            } else {
+                showAlertDialog('Warning', 'Client note is required!');
+            }
+            $("#customer-details").val("");
+            $("#customer-details").focus().css("border-color", "red");
+            return false;
+        }
+
+        var arrayObject = [];
+        var questionsArray = JSON.parse(localStorage.getItem("appointmentArray"));
+
+        for (var i = 0; i < questionsArray.length; i++) {
+
+            if (questionsArray[i].fieldTypeId == "1") {
+                var innerObject = {};
+
+                innerObject.serviceQuestionId = $("#questionTitle" + (i + 1)).attr("data-val");
+                innerObject.answer = $("#inputAnswer" + (i + 1)).val();
+                innerObject.option = [];
+
+                arrayObject.push(innerObject);
+            }
+        }
+        for (var i = 0; i < questionsArray.length; i++) {
+            if (questionsArray[i].fieldTypeId == "2") {
+                var innerObject = {};
+                innerObject.serviceQuestionId = $("#questionTitle" + (i + 1)).attr("data-val");
+                innerObject.answer = $("#inputDescription" + (i + 1)).val();
+                innerObject.option = [];
+
+                arrayObject.push(innerObject);
+            }
+        }
+        for (var i = 0; i < questionsArray.length; i++) {
+            if (questionsArray[i].fieldTypeId == "3") {
+                var innerObject = {};
+                innerObject.serviceQuestionId = $("#questionTitle" + (i + 1)).attr("data-val");
+                var checkedValues = $("#checkbox" + (i + 1)).find("input:checkbox:checked").map(function () {
+                    return { "optionid": this.value };
+                }).get();
+                innerObject.option = checkedValues;
+
+                arrayObject.push(innerObject);
+            }
+        }
+        for (var i = 0; i < questionsArray.length; i++) {
+            if (questionsArray[i].fieldTypeId == "4") {
+                var innerObject = {};
+                innerObject.serviceQuestionId = $("#questionTitle" + (i + 1)).attr("data-val");
+                innerObject.option = [{ "optionid": $("#drpAnswer" + (i + 1)).val() }];
+
+                arrayObject.push(innerObject);
+            }
+        }
+
+        var parameter = {
+            "appointmentid": localStorage.getItem("appointmentId"),
+            "internalnote": $("#customer-details").val(),
+            "userid": localStorage.getItem("userIdForNotes"),
+            "QuestionAnswer": arrayObject
+        };
+
+        if (isMobileDevice) {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+        } else {
+            showLoading(true);
+        }
+
+        $.ajax({
+            url: api_baseUrl + 'Appointment/editAppointmentAnswers/',
+            type: "POST",
+            data: JSON.stringify(parameter),
+            success: function (response) {
+
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.hide();
+                } else {
+                    showLoading(false);
+                }
+
+                if (response !== null && response.status === 1) {
+                    if (isMobileDevice) {
+                        navigator.notification.alert("Your appointment data successfully updated!", null, 'Success', 'Close');
+                    } else {
+                        showAlertDialog('Success', 'Your appointment data successfully updated!');
+                    }
+
+                    localStorage.removeItem("appointmentArray");
+                    setTimeout(function () {
+                        window.location.href = "helper-booking.html";
+                    }, 1000);
+                }
+                else {
+                    if (isMobileDevice) {
+                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                    } else {
+                        showAlertDialog('Warning', response.message);
+                    }
+                }
+            },
+            error: function (jqXHR, text, error) {
+
+                // Displaying if there are any errors
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.hide();
+                } else {
+                    showLoading(false);
+                }
+
+                if (error == null || error == "") {
+                    if (isMobileDevice) {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                    }
+
+                } else {
+                    if (isMobileDevice) {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+                    } else {
+                        showAlertDialog('Error', error);
+                    }
+                }
+            }
+        });
+    }
+
     $(document).keypress(function (e) {
         if (e.which == 13) {
-            submitInternalNote();
+            updateQuestionsAnswers();
         }
     });
 
