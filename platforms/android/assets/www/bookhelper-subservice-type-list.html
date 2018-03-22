@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>Book helper select cleaning service - Hive Helper 1.0</title>
+    <title>Book helper select sub-service type - Hive Helper 1.0</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
@@ -31,7 +31,7 @@
             <div id="page-content-scroll" class="header-clear">
                 <!--Enables this element to be scrolled -->
                 <div class="heading-strip">
-                    <h3 class="center-text futura-medium">Select a service</h3>
+                    <h3 class="center-text futura-medium">Select sub service</h3>
                 </div>
                 <div class="decoration decoration-margins"></div>
 
@@ -70,7 +70,7 @@
                             data: JSON.stringify(parameter),
                             dataType: "json",
                             success: function (response) {
-                                // Inserting html into the result div on success
+                                
 
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
@@ -147,7 +147,11 @@
                         localStorage.setItem("selectedCleaningTitle", displaytitle);
                         localStorage.setItem("regularPrice", regularPrice);
 
-                        window.location.href = "bookhelper-select-cleaning-service-detail.html";
+                        if (localStorage.getItem("isSubscriptionPlan") == "true") {
+                            window.location.href = "bookhelper-question-answer-detail.html";
+                        } else {
+                            window.location.href = "bookhelper-select-service-detail.html";
+                        }
                     }
                 </script>
             </div>

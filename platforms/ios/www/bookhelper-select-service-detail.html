@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>Book helper select cleaning service detail - Hive Helper 1.0</title>
+    <title>Book helper select service detail - Hive Helper 1.0</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
@@ -370,16 +370,6 @@
             }
         }
 
-        function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
-
         function requestAppointment() {
             if ($('#scheduleFrom').val() == null || $('#scheduleFrom').val() == "Select Time") {
                 if (isMobileDevice) {
@@ -483,9 +473,9 @@
 
         function redirectBack() {
             if (getParameterByName("editAppointment")) {
-                window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
+                window.location.href = "bookhelper-question-answer-detail.html?editAppointment=true";
             } else {
-                window.location.href = "bookhelper-select-cleaning-service-list.html";
+                window.location.href = "bookhelper-subservice-type-list.html";
             }
         }
 
@@ -497,9 +487,9 @@
             localStorage.setItem("helperSelectedTime", helperSelectedTime);
 
             if (getParameterByName("editAppointment")) {
-                window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
+                window.location.href = "bookhelper-question-answer-detail.html?editAppointment=true";
             } else {
-                window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html";
+                window.location.href = "bookhelper-question-answer-detail.html";
             }
         }
 

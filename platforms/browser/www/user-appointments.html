@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>My Booking - Hive Helper 1.0</title>
+    <title>User appointments - Hive Helper 1.0</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
@@ -285,7 +285,7 @@
                     localStorage.setItem("helperSelectedTime", appointmentSelectedTime.substring(appointmentSelectedTime.indexOf("@") + 1).trim());
                     localStorage.setItem("providerDate", appointmentDate);
 
-                    window.location.href = "bookhelper-select-cleaning-service-detail-time-wise-detail.html?editAppointment=true";
+                    window.location.href = "bookhelper-question-answer-detail.html?editAppointment=true";
                 }
 
                 function cancelAppointment(appointmentId) {

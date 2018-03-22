@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>Book helper select cleaning service time wise detail for pay - Hive Helper 1.0</title>
+    <title>Book helper question answer detail - Hive Helper 1.0</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
@@ -40,7 +40,7 @@
 
                 <div class="content futura-pt-book" id="DivQuestionsAnswer">
                     <div id="dvChangeDateTime" class="disabled" align="center">
-                        <a href="bookhelper-select-cleaning-service-detail.html?editAppointment=true" target="_self">Change Date Time</a>
+                        <a href="bookhelper-select-service-detail.html?editAppointment=true" target="_self">Change Date Time</a>
                     </div>
                 </div>
             </div>
@@ -56,16 +56,6 @@
 
             var isMobileDevice = isMobile();
 
-            function getParameterByName(name, url) {
-                if (!url) url = window.location.href;
-                name = name.replace(/[\[\]]/g, "\\$&");
-                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                    results = regex.exec(url);
-                if (!results) return null;
-                if (!results[2]) return '';
-                return decodeURIComponent(results[2].replace(/\+/g, " "));
-            }
-
             function getServiceQuestions() {
 
                 if (getParameterByName("editAppointment")) {
@@ -75,14 +65,14 @@
                         showLoading(true);
                     }
 
-                    $(".header-icon-5").attr("href", "my-booking.html");
+                    $(".header-icon-5").attr("href", "user-appointments.html");
 
                     $.ajax({
                         url: api_baseUrl + 'appointment/getQuestionAnswer/' + localStorage.getItem("appointmentId"),
                         type: "GET",
                         dataType: "JSON",
                         success: function (response) {
-                            
+
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             } else {
@@ -162,7 +152,7 @@
                                     }
 
                                     setTimeout(function () {
-                                        window.location.href = "my-booking.html";
+                                        window.location.href = "user-appointments.html";
                                     }, 1000);
                                 }
                             }
@@ -204,7 +194,12 @@
                         showLoading(true);
                     }
 
-                    $(".header-icon-5").attr("href", "bookhelper-select-cleaning-service-detail.html");
+                    if (localStorage.getItem("isSubscriptionPlan") == "true") {
+                        $(".header-icon-5").attr("href", "bookhelper-subservice-type-list.html");
+                    } else {
+                        $(".header-icon-5").attr("href", "bookhelper-select-service-detail.html");
+                    }
+                    
                     var parameter = {
                         "serviceId": localStorage.getItem("serviceId"),
                         "franchiseId": localStorage.getItem("franchiseId"),
@@ -217,7 +212,7 @@
                         data: JSON.stringify(parameter),
                         dataType: "JSON",
                         success: function (response) {
-                            
+
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             } else {
@@ -272,7 +267,7 @@
                                     $("#DivQuestionsAnswer").append('<div style="padding-left: inherit" class="input-icon"><label class="bold p70">' + response.data["privacy_policy_text"] + '</label></div>');
                                     $("#DivQuestionsAnswer").append('<div class="input-icon padding-left"><a href="' + response.data["privacy_policy_link"] + '" target="_blank">' + response.data["privacy_policy_link"] + '</a></div>');
                                     $("#DivQuestionsAnswer").append('<div class="clear"></div>');
-                                    $("#DivQuestionsAnswer").append('<button onclick="paymentTempArray()" class="button button-blue button-full half-top full-bottom">Pay Now</button>');
+                                    $("#DivQuestionsAnswer").append('<button onclick="paymentTempArray()" class="button button-blue button-full half-top full-bottom">Submit</button>');
                                     localStorage.setItem("appointmentArray", JSON.stringify(serviceQuestionsData));
                                     getSelectedAnswers();
                                 }
@@ -409,7 +404,7 @@
                     type: "POST",
                     data: JSON.stringify(parameter),
                     success: function (response) {
-                        
+
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
                         } else {
@@ -424,7 +419,7 @@
                             }
 
                             setTimeout(function () {
-                                window.location.href = "my-booking.html";
+                                window.location.href = "user-appointments.html";
                             }, 1000);
                         }
                         else {
@@ -517,7 +512,11 @@
 
                 localStorage.setItem("paymentTempObject", JSON.stringify(arrayObject));
 
-                window.location.href = "hive-helper-payment.html";
+                if (localStorage.getItem("isSubscriptionPlan") == "true") {
+                    window.location.href = "bookhelper-recurring-appointment.html";
+                } else {
+                    window.location.href = "hive-helper-payment.html";
+                }
             }
 
             function showHideToolTip(divEle) {

@@ -164,19 +164,9 @@
             getAppointmentDetails();
         }
 
-        function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
-
         function setBackUrl() {
             if (getParameterByName("mybooking")) {
-                $(".header-icon-5").attr("href", "my-booking.html");
+                $(".header-icon-5").attr("href", "user-appointments.html");
             }
             if (getParameterByName("helperbooking")) {
                 $(".header-icon-5").attr("href", "helper-booking.html");

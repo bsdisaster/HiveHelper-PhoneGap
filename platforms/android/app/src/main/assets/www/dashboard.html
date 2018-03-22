@@ -56,12 +56,12 @@
                 <div class="content">
                     <div id="divGeneralUser" class="page-userlist futura-medium disabled">
 
-                        <a href="bookhelper-address-list.html" target="_self" class="user-list-3 animate-fade">
+                        <a href="#" target="_self" class="user-list-3 animate-fade" onclick="scheduleHelper()">
                             <img data-original="images/HiveHelper_icon1.png" alt="img" class="preload-image">
                             <strong>SCHEDULE A HELPER</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
-                        <a href="my-booking.html" target="_self" class="user-list-3 animate-fade">
+                        <a href="user-appointments.html" target="_self" class="user-list-3 animate-fade">
                             <img data-original="images/HiveHelper_icon4.png" alt="img" class="preload-image">
                             <strong>APPOINTMENTS</strong>
                             <i class="ion-ios-arrow-forward"></i>
@@ -71,8 +71,13 @@
                             <strong>MY PROFILE</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
-                        <a href="about-us.html" target="_self" class="user-list-3 animate-fade">
+                        <a href="#" target="_self" class="user-list-3 animate-fade" onclick="requestSubscriptionPlan()">
                             <img data-original="images/HiveHelper_icon2.png" alt="img" class="preload-image">
+                            <strong>REQUEST SUBSCRIPTION PLAN</strong>
+                            <i class="ion-ios-arrow-forward"></i>
+                        </a>
+                        <a href="about-us.html" target="_self" class="user-list-3 animate-fade">
+                            <img data-original="images/HiveHelper_icon5.png" alt="img" class="preload-image">
                             <strong>ABOUT US</strong>
                             <i class="ion-ios-arrow-forward"></i>
                         </a>
@@ -137,6 +142,16 @@
         var lastTimeBackPress = 0;
         var timePeriodToExit = 2000;
         var isMobileDevice = isMobile();
+
+        function requestSubscriptionPlan() {
+            localStorage.setItem("isSubscriptionPlan", true);
+            window.location.href = "bookhelper-address-list.html";
+        }
+        
+        function scheduleHelper() {
+            localStorage.removeItem("isSubscriptionPlan");
+            window.location.href = "bookhelper-address-list.html";
+        }
 
         function getNotifications() {
             $(".heading-strip i").css({ 'height': '0', 'line-height': '23px' });

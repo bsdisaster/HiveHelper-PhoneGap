@@ -1,0 +1,178 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Book helper select sub-service type - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <img src="images/HiveHelper_Logo.png" />
+        </div>
+        <div id="page-content" class="page-content set-background-splash2">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip">
+                    <h3 class="center-text futura-medium">Select sub service</h3>
+                </div>
+                <div class="decoration decoration-margins"></div>
+
+                <div class="content">
+                    <div class="page-userlist">
+
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    var serviceId = null;
+                    $(document).ready(function () {
+                        serviceId = localStorage.getItem("serviceId");
+
+                        if (!isMobileDevice) {
+                            getAllServices();
+                        }
+                    }).on('deviceready', function () {
+                        document.addEventListener("deviceready", getAllServices, false);
+                    });
+
+                    var isMobileDevice = isMobile();
+
+                    function getAllServices() {
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                        } else {
+                            showLoading(true);
+                        }
+
+                        var parameter = { "serviceId": serviceId, "franchiseId": localStorage.getItem("franchiseId") };
+
+                        $.ajax({
+                            url: api_baseUrl + 'service/getsubService/',
+                            type: "POST",
+                            data: JSON.stringify(parameter),
+                            dataType: "json",
+                            success: function (response) {
+                                
+
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
+                                }
+
+                                if (response !== null && response.status === 1) {
+
+                                    var serviceCleaningData = response.data;
+
+                                    if (serviceCleaningData.length > 0) {
+                                        for (var i = 0; i < serviceCleaningData.length; i++) {
+
+                                            var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(' + serviceCleaningData[i].subServiceId + ',' + serviceCleaningData[i].franchiseId + ',\'' + serviceCleaningData[i].displaytitle + '\',\'' + serviceCleaningData[i].regularPrice + '\')" class="user-list-3">';
+                                            html = html + '<strong>' + serviceCleaningData[i].displaytitle + '</strong>';
+                                            html = html + '<i class="ion-ios-arrow-forward"></i>';
+                                            html = html + '</a>';
+                                            $('.page-userlist').append(html);
+                                        }
+                                    }
+                                    else {
+                                        if (isMobileDevice) {
+                                            navigator.notification.alert("no subservice found", null, 'Warning', 'Close');
+                                        } else {
+                                            showAlertDialog('Warning', 'No subservice found.!');
+                                        }
+
+                                        setTimeout(function () {
+                                            window.location.href = "bookhelper-service-type-list.html";
+                                        }, 1000);
+                                    }
+                                }
+                                else {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                    } else {
+                                        showAlertDialog('Warning', response.message);
+                                    }
+
+                                    setTimeout(function () {
+                                        window.location.href = "bookhelper-service-type-list.html";
+                                    }, 1000);
+
+                                }
+                            },
+                            error: function (jqXHR, text, error) {
+                                // Displaying if there are any errors
+                                if (isMobileDevice) {
+                                    window.plugins.spinnerDialog.hide();
+                                } else {
+                                    showLoading(false);
+                                }
+
+                                if (error == null || error == "") {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                    }
+
+                                } else {
+                                    if (isMobileDevice) {
+                                        navigator.notification.alert(error, null, 'Error', 'Close');
+                                    } else {
+                                        showAlertDialog('Error', error);
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    function gotoSelectCleaningServiceDetailPage(subServiceId, franchiseId, displaytitle, regularPrice) {
+                        localStorage.setItem('helperName', '');
+                        localStorage.setItem('subServiceId', subServiceId);
+                        localStorage.setItem("selectedCleaningTitle", displaytitle);
+                        localStorage.setItem("regularPrice", regularPrice);
+
+                        if (localStorage.getItem("isSubscriptionPlan") == "true") {
+                            window.location.href = "bookhelper-question-answer-detail.html";
+                        } else {
+                            window.location.href = "bookhelper-select-service-detail.html";
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+        <footer class="sticky-footer">
+            <div class="n_footer-links">
+                <div class="footer-link-r">
+                    <a href="bookhelper-service-type-list.html" target="_self">
+                        <img src="images/back_arrow.png" height="40" width="40" />
+                    </a>
+                </div>
+                <center>
+                    <h2>We Arrive. You Thrive.</h2>
+                </center>
+                <div class="footer-link-l">
+                    <a href="dashboard.html" target="_self">
+                        <img src="images/Home.png" height="40" width="40" />
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

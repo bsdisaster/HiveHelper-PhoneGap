@@ -7612,6 +7612,7 @@ ul.tabs {
         /*updated*/
         margin-right: 15px !important;
         color: #004c97;
+        padding-top: 7px;
     }
 
     .user-list-3 i {
@@ -11564,7 +11565,6 @@ button.swiper-pagination-bullet {
 .select-box-light {
     overflow: hidden;
     box-sizing: border-box;
-    margin-top: 30px;
     height: 50px;
     line-height: 50px;
 }
@@ -11755,7 +11755,9 @@ button.swiper-pagination-bullet {
 .no-padding-right {
     padding-right: 0px !important;
 }
-
+.no-padding-left {
+    padding-left: 0px !important;
+}
 .wrapper-image {
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -12086,4 +12088,8 @@ button.swiper-pagination-bullet {
     border-radius: 10px;
     padding: 10px 10px 10px 10px;
     background-color: lightgray;
+}
+.recurring-label label{
+    padding-left: 5px;
+    font-size: medium;
 }

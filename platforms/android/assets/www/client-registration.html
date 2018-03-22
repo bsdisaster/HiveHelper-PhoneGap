@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>register - Hive Helper 1.0</title>
+    <title>Client registration - Hive Helper 1.0</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
@@ -73,7 +73,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="index.html" target="_self">
+                    <a href="client-login.html" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -81,7 +81,7 @@
                     <h2>We Arrive. You Thrive.</h2>
                 </center>
                 <div class="footer-link-l">
-                    <a href="index.html" target="_self">
+                    <a href="client-login.html" target="_self">
                         <img src="images/Home.png" height="40" width="40" />
                     </a>
                 </div>
@@ -91,6 +91,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             loadGoogleScript();
+            checkAuthentication();
 
             $(document).on({
                 'DOMNodeInserted': function () {
@@ -143,6 +144,12 @@
                 register();
             }
         });
+
+        function checkAuthentication() {
+            if (getParameterByName("isAuthenticated",false)) {
+                $("#register-email").attr("disabled", "disabled");
+            }
+        }
 
         function deviceReadySuccess() {
 
@@ -279,6 +286,8 @@
                 if (isMobileDevice) {
                     platform = device.platform;
                     window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
                 }
 
                 var parameter = {
@@ -305,7 +314,7 @@
                     data: JSON.stringify(parameter),
                     dataType: "JSON",
                     success: function (response) {
-                        // Inserting html into the result div on success
+                        
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
                         } else {
@@ -321,7 +330,7 @@
                             }
 
                             setTimeout(function () {
-                                window.location = "index.html";
+                                window.location = "client-login.html";
                             }, 1000);
                         }
                         else {

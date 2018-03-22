@@ -468,7 +468,7 @@ $(document).ready(function () {
                 sr.reveal('.animate-delay-1450', { delay: 1450 });
                 sr.reveal('.animate-delay-1500', { delay: 1500 });
             } catch (e) {
-               
+
             }
         };
 
@@ -977,6 +977,7 @@ $(document).ready(function () {
     }//Init Template Function
 
     setTimeout(init_template, 0);//Activating all the plugins
+
     $(function () {
         'use strict';
         var options = {
@@ -1030,8 +1031,8 @@ $(document).ready(function () {
     });
 })
 
-var androidAppVersion = '2.0.5';
-var iosAppVersion = '2.0.3';
+var androidAppVersion = '2.0.7';
+var iosAppVersion = '2.0.5';
 var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
 //var api_baseUrl = 'http://hivehelperapp.com/v2/';
 
@@ -1064,6 +1065,16 @@ function showLoading(visibility) {
     } else {
         $(".loader").remove();
     }
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 function loadGoogleScript() {

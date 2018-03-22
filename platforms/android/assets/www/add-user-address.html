@@ -159,7 +159,7 @@
                                 type: "GET",
                                 dataType: "json",
                                 success: function (response) {
-                                    // Inserting html into the result div on success
+                                    
                                     if (isMobileDevice) {
                                         window.plugins.spinnerDialog.hide();
                                     } else {
@@ -242,16 +242,6 @@
                         return isResult;
                     }
 
-                    function getParameterByName(name, url) {
-                        if (!url) url = window.location.href;
-                        name = name.replace(/[\[\]]/g, "\\$&");
-                        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                            results = regex.exec(url);
-                        if (!results) return null;
-                        if (!results[2]) return '';
-                        return decodeURIComponent(results[2].replace(/\+/g, " "));
-                    }
-
                     function addAddress() {
                         if (isValidateUserAddress()) {
                             if (isMobileDevice) {
@@ -278,7 +268,7 @@
                                 data: JSON.stringify(parameter),
                                 dataType: "JSON",
                                 success: function (response) {
-                                    // Inserting html into the result div on success
+                                    
                                     if (isMobileDevice) {
                                         window.plugins.spinnerDialog.hide();
                                     } else {
@@ -342,7 +332,7 @@
                             type: "GET",
                             dataType: "json",
                             success: function (response) {
-                                // Inserting html into the result div on success
+                                
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
                                 } else {

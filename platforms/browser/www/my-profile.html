@@ -358,9 +358,9 @@
 
                                     if (response !== null && response.status === 1) {
                                         if (isMobileDevice) {
-                                            navigator.notification.alert("Profile successfully updated", null, 'Success', 'Close');
+                                            navigator.notification.alert("Profile successfully updated!", null, 'Success', 'Close');
                                         } else {
-                                            showAlertDialog("Success", "Profile successfully updated");
+                                            showAlertDialog("Success", "Profile successfully updated!");
                                         }
 
                                         setTimeout(function () {

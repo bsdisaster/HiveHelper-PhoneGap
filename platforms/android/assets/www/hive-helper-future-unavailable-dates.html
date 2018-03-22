@@ -67,20 +67,34 @@
                             <select id="drpFrom" class="drpSelectBox dropdown-menu2">
                                 <option>Select Time</option>
                                 <option value="07:00:00">07:00am</option>
+                                <option value="07:30:00">07:30am</option>
                                 <option value="08:00:00">08:00am</option>
+                                <option value="08:30:00">08:30am</option>
                                 <option value="09:00:00">09:00am</option>
+                                <option value="09:30:00">09:30am</option>
                                 <option value="10:00:00">10:00am</option>
+                                <option value="10:30:00">10:30am</option>
                                 <option value="11:00:00">11:00am</option>
+                                <option value="11:30:00">11:30am</option>
                                 <option value="12:00:00">12:00pm</option>
-                                <option value="13:00:00">1:00pm</option>
-                                <option value="14:00:00">2:00pm</option>
-                                <option value="15:00:00">3:00pm</option>
-                                <option value="16:00:00">4:00pm</option>
-                                <option value="17:00:00">5:00pm</option>
-                                <option value="18:00:00">6:00pm</option>
-                                <option value="19:00:00">7:00pm</option>
-                                <option value="20:00:00">8:00pm</option>
-                                <option value="21:00:00">9:00pm</option>
+                                <option value="12:30:00">12:30am</option>
+                                <option value="13:00:00">01:00pm</option>
+                                <option value="13:30:00">01:30am</option>
+                                <option value="14:00:00">02:00pm</option>
+                                <option value="14:30:00">02:30pm</option>
+                                <option value="15:00:00">03:00pm</option>
+                                <option value="15:30:00">03:30pm</option>
+                                <option value="16:00:00">04:00pm</option>
+                                <option value="16:30:00">04:30pm</option>
+                                <option value="17:00:00">05:00pm</option>
+                                <option value="17:30:00">05:30pm</option>
+                                <option value="18:00:00">06:00pm</option>
+                                <option value="18:30:00">06:30pm</option>
+                                <option value="19:00:00">07:00pm</option>
+                                <option value="19:30:00">07:30pm</option>
+                                <option value="20:00:00">08:00pm</option>
+                                <option value="20:30:00">08:30pm</option>
+                                <option value="21:00:00">09:00pm</option>
                             </select>
                         </div>
 
@@ -90,20 +104,34 @@
                             <select id="drpTo" class="drpSelectBoxTo dropdown-menu2">
                                 <option>Select Time</option>
                                 <option value="07:00:00">07:00am</option>
+                                <option value="07:30:00">07:30am</option>
                                 <option value="08:00:00">08:00am</option>
+                                <option value="08:30:00">08:30am</option>
                                 <option value="09:00:00">09:00am</option>
+                                <option value="09:30:00">09:30am</option>
                                 <option value="10:00:00">10:00am</option>
+                                <option value="10:30:00">10:30am</option>
                                 <option value="11:00:00">11:00am</option>
+                                <option value="11:30:00">11:30am</option>
                                 <option value="12:00:00">12:00pm</option>
-                                <option value="13:00:00">1:00pm</option>
-                                <option value="14:00:00">2:00pm</option>
-                                <option value="15:00:00">3:00pm</option>
-                                <option value="16:00:00">4:00pm</option>
-                                <option value="17:00:00">5:00pm</option>
-                                <option value="18:00:00">6:00pm</option>
-                                <option value="19:00:00">7:00pm</option>
-                                <option value="20:00:00">8:00pm</option>
-                                <option value="21:00:00">9:00pm</option>
+                                <option value="12:30:00">12:30am</option>
+                                <option value="13:00:00">01:00pm</option>
+                                <option value="13:30:00">01:30am</option>
+                                <option value="14:00:00">02:00pm</option>
+                                <option value="14:30:00">02:30pm</option>
+                                <option value="15:00:00">03:00pm</option>
+                                <option value="15:30:00">03:30pm</option>
+                                <option value="16:00:00">04:00pm</option>
+                                <option value="16:30:00">04:30pm</option>
+                                <option value="17:00:00">05:00pm</option>
+                                <option value="17:30:00">05:30pm</option>
+                                <option value="18:00:00">06:00pm</option>
+                                <option value="18:30:00">06:30pm</option>
+                                <option value="19:00:00">07:00pm</option>
+                                <option value="19:30:00">07:30pm</option>
+                                <option value="20:00:00">08:00pm</option>
+                                <option value="20:30:00">08:30pm</option>
+                                <option value="21:00:00">09:00pm</option>
                             </select>
                         </div>
                     </div>
@@ -201,7 +229,7 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
-                    // Inserting html into the result div on success
+                    
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
                     } else {
@@ -297,7 +325,7 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
-                    // Inserting html into the result div on success
+                    
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
                     } else {
@@ -376,7 +404,7 @@
                             data: JSON.stringify(parameter),
                             dataType: "json",
                             success: function (response) {
-                                // Inserting html into the result div on success
+                                
                                 window.plugins.spinnerDialog.hide();
                                 if (response !== null && response.status === 1) {
 
@@ -421,7 +449,7 @@
                         success: function (response) {
                             showLoading(false);
 
-                            // Inserting html into the result div on success
+                            
                             if (response !== null && response.status === 1) {
 
                                 showAlertDialog('Success', 'Record successfully removed.');
@@ -467,7 +495,7 @@
                     data: JSON.stringify(parameter),
                     dataType: "JSON",
                     success: function (response) {
-                        // Inserting html into the result div on success
+                        
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
                         } else {
@@ -529,10 +557,10 @@
 
         function disableDropdown() {
             $('#drpTo option').prop("disabled", false);
-            var value = $("#drpFrom").val().split(':')[0];
+            var index = $("#drpFrom").find("option:selected").index();
 
-            $("#drpTo").find(":lt(" + parseInt(value - 6) + ")").prop("disabled", true);
-            $("#drpTo").find(":eq(" + parseInt(value - 6) + ")").prop("disabled", true);
+            $("#drpTo").find(":lt(" + index + ")").prop("disabled", true);
+            $("#drpTo").find(":eq(" + index + ")").prop("disabled", true);
         }
 
     </script>

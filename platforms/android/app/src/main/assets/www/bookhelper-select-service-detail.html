@@ -1,0 +1,498 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Book helper select service detail - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <img src="images/HiveHelper_Logo.png" />
+        </div>
+        <div id="page-content" class="page-content futura-medium set-background-splash2">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip heading-strip-fix-padding">
+                    <h3 class="center-text"><label id="lblSelectedCleaningText"></label></h3>
+                    <!--<p class="center-text color-black">
+                        <div class="col-sm-12">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-2">
+                                <strong>Calender: </strong>
+                            </div>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class="col-sm-7">
+                                <label id="lblCalenderText"> Next Available Helper </label>
+                                <input type="hidden" id="helperId" />
+                            </div>
+
+                        </div>
+                        <div class="clear"></div>
+                    </p>-->
+                    <!--<a href="#" id="btnPreviousHelper" target="_self" class="button button-blue" onclick="requestPreviousHelper()">Request Previous Helper</a>-->
+                    <!--<div class="clear">&nbsp;</div>
+                    <input id="inputAnswer" type="text" class="input-text-box input-green-border" placeholder="Type helper name" >-->
+                </div>
+
+                <div class="content">
+                    <div class="page-login-input light calendar-bgcolor">
+                        <i class="login-icon ion-calendar"></i>
+
+                        <input id="calDate" type="text">
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                    <div class="future-help-display set-schedule dvSelectTime disabled">
+                        <div class="row">
+                            <div class="col-sm-6 padding-left">
+                                From <select id="scheduleFrom">
+                                         <option>Select Time</option>
+                                         <option value="07:00:00">07:00am</option>
+                                         <option value="07:30:00">07:30am</option>
+                                         <option value="08:00:00">08:00am</option>
+                                         <option value="08:30:00">08:30am</option>
+                                         <option value="09:00:00">09:00am</option>
+                                         <option value="09:30:00">09:30am</option>
+                                         <option value="10:00:00">10:00am</option>
+                                         <option value="10:30:00">10:30am</option>
+                                         <option value="11:00:00">11:00am</option>
+                                         <option value="11:30:00">11:30am</option>
+                                         <option value="12:00:00">12:00pm</option>
+                                         <option value="12:30:00">12:30am</option>
+                                         <option value="13:00:00">01:00pm</option>
+                                         <option value="13:30:00">01:30am</option>
+                                         <option value="14:00:00">02:00pm</option>
+                                         <option value="14:30:00">02:30pm</option>
+                                         <option value="15:00:00">03:00pm</option>
+                                         <option value="15:30:00">03:30pm</option>
+                                         <option value="16:00:00">04:00pm</option>
+                                         <option value="16:30:00">04:30pm</option>
+                                         <option value="17:00:00">05:00pm</option>
+                                         <option value="17:30:00">05:30pm</option>
+                                         <option value="18:00:00">06:00pm</option>
+                                         <option value="18:30:00">06:30pm</option>
+                                         <option value="19:00:00">07:00pm</option>
+                                         <option value="19:30:00">07:30pm</option>
+                                         <option value="20:00:00">08:00pm</option>
+                                         <option value="20:30:00">08:30pm</option>
+                                         <option value="21:00:00">09:00pm</option>
+                                </select>
+
+                            </div>
+                            <div class="col-sm-6">
+
+                                To <select id="scheduleTo">
+                                       <option>Select Time</option>
+                                       <option value="07:00:00">07:00am</option>
+                                       <option value="07:30:00">07:30am</option>
+                                       <option value="08:00:00">08:00am</option>
+                                       <option value="08:30:00">08:30am</option>
+                                       <option value="09:00:00">09:00am</option>
+                                       <option value="09:30:00">09:30am</option>
+                                       <option value="10:00:00">10:00am</option>
+                                       <option value="10:30:00">10:30am</option>
+                                       <option value="11:00:00">11:00am</option>
+                                       <option value="11:30:00">11:30am</option>
+                                       <option value="12:00:00">12:00pm</option>
+                                       <option value="12:30:00">12:30am</option>
+                                       <option value="13:00:00">01:00pm</option>
+                                       <option value="13:30:00">01:30am</option>
+                                       <option value="14:00:00">02:00pm</option>
+                                       <option value="14:30:00">02:30pm</option>
+                                       <option value="15:00:00">03:00pm</option>
+                                       <option value="15:30:00">03:30pm</option>
+                                       <option value="16:00:00">04:00pm</option>
+                                       <option value="16:30:00">04:30pm</option>
+                                       <option value="17:00:00">05:00pm</option>
+                                       <option value="17:30:00">05:30pm</option>
+                                       <option value="18:00:00">06:00pm</option>
+                                       <option value="18:30:00">06:30pm</option>
+                                       <option value="19:00:00">07:00pm</option>
+                                       <option value="19:30:00">07:30pm</option>
+                                       <option value="20:00:00">08:00pm</option>
+                                       <option value="20:30:00">08:30pm</option>
+                                       <option value="21:00:00">09:00pm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <textarea id="detail-other-items" class="contactTextarea disabled"></textarea>
+                    </div>
+                    <div>
+                        <button class="button button-blue" onclick="getAllSelectCleaningServices()">Search</button>
+                        <button id="requestAppointment" class="button button-blue disabled" onclick="requestAppointment()">Request Appointment</button>
+                    </div>
+
+                    <div class="clear">&nbsp;</div>
+                    <div class="decoration decoration-margins"></div>
+                    <div class="pageapp-login-input">
+                        <h4>Select From These Available Start Times<h4>
+                    </div>
+                    <div class="page-userlist">
+                    </div>
+                    <div>
+                        <label id="lblErrorMsg" class="bold color-red-dark disabled"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="sticky-footer">
+            <div class="n_footer-links">
+                <div class="footer-link-r">
+                    <a href="#" target="_self" onclick="redirectBack()">
+                        <img src="images/back_arrow.png" height="40" width="40" />
+                    </a>
+                </div>
+                <center>
+                    <h2>We Arrive. You Thrive.</h2>
+                </center>
+                <div class="footer-link-l">
+                    <a href="dashboard.html" target="_self">
+                        <img src="images/Home.png" height="40" width="40" />
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //code for cleaning title.
+            var selectedCleaningTitle = localStorage.getItem("selectedCleaningTitle");
+            if (selectedCleaningTitle != null) {
+                $("#lblSelectedCleaningText").text("");
+                $("#lblSelectedCleaningText").text(selectedCleaningTitle);
+            }
+
+            $('#calDate').datepicker({
+                minDate: 1
+            });
+            $("#calDate").datepicker("setDate", new Date());
+            removeFocus('#calDate');
+            $("#alertDialog").dialog();
+
+        }).on('deviceready', function () {
+            document.addEventListener("deviceready", devicereadySuccess, false);
+        });
+
+        var isMobileDevice = isMobile();
+
+        function removeFocus(inputEle) {
+            $(inputEle).on('focus', function () {
+                $(inputEle).blur();
+            })
+        }
+
+        function devicereadySuccess() {
+            //checkPreviousHelperAvailibility();
+            //getAllSelectCleaningServices();
+        }
+
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                getAllSelectCleaningServices();
+            }
+        });
+
+        function requestPreviousHelper() {
+            window.location.href = "bookhelper-request-previous-helper.html";
+        }
+
+        $("#scheduleFrom").on('change', function () {
+            $('#scheduleTo option').prop("disabled", false);
+
+            var index = $(this).find("option:selected").index();
+
+            $(this).parent().next('div').find('select').find(":lt(" + index + ")").prop("disabled", true);
+            $(this).parent().next('div').find('select').find(":eq(" + index + ")").prop("disabled", true);
+        })
+
+        function checkPreviousHelperAvailibility() {
+            if (isMobileDevice) {
+                window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+            } else {
+                showLoading(true);
+            }
+
+            var parameter = {
+                "userId": localStorage.getItem('userId'),
+                "franchiseId": localStorage.getItem("franchiseId")
+            };
+
+            $.ajax({
+                url: api_baseUrl + 'appointment/requestPreviousHelper/',
+                type: "POST",
+                data: JSON.stringify(parameter),
+                dataType: "JSON",
+                success: function (response) {
+                    
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
+                    }
+
+                    if (response.status === 0) {
+                        $("#btnPreviousHelper").hide();
+                    }
+                },
+                error: function (jqXHR, text, error) {
+                    // Displaying if there are any errors
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.hide();
+                    } else {
+                        showLoading(false);
+                    }
+
+                    if (error == null || error == "") {
+                        if (isMobileDevice) {
+                            navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                        }
+
+                    } else {
+                        if (isMobileDevice) {
+                            navigator.notification.alert(error, null, 'Error', 'Close');
+                        } else {
+                            showAlertDialog('Error', error);
+                        }
+                    }
+                }
+            });
+        }
+
+        function getAllSelectCleaningServices() {
+
+            if ($("#calDate").val() != '') {
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
+                }
+
+                var date = new Date($("#calDate").val());
+                var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
+
+                var parameter = {
+                    "date": calDate,
+                    "franchiseId": localStorage.getItem("franchiseId"),
+                    "subServiceId": localStorage.getItem("subServiceId")
+                };
+
+                $.ajax({
+                    url: api_baseUrl + "Helper/helperAvailability/",
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    datatype: "json",
+                    success: function (response) {
+                        
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (response.data.length != 0 && response.status == 1) {
+
+                            $('.page-userlist').html('');
+                            var serviceCleaningData = response.data;
+
+                            for (var i = 0; i < serviceCleaningData.length; i++) {
+                                var html = '<a href="#" onclick="gotoSelectCleaningServiceDetailPage(\'' + serviceCleaningData[i].scheduleFrom + '-' + serviceCleaningData[i].scheduleTo + '\')" class="user-list-3">';
+                                html = html + '<strong>' + serviceCleaningData[i].scheduleFrom + '</strong>';
+                                html = html + '<i class="ion-ios-arrow-forward"></i>';
+                                html = html + '</a>';
+                                $('.page-userlist').append(html);
+                                $('#requestAppointment').addClass('disabled');
+                                $('#lblErrorMsg').addClass('disabled');
+                                $('.dvSelectTime').addClass('disabled');
+                                $('.contactTextarea').addClass('disabled');
+                            }
+                        }
+                        else {
+                            $('#lblErrorMsg').text('Our apologies, there is currently no availability on that day. Please select another day or Select Request and appointment and we will try to accommodate this day for you !');
+                            $('.page-userlist').html('');
+                            $("#requestAppointment").removeClass('disabled');
+                            $('#lblErrorMsg').removeClass('disabled');
+                            $('.dvSelectTime').removeClass('disabled');
+                            $('.contactTextarea').removeClass('disabled');
+                        }
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (error == null || error == "") {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+
+                        } else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                showAlertDialog('Error', error);
+                            }
+                        }
+                    }
+                });
+            }
+            else {
+                if (isMobileDevice) {
+                    navigator.notification.alert("Please enter date!", null, 'Error', 'Close');
+                } else {
+                    showAlertDialog('Error', 'Please enter date!');
+                }
+            }
+        }
+
+        function requestAppointment() {
+            if ($('#scheduleFrom').val() == null || $('#scheduleFrom').val() == "Select Time") {
+                if (isMobileDevice) {
+                    navigator.notification.alert("Please select schedule from.!", null, "Warning", "Close");
+                } else {
+                    showAlertDialog('Warning', 'Please select schedule from.!');
+                }
+            }
+            else if ($('#scheduleTo').val() == null || $('#scheduleTo').val() == "Select Time") {
+
+                if (isMobileDevice) {
+                    navigator.notification.alert("Please select schedule to.!", null, "Warning", "Close");
+                } else {
+                    showAlertDialog('Warning', 'Please select schedule to.!');
+                }
+            } else if ($('.contactTextarea').val() == "") {
+                if (isMobileDevice) {
+                    navigator.notification.alert("Please enter description.!", null, "Warning", "Close");
+                } else {
+                    showAlertDialog('Warning', 'Please enter description.!');
+                }
+            }
+            else {
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
+                }
+
+                var date = new Date($("#calDate").val());
+                var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
+
+                var parameter = {
+                    "serviceId": localStorage.getItem("serviceId"),
+                    "userId": localStorage.getItem("userId"),
+                    "subServiceId": localStorage.getItem("subServiceId"),
+                    "userAddressId": localStorage.getItem("userAddressId"),
+                    "appointmentDate": calDate,
+                    "appointmentFrom": $('#scheduleFrom').val(),
+                    "appointmentTo": $('#scheduleTo').val(),
+                    "description": $('.contactTextarea').val(),
+                    "franchiseId": localStorage.getItem("franchiseId")
+                }
+
+                $.ajax({
+                    url: api_baseUrl + 'appointment/appointmentRequest/',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    dataType: "JSON",
+                    success: function (response) {
+                        
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (response !== null && response.status === 1) {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("Your request has been sent", null, "Success", "Close");
+                            } else {
+                                showAlertDialog('Success', 'Your request has been sent');
+                            }
+
+                            setTimeout(function () {
+                                window.location.href = "dashboard.html";
+                            }, 1000);
+                        }
+                        else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(response.message, null, "Warning", "Close");
+                            } else {
+                                showAlertDialog('Warning', response.message);
+                            }
+                        }
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (error == null || error == "") {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+
+                        } else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                showAlertDialog('Error', error);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function redirectBack() {
+            if (getParameterByName("editAppointment")) {
+                window.location.href = "bookhelper-question-answer-detail.html?editAppointment=true";
+            } else {
+                window.location.href = "bookhelper-subservice-type-list.html";
+            }
+        }
+
+        function gotoSelectCleaningServiceDetailPage(helperSelectedTime) {
+
+            var date = new Date($("#calDate").val());
+            var calDate = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
+            localStorage.setItem("providerDate", calDate);
+            localStorage.setItem("helperSelectedTime", helperSelectedTime);
+
+            if (getParameterByName("editAppointment")) {
+                window.location.href = "bookhelper-question-answer-detail.html?editAppointment=true";
+            } else {
+                window.location.href = "bookhelper-question-answer-detail.html";
+            }
+        }
+
+    </script>
+</body>
+</html>
