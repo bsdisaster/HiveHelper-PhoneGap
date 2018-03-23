@@ -50,6 +50,13 @@
                 if (!isMobileDevice) {
                     getServiceQuestions();
                 }
+
+                if (localStorage.getItem("zipcode")) {
+                    $("#homeLink").attr("href", "index.html");
+                } else {
+                    $("#homeLink").attr("href", "dashboard.html");
+                }
+
             }).on('deviceready', function () {
                 document.addEventListener("deviceready", getServiceQuestions, false);
             });
@@ -532,7 +539,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="#" class="header-icon-5" target="_self">
+                    <a href="#" class="header-icon-5" id="backLink" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -540,7 +547,7 @@
                     <h2>We Arrive. You Thrive.</h2>
                 </center>
                 <div class="footer-link-l">
-                    <a href="dashboard.html" target="_self">
+                    <a href="dashboard.html" id="homeLink" target="_self">
                         <img src="images/Home.png" height="40" width="40" />
                     </a>
                 </div>

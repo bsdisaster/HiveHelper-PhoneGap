@@ -46,9 +46,16 @@
                     $(document).ready(function () {
                         serviceId = localStorage.getItem("serviceId");
 
+                        if (localStorage.getItem("zipcode")) {
+                            $("#homeLink").attr("href", "index.html");
+                        } else {
+                            $("#homeLink").attr("href", "dashboard.html");
+                        }
+
                         if (!isMobileDevice) {
                             getAllServices();
                         }
+
                     }).on('deviceready', function () {
                         document.addEventListener("deviceready", getAllServices, false);
                     });
@@ -159,7 +166,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="bookhelper-service-type-list.html" target="_self">
+                    <a href="bookhelper-service-type-list.html" id="backLink" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -167,7 +174,7 @@
                     <h2>We Arrive. You Thrive.</h2>
                 </center>
                 <div class="footer-link-l">
-                    <a href="dashboard.html" target="_self">
+                    <a href="dashboard.html" id="homeLink" target="_self">
                         <img src="images/Home.png" height="40" width="40" />
                     </a>
                 </div>

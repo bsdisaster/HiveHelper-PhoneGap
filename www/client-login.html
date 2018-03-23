@@ -186,6 +186,8 @@
                                         }
 
                                         if (response !== null && response.status === 1) {
+                                            localStorage.removeItem("zipcode");
+
                                             if (api_baseUrl.split("/").indexOf("appv2") == -1) {
                                                 localStorage.setItem("googleApiKey", response.data.liveapi);
                                             } else {
@@ -398,6 +400,8 @@
                                         }
 
                                         if (response !== null && response.status === 1) {
+                                            localStorage.clear();
+
                                             localStorage.setItem("username", response.data.email);
                                             localStorage.setItem("password", $("#password").val());
                                             localStorage.setItem("deviceType", platform);

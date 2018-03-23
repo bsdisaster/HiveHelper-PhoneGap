@@ -11755,9 +11755,11 @@ button.swiper-pagination-bullet {
 .no-padding-right {
     padding-right: 0px !important;
 }
+
 .no-padding-left {
     padding-left: 0px !important;
 }
+
 .wrapper-image {
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -11986,9 +11988,32 @@ button.swiper-pagination-bullet {
         z-index: 1;
     }
 
-    .tooltip .tooltiptext {
-        visibility: hidden;
-    }
+.service-tooltip {
+    color: #08A7E1 !important;
+    font-size: 24px !important;
+    position: relative;
+    display: inline-block;
+}
+
+.service-help-tooltip{
+    font-size: 24px !important;
+    color: #08A7E1 !important;
+}
+
+.service-tooltip-text{
+    visibility: hidden;
+        background-color: black;
+        font-size: initial;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 5px;
+        position: absolute;
+        display: block;
+        z-index: 1;
+        width: 200px;
+        left: -170px;
+}
 
 #DivQuestionsAnswer .p70 {
     display: block;
@@ -12089,7 +12114,8 @@ button.swiper-pagination-bullet {
     padding: 10px 10px 10px 10px;
     background-color: lightgray;
 }
-.recurring-label label{
+
+.recurring-label label {
     padding-left: 5px;
     font-size: medium;
 }

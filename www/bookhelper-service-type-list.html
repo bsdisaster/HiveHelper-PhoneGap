@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
 
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -62,8 +63,19 @@
                             showLoading(true);
                         }
 
+                        var apiUrl = "";
+                        if (localStorage.getItem("zipcode")) {
+                            apiUrl = api_baseUrl + 'service/zipcodeService/' + localStorage.getItem("zipcode");
+                            $("#backLink").attr("href", "index.html");
+                            $("#homeLink").attr("href", "index.html");
+                        } else {
+                            apiUrl = api_baseUrl + 'service/' + localStorage.getItem("userAddressId");
+                            $("#backLink").attr("href", "bookhelper-address-list.html");
+                            $("#homeLink").attr("href", "dashboard.html");
+                        }
+
                         $.ajax({
-                            url: api_baseUrl + 'service/' + localStorage.getItem("userAddressId"),
+                            url: apiUrl,
                             type: "GET",
                             dataType: "JSON",
                             success: function (response) {
@@ -86,9 +98,9 @@
                                     if (serviceTypeData.service.length > 0) {
                                         for (var i = 0; i < serviceTypeData.service.length; i++) {
 
-                                            var html = '<a href="#" onclick="gotoSelectCleaningServicePage(' + serviceTypeData.service[i].serviceId + ')" class="user-list-3">';
-                                            html = html + '		<strong class="user-list-3-strong">' + serviceTypeData.service[i].serviceName + '</strong>';
-                                            html = html + '			<i class="ion-ios-arrow-forward"></i>';
+                                            var html = '<a href="#" class="user-list-3">';
+                                            html = html + '		<strong class="user-list-3-strong" onclick="gotoSelectCleaningServicePage(' + serviceTypeData.service[i].serviceId + ')">' + serviceTypeData.service[i].serviceName + '</strong>';
+                                            html = html + '			<i class="fa fa-question-circle service-help-tooltip tooltiptext" onclick="showHideToolTip(this)"><span class="service-tooltip-text">' + serviceTypeData.service[i].shortDescription + '</span></i>';
                                             html = html + '		</a>';
                                             $('.page-userlist').append(html);
                                         }
@@ -112,9 +124,6 @@
                                         showAlertDialog('Warning', response.message);
                                     }
 
-                                    setTimeout(function () {
-                                        window.location.href = "bookhelper-address-list.html";
-                                    }, 1000);
                                 }
                             },
                             error: function (jqXHR, text, error) {
@@ -141,6 +150,15 @@
                         });
                     }
 
+                    function showHideToolTip(divEle) {
+
+                        if ($(divEle).find('span').css("visibility") == "hidden") {
+                            $(divEle).find('span').css("visibility", "visible");
+                        } else {
+                            $(divEle).find('span').css("visibility", "hidden");
+                        }
+                    }
+
                     function gotoSelectCleaningServicePage(serviceId) {
                         localStorage.setItem("serviceId", serviceId);
                         localStorage.setItem("franchiseId", franchiseId);
@@ -153,7 +171,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="bookhelper-address-list.html" target="_self">
+                    <a href="bookhelper-address-list.html" id="backLink" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -161,7 +179,7 @@
                     <h2>We Arrive. You Thrive.</h2>
                 </center>
                 <div class="footer-link-l">
-                    <a href="dashboard.html" target="_self">
+                    <a href="dashboard.html" id="homeLink" target="_self">
                         <img src="images/Home.png" height="40" width="40" />
                     </a>
                 </div>

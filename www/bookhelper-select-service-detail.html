@@ -159,7 +159,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="#" target="_self" onclick="redirectBack()">
+                    <a href="#" target="_self" id="backLink" onclick="redirectBack()">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -167,7 +167,7 @@
                     <h2>We Arrive. You Thrive.</h2>
                 </center>
                 <div class="footer-link-l">
-                    <a href="dashboard.html" target="_self">
+                    <a href="dashboard.html" id="homeLink" target="_self">
                         <img src="images/Home.png" height="40" width="40" />
                     </a>
                 </div>
@@ -191,6 +191,12 @@
             $("#calDate").datepicker("setDate", new Date());
             removeFocus('#calDate');
             $("#alertDialog").dialog();
+
+            if (localStorage.getItem("zipcode")) {
+                $("#homeLink").attr("href", "index.html");
+            } else {
+                $("#homeLink").attr("href", "dashboard.html");
+            }
 
         }).on('deviceready', function () {
             document.addEventListener("deviceready", devicereadySuccess, false);

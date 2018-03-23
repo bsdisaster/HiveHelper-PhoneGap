@@ -61,7 +61,6 @@
                         </h3>
                     </div>
                     <br />
-
                     <div>
                         <h3>Select card for payment :</h3>
                         <br />
@@ -72,6 +71,15 @@
                             <br />
                         </div>
 
+                        <div class="userDetails">
+                            <div>
+                                <input type="text" id="firstName" class="input-text-box input-green-border" placeholder="First name">
+                            </div>
+                            <div>
+                                <input type="text" id="lastName" class="input-text-box input-green-border" placeholder="Last name">
+                            </div>
+                        </div>
+                        
                         <div id="dvNewCardSelection" style="display:none">
                             <div>
                                 <input type="text" id="emailAddress" class="input-text-box input-green-border" placeholder="Email address">
@@ -124,6 +132,14 @@
                     fetchProviderInfo();
                     if (!isMobileDevice) {
                         listCardDetails(localStorage.getItem("userId"));
+                    }
+
+                    if (localStorage.getItem("zipcode")) {
+                        $("#homeLink").attr("href", "index.html");
+                        $(".userDetails").show();
+                    } else {
+                        $("#homeLink").attr("href", "dashboard.html");
+                        $(".userDetails").hide();
                     }
                 }).on('deviceready', function () {
                     listCardDetails(localStorage.getItem("userId"));
@@ -448,11 +464,23 @@
                     var countError = 0;
                     var msg = "Please correct following fields:\n";
 
-                    var emailValue = $("#emailAddress").val();
+                    var emailValue = $("#emailAddress").val().trim();
                     var cardNumber = $("#cardNumber").val();
                     var expiry = $("#expiry").val();
-                    var cvv = $("#cvc").val();
+                    var cvv = $("#cvc").val().trim();
+                    var firstName = $("#firstName").val().trim();
+                    var lastName = $("#lastName").val().trim();
 
+                    if ($(".userDetails").is(':visible')) {
+                        if (firstName === '') {
+                            countError = countError + 1;
+                            msg += "First Name!\n";
+                        }
+                        if (lastName === '') {
+                            countError = countError + 1;
+                            msg += "Last Name!\n";
+                        }
+                    }
                     if (emailValue === '') {
                         countError = countError + 1;
                         msg += "Email address!\n";
@@ -469,6 +497,8 @@
                         countError = countError + 1;
                         msg += "CVC!\n";
                     }
+                    
+
                     if (emailValue !== '') {
                         var x = emailValue;
                         var atpos = x.indexOf("@");
@@ -970,7 +1000,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="bookhelper-question-answer-detail.html" target="_self">
+                    <a href="bookhelper-question-answer-detail.html" id="backLink" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -978,7 +1008,7 @@
                     <h2>We Arrive. You Thrive.</h2>
                 </center>
                 <div class="footer-link-l">
-                    <a href="dashboard.html" target="_self">
+                    <a href="dashboard.html" id="homeLink" target="_self">
                         <img src="images/Home.png" height="40" width="40" />
                     </a>
                 </div>

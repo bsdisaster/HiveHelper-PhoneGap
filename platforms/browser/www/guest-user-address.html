@@ -1,0 +1,165 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Guest user address - Hive Helper 1.0</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
+
+    <script src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <img src="images/HiveHelper_Logo.png" />
+        </div>
+        <div id="page-content" class="page-content set-background-splash2">
+            <div id="page-content-scroll" class="header-clear">
+
+
+                <div class="pageapp-login content">
+                    <h3 class="text-center futura-medium">User Address</h3>
+
+                    <div class="page-login-input animate-fade animate-delay-400">
+                        <i class="login-icon ion-at"></i>
+                        <input id="user-address" type="text" value="Address" onfocus="if (this.value == 'Address') this.value = '';" onblur="if (this.value == '') this.value = 'Address'">
+                    </div>
+
+                    <div class="page-login-input animate-fade animate-delay-400">
+                        <i class="login-icon ion-at"></i>
+                        <input id="user-zipcode" type="text" value="Zipcode" onfocus="if (this.value == 'Zipcode') this.value = '';" onblur="if (this.value == '') this.value = 'Zipcode'">
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                    <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-800" onclick="submitAddress()"><i class="ion-ios-arrow-thin-right"></i>Submit</button>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <footer class="sticky-footer">
+            <div class="n_footer-links">
+                <div class="footer-link-r">
+                    <a href="index.html" target="_self">
+                        <img src="images/back_arrow.png" height="40" width="40" />
+                    </a>
+                </div>
+                <center>
+                    <h2>We Arrive. You Thrive.</h2>
+                </center>
+                <div class="footer-link-l">
+                    <a href="index.html" target="_self">
+                        <img src="images/Home.png" height="40" width="40" />
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadGoogleScript();
+
+            $(document).on({
+                'DOMNodeInserted': function () {
+                    $('.pac-item, .pac-item span', this).addClass('needsclick');
+                }
+            }, '.pac-container');
+
+        })
+
+        var isMobileDevice = isMobile();
+        var placeSearch, autocomplete;
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+
+            autocomplete = new google.maps.places.Autocomplete(
+            (document.getElementById('user-address')),
+            { types: ['geocode'] });
+            autocomplete.addListener('place_changed', fillInAddress);
+
+            if ($("#user-address").val() != '') {
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById('user-address')), { types: ['geocode'] });
+            }
+            else {
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById('user-address')), { types: ['geocode'] });
+            }
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                submitAddress();
+            }
+        });
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+            latitude = place.geometry.location.lat();
+            longitude = place.geometry.location.lng();
+
+            for (var i = 0; i < place.address_components.length; i++) {
+                if (place.address_components[i].types[0] == "postal_code") {
+                    $("#user-zipcode").val(place.address_components[i].short_name);
+                }
+            }
+        }
+
+        function isValidateAddress() {
+            var isResult = true;
+            var countError = 0;
+            var msg = "Please correct following fields:\n";
+
+            var userAddress = $("#user-address").val();
+            var zipcode = $("#user-zipcode").val();
+
+            if (userAddress === '' || userAddress === null || userAddress === 'Address') {
+                countError = countError + 1;
+                msg += "Address!\n";
+            }
+            if (zipcode === '' || zipcode === null || zipcode === 'Zipcode') {
+                countError = countError + 1;
+                msg += "Zip code!\n";
+            }
+
+            if (countError > 0) {
+                if (isMobileDevice) {
+                    navigator.notification.alert(msg, null, 'Warning', 'Close');
+                }
+                else {
+                    showAlertDialog('Warning', msg);
+                }
+                isResult = false;
+            }
+
+            return isResult;
+        }
+
+        function submitAddress() {
+            if (isValidateAddress()) {
+                localStorage.setItem("zipcode", $("#user-zipcode").val().trim());
+                window.location.href = "bookhelper-service-type-list.html";
+            }
+        }
+    </script>
+</body>
+</html>
