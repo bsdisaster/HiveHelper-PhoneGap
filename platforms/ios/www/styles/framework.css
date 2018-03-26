@@ -11995,24 +11995,9 @@ button.swiper-pagination-bullet {
     display: inline-block;
 }
 
-.service-help-tooltip{
+.service-help-tooltip {
     font-size: 24px !important;
     color: #08A7E1 !important;
-}
-
-.service-tooltip-text{
-    visibility: hidden;
-        background-color: black;
-        font-size: initial;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 5px;
-        position: absolute;
-        display: block;
-        z-index: 1;
-        width: 200px;
-        left: -170px;
 }
 
 #DivQuestionsAnswer .p70 {
@@ -12040,13 +12025,13 @@ button.swiper-pagination-bullet {
     .notification_badge[data-badge]:after {
         content: attr(data-badge);
         position: absolute;
-        top: -10px;
-        right: -10px;
+        top: -12px;
+        right: -11px;
         font-size: .6em;
         background: red;
         color: white;
-        width: 18px;
-        height: 18px;
+        width: 21px;
+        height: 20px;
         text-align: center;
         line-height: 18px;
         border-radius: 50%;

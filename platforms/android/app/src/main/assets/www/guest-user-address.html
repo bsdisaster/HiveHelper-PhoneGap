@@ -157,6 +157,7 @@
         function submitAddress() {
             if (isValidateAddress()) {
                 localStorage.setItem("zipcode", $("#user-zipcode").val().trim());
+                localStorage.setItem("address", $("#user-address").val().toString().trim());
                 window.location.href = "bookhelper-service-type-list.html";
             }
         }

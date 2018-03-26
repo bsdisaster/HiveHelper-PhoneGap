@@ -91,7 +91,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             loadGoogleScript();
-            checkAuthentication();
+
+            if (!isMobileDevice) {
+                checkAuthentication();
+            }
 
             $(document).on({
                 'DOMNodeInserted': function () {
@@ -145,9 +148,44 @@
             }
         });
 
+        function getUnAuthenticatedUserData() {
+            var params = {
+                "authenticate": getParameterByName("auth"),
+                "usertoken": getParameterByName("token")
+            }
+
+            showLoading(true);
+
+            $.ajax({
+                url: api_baseUrl + 'UnauthenticateUser',
+                type: "POST",
+                data: JSON.stringify(params),
+                dataType: "JSON",
+                success: function (response) {
+
+                    showLoading(false);
+
+                    if (response !== null && response.status === 1) {
+                        $("#register-firstname").val(response.data.firstName);
+                        $("#register-lastname").val(response.data.lastName);
+                        $("#register-email").val(response.data.email);
+
+                    } else {
+                        showAlertDialog('Warning', response.message);
+                    }
+                },
+                error: function (jqXHR, text, error) {
+                    // Displaying if there are any errors
+                    showLoading(false);
+                    showAlertDialog('Error', error);
+                }
+            });
+        }
+
         function checkAuthentication() {
-            if (getParameterByName("isAuthenticated",false)) {
+            if (getParameterByName("token")) {
                 $("#register-email").attr("disabled", "disabled");
+                getUnAuthenticatedUserData();
             }
         }
 
@@ -314,7 +352,7 @@
                     data: JSON.stringify(parameter),
                     dataType: "JSON",
                     success: function (response) {
-                        
+
                         if (isMobileDevice) {
                             window.plugins.spinnerDialog.hide();
                         } else {

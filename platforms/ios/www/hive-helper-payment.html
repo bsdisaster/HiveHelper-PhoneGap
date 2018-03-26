@@ -62,15 +62,17 @@
                     </div>
                     <br />
                     <div>
-                        <h3>Select card for payment :</h3>
-                        <br />
-                        <div id="dvCardSelection">
-                            <div>
-                                No card on file
-                            </div>
+                        <div>
+                            <h3>Select card for payment :</h3>
                             <br />
+                            <div id="dvCardSelection">
+                                <div>
+                                    No card on file
+                                </div>
+                                <br />
+                            </div>
                         </div>
-
+                        
                         <div class="userDetails">
                             <div>
                                 <input type="text" id="firstName" class="input-text-box input-green-border" placeholder="First name">
@@ -137,9 +139,11 @@
                     if (localStorage.getItem("zipcode")) {
                         $("#homeLink").attr("href", "index.html");
                         $(".userDetails").show();
+                        $("#dvCardSelection").parent("div").hide();
                     } else {
                         $("#homeLink").attr("href", "dashboard.html");
                         $(".userDetails").hide();
+                        $("#dvCardSelection").parent("div").show();
                     }
                 }).on('deviceready', function () {
                     listCardDetails(localStorage.getItem("userId"));
@@ -694,7 +698,9 @@
                             }
 
                             localStorage.setItem("clientIp", tokenInfo.client_ip);
-                            saveCardDetails(data);
+                            if (localStorage.getItem("zipcode") == null) {
+                                saveCardDetails(data);
+                            }
                             makePayment(data);
                         },
                         error: (response) => {
@@ -906,6 +912,25 @@
 
                     var helperSelectedTime = localStorage.getItem("helperSelectedTime");
 
+                    var unAuthorizedUser = {};
+                    
+
+                    if (localStorage.getItem("zipcode") != null) {
+                        unAuthorizedUser.email = $("#emailAddress").val();
+                        unAuthorizedUser.address = localStorage.getItem("address");
+                        unAuthorizedUser.firstname = $("#firstName").val();
+                        unAuthorizedUser.lastname = $("#lastName").val();
+                        unAuthorizedUser.zipcode = localStorage.getItem("zipcode");
+
+                        var index = api_baseUrl.indexOf("appv2");
+
+                        if (index == "-1") {
+                            unAuthorizedUser.registerurl = "http://hivehelperapp.com/client-registration.html";
+                        } else {
+                            unAuthorizedUser.registerurl = "http://1.22.229.11/HiveHelperMobile/client-registration.html";
+                        }
+                    }
+
                     var parameter = {
                         "serviceId": localStorage.getItem("serviceId"),
                         "userId": localStorage.getItem("userId"),
@@ -931,6 +956,7 @@
                         "cardExpMonth": tokenInfo.source.exp_month,
                         "cardExpYear": tokenInfo.source.exp_year,
                         "paymentIp": localStorage.getItem("clientIp"),
+                        "unauthorized": unAuthorizedUser,
                         "QuestionAnswer": JSON.parse(localStorage.getItem("paymentTempObject"))
                     };
 
@@ -958,7 +984,11 @@
                                 sessionStorage.clear();
 
                                 setTimeout(function () {
-                                    window.location.href = "dashboard.html";
+                                    if (localStorage.getItem("zipcode")) {
+                                        window.location.href = "index.html";
+                                    } else {
+                                        window.location.href = "dashboard.html";
+                                    }
                                 }, 1000);
                             }
                             else {

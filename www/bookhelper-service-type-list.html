@@ -100,7 +100,7 @@
 
                                             var html = '<a href="#" class="user-list-3">';
                                             html = html + '		<strong class="user-list-3-strong" onclick="gotoSelectCleaningServicePage(' + serviceTypeData.service[i].serviceId + ')">' + serviceTypeData.service[i].serviceName + '</strong>';
-                                            html = html + '			<i class="fa fa-question-circle service-help-tooltip tooltiptext" onclick="showHideToolTip(this)"><span class="service-tooltip-text">' + serviceTypeData.service[i].shortDescription + '</span></i>';
+                                            html = html + '			<i class="fa fa-question-circle service-help-tooltip tooltiptext" onclick="gotoServiceDetailsPage(\'' + serviceTypeData.service[i].description.toString().replace(/(\r\n|\n|\r)/gm, "") + '\',\'' + serviceTypeData.service[i].image + '\')"></i>';
                                             html = html + '		</a>';
                                             $('.page-userlist').append(html);
                                         }
@@ -150,13 +150,11 @@
                         });
                     }
 
-                    function showHideToolTip(divEle) {
+                    function gotoServiceDetailsPage(serviceDescription, imagePath) {
+                        localStorage.setItem("serviceDescription", JSON.stringify(serviceDescription));
+                        localStorage.setItem("serviceImage", imagePath);
 
-                        if ($(divEle).find('span').css("visibility") == "hidden") {
-                            $(divEle).find('span').css("visibility", "visible");
-                        } else {
-                            $(divEle).find('span').css("visibility", "hidden");
-                        }
+                        window.location.href = "offered-service-details.html";
                     }
 
                     function gotoSelectCleaningServicePage(serviceId) {

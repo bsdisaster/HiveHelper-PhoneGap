@@ -214,13 +214,19 @@
                                         var providerName = '<b>Provider:</b> ' + helperName.replace(/,\s*$/, "") + '  </br>';
 
                                         html = html + '<div class="user-list-3 user-list-1-change">';
-                                        html = html + '<div class="col-sm-8">';
+                                        html = html + '<div class="col-sm-7">';
 
-                                        html = html + '	<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
+                                        html = html + '<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
                                         html = html + '</div>';
-                                        html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
-                                        html = html + '	<img src="images/BackOrForword.png" alt="Facebook" class="preload-image bg-blue-dark edit-img" /><a href="#" onclick="facebookShare(\'' + responseData.previousBooking[i].serviceName + '\',\'' + responseData.previousBooking[i].franchiseName + '\')" class="color-black" style="padding-left:35px;cursor: pointer">Facebook</a>';
-                                        html = html + '</div></div><div class="clear"></div>';
+                                        html = html + '<div class="col-sm-1" style="padding-top:inherit;">';
+                                        html = html + '<a href="#" onclick="facebookShare(\'' + responseData.previousBooking[i].serviceName + '\',\'' + responseData.previousBooking[i].franchiseName + '\')" style="padding-left:35px;cursor: pointer"><i style="position:inherit; color: darkblue" class="fa fa-facebook"></i></a>';
+
+                                        html = html + '</div>';
+                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
+                                        html = html + '<a href="#" style="padding-left:35px;cursor: pointer">Tip Helper(s)</a>';
+
+                                        html = html + '</div>';
+                                        html = html +  '</div><div class="clear"></div>';
                                         $('#divPreviousComming').append(html);
                                     }
                                 }
