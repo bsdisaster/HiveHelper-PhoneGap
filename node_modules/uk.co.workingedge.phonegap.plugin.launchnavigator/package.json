@@ -1,8 +1,8 @@
 {
   "_from": "uk.co.workingedge.phonegap.plugin.launchnavigator",
-  "_id": "uk.co.workingedge.phonegap.plugin.launchnavigator@4.1.0",
+  "_id": "uk.co.workingedge.phonegap.plugin.launchnavigator@4.2.0",
   "_inBundle": false,
-  "_integrity": "sha1-F8NsyMbDF9B0N7i/Ot25PBLVZOM=",
+  "_integrity": "sha1-B7NHCzOpwUAVivRigpauIkw0YaU=",
   "_location": "/uk.co.workingedge.phonegap.plugin.launchnavigator",
   "_phantomChildren": {},
   "_requested": {
@@ -19,10 +19,10 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/uk.co.workingedge.phonegap.plugin.launchnavigator/-/uk.co.workingedge.phonegap.plugin.launchnavigator-4.1.0.tgz",
-  "_shasum": "17c36cc8c6c317d07437b8bf3addb93c12d564e3",
+  "_resolved": "https://registry.npmjs.org/uk.co.workingedge.phonegap.plugin.launchnavigator/-/uk.co.workingedge.phonegap.plugin.launchnavigator-4.2.0.tgz",
+  "_shasum": "07b3470b33a9c140158af4628296ae224c3461a5",
   "_spec": "uk.co.workingedge.phonegap.plugin.launchnavigator",
-  "_where": "D:\\NimeshK_Workspace\\hivehelper.mobile",
+  "_where": "D:\\NimeshK_Workspace\\HH_2018\\hivehelper.mobile",
   "author": {
     "name": "Dave Alden"
   },
@@ -62,5 +62,5 @@
     "url": "git+https://github.com/dpa99c/phonegap-launch-navigator.git"
   },
   "types": "./uk.co.workingedge.phonegap.plugin.launchnavigator.d.ts",
-  "version": "4.1.0"
+  "version": "4.2.0"
 }

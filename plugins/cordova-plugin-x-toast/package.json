@@ -1,8 +1,8 @@
 {
   "_from": "cordova-plugin-x-toast",
-  "_id": "cordova-plugin-x-toast@2.6.0",
+  "_id": "cordova-plugin-x-toast@2.6.2",
   "_inBundle": false,
-  "_integrity": "sha1-R3i+y2HjbIlRCRoHWFDCje2PVqU=",
+  "_integrity": "sha1-Clj8/5Vwi3htMVGlp/Kgp74Ge5g=",
   "_location": "/cordova-plugin-x-toast",
   "_phantomChildren": {},
   "_requested": {
@@ -19,10 +19,10 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-x-toast/-/cordova-plugin-x-toast-2.6.0.tgz",
-  "_shasum": "4778becb61e36c8951091a075850c28ded8f56a5",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-x-toast/-/cordova-plugin-x-toast-2.6.2.tgz",
+  "_shasum": "0a58fcff95708b786d3151a5a7f2a0a7be067b98",
   "_spec": "cordova-plugin-x-toast",
-  "_where": "D:\\NimeshK_Workspace\\hivehelper.mobile\\node_modules",
+  "_where": "D:\\NimeshK_Workspace\\HH_2018\\hivehelper.mobile",
   "author": {
     "name": "Eddy Verbruggen",
     "email": "eddyverbruggen@gmail.com",
@@ -69,5 +69,5 @@
     "type": "git",
     "url": "git+https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git"
   },
-  "version": "2.6.0"
+  "version": "2.6.2"
 }

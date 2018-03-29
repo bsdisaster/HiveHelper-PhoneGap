@@ -66,7 +66,7 @@
       <string>remote-notification</string>
     </array>
     <key>GCM_SENDER_ID</key>
-    <string>762294569460</string>
+    <string>XXXXXXX</string>
     <key>IS_GCM_ENABLED</key>
     <true/>
     <key>LSApplicationQueriesSchemes</key>
@@ -86,10 +86,10 @@
       <string>mapsme</string>
       <string>cabify</string>
       <string>baidumap</string>
+      <string>taxis99</string>
+      <string>iosamap</string>
     </array>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>This app requires access to your location for navigation purposes</string>
-    <key>CFBundleLocalizations</key>
-    <array/>
   </dict>
 </plist>

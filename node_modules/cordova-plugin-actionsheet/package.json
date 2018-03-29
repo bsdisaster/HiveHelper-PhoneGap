@@ -1,19 +1,19 @@
 {
-  "_from": "cordova-plugin-actionsheet@2",
+  "_from": "cordova-plugin-actionsheet",
   "_id": "cordova-plugin-actionsheet@2.3.3",
   "_inBundle": false,
   "_integrity": "sha1-6SYbLQBKjaQHOI1g31NMFWxS/xE=",
   "_location": "/cordova-plugin-actionsheet",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "tag",
     "registry": true,
-    "raw": "cordova-plugin-actionsheet@2",
+    "raw": "cordova-plugin-actionsheet",
     "name": "cordova-plugin-actionsheet",
     "escapedName": "cordova-plugin-actionsheet",
-    "rawSpec": "2",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "2"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
@@ -21,8 +21,8 @@
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-actionsheet/-/cordova-plugin-actionsheet-2.3.3.tgz",
   "_shasum": "e9261b2d004a8da407388d60df534c156c52ff11",
-  "_spec": "cordova-plugin-actionsheet@2",
-  "_where": "D:\\NimeshK_Workspace\\hivehelper.mobile",
+  "_spec": "cordova-plugin-actionsheet",
+  "_where": "D:\\NimeshK_Workspace\\HH_2018\\hivehelper.mobile",
   "author": {
     "name": "Eddy Verbruggen - @EddyVerbruggen"
   },

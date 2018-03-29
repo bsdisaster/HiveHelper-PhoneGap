@@ -2,11 +2,11 @@
 <widget android-versionCode="1.0.0" id="hive.helper.app.html" ios-CFBundleVersion="1" version="2.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Hive Helper</name>
     <description>
-    Phonegap app
-  </description>
+        Phonegap app
+    </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-    PhoneGap Team
-  </author>
+        PhoneGap Team
+    </author>
     <content src="index.html" />
     <icon platform="android" src="res/icon/android/icon.png" />
     <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />

@@ -7,47 +7,52 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "hive.helper.app.html"
     },
     "cordova-plugin-dialogs": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "hive.helper.app.html"
     },
-    "cordova-plugin-ios-camera-permissions": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-spinnerdialog": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "de.appplant.cordova.plugin.local-notification": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "phonegap-plugin-push": {
-      "SENDER_ID": "762294569460",
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    }
-  },
-  "dependent_plugins": {
-    "cordova-plugin-actionsheet": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-app-event": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "hive.helper.app.html"
     },
     "cordova-plugin-inappbrowser": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-ios-camera-permissions": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-spinnerdialog": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-stripe": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-webserver": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "phonegap-plugin-push": {
+      "SENDER_ID": "XXXXXXX",
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+      "PACKAGE_NAME": "hive.helper.app.html"
     }
-  }
+  },
+  "dependent_plugins": {}
 }

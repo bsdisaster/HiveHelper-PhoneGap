@@ -28,18 +28,24 @@
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
     </feature>
+    <feature name="Geolocation">
+        <param name="ios-package" value="CDVLocation" />
+    </feature>
     <feature name="InAppBrowser">
         <param name="ios-package" value="CDVInAppBrowser" />
     </feature>
     <feature name="SpinnerDialog">
         <param name="ios-package" value="CDVSpinnerDialog" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="ios-package" value="CDVSplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="CordovaStripe">
+        <param name="ios-package" value="CordovaStripe" />
+    </feature>
     <feature name="Toast">
         <param name="ios-package" value="Toast" />
-    </feature>
-    <feature name="LocalNotification">
-        <param name="ios-package" onload="true" value="APPLocalNotification" />
-        <param name="onload" value="true" />
     </feature>
     <feature name="PushNotification">
         <param name="ios-package" value="PushPlugin" />
@@ -47,17 +53,13 @@
     <feature name="LaunchNavigator">
         <param name="ios-package" value="LaunchNavigator" />
     </feature>
-    <feature name="SplashScreen">
-        <param name="ios-package" value="CDVSplashScreen" />
-        <param name="onload" value="true" />
-    </feature>
     <name>Hive Helper</name>
     <description>
-    Phonegap app
-  </description>
+        Phonegap app
+    </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-    PhoneGap Team
-  </author>
+        PhoneGap Team
+    </author>
     <content src="index.html" />
     <icon platform="android" src="res/icon/android/icon.png" />
     <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />

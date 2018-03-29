@@ -328,6 +328,14 @@
                     showLoading(true);
                 }
 
+                var token = "";
+                var authentication = "";
+
+                if (localStorage.getItem("zipcode")) {
+                    token = getParameterByName("token");
+                    authentication = getParameterByName("auth");
+                }
+
                 var parameter = {
                     "firstName": $("#register-firstname").val(),
                     "lastName": $("#register-lastname").val(),
@@ -343,7 +351,9 @@
                     "longitude": longitude,
                     "deviceType": platform,
                     "deviceToken": deviceTokenForPush,
-                    "userRole": 4
+                    "userRole": 4,
+                    "token": token,
+                    "authentication": authentication
                 }
 
                 $.ajax({
@@ -366,6 +376,8 @@
                             else {
                                 showAlertDialog('Success', "Your registration was successful");
                             }
+
+                            localStorage.clear();
 
                             setTimeout(function () {
                                 window.location = "client-login.html";
