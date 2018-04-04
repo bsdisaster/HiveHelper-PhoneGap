@@ -74,14 +74,6 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-splashscreen.SplashScreen",
-    "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
-    "pluginId": "cordova-plugin-splashscreen",
-    "clobbers": [
-      "navigator.splashscreen"
-    ]
-  },
-  {
     "id": "cordova-plugin-stripe.stripe",
     "file": "plugins/cordova-plugin-stripe/www/CordovaStripe.js",
     "pluginId": "cordova-plugin-stripe",
@@ -128,6 +120,50 @@ module.exports = [
     "merges": [
       "launchnavigator"
     ]
+  },
+  {
+    "id": "cordova-foreNotificationIos-notification.plugin",
+    "file": "plugins/cordova-foreNotificationIos-notification/www/foreNotificationIos.js",
+    "pluginId": "cordova-foreNotificationIos-notification",
+    "clobbers": [
+      "cordova.plugins.foreNotificationIos"
+    ],
+    "runs": true
+  },
+  {
+    "id": "de.appplant.cordova.plugin.local-notification.LocalNotification",
+    "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js",
+    "pluginId": "de.appplant.cordova.plugin.local-notification",
+    "clobbers": [
+      "cordova.plugins.notification.local",
+      "plugin.notification.local"
+    ]
+  },
+  {
+    "id": "de.appplant.cordova.plugin.local-notification.LocalNotification.Core",
+    "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-core.js",
+    "pluginId": "de.appplant.cordova.plugin.local-notification",
+    "clobbers": [
+      "cordova.plugins.notification.local.core",
+      "plugin.notification.local.core"
+    ]
+  },
+  {
+    "id": "de.appplant.cordova.plugin.local-notification.LocalNotification.Util",
+    "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-util.js",
+    "pluginId": "de.appplant.cordova.plugin.local-notification",
+    "merges": [
+      "cordova.plugins.notification.local.core",
+      "plugin.notification.local.core"
+    ]
+  },
+  {
+    "id": "cordova-plugin-splashscreen.SplashScreen",
+    "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+    "pluginId": "cordova-plugin-splashscreen",
+    "clobbers": [
+      "navigator.splashscreen"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -141,13 +177,17 @@ module.exports.metadata =
   "cordova-plugin-inappbrowser": "2.0.2",
   "cordova-plugin-ios-camera-permissions": "1.2.0",
   "cordova-plugin-spinnerdialog": "1.3.2",
-  "cordova-plugin-splashscreen": "5.0.2",
   "cordova-plugin-stripe": "1.5.3",
   "cordova-plugin-webserver": "1.0.3",
   "cordova-plugin-whitelist": "1.3.3",
   "cordova-plugin-x-toast": "2.6.2",
   "phonegap-plugin-push": "1.8.4",
-  "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.2.0"
+  "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.2.0",
+  "cordova-foreNotificationIos-notification": "1.0.0",
+  "cordova-plugin-app-event": "1.2.1",
+  "de.appplant.cordova.plugin.local-notification": "0.8.5",
+  "cordova-android-support-gradle-release": "0.0.2",
+  "cordova-plugin-splashscreen": "5.0.2"
 };
 // BOTTOM OF METADATA
 });

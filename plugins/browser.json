@@ -31,9 +31,6 @@
     "cordova-plugin-spinnerdialog": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
     "cordova-plugin-stripe": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
@@ -52,7 +49,20 @@
     },
     "uk.co.workingedge.phonegap.plugin.launchnavigator": {
       "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-android-support-gradle-release": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-app-event": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    }
+  }
 }

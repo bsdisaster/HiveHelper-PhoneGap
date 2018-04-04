@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <title>User appointments - Hive Helper 1.0</title>
-
+    <link rel="icon" href="images/icon.ico">
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link rel="stylesheet" type="text/css" href="styles/skin.css">
     <link rel="stylesheet" type="text/css" href="styles/framework.css">
@@ -222,10 +222,10 @@
                                         html = html + '<a href="#" onclick="facebookShare(\'' + responseData.previousBooking[i].serviceName + '\',\'' + responseData.previousBooking[i].franchiseName + '\')" style="padding-left:35px;cursor: pointer"><i style="position:inherit; color: darkblue" class="fa fa-facebook"></i></a>';
 
                                         html = html + '</div>';
-                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" style="padding-left:35px;cursor: pointer;font-size: smaller;">Tip Helper(s)</a>';
+                                        //html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
+                                        //html = html + '<a href="#" style="padding-left:35px;cursor: pointer;font-size: smaller;">Tip Helper(s)</a>';
 
-                                        html = html + '</div>';
+                                        //html = html + '</div>';
                                         html = html +  '</div><div class="clear"></div>';
                                         $('#divPreviousComming').append(html);
                                     }

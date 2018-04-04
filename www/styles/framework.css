@@ -12104,3 +12104,8 @@ button.swiper-pagination-bullet {
     padding-left: 5px;
     font-size: medium;
 }
+.smaller-text-title{
+    font-size: 9px;
+    line-height: 30px;
+    font-weight: 800;
+}

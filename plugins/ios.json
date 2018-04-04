@@ -35,9 +35,6 @@
     "cordova-plugin-spinnerdialog": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "hive.helper.app.html"
-    },
     "cordova-plugin-stripe": {
       "PACKAGE_NAME": "hive.helper.app.html"
     },
@@ -57,7 +54,20 @@
     "uk.co.workingedge.phonegap.plugin.launchnavigator": {
       "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes",
       "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-android-support-gradle-release": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "hive.helper.app.html"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-app-event": {
+      "PACKAGE_NAME": "hive.helper.app.html"
+    }
+  }
 }

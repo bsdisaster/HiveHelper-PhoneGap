@@ -1031,10 +1031,10 @@ $(document).ready(function () {
     });
 })
 
-var androidAppVersion = '2.0.7';
-var iosAppVersion = '2.0.5';
-var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
-//var api_baseUrl = 'http://hivehelperapp.com/v2/';
+var androidAppVersion = '2.0.8';
+var iosAppVersion = '2.0.6';
+//var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
+var api_baseUrl = 'http://hivehelperapp.com/v2/';
 
 var pageTitle = $(document.getElementsByTagName('title')[0]).html();
 var lastIndex = pageTitle.lastIndexOf(" ");

@@ -1,0 +1,37 @@
+{
+  "_from": "cordova-android-support-gradle-release@0.0.2",
+  "_id": "cordova-android-support-gradle-release@0.0.2",
+  "_inBundle": false,
+  "_integrity": "sha1-6FjPew05QBzq2mOg7DYwCCuUgvY=",
+  "_location": "/cordova-android-support-gradle-release",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "cordova-android-support-gradle-release@0.0.2",
+    "name": "cordova-android-support-gradle-release",
+    "escapedName": "cordova-android-support-gradle-release",
+    "rawSpec": "0.0.2",
+    "saveSpec": null,
+    "fetchSpec": "0.0.2"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-android-support-gradle-release/-/cordova-android-support-gradle-release-0.0.2.tgz",
+  "_shasum": "e858cf7b0d39401ceada63a0ec3630082b9482f6",
+  "_spec": "cordova-android-support-gradle-release@0.0.2",
+  "_where": "D:\\NimeshK_Workspace\\hivehelper.mobile",
+  "author": {
+    "name": "Dave Alden"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Cordova/Phonegap plugin to align various versions of the Android Support libraries specified by other plugins to the latest release version",
+  "devDependencies": {},
+  "license": "MIT",
+  "name": "cordova-android-support-gradle-release",
+  "version": "0.0.2"
+}
