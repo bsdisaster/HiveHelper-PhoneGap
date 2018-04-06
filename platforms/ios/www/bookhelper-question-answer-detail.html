@@ -19,6 +19,7 @@
     <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/GA.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
 
@@ -57,6 +58,12 @@
                     $("#homeLink").attr("href", "dashboard.html");
                 }
 
+                var screenName = $(document).find("title").text();
+
+                // google analytics
+                ga('send', 'pageview', location.pathname);
+                ga('send', 'screenview', { screenName: screenName });
+                //
             }).on('deviceready', function () {
                 document.addEventListener("deviceready", getServiceQuestions, false);
             });
@@ -325,20 +332,7 @@
                     }
                 })
             }
-
-            function convertTimeformat(format, time) {
-                var hours = Number(time.match(/^(\d+)/)[1]);
-                var minutes = Number(time.match(/:(\d+)/)[1]);
-                var AMPM = time.match(/\s(.*)$/)[1];
-                if ((AMPM == "pm" || AMPM == "PM") && hours < 12) hours = hours + 12;
-                if ((AMPM == "am" || AMPM == "AM") && hours == 12) hours = hours - 12;
-                var sHours = hours.toString();
-                var sMinutes = minutes.toString();
-                if (hours < 10) sHours = "0" + sHours;
-                if (minutes < 10) sMinutes = "0" + sMinutes;
-                return (sHours + ":" + sMinutes).toString();
-            }
-
+            
             function updateDateTime() {
 
                 var arrayObject = [];

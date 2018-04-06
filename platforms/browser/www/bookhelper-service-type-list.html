@@ -19,6 +19,7 @@
     <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/GA.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
 
@@ -50,6 +51,14 @@
                         if (!isMobileDevice) {
                             getAllServices();
                         }
+
+                        var screenName = $(document).find("title").text();
+                        
+                        // google analytics
+                            ga('send', 'pageview', location.pathname);
+                            ga('send', 'screenview', { screenName: screenName });
+                        //
+                        
                     }).on('deviceready', function () {
                         document.addEventListener("deviceready", getAllServices, false);
                     });
@@ -99,7 +108,7 @@
                                         for (var i = 0; i < serviceTypeData.service.length; i++) {
 
                                             var html = '<a href="#" class="user-list-3">';
-                                            html = html + '		<strong class="user-list-3-strong" onclick="gotoSelectCleaningServicePage(' + serviceTypeData.service[i].serviceId + ')">' + serviceTypeData.service[i].serviceName + '</strong>';
+                                            html = html + '		<strong class="user-list-3-strong" onclick="gotoSelectCleaningServicePage(' + serviceTypeData.service[i].serviceId + ', \'' + serviceTypeData.service[i].serviceName + '\')">' + serviceTypeData.service[i].serviceName + '</strong>';
                                             html = html + '			<i class="fa fa-question-circle service-help-tooltip tooltiptext" onclick="gotoServiceDetailsPage(\'' + serviceTypeData.service[i].description.toString().replace(/(\r\n|\n|\r)/gm, "") + '\',\'' + serviceTypeData.service[i].image + '\')"></i>';
                                             html = html + '		</a>';
                                             $('.page-userlist').append(html);
@@ -157,10 +166,11 @@
                         window.location.href = "offered-service-details.html";
                     }
 
-                    function gotoSelectCleaningServicePage(serviceId) {
+                    function gotoSelectCleaningServicePage(serviceId, serviceName) {
                         localStorage.setItem("serviceId", serviceId);
                         localStorage.setItem("franchiseId", franchiseId);
 
+                        ga('send', 'event', 'Services', serviceName);
                         location.href = "bookhelper-subservice-type-list.html";
                     }
                 </script>

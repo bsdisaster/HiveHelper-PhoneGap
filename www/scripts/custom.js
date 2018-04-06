@@ -974,6 +974,7 @@ $(document).ready(function () {
             $(this).addClass('current');
             $("#" + tab_id).addClass('current');
         })
+
     }//Init Template Function
 
     setTimeout(init_template, 0);//Activating all the plugins
@@ -1014,7 +1015,6 @@ $(document).ready(function () {
                     $('.page-preloader').addClass('show-preloader');
                     $('#page-transitions').css({ "opacity": "1", "transition": "all 500ms ease" });
                     $('#page-transitions').removeClass('page-fade');
-
                 }
             },
 
@@ -1031,10 +1031,10 @@ $(document).ready(function () {
     });
 })
 
-var androidAppVersion = '2.0.8';
-var iosAppVersion = '2.0.6';
-//var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
-var api_baseUrl = 'http://hivehelperapp.com/v2/';
+var androidAppVersion = '2.0.9';
+var iosAppVersion = '2.0.7';
+var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
+//var api_baseUrl = 'http://hivehelperapp.com/v2/';
 
 var pageTitle = $(document.getElementsByTagName('title')[0]).html();
 var lastIndex = pageTitle.lastIndexOf(" ");
@@ -1075,6 +1075,19 @@ function getParameterByName(name, url) {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function convertTimeformat(format, time) {
+    var hours = Number(time.match(/^(\d+)/)[1]);
+    var minutes = Number(time.match(/:(\d+)/)[1]);
+    var AMPM = time.match(/\s(.*)$/)[1];
+    if ((AMPM == "pm" || AMPM == "PM") && hours < 12) hours = hours + 12;
+    if ((AMPM == "am" || AMPM == "AM") && hours == 12) hours = hours - 12;
+    var sHours = hours.toString();
+    var sMinutes = minutes.toString();
+    if (hours < 10) sHours = "0" + sHours;
+    if (minutes < 10) sMinutes = "0" + sMinutes;
+    return (sHours + ":" + sMinutes).toString();
 }
 
 function loadGoogleScript() {

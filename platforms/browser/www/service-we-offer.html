@@ -18,6 +18,7 @@
     <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/GA.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
 
@@ -47,6 +48,13 @@
                         if (!isMobileDevice) {
                             getAllServices();
                         }
+
+                        var screenName = $(document).find("title").text();
+                        
+                        // google analytics
+                        ga('send', 'pageview', location.pathname);
+                        ga('send', 'screenview', { screenName: screenName });
+                        //
 
                     }).on('deviceready', function () {
                         document.addEventListener("deviceready", getAllServices, false);

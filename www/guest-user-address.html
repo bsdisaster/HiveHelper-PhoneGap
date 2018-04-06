@@ -21,6 +21,7 @@
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
     <script type="text/javascript" src="scripts/jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="scripts/GA.js"></script>
 
     <script src="cordova.js"></script>
 
@@ -37,7 +38,7 @@
                 <div class="pageapp-login content">
                     <div>
                         <h3 class="text-center futura-medium">Address of Service</h3>
-                        <h6 class="text-center smaller-text-title futura-medium">Input your address, so we can connect you to your Hive Helper</h6>
+                        <h6 class="text-center smaller-text-title futura-medium">Input your address, so we can connect you to your local Hive Helper</h6>
                     </div>
                     
                     <div class="page-login-input animate-fade animate-delay-400">
@@ -83,6 +84,12 @@
                 }
             }, '.pac-container');
 
+            var screenName = $(document).find("title").text();
+            
+            // google analytics
+            ga('send', 'pageview', location.pathname);
+            ga('send', 'screenview', { screenName: screenName });
+            //
         })
 
         var isMobileDevice = isMobile();

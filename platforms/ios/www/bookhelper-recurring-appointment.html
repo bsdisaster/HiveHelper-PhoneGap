@@ -19,6 +19,7 @@
     <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="scripts/plugins.js"></script>
     <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/GA.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
 
@@ -36,50 +37,12 @@
                 </div>
 
                 <div class="content futura-pt-book">
-                    <div class="content">
-                        <div class="page-login-input recurring-label">
-                            <label>Select date: </label>
-                        </div>
-                        <div class="page-login-input light calendar-bgcolor">
-                            <i class="login-icon ion-calendar"></i>
-                            <input id="calDate" type="text">
-                        </div>
-                    </div>
-
-                    <div class="content recurring-label">
-                        <label>Requested time: </label>
-
-                        <div class="select-box-light">
-                            <select class="no-padding-left">
-                                <option value="07:30:00">07:30am</option>
-                                <option value="08:00:00">08:00am</option>
-                                <option value="08:30:00">08:30am</option>
-                                <option value="09:00:00">09:00am</option>
-                                <option value="09:30:00">09:30am</option>
-                                <option value="10:00:00">10:00am</option>
-                                <option value="10:30:00">10:30am</option>
-                                <option value="11:00:00">11:00am</option>
-                                <option value="11:30:00">11:30am</option>
-                                <option value="12:00:00">12:00pm</option>
-                                <option value="12:30:00">12:30am</option>
-                                <option value="13:00:00">01:00pm</option>
-                                <option value="13:30:00">01:30am</option>
-                                <option value="14:00:00">02:00pm</option>
-                                <option value="14:30:00">02:30pm</option>
-                                <option value="15:00:00">03:00pm</option>
-                                <option value="15:30:00">03:30pm</option>
-                                <option value="16:00:00">04:00pm</option>
-                                <option value="16:30:00">04:30pm</option>
-                                <option value="17:00:00">05:00pm</option>
-                            </select>
-                        </div>
-                    </div>
-
+                   
                     <div class="content recurring-label">
                         <label>Frequency: </label>
 
                         <div class="select-box-light">
-                            <select class="no-padding-left">
+                            <select id="frequency" class="no-padding-left">
                                 <option value="1">Every 2 Weeks</option>
                                 <option value="2">Every Month</option>
                                 <option value="3">Every 6 Weeks</option>
@@ -92,7 +55,7 @@
                         <label>Duration: </label>
 
                         <div class="select-box-light">
-                            <select class="no-padding-left">
+                            <select id="duration" class="no-padding-left">
                                 <option value="1">3 months</option>
                                 <option value="2">6 months</option>
                                 <option value="3">12 months</option>
@@ -101,7 +64,7 @@
                         </div>
                     </div>
                     <div class="content">
-                        <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-200" onclick="submitData()"><i class="ion-ios-arrow-thin-right"></i>Submit</button>
+                        <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-200" onclick="submitRecurringAppointment()"><i class="ion-ios-arrow-thin-right"></i>Submit</button>
                     </div>
                 </div>
             </div>
@@ -109,54 +72,115 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
-
-                $('#calDate').datepicker({
-                    minDate: 1
-                });
-
-                $("#calDate").datepicker("setDate", new Date());
-                removeFocus('#calDate');
-
                 $("#alertDialog").dialog();
 
+                var screenName = $(document).find("title").text();
+
+                // google analytics
+                ga('send', 'pageview', location.pathname);
+                ga('send', 'screenview', { screenName: screenName });
+                //
             }).on('deviceready', function () {
 
             });
 
             var isMobileDevice = isMobile();
 
-            function removeFocus(inputEle) {
-                $(inputEle).on('focus', function () {
-                    $(inputEle).blur();
-                })
-            }
-
-            function submitData() {
+            function submitRecurringAppointment() {
+                
                 if (isMobileDevice) {
-                    navigator.notification.alert('Your data have been submitted!', null, 'Success', 'Close');
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                 } else {
-                    showAlertDialog('Success', 'Your data have been submitted!');
+                    showLoading(true);
                 }
 
-                var date = new Date($("#calDate").val());
-                var calDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
-                localStorage.setItem("providerDate", calDate);
+                var helperSelectedTime = localStorage.getItem("helperSelectedTime");
 
-                setTimeout(function () {
-                    window.location.href = "hive-helper-add-card.html";
-                }, 1000);
+                var parameter = {
+                    "serviceId": localStorage.getItem("serviceId"),
+                    "userId": localStorage.getItem("userId"),
+                    "subServiceId": localStorage.getItem("subServiceId"),
+                    "userAddressId": localStorage.getItem("userAddressId"),
+                    "appointmentDate": localStorage.getItem("providerDate"),
+                    "appointmentFrom": convertTimeformat("24", helperSelectedTime.split('-')[0]),
+                    "appointmentTo": convertTimeformat("24", helperSelectedTime.split('-')[1]),
+                    "franchiseId": localStorage.getItem("franchiseId"),
+                    "frequency": $("#frequency").val(),
+                    "duration": $("#duration").val(),
+                    "QuestionAnswer": JSON.parse(localStorage.getItem("paymentTempObject"))
+                };
+
+                $.ajax({
+                    url: api_baseUrl + 'AppointmentRecurring/',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    success: function (response) {
+
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (response !== null && response.status === 1) {
+
+                            if (isMobileDevice) {
+                                navigator.notification.alert("Your request for recurring appointment have been accepted!", null, 'Success', 'Close');
+                            } else {
+                                showAlertDialog("Success", "Your request for recurring appointment have been accepted!");
+                            }
+
+                            localStorage.removeItem("paymentTempObject");
+                            sessionStorage.clear();
+
+                            setTimeout(function () {
+                                window.location.href = "dashboard.html";
+                            }, 1000);
+                        }
+                        else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                            } else {
+                                showAlertDialog('Warning', response.message);
+                            }
+                        }
+                    },
+                    error: function (jqXHR, text, error) {
+
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (error == null || error == "") {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+
+                        } else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                showAlertDialog('Error', error);
+                            }
+                        }
+                    }
+                });
             }
 
             $(document).keypress(function (e) {
                 if (e.which == 13) {
-                    submitData();
+                    submitRecurringAppointment();
                 }
             });
+
         </script>
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="bookhelper-subservice-type-list.html" class="header-icon-5" target="_self">
+                    <a href="bookhelper-question-answer-detail.html" class="header-icon-5" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
