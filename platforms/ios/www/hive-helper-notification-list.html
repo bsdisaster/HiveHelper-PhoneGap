@@ -173,7 +173,7 @@
 
                 if (response !== null && response.status === 1 && response.data.length > 0) {
                     for (var i = 0; i < response.data.length; i++) {
-                        var html = '<div class="notification-list notification-widget"><p><b>' + response.data[i].title + '</b></p><p>' + response.data[i].description + '</p></div><div class="clear">&nbsp;</div>';
+                        var html = '<div onclick="getAppointmentDetail(' + response.data[i].appointmentId + ')" class="notification-list notification-widget"><p><b>' + response.data[i].title + '</b></p><p>' + response.data[i].description + '</p></div><div class="clear">&nbsp;</div>';
                         $('.page-userlist').append(html);
                     }
                 }
@@ -201,4 +201,10 @@
             }
         });
     }
+
+    function getAppointmentDetail(appointmentId) {
+        localStorage.setItem("appointmentId", appointmentId);
+        window.location.href = "appointment-details.html?isNotificationslist=true";
+    }
+
 </script>

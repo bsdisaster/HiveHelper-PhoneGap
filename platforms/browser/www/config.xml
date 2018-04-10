@@ -2,13 +2,12 @@
 <widget android-versionCode="1.0.0" id="hive.helper.app.html" ios-CFBundleVersion="1" version="2.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Hive Helper</name>
     <description>
-        Phonegap app
-    </description>
+    Phonegap app
+  </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
-    </author>
+    PhoneGap Team
+  </author>
     <content src="index.html" />
-    <icon platform="android" src="res/icon/android/icon.png" />
     <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />
     <icon height="60" platform="ios" src="res/icon/ios/icon-60.png" width="60" />
     <icon height="120" platform="ios" src="res/icon/ios/icon-60@2x.png" width="120" />
@@ -43,7 +42,7 @@
     <preference name="StatusBarStyle" value="blacktranslucent" />
     <preference name="android-build-tool" value="ant|gradle" />
     <preference name="android-minSdkVersion" value="16" />
-    <preference name="android-targetSdkVersion" value="26" />
+    <preference name="android-targetSdkVersion" value="20" />
     <preference name="android-installLocation" value="auto" />
     <preference name="android-windowSoftInputMode" value="stateHidden|adjustResize" />
     <preference name="SplashScreenDelay" value="3000" />

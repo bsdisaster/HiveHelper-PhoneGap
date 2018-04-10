@@ -8,11 +8,6 @@
   "author": "PhoneGap Team",
   "icons": [
     {
-      "src": "res/icon/android/icon.png",
-      "type": "image/png",
-      "sizes": "undefinedxundefined"
-    },
-    {
       "src": "res/icon/ios/icon-60@3x.png",
       "type": "image/png",
       "sizes": "180x180"

@@ -1,0 +1,237 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Helper Tips - Hive Helper 1.0</title>
+    <link rel="icon" href="images/icon.ico">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/GA.js"></script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+    <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <img src="images/HiveHelper_Logo.png" />
+        </div>
+        <div id="page-content" class="page-content set-background-splash2">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip no-bottom">
+                    <h3 class="center-text futura-medium">Helper Tips</h3>
+                </div>
+                <div class="decoration decoration-margins"></div>
+            </div>
+
+            <div class="content">
+                <div class="last-column">
+                    <div class="extra-margin">
+
+                    </div>
+                    <div class="decoration decoration-margins"></div>
+
+                    <div class="fac fac-default col-sm-12">
+                        <div class="col-sm-8">
+                            <label class="futura-pt-book">Total amount</label>
+                        </div>
+                        <div class="col-sm-4 select-box2">
+                            <label class="futura-pt-book" id="totalAmount">$0</label>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="payTipAmount()" class="button button-pantone button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Pay using stripe</button>
+                <button onclick="payTipAmount()" class="button button-pantone button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Manual pay</button>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <footer class="sticky-footer">
+            <div class="n_footer-links">
+                <div class="footer-link-r">
+                    <a href="user-appointments.html" target="_self">
+                        <img src="images/back_arrow.png" height="40" width="40" />
+                    </a>
+                </div>
+                <center>
+                    <h2>We Arrive. You Thrive.</h2>
+                </center>
+                <div class="footer-link-l">
+                    <a href="dashboard.html" target="_self">
+                        <img src="images/Home.png" height="40" width="40" />
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+
+        if (!isMobileDevice) {
+            getAllServices();
+        }
+        var screenName = $(document).find("title").text();
+
+        // google analytics
+        ga('send', 'pageview', location.pathname);
+        ga('send', 'screenview', { screenName: screenName });
+        //
+
+    }).on('deviceready', function () {
+        document.addEventListener("deviceready", getAllServices, false);
+    });
+
+    var isMobileDevice = isMobile();
+
+    function bindHelperPayDropdowns() {
+        var items = {
+            option1: { value: null, text: 'Select amount' },
+            option2: { value: 0, text: '$0' },
+            option3: { value: 5, text: '$5' },
+            option4: { value: 10, text: '$10' },
+            option5: { value: 15, text: '$15' }
+        };
+
+        $('select').empty();
+        $.each(items, function (i, item) {
+            $('select').append($('<option>', {
+                value: item.value,
+                text: item.text
+            }));
+        });
+    }
+
+    function getAllServices() {
+        if (isMobileDevice) {
+            window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+        } else {
+            showLoading(true);
+        }
+
+        $.ajax({
+            url: api_baseUrl + 'appointment/userbookings/' + localStorage.getItem("userId"),
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.hide();
+                } else {
+                    showLoading(false);
+                }
+
+                if (response !== null && response.status === 1) {
+
+                    var responseData = response.data;
+
+                    // previous booking list
+                    if (responseData.previousBooking.length > 0) {
+
+                        for (var i = 0; i < responseData.previousBooking.length; i++) {
+                            if (responseData.previousBooking[i].appointmentId == sessionStorage.getItem("appointmentId")) {
+
+                                var helperAssigned = responseData.previousBooking[i].helperassign;
+                                var helperName = '';
+                                for (var j = 0; j < helperAssigned.length; j++) {
+                                    helperName = helperAssigned[j].firstName + " " + helperAssigned[j].lastName;
+
+                                    var html = '';
+                                    html = html + '<div class="fac fac-radio fac-default col-sm-12">';
+                                    html = html + '<span></span>';
+                                    html = html + '<div class="col-sm-6">';
+                                    html = html + '<label class="futura-pt-book">' + helperName + '</label>';
+                                    html = html + '</div>';
+                                    html = html + '<div class="col-sm-4 select-box2">';
+                                    html = html + '<select>';
+                                    html = html + '</select></div></div>';
+                                    $('.extra-margin').append(html);
+                                }
+                            }
+
+                            bindHelperPayDropdowns();
+                            calculatePaybleAmount();
+                        }
+                    }
+                }
+                else {
+                    if (isMobileDevice) {
+                        navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                    } else {
+                        showAlertDialog('Warning', response.message);
+                    }
+                }
+            },
+            error: function (jqXHR, text, error) {
+                // Displaying if there are any errors
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.hide();
+                } else {
+                    showLoading(false);
+                }
+
+                if (error == null || error == "") {
+                    if (isMobileDevice) {
+                        navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                    }
+
+                } else {
+                    if (isMobileDevice) {
+                        navigator.notification.alert(error, null, 'Error', 'Close');
+                    } else {
+                        showAlertDialog('Error', error);
+                    }
+
+                }
+            }
+        });
+    }
+
+    function calculatePaybleAmount() {
+
+        $("select").on("change", function () {
+            var sum = 0;
+            $('select :selected').each(function () {
+                sum += Number($(this).val());
+            });
+
+            if ($.isNumeric(sum)) {
+                $("#totalAmount").html("$" + sum);
+            } else {
+                $("#totalAmount").html("$0");
+            }
+        })
+    }
+
+    function payTipAmount() {
+
+        $("select").each(function () {
+            if ($(this).val() == "Select amount") {
+
+                if (isMobileDevice) {
+                    navigator.notification.alert('Please select amount!', null, 'Warning', 'Close');
+                } else {
+                    showAlertDialog('Warning', 'Please select amount!');
+                }
+                return false;
+            }
+        })
+    }
+
+</script>

@@ -43,13 +43,12 @@
     </feature>
     <name>Hive Helper</name>
     <description>
-        Phonegap app
-    </description>
+    Phonegap app
+  </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
-    </author>
+    PhoneGap Team
+  </author>
     <content src="index.html" />
-    <icon platform="android" src="res/icon/android/icon.png" />
     <icon height="180" platform="ios" src="res/icon/ios/icon-60@3x.png" width="180" />
     <icon height="60" platform="ios" src="res/icon/ios/icon-60.png" width="60" />
     <icon height="120" platform="ios" src="res/icon/ios/icon-60@2x.png" width="120" />
@@ -78,6 +77,12 @@
     <splash height="2048" platform="ios" src="res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" />
     <splash height="1536" platform="ios" src="res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" />
     <access origin="*" />
+    <icon density="ldpi" src="res/icon/android/ldpi.png" />
+    <icon density="mdpi" src="res/icon/android/mdpi.png" />
+    <icon density="hdpi" src="res/icon/android/hdpi.png" />
+    <icon density="xhdpi" src="res/icon/android/xhdpi.png" />
+    <icon density="xxhdpi" src="res/icon/android/xxhdpi.png" />
+    <icon density="xxxhdpi" src="res/icon/android/xxxhdpi.png" />
     <resource-file src="google-services.json" target="app/google-services.json" />
     <splash density="land-hdpi" src="res/screen/android/splash-land-hdpi.png" />
     <splash density="land-ldpi" src="res/screen/android/splash-land-ldpi.png" />
@@ -98,7 +103,7 @@
     <preference name="StatusBarStyle" value="blacktranslucent" />
     <preference name="android-build-tool" value="ant|gradle" />
     <preference name="android-minSdkVersion" value="16" />
-    <preference name="android-targetSdkVersion" value="26" />
+    <preference name="android-targetSdkVersion" value="20" />
     <preference name="android-installLocation" value="auto" />
     <preference name="android-windowSoftInputMode" value="stateHidden|adjustResize" />
     <preference name="SplashScreenDelay" value="3000" />

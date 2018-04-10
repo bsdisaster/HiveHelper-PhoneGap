@@ -81,7 +81,6 @@
                     //
 
                 }).on('deviceready', function () {
-
                     document.addEventListener("deviceready", getAllServices, false);
                 });
 
@@ -228,14 +227,14 @@
                                         html = html + '<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" onclick="facebookShare(\'' + responseData.previousBooking[i].serviceName + '\',\'' + responseData.previousBooking[i].franchiseName + '\')" style="padding-left:35px;cursor: pointer"><i style="position:inherit; color: darkblue" class="fa fa-facebook"></i></a>';
+                                        html = html + '<a href="#" onclick="facebookShare(\'' + responseData.previousBooking[i].serviceName + '\',' + responseData.previousBooking[i].franchiseName + ')" style="padding-left:35px;cursor: pointer"><i style="position:inherit; color: darkblue" class="fa fa-facebook"></i></a>';
 
                                         html = html + '</div>';
-                                        //html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        //html = html + '<a href="#" style="padding-left:35px;cursor: pointer;font-size: smaller;">Tip Helper(s)</a>';
+                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
+                                        html = html + '<a href="hive-helper-tips.html" target="_self" onclick="gotoHelperTipsPage(' + responseData.previousBooking[i].appointmentId + ')" style="padding-left:35px;cursor: pointer;font-size: smaller;">Tip Helper(s)</a>';
 
-                                        //html = html + '</div>';
-                                        html = html +  '</div><div class="clear"></div>';
+                                        html = html + '</div>';
+                                        html = html + '</div><div class="clear"></div>';
                                         $('#divPreviousComming').append(html);
                                     }
                                 }
@@ -274,6 +273,11 @@
                             }
                         }
                     });
+                }
+
+                function gotoHelperTipsPage(appointmentId) {
+                    sessionStorage.setItem("appointmentId", appointmentId);
+                    window.location.href = "hive-helper-tips.html";
                 }
 
                 function facebookShare(serviceName, providerName) {

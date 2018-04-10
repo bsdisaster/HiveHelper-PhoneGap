@@ -131,7 +131,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="helper-booking.html" target="_self">
+                    <a href="helper-booking.html" id="backLink" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -139,7 +139,7 @@
                     <h2>We Arrive. You Thrive.</h2>
                 </center>
                 <div class="footer-link-l">
-                    <a href="dashboard.html" target="_self">
+                    <a href="dashboard.html" id="homeLink" target="_self">
                         <img src="images/Home.png" height="40" width="40" />
                     </a>
                 </div>
@@ -174,13 +174,16 @@
 
         function setBackUrl() {
             if (getParameterByName("mybooking")) {
-                $(".header-icon-5").attr("href", "user-appointments.html");
+                $("#backLink").attr("href", "user-appointments.html");
             }
             if (getParameterByName("helperbooking")) {
-                $(".header-icon-5").attr("href", "helper-booking.html");
+                $("#backLink").attr("href", "helper-booking.html");
             }
             if (getParameterByName("paymenthistory")) {
-                $(".header-icon-5").attr("href", "hive-helper-payment-history.html");
+                $("#backLink").attr("href", "hive-helper-payment-history.html");
+            }
+            if (getParameterByName("isNotificationslist")) {
+                $("#backLink").attr("href", "hive-helper-notification-list.html");
             }
         }
 
@@ -215,7 +218,7 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
-                    
+
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.hide();
                     } else {
