@@ -43,18 +43,17 @@
 
                 <div class="content">
                     <div class="last-column">
-                        <div class="extra-margin">
+                        <div id="dvAddressList" class="extra-margin">
                         </div>
                     </div>
                     <div class="clear"></div>
                 </div>
 
-                <div class="decoration decoration-margins"></div>
             </div>
             <script type="text/javascript">
                 $(document).ready(function () {
                     if (!isMobileDevice) {
-                        getAllAddress();
+                        getAddressList();
                     }
 
                     var screenName = $(document).find("title").text();
@@ -64,22 +63,24 @@
                     ga('send', 'screenview', { screenName: screenName });
                     //
                 }).on('deviceready', function () {
-                    document.addEventListener("deviceready", getAllAddress, false);
+                    document.addEventListener("deviceready", getAddressList, false);
                 });
 
                 var isMobileDevice = isMobile();
 
-                function getAllAddress() {
+                function getAddressList() {
                     if (isMobileDevice) {
                         window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
                     } else {
                         showLoading(true);
                     }
 
-                    var userId = localStorage.getItem("userId");
+                    if (getParameterByName("isSubscriptionPlan") == "true") {
+                        $("#backLink").attr("href", "bookhelper-recurring-list.html");
+                    }
 
                     $.ajax({
-                        url: api_baseUrl + 'useraddress/' + userId,
+                        url: api_baseUrl + 'useraddress/' + localStorage.getItem("userId"),
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
@@ -120,7 +121,7 @@
 
                                         html = html + '</div>';
                                         html = html + '</div>';
-                                        $('.extra-margin').append(html);
+                                        $('#dvAddressList').append(html);
                                     }
                                 }
                             }
@@ -230,7 +231,7 @@
         <footer class="sticky-footer">
             <div class="n_footer-links">
                 <div class="footer-link-r">
-                    <a href="dashboard.html" target="_self">
+                    <a href="dashboard.html" id="backLink" target="_self">
                         <img src="images/back_arrow.png" height="40" width="40" />
                     </a>
                 </div>
@@ -238,7 +239,7 @@
                     <h2>We Arrive. You Thrive.</h2>
                 </center>
                 <div class="footer-link-l">
-                    <a href="dashboard.html" target="_self">
+                    <a href="dashboard.html" id="homeLink" target="_self">
                         <img src="images/Home.png" height="40" width="40" />
                     </a>
                 </div>

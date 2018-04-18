@@ -3782,6 +3782,11 @@ ol {
     border: solid 2px #00a9e0;
 }
 
+.button-light-blue{
+    background-color: lightblue;
+    border: solid 2px lightblue;
+}
+
 .button-view {
     color: #FFFFFF;
     height: 33px;
@@ -12119,4 +12124,8 @@ button.swiper-pagination-bullet {
     font-size: 9px;
     line-height: 30px;
     font-weight: 800;
+}
+.tipButtons{
+    padding: 0px 10px 0px 10px !important;
+    border-radius: 50%;
 }

@@ -30,11 +30,14 @@
         </div>
         <div id="page-content" class="page-content futura-pt-book set-background-splash2">
             <div id="page-content-scroll" class="header-clear">
-                <div class="clear">&nbsp;</div>
 
-                <h3 class="center-text futura-medium">Hours/Pay</h3>
+                <div class="heading-strip">
+                    <h3 class="center-text futura-medium">Hours/Pay</h3>
+                </div>
+                <div class="decoration decoration-margins"></div>
+
                 <div class="pageapp-login">
-                    <div>
+                    <div align="center">
                         <input type="checkbox" id="chkPaidJobs" onchange="toggleButtonChangeText(this)">
                         <label for="chkPaidJobs" id="lblPaidJobs">Unpaid jobs</label>
                     </div>
@@ -52,9 +55,24 @@
                     </div>
                 </div>
                 <div class="payment-total">
-                    <div class="page-login-input animate-fade">
+                    <div>
                         <h3>
-                            <label class="bold inline-block">Total : </label>
+                            <label class="bold inline-block">Appointment amount : </label>
+                            <pre class="inline-block" id="lblAppointmentAmount"></pre>
+                        </h3>
+                        
+                    </div>
+                    <div class="clear"></div>
+                    <div>
+                        <h3>
+                            <label class="bold inline-block">Tip grand total : </label>
+                            <pre class="inline-block" id="lblTipgrandTotal"></pre>
+                        </h3>
+                    </div>
+                    <div class="clear"></div>
+                    <div>
+                        <h3>
+                            <label class="bold inline-block">Grand total : </label>
                             <pre class="inline-block" id="lblGrandTotal"></pre>
                         </h3>
                     </div>
@@ -67,7 +85,8 @@
                             <td>Service</td>
                             <td>Customer</td>
                             <td>Hours</td>
-                            <td>Rate</td>
+                            <td>Amount</td>
+                            <td>Tip Amount</td>
                             <td>Total</td>
                         </tr>
                     </table>
@@ -122,14 +141,6 @@
 
     var isMobileDevice = isMobile();
 
-    function getClickedRow() {
-        $('#tblPayment tr').on('click', function () {
-            $(this).find('td').each(function () {
-                console.log($(this));
-            });
-        })
-    }
-
     var jobType = 'unpaid';
 
     function toggleButtonChangeText(ele) {
@@ -148,7 +159,7 @@
 
     function rangeBoxes() {
         $('#calDate1,#calDate2').datepicker({
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'mm-dd-yy'
         }).on("change", function () {
             var date = $(this).datepicker('getDate');
             selectedWeekDayNumber = date.getUTCDay() + 1;
@@ -170,11 +181,14 @@
         var fromDate = "";
         var toDate = "";
 
-        if ($("#calDate1").val() !== "From Date") {
-            fromDate = $("#calDate1").val();
+        if ($("#calDate1").val() !== "From Date" && $("#calDate1").is(':visible')) {
+
+            var date = new Date($("#calDate1").val());
+            fromDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
         }
-        if ($("#calDate2").val() !== "To Date") {
-            toDate = $("#calDate2").val();
+        if ($("#calDate2").val() !== "To Date" && $("#calDate2").is(':visible')) {
+            var date = new Date($("#calDate2").val());
+            toDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear().toString();
         }
 
         var parameter = {
@@ -198,17 +212,20 @@
                 }
 
                 $('#tblPayment').find("tr:gt(0)").remove();
-                $('#lblGrandTotal').text("$0.0");
+               
                 if (response !== null && response.status === 1) {
 
                     var paymentData = response.data.helperappointment;
 
                     if (paymentData.length > 0) {
                         for (var i = 0; i < paymentData.length; i++) {
-                            var row = '<tr onclick="viewAppointmentDetails(' + paymentData[i].appointmentId + ')"><td>' + paymentData[i].appointmentDate + '</td><td>' + paymentData[i].serviceName + '</td><td>' + paymentData[i].clientName + '</td><td>' + paymentData[i].appointmentHours + '</td><td>' + paymentData[i].perHourAmount + '</td><td>' + paymentData[i].totalAmount + '</td></tr>';
+                            var row = '<tr style="cursor:pointer" onclick="viewAppointmentDetails(' + paymentData[i].appointmentId + ')"><td>' + paymentData[i].appointmentDate + '</td><td>' + paymentData[i].serviceName + '</td><td>' + paymentData[i].clientName + '</td><td>' + paymentData[i].appointmentHours + '</td><td>' + paymentData[i].amount + '</td><td>' + paymentData[i].tipAmount + '</td><td>' + paymentData[i].totalAmount + '</td></tr>';
                             $('#tblPayment').append(row);
                         }
                     }
+
+                    $('#lblAppointmentAmount').text(response.data.appointmentAmount);
+                    $('#lblTipgrandTotal').text(response.data.tipgrandTotal);
                     $('#lblGrandTotal').text(response.data.grandTotal);
                 }
                 else {
@@ -218,6 +235,10 @@
                     else {
                         showAlertDialog('Warning', response.message);
                     }
+
+                    $('#lblAppointmentAmount').text("$0");
+                    $('#lblTipgrandTotal').text("$0");
+                    $('#lblGrandTotal').text("$0");
                 }
             },
             error: function (jqXHR, text, error) {

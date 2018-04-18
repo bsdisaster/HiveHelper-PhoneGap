@@ -1,0 +1,171 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Book helper recurring list - Hive Helper 1.0</title>
+    <link rel="icon" href="images/icon.ico">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/GA.js"></script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+<body>
+    <div id="page-transitions">
+
+        <div class="header header-logo-center header-light">
+            <img src="images/HiveHelper_Logo.png" />
+        </div>
+        <div id="page-content" class="page-content set-background-splash2">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+               
+                <div id="dvRecurringAppointments">
+                    <div class="heading-strip">
+                        <h3 class="center-text futura-medium">Recurring appointments</h3>
+                    </div>
+                    <div align="right" class="right-padding">
+                        <h5><a href="bookhelper-address-list.html?isSubscriptionPlan=true" class="futura-medium" target="_self">New request</a></h5>
+                    </div>
+                    <div class="decoration decoration-margins"></div>
+
+                    <div class="content">
+                        <div id="dvRecurringList" class="page-userlist">
+
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    if (!isMobileDevice) {
+                        getRecurringAppointmentList();
+                    }
+
+                    var screenName = $(document).find("title").text();
+
+                    // google analytics
+                    ga('send', 'pageview', location.pathname);
+                    ga('send', 'screenview', { screenName: screenName });
+                    //
+                }).on('deviceready', function () {
+                    document.addEventListener("deviceready", getRecurringAppointmentList, false);
+                });
+
+                var isMobileDevice = isMobile();
+
+                function getRecurringAppointmentList() {
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
+                    }
+
+                    $.ajax({
+                        url: api_baseUrl + 'recurringAppointmentList/' + localStorage.getItem("userId"),
+                        type: "GET",
+                        dataType: "json",
+                        success: function (response) {
+
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
+                            }
+
+                            if (response !== null && response.status === 1) {
+
+                                var recurringListData = response.data;
+                               
+                                if (recurringListData.length > 0) {
+                                    
+                                    for (var i = 0; i < recurringListData.length; i++) {
+                                        
+                                        var html = '';
+
+                                        var serviceName = '<b>Service:</b> ' + recurringListData[i].serviceName + ' </br>';
+                                        var appointmentDate = '<b>Date:</b> ' + recurringListData[i].appointmentDate + '  </br>';
+                                        var hours = '<b>Man Hours:</b> ' + recurringListData[i].hours + '  </br>';
+                                        var address = '<b>address:</b> ' + recurringListData[i].address + '  </br>';
+
+                                        html = html + '<div class="user-list-1-change">';
+                                        html = html + '<div class="col-sm-12">';
+
+                                        html = html + '	<em>' + serviceName + appointmentDate + hours + address + '  </em>';
+                                        html = html + '</div>';
+                                        html = html + '</div>';
+                                        html = html + '<div class="clear">&nbsp;</div></div>';
+                                        $('#dvRecurringList').append(html);
+                                    }
+                                }
+                            }
+                            else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    showAlertDialog('Warning', response.message);
+                                }
+                            }
+                        },
+                        error: function (jqXHR, text, error) {
+                            // Displaying if there are any errors
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
+                            }
+
+                            if (error == null || error == "") {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+
+                            } else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    showAlertDialog('Error', error);
+                                }
+                            }
+                        }
+                    });
+                }
+
+            </script>
+        </div>
+        <footer class="sticky-footer">
+            <div class="n_footer-links">
+                <div class="footer-link-r">
+                    <a href="dashboard.html" target="_self">
+                        <img src="images/back_arrow.png" height="40" width="40" />
+                    </a>
+                </div>
+                <center>
+                    <h2>We Arrive. You Thrive.</h2>
+                </center>
+                <div class="footer-link-l">
+                    <a href="dashboard.html" target="_self">
+                        <img src="images/Home.png" height="40" width="40" />
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -177,6 +177,7 @@
                                         }
 
                                         var html = '';
+
                                         var serviceName = '<b>Service:</b> ' + responseData.upcomingBooking[i].serviceName + ' </br>';
                                         var appointmentDateTime = '<b>Date:</b> ' + responseData.upcomingBooking[i].displaydate + '  </br>';
                                         var hours = '<b>Man Hours:</b> ' + responseData.upcomingBooking[i].hours + '  </br>';
@@ -211,8 +212,15 @@
                                     for (var i = 0; i < responseData.previousBooking.length; i++) {
                                         var helperAssigned = responseData.previousBooking[i].helperassign;
                                         var helperName = '';
+                                        var tipButtonFlag = false;
+
                                         for (var j = 0; j < helperAssigned.length; j++) {
-                                            helperName = helperName + helperAssigned[j].firstName + " " + helperAssigned[j].lastName + ", ";
+                                            if (helperAssigned[j].helperTipFlag == "0") {
+                                                helperName = helperName + helperAssigned[j].firstName + " " + helperAssigned[j].lastName + ", ";
+                                            } else {
+                                                helperName = helperName + helperAssigned[j].firstName + " " + helperAssigned[j].lastName + " <b style='color:red'>(Tip: $" + helperAssigned[j].helperTipAmount + ")</b>, ";
+                                                tipButtonFlag = true;
+                                            }
                                         }
 
                                         var html = '';
@@ -227,11 +235,16 @@
                                         html = html + '<em>' + serviceName + appointmentDateTime + hours + providerName + '  </em>';
                                         html = html + '</div>';
                                         html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
-                                        html = html + '<a href="#" onclick="facebookShare(\'' + responseData.previousBooking[i].serviceName + '\',' + responseData.previousBooking[i].franchiseName + ')" style="padding-left:35px;cursor: pointer"><i style="position:inherit; color: darkblue" class="fa fa-facebook"></i></a>';
+                                        html = html + '<button class="button button-pantone half-top full-bottom tipButtons" onclick="facebookShare(\'' + responseData.previousBooking[i].serviceName + '\',\'' + responseData.previousBooking[i].franchiseName + '\')">FB</button>';
 
                                         html = html + '</div>';
-                                        html = html + '<div class="col-sm-3" style="padding-top:inherit;">';
-                                        html = html + '<a href="hive-helper-tips.html" target="_self" onclick="gotoHelperTipsPage(' + responseData.previousBooking[i].appointmentId + ')" style="padding-left:35px;cursor: pointer;font-size: smaller;">Tip Helper(s)</a>';
+                                        html = html + '<div class="col-sm-1"></div>';
+                                        html = html + '<div class="col-sm-2" style="padding-top:inherit;">';
+                                        if (tipButtonFlag) {
+                                            html = html + '<button class="button button-light-blue half-top full-bottom tipButtons">Tip</button>';
+                                        } else {
+                                            html = html + '<button class="button button-pantone half-top full-bottom tipButtons" onclick="gotoHelperTipsPage(' + responseData.previousBooking[i].appointmentId + ')">Tip</button>';
+                                        }
 
                                         html = html + '</div>';
                                         html = html + '</div><div class="clear"></div>';

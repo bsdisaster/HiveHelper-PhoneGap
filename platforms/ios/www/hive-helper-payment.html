@@ -40,8 +40,10 @@
                 <div class="heading-strip">
                     <h3 class="center-text futura-medium">Payment For</h3>
                 </div>
+                <div class="decoration decoration-margins"></div>
+
                 <div class="page-login content futura-pt-book">
-                    <div>
+                    <div id="appointmentDetails">
                         <h3>
                             <label>
                                 <span>Service: </span>
@@ -73,7 +75,7 @@
                                 <br />
                             </div>
                         </div>
-                        
+
                         <div class="userDetails">
                             <div>
                                 <input type="text" id="firstName" class="input-text-box input-green-border" placeholder="First name">
@@ -82,7 +84,7 @@
                                 <input type="text" id="lastName" class="input-text-box input-green-border" placeholder="Last name">
                             </div>
                         </div>
-                        
+
                         <div id="dvNewCardSelection" style="display:none">
                             <div>
                                 <input type="text" id="emailAddress" class="input-text-box input-green-border" placeholder="Email address">
@@ -133,7 +135,12 @@
 
                     submitPaymentInfo();
                     fetchProviderInfo();
+
                     if (!isMobileDevice) {
+                        if (getParameterByName("isHelperTipping") == "true") {
+                            $("#backLink").attr("href", "hive-helper-tips.html");
+                            fetchFranchiseStripeKey();
+                        }
                         listCardDetails(localStorage.getItem("userId"));
                     }
 
@@ -147,13 +154,17 @@
                         $("#dvCardSelection").parent("div").show();
                     }
                     var screenName = $(document).find("title").text();
-                    
+
                     // google analytics
                     ga('send', 'pageview', location.pathname);
                     ga('send', 'screenview', { screenName: screenName });
                     //
 
                 }).on('deviceready', function () {
+                    if (getParameterByName("isHelperTipping") == "true") {
+                        $("#backLink").attr("href", "hive-helper-tips.html");
+                        fetchFranchiseStripeKey();
+                    }
                     listCardDetails(localStorage.getItem("userId"));
                 });
 
@@ -162,17 +173,83 @@
                 var selectedCard = null;
                 var selectedCustomer = null;
 
-                function fetchProviderInfo() {
-                    var service = localStorage.getItem("selectedCleaningTitle");
-                    serviceTitle = service.substr(0, service.lastIndexOf(" "));
-                    serviceHours = serviceTitle.slice(0, 1);
+                function fetchFranchiseStripeKey() {
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
+                    }
 
-                    var paymentValue = service.substr(service.lastIndexOf(" "));
-                    $("#btnPayment").text("Pay " + paymentValue.substring(service + 1));
-                    $("#emailAddress").val(localStorage.getItem("username"));
-                    $("#serviceName").text(serviceTitle);
-                    $("#provideName").text(localStorage.getItem("franchiseName"));
-                    $("#dateValue").text(localStorage.getItem("providerDate"));
+                    $(".heading-strip > h3").text("Total Tip Amount: " + sessionStorage.getItem("appointmentPrice"));
+                    $.ajax({
+                        url: api_baseUrl + 'franchise/account/' + sessionStorage.getItem("franchiseId"),
+                        type: "GET",
+                        dataType: "JSON",
+                        success: function (response) {
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
+                            }
+
+                            if (response !== null && response.status === 1) {
+                                localStorage.setItem("stripePublishableKey", response.data.publishableKey);
+                                localStorage.setItem("stripeSecretKey", response.data.secretKey);
+                            } else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    showAlertDialog('Warning', response.message);
+                                }
+                            }
+                        },
+
+                        error: function (jqXHR, text, error) {
+
+                            // Displaying if there are any errors
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
+                            }
+
+                            if (error == null || error == "") {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+
+                            } else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    showAlertDialog('Error', error);
+                                }
+                            }
+                        }
+                    })
+                }
+
+                function fetchProviderInfo() {
+
+                    if (getParameterByName("isHelperTipping") == "true") {
+                        $("#appointmentDetails").hide();
+                        $(".userDetails").hide();
+                        $("#btnPayment").text("Pay " + sessionStorage.getItem("appointmentPrice"));
+                        $("#dvPromocode").parent().hide();
+
+                    } else {
+                        var service = localStorage.getItem("selectedCleaningTitle");
+                        serviceTitle = service.substr(0, service.lastIndexOf(" "));
+                        serviceHours = serviceTitle.slice(0, 1);
+
+                        var paymentValue = service.substr(service.lastIndexOf(" "));
+                        $("#btnPayment").text("Pay " + paymentValue.substring(service + 1));
+                        $("#emailAddress").val(localStorage.getItem("username"));
+                        $("#serviceName").text(serviceTitle);
+                        $("#provideName").text(localStorage.getItem("franchiseName"));
+                        $("#dateValue").text(localStorage.getItem("providerDate"));
+                    }
+
                 }
 
                 function applyPromocode() {
@@ -208,7 +285,7 @@
                         type: "GET",
                         dataType: "JSON",
                         success: function (response) {
-                            
+
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             } else {
@@ -405,7 +482,8 @@
                             "franchiseId": localStorage.getItem("franchiseId"),
                             "serviceId": localStorage.getItem("serviceId"),
                             "subserviceId": localStorage.getItem("subServiceId"),
-                            "promocode": $("#promoCode").val()
+                            "promocode": $("#promoCode").val(),
+                            "userId": localStorage.getItem("userId")
                         }
 
                         $.ajax({
@@ -414,7 +492,7 @@
                             data: JSON.stringify(parameter),
                             dataType: "JSON",
                             success: function (response) {
-                                
+
                                 if (isMobileDevice) {
                                     window.plugins.spinnerDialog.hide();
                                 } else {
@@ -429,13 +507,20 @@
                                         showAlertDialog("Success", "Promocode applied");
                                     }
 
-                                    var regularPrice = parseFloat(localStorage.getItem("regularPrice"));
-                                    $($(".color-green-dark")[0]).text("Regular amount: " + "$" + regularPrice);
-                                    $($(".color-green-dark")[1]).text("Discount amount: " + "$" + response.data[0].price);
 
-                                    $("#btnPayment").text("Pay $" + parseFloat(regularPrice - response.data[0].price));
+                                    var regularPrice = parseFloat(localStorage.getItem("regularPrice"));
+                                    var paybleAmount = parseFloat(regularPrice - response.data.price);
+                                    if (paybleAmount <= 0) {
+                                        paybleAmount = 0;
+                                    }
+                                    $($(".color-green-dark")[0]).text("Regular amount: " + "$" + regularPrice);
+                                    $($(".color-green-dark")[1]).text("Discount amount: " + "$" + response.data.price);
+
+                                    $("#btnPayment").text("Pay $" + paybleAmount);
                                     $("#promoCode").attr("disabled", "disabled").css("border-color", "green");
                                     $("#lnkPromoCode").removeAttr("onclick");
+
+                                    localStorage.setItem("promotionId", response.data.promotionId);
                                 }
                                 else {
                                     if (isMobileDevice) {
@@ -509,7 +594,7 @@
                         countError = countError + 1;
                         msg += "CVC!\n";
                     }
-                    
+
 
                     if (emailValue !== '') {
                         var x = emailValue;
@@ -600,7 +685,13 @@
                             }
 
                             if (parameters != null && tokenInfo != null) {
-                                createCharge(parameters, tokenInfo);
+                                var paybleAmount = (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100);
+
+                                if (paybleAmount <= 0) {
+                                    savePaymentInfoWithoutCharges();
+                                } else {
+                                    createCharge(parameters, tokenInfo);
+                                }
                             }
                         },
                         error: (response) => {
@@ -619,29 +710,35 @@
                 function submitPaymentInfo() {
                     $('#btnPayment').on('click', function (event) {
 
-                        if ($("#dvNewCardSelection").is(":visible")) {
-                            if (isValidatePaymentInfo()) {
-                                if (isMobileDevice) {
-                                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
-                                } else {
-                                    showLoading(true);
-                                }
-
-                                var cardNumber = $("#cardNumber").val();
-                                var expiry = $("#expiry").val();
-                                var cvv = $("#cvc").val();
-
-                                stripePayment(cardNumber, expiry, cvv);
-                            }
-                        } else if (selectedCard == null && selectedCustomer == null) {
-                            if (isMobileDevice) {
-                                navigator.notification.alert("Please select card for payment!", null, 'Warning', 'Close');
-                            } else {
-                                showAlertDialog('Warning', "Please select card for payment!");
-                            }
-                        } else {
+                        if ((parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100) == 0) {
                             makePayment();
+
+                        } else {
+                            if ($("#dvNewCardSelection").is(":visible")) {
+                                if (isValidatePaymentInfo()) {
+                                    if (isMobileDevice) {
+                                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                                    } else {
+                                        showLoading(true);
+                                    }
+
+                                    var cardNumber = $("#cardNumber").val();
+                                    var expiry = $("#expiry").val();
+                                    var cvv = $("#cvc").val();
+
+                                    stripePayment(cardNumber, expiry, cvv);
+                                }
+                            } else if (selectedCard == null && selectedCustomer == null) {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Please select card for payment!", null, 'Warning', 'Close');
+                                } else {
+                                    showAlertDialog('Warning', "Please select card for payment!");
+                                }
+                            } else {
+                                makePayment();
+                            }
                         }
+
                     });
                 }
 
@@ -725,37 +822,58 @@
                 }
 
                 function makePayment(tokenInfo) {
+
                     var params = null;
+
+                    var descr = "";
+                    if (getParameterByName("isHelperTipping") == "true") {
+                        descr = "Helper tip";
+                    } else {
+                        descr = "Hive Helper - " + localStorage.getItem("selectedCleaningTitle") + " - " + (localStorage.getItem("providerDate").toString().replace(/-/g, "/"));
+                    }
+                    var paybleAmount = (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100);
 
                     if (tokenInfo == null && existingCustomerId != null) {
 
                         params = {
-                            amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),
+                            amount: paybleAmount,
                             source: selectedCard,
                             customer: selectedCustomer,
-                            description: "Hive Helper - " + localStorage.getItem("selectedCleaningTitle") + " - " + (localStorage.getItem("providerDate").toString().replace(/-/g, "/")),
+                            description: descr,
                             currency: "USD"
                         }
-                        createCharge(params, tokenInfo);
+
+                        if (paybleAmount <= 0) {
+                            savePaymentInfoWithoutCharges();
+                        } else {
+                            createCharge(params, tokenInfo);
+                        }
                     } else if (tokenInfo != null && existingCustomerId != null) {
 
                         params = {
-                            amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),
+                            amount: paybleAmount,
                             source: tokenInfo.card.id,
                             customer: existingCustomerId,
-                            description: "Hive Helper - " + localStorage.getItem("selectedCleaningTitle") + " - " + (localStorage.getItem("providerDate").toString().replace(/-/g, "/")),
+                            description: descr,
                             currency: "USD"
                         }
                         createCard(localStorage.getItem("stripeSecretKey"), existingCustomerId, tokenInfo.id, params, tokenInfo);
                     }
                     else {
                         params = {
-                            amount: (parseFloat($("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0]) * 100),
+                            amount: paybleAmount,
                             customer: tokenInfo.id,
-                            description: "Hive Helper - " + localStorage.getItem("selectedCleaningTitle") + " - " + (localStorage.getItem("providerDate").toString().replace(/-/g, "/")),
+                            description: descr,
                             currency: "USD"
                         }
-                        createCharge(params, tokenInfo);
+
+
+
+                        if (paybleAmount <= 0) {
+                            savePaymentInfoWithoutCharges();
+                        } else {
+                            createCharge(params, tokenInfo);
+                        }
                     }
 
                 }
@@ -788,7 +906,11 @@
                                 localStorage.setItem("clientIp", tokenInfo.client_ip);
                             }
 
-                            savePaymentInfo(data);
+                            if (getParameterByName("isHelperTipping") == "true") {
+                                saveHelperTipPayment(data);
+                            } else {
+                                savePaymentInfo(data);
+                            }
 
                         },
                         error: (response) => {
@@ -855,7 +977,7 @@
                         type: "POST",
                         data: JSON.stringify(parameter),
                         success: function (response) {
-                            
+
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             } else {
@@ -864,6 +986,191 @@
 
                             if (response !== null && response.status === 1) {
 
+                            }
+                            else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    showAlertDialog('Warning', response.message);
+                                }
+                            }
+                        },
+                        error: function (jqXHR, text, error) {
+
+                            // Displaying if there are any errors
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
+                            }
+
+                            if (error == null || error == "") {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+
+                            } else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    showAlertDialog('Error', error);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function saveHelperTipPayment(tokenInfo) {
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
+                    }
+
+                    var transObject = {
+                        "transactionId": tokenInfo.id,
+                        "transactionObject": tokenInfo.source.object,
+                        "transactionUserName": tokenInfo.source.name,
+                        "cardUserAddress": tokenInfo.source.address_line1 + "," + tokenInfo.source.address_line2,
+                        "cardUserState": tokenInfo.source.address_state ? tokenInfo.source.address_state : "",
+                        "cardUserCountry": tokenInfo.source.country,
+                        "cardUserZipcode": tokenInfo.source.address_zip ? tokenInfo.source.address_zip : "",
+                        "cardBrand": tokenInfo.source.brand,
+                        "currency": "USD",
+                        "appointmentPrice": $("#btnPayment").text().replace(/[^0-9.]/g, '').split('.')[0],
+                        "cardTranactionId": tokenInfo.source.id,
+                        "cardLastDigit": tokenInfo.source.last4,
+                        "cardFunding": tokenInfo.source.funding,
+                        "cardExpMonth": tokenInfo.source.exp_month,
+                        "cardExpYear": tokenInfo.source.exp_year,
+                        "paymentIp": localStorage.getItem("clientIp")
+                    }
+
+                    var parameter = {
+
+                        "userId": localStorage.getItem("userId"),
+                        "appointmentId": sessionStorage.getItem("appointmentId"),
+                        "transactionFlag": "1",
+                        "franchiseId": sessionStorage.getItem("franchiseId"),
+                        "transaction": transObject,
+                        "helpertip": JSON.parse(sessionStorage.getItem("helperTip"))
+                    };
+
+                    $.ajax({
+                        url: api_baseUrl + 'Helper/HelperTipping/',
+                        type: "POST",
+                        data: JSON.stringify(parameter),
+                        success: function (response) {
+
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
+                            }
+
+                            if (response !== null && response.status === 1) {
+
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Your helper tip successfully paid!", null, 'Success', 'Close');
+                                } else {
+                                    showAlertDialog("Success", "Your helper tip successfully paid!");
+                                }
+
+                                sessionStorage.clear();
+
+                                setTimeout(function () {
+                                    window.location.href = "dashboard.html";
+
+                                }, 1000);
+                            }
+                            else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                                } else {
+                                    showAlertDialog('Warning', response.message);
+                                }
+                            }
+                        },
+                        error: function (jqXHR, text, error) {
+
+                            // Displaying if there are any errors
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
+                            }
+
+                            if (error == null || error == "") {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                                }
+
+                            } else {
+                                if (isMobileDevice) {
+                                    navigator.notification.alert(error, null, 'Error', 'Close');
+                                } else {
+                                    showAlertDialog('Error', error);
+                                }
+                            }
+                        }
+                    });
+
+                }
+
+                function savePaymentInfoWithoutCharges() {
+                    if (isMobileDevice) {
+                        window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                    } else {
+                        showLoading(true);
+                    }
+
+                    var helperSelectedTime = localStorage.getItem("helperSelectedTime");
+
+                    var parameter = {
+                        "serviceId": localStorage.getItem("serviceId"),
+                        "userId": localStorage.getItem("userId"),
+                        "subServiceId": localStorage.getItem("subServiceId"),
+                        "userAddressId": localStorage.getItem("userAddressId"),
+                        "appointmentDate": localStorage.getItem("providerDate"),
+                        "appointmentFrom": convertTimeformat("24", helperSelectedTime.split('-')[0]),
+                        "appointmentTo": convertTimeformat("24", helperSelectedTime.split('-')[1]),
+                        "franchiseId": localStorage.getItem("franchiseId"),
+                        "promotionId": localStorage.getItem("promotionId"),
+                        "unauthorized": {},
+                        "QuestionAnswer": JSON.parse(localStorage.getItem("paymentTempObject"))
+                    };
+
+                    $.ajax({
+                        url: api_baseUrl + 'appointment/',
+                        type: "POST",
+                        data: JSON.stringify(parameter),
+                        success: function (response) {
+
+                            if (isMobileDevice) {
+                                window.plugins.spinnerDialog.hide();
+                            } else {
+                                showLoading(false);
+                            }
+
+                            if (response !== null && response.status === 1) {
+
+                                if (isMobileDevice) {
+                                    navigator.notification.alert("Your appointment successfully booked!", null, 'Success', 'Close');
+                                } else {
+                                    showAlertDialog("Success", "Your appointment successfully booked!");
+                                }
+
+                                localStorage.removeItem("paymentTempObject");
+                                localStorage.removeItem("promotionId");
+                                sessionStorage.clear();
+
+                                setTimeout(function () {
+                                    if (localStorage.getItem("zipcode")) {
+                                        window.location.href = "index.html";
+                                    } else {
+                                        window.location.href = "dashboard.html";
+                                    }
+                                }, 1000);
                             }
                             else {
                                 if (isMobileDevice) {
@@ -908,7 +1215,6 @@
                     var helperSelectedTime = localStorage.getItem("helperSelectedTime");
 
                     var unAuthorizedUser = {};
-                    
 
                     if (localStorage.getItem("zipcode") != null) {
                         unAuthorizedUser.email = $("#emailAddress").val();
@@ -936,6 +1242,7 @@
                         "appointmentTo": convertTimeformat("24", helperSelectedTime.split('-')[1]),
                         "franchiseId": localStorage.getItem("franchiseId"),
                         "transactionId": tokenInfo.id,
+                        "promotionId": localStorage.getItem("promotionId"),
                         "transactionObject": tokenInfo.source.object,
                         "transactionUserName": tokenInfo.source.name,
                         "cardUserAddress": tokenInfo.source.address_line1 + "," + tokenInfo.source.address_line2,
@@ -960,7 +1267,7 @@
                         type: "POST",
                         data: JSON.stringify(parameter),
                         success: function (response) {
-                            
+
                             if (isMobileDevice) {
                                 window.plugins.spinnerDialog.hide();
                             } else {
@@ -975,6 +1282,7 @@
                                     showAlertDialog("Success", "Your appointment successfully booked!");
                                 }
 
+                                localStorage.removeItem("promotionId");
                                 localStorage.removeItem("paymentTempObject");
                                 sessionStorage.clear();
 

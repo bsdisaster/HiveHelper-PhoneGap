@@ -1,5 +1,5 @@
 ﻿var isMobileDevice = isMobile();
-var appId = 'UA-117114226-1';
+var appId = 'UA-109128919-1';
 
 (function (i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {

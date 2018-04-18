@@ -54,8 +54,7 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="payTipAmount()" class="button button-pantone button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Pay using stripe</button>
-                <button onclick="payTipAmount()" class="button button-pantone button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Manual pay</button>
+                <button id="btnPayTip" onclick="payTipAmount()" class="button button-pantone button-icon button-full half-top full-bottom animate-fade animate-delay-600"><i class="ion-ios-arrow-thin-right"></i>Pay $0</button>
 
             </div>
             <div class="clear"></div>
@@ -102,11 +101,10 @@
 
     function bindHelperPayDropdowns() {
         var items = {
-            option1: { value: null, text: 'Select amount' },
-            option2: { value: 0, text: '$0' },
-            option3: { value: 5, text: '$5' },
-            option4: { value: 10, text: '$10' },
-            option5: { value: 15, text: '$15' }
+            option1: { value: 0, text: '$0' },
+            option2: { value: 5, text: '$5' },
+            option3: { value: 10, text: '$10' },
+            option4: { value: 15, text: '$15' }
         };
 
         $('select').empty();
@@ -156,11 +154,11 @@
                                     html = html + '<div class="fac fac-radio fac-default col-sm-12">';
                                     html = html + '<span></span>';
                                     html = html + '<div class="col-sm-6">';
-                                    html = html + '<label class="futura-pt-book">' + helperName + '</label>';
+                                    html = html + '<label class="futura-pt-book dataHelper" data-franchise-id = ' + responseData.previousBooking[i].franchiseId + ' data-helper-id=' + helperAssigned[j].helperId + '>' + helperName + '</label>';
                                     html = html + '</div>';
                                     html = html + '<div class="col-sm-4 select-box2">';
                                     html = html + '<select>';
-                                    html = html + '</select></div></div>';
+                                    html = html + '</select></div></div><div class="clear">&nbsp;</div>';
                                     $('.extra-margin').append(html);
                                 }
                             }
@@ -208,30 +206,50 @@
         $("select").on("change", function () {
             var sum = 0;
             $('select :selected').each(function () {
-                sum += Number($(this).val());
+                if (Number($(this).val())) {
+                    sum += Number($(this).val());
+                }
             });
-
+            
             if ($.isNumeric(sum)) {
                 $("#totalAmount").html("$" + sum);
+                $("#btnPayTip").html("<i class='ion-ios-arrow-thin-right'></i>Pay $" + sum);
             } else {
-                $("#totalAmount").html("$0");
+                $("#totalAmount").html("$" + $(this).val());
+                $("#btnPayTip").html("<i class='ion-ios-arrow-thin-right'></i>Pay $" + $(this).val());
             }
         })
     }
 
     function payTipAmount() {
 
-        $("select").each(function () {
-            if ($(this).val() == "Select amount") {
+        var helperTip = [];
 
-                if (isMobileDevice) {
-                    navigator.notification.alert('Please select amount!', null, 'Warning', 'Close');
-                } else {
-                    showAlertDialog('Warning', 'Please select amount!');
-                }
-                return false;
+        var flag = false;
+
+        if ($("#totalAmount").text() == "$0") {
+            flag = true;
+
+            if (isMobileDevice) {
+                navigator.notification.alert('Please select valid amount!', null, 'Warning', 'Close');
+            } else {
+                showAlertDialog('Warning', 'Please select valid amount!');
             }
-        })
+        }
+
+        if (!flag) {
+            $(".dataHelper").each(function () {
+                var tipDetails = {};
+                tipDetails.helperId = $(this).attr("data-helper-id");
+                tipDetails.tip = $(this).parent().next('div').find('select').val();
+
+                helperTip.push(tipDetails);
+                sessionStorage.setItem("franchiseId", $(this).attr("data-franchise-id"));
+            })
+            sessionStorage.setItem("helperTip", JSON.stringify(helperTip));
+            sessionStorage.setItem("appointmentPrice", $("#totalAmount").html());
+            window.location.href = "hive-helper-payment.html?isHelperTipping=true";
+        }
     }
 
 </script>
