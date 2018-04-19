@@ -1031,7 +1031,7 @@ $(document).ready(function () {
     });
 })
 
-var androidAppVersion = '3.0.0';
+var androidAppVersion = '3.0.1';
 var iosAppVersion = '2.0.8';
 var api_baseUrl = 'http://hivehelperapp.com/appv2/v2/';
 //var api_baseUrl = 'http://hivehelperapp.com/v2/';
@@ -1062,8 +1062,10 @@ function showLoading(visibility) {
 
     if (visibility == true) {
         $(".header-light").append(loader);
+        $("body").addClass("transparent-loader");
     } else {
         $(".loader").remove();
+        $("body").removeClass("transparent-loader");
     }
 }
 
