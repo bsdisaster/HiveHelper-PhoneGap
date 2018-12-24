@@ -1,0 +1,242 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Contact Questions - Hive Helper 1.0</title>
+    <link rel="icon" href="images/icon.ico">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/skin.css">
+    <link rel="stylesheet" type="text/css" href="styles/framework.css">
+    <link rel="stylesheet" type="text/css" href="styles/ionicons.min.css">
+
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="scripts/plugins.js"></script>
+    <script type="text/javascript" src="scripts/custom.js"></script>
+    <script type="text/javascript" src="scripts/GA.js"></script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+
+</head>
+
+<body>
+     <div id="page-transitions">
+        <div class="header header-logo-center header-light">
+            <img src="images/HiveHelper_Logo.png" />
+        </div>
+
+        <div id="page-content" class="page-content set-background-splash2">
+            <div id="page-content-scroll" class="header-clear">
+                <!--Enables this element to be scrolled -->
+                <div class="heading-strip no-bottom">
+                    <h3 class="center-text futura-medium">Client Questions</h3>
+                </div>
+            </div>
+            <div class="page-login">
+
+                <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100 changepassword-text">
+                        <input id="unauthorised-user-name" type="text">
+                        <label>Name*</label>
+                </div>
+
+
+                <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100 changepassword-text">
+                        <input id="unauthorised-user-email" type="text">
+                        <label>Email Address*</label>
+                </div>
+                <br>   
+                <div class="page-login-input animate-fade">
+                    <div class="select-box-light">
+                        <select id="customer-reason">
+                            <option value="1">Client Questions</option>
+                            <option value="2">Booking Questions</option>
+                            <option value="3">Billing Question</option>
+                            <option value="4">Complaint/Feedback</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="page-login-input my-profile-removed-left-pedding animate-fade animate-delay-100">
+                    <textarea id="customer-details" class="contactTextarea" placeholder="Details" col="6" row="10"></textarea>
+                </div>
+                <button class="button button-blue button-icon button-full half-top full-bottom animate-fade animate-delay-200" onclick="SendQueryEmail()"><i class="ion-ios-arrow-thin-right"></i>SEND</button>
+            </div>
+        </div>
+
+
+        <footer class="sticky-footer">
+            <div class="n_footer-links">
+                <div class="footer-link-r">
+                    <a href="hive-helper-contact.html" target="_self">
+                        <img src="images/back_arrow.png" height="40" width="40" />
+                    </a>
+                </div>
+                <center>
+                    <h2>We Arrive. You Thrive.</h2>
+                </center>
+                <div class="footer-link-l">
+                    <a href="dashboard.html" target="_self">
+                        <img src="images/Home.png" height="40" width="40" />
+                    </a>
+                </div>
+            </div>
+        </footer>
+
+
+     </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var screenName = $(document).find("title").text();
+            
+            // google analytics
+            ga('send', 'pageview', location.pathname);
+            ga('send', 'screenview', { screenName: screenName });
+            //
+
+        })
+
+        var isMobileDevice = isMobile();
+
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                SendQueryEmail();
+            }
+        });
+
+
+        function SendQueryEmail() {
+            if (IsValidatePage()) {
+                if (isMobileDevice) {
+                    window.plugins.spinnerDialog.show("Please wait...", "Loading...", true);
+                } else {
+                    showLoading(true);
+                }
+
+                var parameter = {
+                    "contactFor": "Contact - Customer Reason",
+                    "contactReasonId": $("#customer-reason").val(),
+                    "details": $("#customer-details").val(),
+                    "userNameValue" : $("#unauthorised-user-name").val(),
+                    "userEmailValue" : $("#unauthorised-user-email").val()
+                };
+                $.ajax({
+                    url: api_baseUrl + 'Contact/unauthorisedUserRequest',
+                    type: "POST",
+                    data: JSON.stringify(parameter),
+                    dataType: "json",
+                    success: function (response) {
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+                        
+                        if (response !== null && response.status === 1) {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("Your request sent successfully!", null, 'Success', 'Close');
+                            } else {
+                                showAlertDialog("Success", "Your request sent successfully!");
+                            }
+                            ClearData();
+                        }
+                        else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(response.message, null, 'Warning', 'Close');
+                            } else {
+                                showAlertDialog("Warning", response.message);
+                            }
+                        }
+
+                    },
+                    error: function (jqXHR, text, error) {
+                        // Displaying if there are any errors
+                        if (isMobileDevice) {
+                            window.plugins.spinnerDialog.hide();
+                        } else {
+                            showLoading(false);
+                        }
+
+                        if (error == null || error == "") {
+                            if (isMobileDevice) {
+                                navigator.notification.alert("It looks like you're offline.!", null, 'Error', 'Close');
+                            }
+
+                        } else {
+                            if (isMobileDevice) {
+                                navigator.notification.alert(error, null, 'Error', 'Close');
+                            } else {
+                                showAlertDialog("Error", error);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+
+        function IsValidatePage() {
+            var isResult = true;
+            var countError = 0;
+            var msg = "Please correct following fields:\n";
+
+            var reasonValue = $("#customer-reason").val();
+            var detailsValue = $("#customer-details").val();
+            var UsernameValue = $("#unauthorised-user-name").val();
+            var useremailValue = $("#unauthorised-user-email").val();
+
+            
+            if (reasonValue === '0' || reasonValue === null) {
+                countError = countError + 1;
+                msg += "Please select customer reason!\n";
+            }
+            if (detailsValue === '' || detailsValue === null) {
+                countError = countError + 1;
+                msg += "Details!\n";
+            }
+            if (UsernameValue===''||UsernameValue===null){
+                countError = countError + 1;
+                msg += "Name!\n";
+            }
+            if (useremailValue===''||useremailValue===null || useremailValue === 'Email'){
+                countError = countError + 1;
+                msg += "Email!\n";
+            } 
+
+            if (useremailValue !== null && useremailValue !== '' && useremailValue !== 'Email') {
+                        var x = useremailValue;
+                        var atpos = x.indexOf("@");
+                        var dotpos = x.lastIndexOf(".");
+                        if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
+                                        countError = countError + 1;
+                                      msg += "Valid email address!\n";
+                                }
+                            }           
+
+            if (countError > 0) {
+                if (isMobileDevice) {
+                    navigator.notification.alert(msg, null, 'Warning', 'Close');
+                } else {
+                    showAlertDialog("Warning", msg);
+                }
+                isResult = false;
+            }
+            return isResult;
+        }
+
+        function ClearData() {
+            $("#customer-details").val('');
+        }
+
+
+
+    </script>     
+</body>
+</html>
